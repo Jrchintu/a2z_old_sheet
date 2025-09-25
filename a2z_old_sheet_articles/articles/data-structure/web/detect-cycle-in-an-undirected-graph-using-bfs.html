@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Detect Cycle in an Undirected Graph (using BFS)</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Detect Cycle in an Undirected Graph (using BFS)</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement: </strong>Given an undirected graph with V vertices and E edges, check whether it contains any cycle or not. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Examples:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted"><strong>Example 1:</strong>
+<strong>Input:</strong>
+V = 8, E = 7
+
+<img height="229" src="assets/10a7e6db8a1c3ab5c039142afbda7fe0" width="331"/>
+
+<strong>Output:</strong>  0
+
+<strong>Explanation:</strong> No cycle in the given graph.
+</pre>
+<!-- /wp:preformatted -->
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted"><strong>Example 2:</strong>
+<strong>Input:</strong>
+V = 8, E = 6
+
+<img height="127" src="assets/fab3a860e269826b54c066f10f0d53e0" width="442"/>
+<strong>Output:</strong> 1 
+
+<strong>Explanation:</strong> 4-&gt;5-&gt;6-&gt;4 is a cycle.
+</pre>
+<!-- /wp:preformatted -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Solution</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph {"textColor":"accent"} -->
+<p class="has-accent-color has-text-color"><strong><em>Disclaimer</em></strong>: <em>Don't jump directly to the solution, try it out yourself first.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Intuition:</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>The cycle in a graph starts from a node and ends at the same node. So we can think of two algorithms to do this, in this article we will be reading about the BFS, and in the next, we will be learning how to use DFS to check. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><a href="https://takeuforward.org/graph/breadth-first-search-bfs-level-order-traversal/" rel="noopener" target="_blank"><strong>Breadth First Search</strong></a>, BFS is a traversal technique where we visit the nodes level-wise, i.e., it visits the same level nodes simultaneously, and then moves to the next level. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The intuition is that we start from a node, and start doing BFS level-wise, if somewhere down the line, we visit a single node twice, it means we came via two paths to end up at the same node. It implies there is a cycle in the graph because we know that we start from different directions but can arrive at the same node only if the graph is connected or contains a cycle, otherwise we would never come to the same node again.  </p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Approach</strong>:</h3>
+<!-- /wp:heading -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Initial configuration:</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:list -->
+<ul><li><strong>Queue:</strong> Define a queue and insert the source node along with parent data (&lt;source node, parent&gt;). For example, (2, 1) means 2 is the source node and 1 is its parent node.</li><li><strong>Visited array: </strong>an array initialized to 0 indicating unvisited nodes.  </li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>The algorithm steps are as follows:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>For BFS traversal, we need a queue data structure and a visited array. </li><li>Push the pair of the source node and its parent data (&lt;source, parent&gt;) in the queue, and mark the node as visited. The parent will be needed so that we don’t do a backward traversal in the graph, we just move frontwards. </li><li>Start the BFS traversal, pop out an element from the queue every time and travel to all its unvisited neighbors using an adjacency list.</li><li>Repeat the steps either until the queue becomes empty, or a node appears to be already visited which is not the parent, even though we traveled in different directions during the traversal, indicating there is a cycle.</li><li>If the queue becomes empty and no such node is found then there is no cycle in the graph.</li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p>A graph can have connected components as well. In such cases, if any component forms a cycle then the graph is said to have a cycle. We can follow the algorithm for the same:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong><img height="187" src="assets/b19f6a78f1ef6988a0bdb41e7e44a961" width="403"/></strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Consider the following graph and its adjacency list.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong><img height="289" src="assets/c78c238552b09755fb542d10fcccc305" width="585"/></strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Consider the following illustration to understand the process of detecting a cycle using BFS traversal.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><img height="317" src="assets/c8c94495f8d72ec01e13e0e5af61e8e9" width="523"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+class Solution {
+  private: 
+  bool detect(int src, vector&lt;int&gt; adj[], int vis[]) {
+      vis[src] = 1; 
+      // store &lt;source node, parent node&gt;
+      queue&lt;pair&lt;int,int&gt;&gt; q; 
+      q.push({src, -1}); 
+      // traverse until queue is not empty
+      while(!q.empty()) {
+          int node = q.front().first; 
+          int parent = q.front().second; 
+          q.pop(); 
+          
+          // go to all adjacent nodes
+          for(auto adjacentNode: adj[node]) {
+              // if adjacent node is unvisited
+              if(!vis[adjacentNode]) {
+                  vis[adjacentNode] = 1; 
+                  q.push({adjacentNode, node}); 
+              }
+              // if adjacent node is visited and is not it's own parent node
+              else if(parent != adjacentNode) {
+                  // yes it is a cycle
+                  return true; 
+              }
+          }
+      }
+      // there's no cycle
+      return false; 
+  }
+  public:
+    // Function to detect cycle in an undirected graph.
+    bool isCycle(int V, vector&lt;int&gt; adj[]) {
+        // initialise them as unvisited 
+        int vis[V] = {0};
+        for(int i = 0;i&lt;V;i++) {
+            if(!vis[i]) {
+                if(detect(i, adj, vis)) return true; 
+            }
+        }
+        return false; 
+    }
+};
+
+int main() {
+    
+    // V = 4, E = 2
+    vector&lt;int&gt; adj[4] = {{}, {2}, {1, 3}, {2}};
+    Solution obj;
+    bool ans = obj.isCycle(4, adj);
+    if (ans)
+        cout &lt;&lt; "1\n";
+    else
+        cout &lt;&lt; "0\n";
+    return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:  </strong>0</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: </strong>O(N + 2E) + O(N), Where N = Nodes, 2E is for total degrees as we traverse all adjacent nodes. In the case of connected components of a graph, it will take another O(N) time.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: </strong>O(N) + O(N) ~ O(N), Space for queue data structure and visited array.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+
+class Solution
+{
+   static boolean checkForCycle(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; adj, int s,
+            boolean vis[], int parent[])
+    {
+       Queue&lt;Node&gt; q =  new LinkedList&lt;&gt;(); //BFS
+       q.add(new Node(s, -1));
+       vis[s] =true;
+       
+       // until the queue is empty
+       while(!q.isEmpty())
+       {
+           // source node and its parent node
+           int node = q.peek().first;
+           int par = q.peek().second;
+           q.remove(); 
+           
+           // go to all the adjacent nodes
+           for(Integer it: adj.get(node))
+           {
+               if(vis[it]==false)  
+               {
+                   q.add(new Node(it, node));
+                   vis[it] = true; 
+               }
+        
+                // if adjacent node is visited and is not its own parent node
+               else if(par != it) return true;
+           }
+       }
+       
+       return false;
+    }
+    
+    // function to detect cycle in an undirected graph
+    public boolean isCycle(int V, ArrayList&lt;ArrayList&lt;Integer&gt;&gt; adj)
+    {
+        boolean vis[] = new boolean[V];
+        Arrays.fill(vis,false);
+        int parent[] = new int[V];
+        Arrays.fill(parent,-1);  
+        
+        for(int i=0;i&lt;V;i++)
+            if(vis[i]==false) 
+                if(checkForCycle(adj, i,vis, parent)) 
+                    return true;
+    
+        return false;
+    }
+    
+    public static void main(String[] args)
+    {
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; adj = new ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; 4; i++) {
+            adj.add(new ArrayList &lt; &gt; ());
+        }
+        adj.get(1).add(2);
+        adj.get(2).add(1);
+        adj.get(2).add(3);
+        adj.get(3).add(2);
+                
+        Solution obj = new Solution();
+        boolean ans = obj.isCycle(4, adj);
+        if (ans)
+            System.out.println("1");    
+        else
+            System.out.println("0");
+    }
+}
+
+class Node {
+    int first;
+    int second;
+    public Node(int first, int second) {
+        this.first = first;
+        this.second = second; 
+    }
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:  </strong>0</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: </strong>O(N + 2E) + O(N), Where N = Nodes, 2E is for total degrees as we traverse all adjacent nodes. In the case of connected components of a graph, it will take another O(N) time.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: </strong>O(N) + O(N) ~ O(N), Space for queue data structure and visited array.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/vanshika-singh-ba6b15157" rel="noreferrer noopener" target="_blank">Vanshika Singh Gour</a></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a>. <em>If you want to suggest any improvement/correction in this article please mail us at write4tuf@gmail.com</em></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

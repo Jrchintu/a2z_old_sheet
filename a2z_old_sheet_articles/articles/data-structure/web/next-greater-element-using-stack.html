@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Next Greater Element Using Stack</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Next Greater Element Using Stack</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement:</strong> Given a circular integer array <strong>A</strong>, return the next greater element for every element in A. The next greater element for an element x is the first element greater than x that we come across while traversing the array in a clockwise manner. If it doesn't exist, return -1 for this element.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Examples</strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted"><strong>Example 1: </strong>
+
+<strong>Input:</strong> N = 11, A[] = {3,10,4,2,1,2,6,1,7,2,9}
+
+<strong>Output:</strong> 10,-1,6,6,2,6,7,7,9,9,10
+
+<strong>Explanation:</strong> For the first element in A ,i.e, 3, the greater element which comes next to it while traversing and is closest to it is 10. Hence,10 is present on index 0 in the resultant array. Now for the second element,i.e, 10, there is no greater number and hence -1 is it’s next greater element (NGE). Similarly, we got the NGEs for all other elements present in A.  
+
+
+<strong>Example 2:</strong>
+
+<strong>Input:</strong>  N = 6, A[] = {5,7,1,7,6,0}
+
+<strong>Output:</strong> 7,-1,7,-1,7,5</pre>
+<!-- /wp:preformatted -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Solution</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph {"textColor":"vivid-red"} -->
+<p class="has-vivid-red-color has-text-color"><strong><em>Disclaimer</em></strong>: <em>Don't jump directly to the solution, try it out yourself first.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Approach:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>This problem can be solved easily and efficiently by using the stack data structure as it is based on the Last in First out (LIFO) principle.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>To make it a bit easier let’s first try to solve without considering the array as circular. To find the next greater element we start traversing the given array from the right. As for the rightmost element, there is no other element at its right. Hence, we assign -1 at its index in the resultant array. Since this can be the next greater element (NGE) for some other element, we push it in the stack S. We keep checking for other elements. Let’s say we are checking for an element at index i. We keep popping from the stack until the element at the top of the stack is smaller than A[i]. The main intuition behind popping them is that these elements can never be the NGE for any element present at the left of A[i] because A[i] is greater than these elements. Now, if the top element of S is greater than A[i] then this is NGE of A[i] and we will assign it to res[i], where res is the resultant array. If the stack becomes empty then it implies that no element at the right of A[i] is greater than it and we assign -1. At last, we push A[i] in S.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Dry run:</strong> Let’s apply this algorithm for A[] = {5,7,1,2,6,0}:</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":763,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-763" src="assets/da5a4600da1e813a91a0e3982a2ba355.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p><br/>So, the resultant array is {7,-1,2,6,-1,-1}. Remember that we have considered the array to be non-circular. For a circular array, the resultant array should be {7,-1,2,6,7,5}. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Now we need to make this algorithm work for a circular array. The only difference between a circular and non-circular array is that while searching for the next greater element in a non-circular array we don’t consider the elements left to the concerned element. This can be easily done by inserting the elements of the array A at the end of A, thus making its size double. But we actually don’t require any extra space. We can just traverse the array twice. We actually run a loop 2*N times, where N is the size of the given array. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include&lt;bits/stdc++.h&gt;
+
+using namespace std;
+class Solution {
+  public:
+    vector &lt; int &gt; nextGreaterElements(vector &lt; int &gt; &amp; nums) {
+      int n = nums.size();
+      vector &lt; int &gt; nge(n, -1);
+      stack &lt; int &gt; st;
+      for (int i = 2 * n - 1; i &gt;= 0; i--) {
+        while (!st.empty() &amp;&amp; st.top() &lt;= nums[i % n]) {
+          st.pop();
+        }
+
+        if (i &lt; n) {
+          if (!st.empty()) nge[i] = st.top();
+        }
+        st.push(nums[i % n]);
+      }
+      return nge;
+    }
+};
+int main() {
+  Solution obj;
+  vector &lt; int &gt; v {5,7,1,2,6,0};
+  vector &lt; int &gt; res = obj.nextGreaterElements(v);
+  cout &lt;&lt; "The next greater elements are" &lt;&lt; endl;
+  for (int i = 0; i &lt; res.size(); i++) {
+    cout &lt;&lt; res[i] &lt;&lt; " ";
+  }
+}</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The next greater elements are<br/>7 -1 2 6 7 5</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.io.*;
+import java.util.*;
+class TUF {
+    public static int[] nextGreaterElements(int[] nums) {
+        int n = nums.length;
+        int nge[] = new int[n];
+        Stack &lt; Integer &gt; st = new Stack &lt; &gt; ();
+        for (int i = 2 * n - 1; i &gt;= 0; i--) {
+            while (st.isEmpty() == false &amp;&amp; st.peek() &lt;= nums[i % n]) {
+                st.pop();
+            }
+
+            if (i &lt; n) {
+                if (st.isEmpty() == false) nge[i] = st.peek();
+                else nge[i] = -1;
+            }
+
+            st.push(nums[i % n]);
+        }
+        return nge;
+    }
+    public static void main(String args[]) {
+        int arr[]={5,7,1,2,6,0};
+
+        int arr2[] = nextGreaterElements(arr);
+        System.out.println("The next greater elements are ");
+        for (int i = 0; i &lt; arr2.length; i++) {
+            System.out.print(arr2[i] + " ");
+        }
+
+    }
+}</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The next greater elements are<br/>7 -1 2 6 7 5</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="python">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-python" lang="python">from typing import List
+
+
+
+
+class Solution:
+    def nextGreaterElements(self, nums: List[int]) -&gt; List[int]:
+        n = len(nums)
+        nge = [-1] * n
+        st = []
+
+
+        for i in range(2 * n - 1, -1, -1):
+            while st and st[-1] &lt;= nums[i % n]:
+                st.pop()
+
+
+            if i &lt; n:
+                if st:
+                    nge[i] = st[-1]
+            st.append(nums[i % n])
+        return nge
+
+
+
+
+if __name__ == '__main__':
+    obj = Solution()
+    v = [5, 7, 1, 2, 6, 0]
+    res = obj.nextGreaterElements(v)
+    print("The next greater elements are")
+    print(*res)</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The next greater elements are<br/>7 -1 2 6 7 5</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em><em>Special thanks to <strong><strong><a href="http://www.linkedin.com/in/astha-yadav-6468661b1" rel="noreferrer noopener nofollow" target="_blank">Astha Yadav</a></strong></strong> <em><em>and <a href="https://www.linkedin.com/in/imsudip/" rel="noreferrer noopener" target="_blank"><strong>Sudip Ghosh</strong></a></em></em></em></em> <em><em>for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/contribute/help-us-grow-takeuforward/">please check out this articl</a><em>e</em></em></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

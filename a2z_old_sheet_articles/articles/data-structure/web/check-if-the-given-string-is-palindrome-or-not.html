@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Check if the given String is Palindrome or not</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Check if the given String is Palindrome or not</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement:</strong> "Given a string, check if the string is palindrome or not."  A string is said to be palindrome if the reverse of the string is the same as the string.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Examples:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted"><strong>Example 1:</strong>
+<strong>Input:</strong> Str =  “ABCDCBA”
+<strong>Output:</strong> Palindrome
+<strong>Explanation:</strong> String when reversed is the same as string.
+
+<strong>Example 2:</strong>
+<strong>Input:</strong> Str = “TAKE U FORWARD”
+<strong>Output:</strong> Not Palindrome
+<strong>Explanation:</strong> String when reversed is not the same as string.</pre>
+<!-- /wp:preformatted -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Solution</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph {"textColor":"accent"} -->
+<p class="has-accent-color has-text-color"><strong><em>Disclaimer</em></strong>: <em>Don't jump directly to the solution, try it out yourself first.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Approach</strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Run a for loop till half the length of the string in order to check the first and last character of the string.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>And check if the first and last elements of the string are equal. And then move both pointers first pointer forward and last pointer backward.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Here we are achieving this with the help of ‘i’ which moves with them for a loop. First element can be get by str[i] and last element by str[str.length() - i - 1]). If this condition gets executed then it is not palindrome and returns false.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>If the loop ends after traversing elements till half of the length then, it is Palindrome and returns false.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><img height="129" src="https://lh3.googleusercontent.com/WjEhoZ8yTZv_aWThfdipAJNpco0cKELiJqzOT7p3YV_czEtPygyI5YfCtWChRgce9jTC1apwZp9d-ViMGgj7C-W3bVvs2V4NNk3rPe5TweWweW4ygktPyZHcDUN24k8vOB54Nr9s" width="624"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><img height="136" src="https://lh5.googleusercontent.com/VIjNyAjm-9F_vlZacNTouIh40x-EWnUFE7PaKFjEfKhD82sKCGyNbOsk4WIYqQbtcRazKF-6gTNA3yAjShpuHWLoaLPuNCtuEOBsjedq6nQohJ-JjuL-_T4GxJ04yiSIXKKy9pLC" width="624"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include&lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+bool isPalindrome(string s) {
+
+        int left = 0, right = s.length()-1;
+        while(left&lt;right)
+        {
+            if(!isalnum(s[left])) 
+                left++;
+            else if(!isalnum(s[right])) 
+                right--;
+            else if(tolower(s[left])!=tolower(s[right])) 
+                return false;
+            else {
+                left++; 
+                right--;
+            }
+        }
+        return true;
+
+}
+int main() {
+
+  string str = "ABCDCBA";
+  bool ans = isPalindrome(str);
+
+  if (ans == true) {
+    cout &lt;&lt; "Palindrome";
+  } else {
+    cout &lt;&lt; "Not Palindrome";
+  }
+  return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong> Palindrome</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity:  O(N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(1)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.io.*;
+import java.util.Arrays;
+class Test {
+  static private boolean isPalindrome(String s) {
+    int left = 0, right = s.length()-1;
+        while(left&lt;right)
+        {
+            char l = s.charAt(left), r = s.charAt(right);
+            if(!Character.isLetterOrDigit(l)) 
+                left++;
+            else if(!Character.isLetterOrDigit(r)) 
+                right--;
+            else if(Character.toLowerCase(l)!=Character.toLowerCase(r)) 
+                return false;
+            else {
+                left++; 
+                right--;
+            }
+        }
+        return true;
+  }
+  public static void main(String[] args) {
+    String str = "ABCDCBA";
+    boolean ans = isPalindrome(str);
+
+    if (ans == true) {
+      System.out.println("Palindrome");
+    } else {
+      System.out.println("Not Palindrome");
+    }
+  }
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong> Palindrome</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity:  O(N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(1)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="python">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-python" lang="python">def isPalindrome(s):
+    left = 0
+    right = len(s)-1
+    while left &lt; right:
+        if not s[left].isalnum():
+            left += 1
+        elif not s[right].isalnum():
+            right -= 1
+        elif s[left].lower() != s[right].lower():
+            return False
+        else:
+            left += 1
+            right -= 1
+    return True
+
+
+
+if __name__ == "__main__":
+    str = "ABCDCBA"
+    ans = isPalindrome(str)
+
+
+    if ans == True:
+        print("Palindrome")
+    else:
+        print("Not Palindrome")</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong> Palindrome</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity:  O(N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(1)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Recursive Approach:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>In this approach, we check the string using functional recursion where firstly, the letters on the two ends of the string (start, end) are compared to see if they’re the same or not.</li><li>If they’re the same then we simply call recursion for the next elements (start+1, end-1) and so on until the start becomes greater than or equal to the end. </li><li>If at any point the start and the end differ, we return false stating that the string is not a palindrome.</li><li>Otherwise, if the base condition is reached, then the string is obviously a palindrome and we return true.</li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p>Let us understand it through a recursive code:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;iostream&gt;
+using namespace std;
+
+bool palindrome(int i, string&amp; s){
+    
+    // Base Condition
+    // If i exceeds half of the string means all the elements 
+    // are compared, we return true.
+    if(i&gt;=s.length()/2) return true;
+    
+    // If the start is not equal to the end, not the palindrome.
+    if(s[i]!=s[s.length()-i-1]) return false;
+    
+    // If both characters are the same, increment i and check start+1 and end-1.
+    return palindrome(i+1,s);
+}
+
+int main() {
+	
+	// Example string.
+	string s = "madam";
+	cout&lt;&lt;palindrome(0,s);
+	cout&lt;&lt;endl;
+	return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>True</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: </strong>O(N) { Precisely, O(N/2) as we compare the elements N/2 times and swap them}.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity:</strong> O(1) { The elements of the given array are swapped in place so no extra space is required}.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">class Recursion {
+    
+    static boolean palindrome(int i, String s){
+        
+            // Base Condition
+            // If i exceeds half of the string, means all the elements 
+            // are compared, we return true.
+            if(i&gt;=s.length()/2) return true;
+            
+            // If start is not equal to end, not palindrome.
+            if(s.charAt(i)!=s.charAt(s.length()-i-1)) return false;
+            
+            // If both characters are same, increment i and check start+1 and end-1.
+            return palindrome(i+1,s);
+            
+
+    }
+    public static void main(String[] args) {
+
+       // Example string.
+       String s = "madam";
+       System.out.println(palindrome(0,s));
+    }
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>True</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: </strong>O(N) { Precisely, O(N/2) as we compare the elements N/2 times and swap them}.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity:</strong> O(1) { The elements of the given array are swapped in place so no extra space is required}.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/rushikeshadhav/" rel="noreferrer noopener" target="_blank"><strong>Rushikesh Adhav</strong></a></strong> and <strong><a href="https://www.linkedin.com/in/priyanshi-goel-7b6a42210/" rel="noopener" target="_blank" title="">Priyanshi Goel</a></strong></em> <em>for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Word Ladder - I : G-29</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Word Ladder - I : G-29</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p>Given are the two distinct words <strong>startWord</strong> and <strong>targetWord</strong>, and a list denoting <strong>wordList</strong> of unique words of equal lengths. Find the length of the shortest transformation sequence from startWord to targetWord.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>In this problem statement, we need to keep the following conditions in mind:</p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>A word can only consist of lowercase characters.</li><li>Only one letter can be changed in each transformation.</li><li>Each transformed word must exist in the wordList including the targetWord.</li><li>startWord may or may not be part of the wordList</li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>Note</strong>:  If there’s no possible way to transform the sequence from startWord to targetWord return <strong>0</strong>.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p id="block-8d23ca36-08d5-40aa-b234-2555f9b5f1bc"><strong>Example 1:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted"><strong>Input:</strong>
+wordList = {"des","der","dfr","dgt","dfs"}
+startWord = "der", targetWord = "dfs"
+<strong>Output:</strong>
+3
+<strong>Explanation: </strong>
+The length of the smallest transformation sequence from "der" to 
+"dfs" is 3 i.e. "der" -&gt; (replace ‘e’ by ‘f’) -&gt; "dfr" -&gt; (replace ‘r’ by ‘s’)  -&gt; "dfs". So, it takes 3 different strings for us to reach the targetWord. Each of these strings are present in the wordList.</pre>
+<!-- /wp:preformatted -->
+<!-- wp:paragraph -->
+<p><strong>Example 2:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted"><strong>Input</strong>:
+wordList = {"geek", "gefk"}
+startWord = "gedk", targetWord= "geek"
+<strong>Output</strong>:
+2
+<strong>Explanation</strong>: 
+The length of the smallest transformation sequence 
+from "gedk" to "geek" is 2 i.e. "gedk" -&gt; (replace ‘d’ by ‘e’) -&gt; "geek" 
+So, it takes 2 different strings for us to reach the targetWord. 
+Each of these strings are present in the wordList.</pre>
+<!-- /wp:preformatted -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Solution</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph {"textColor":"accent"} -->
+<p class="has-accent-color has-text-color"><strong><em>Disclaimer</em>: <em>Don’t jump directly to the solution, try it out yourself first</em></strong>.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><a href="https://practice.geeksforgeeks.org/problems/word-ladder/0"><strong>Problem Link</strong></a></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Note: In case any image/dry run is not clear please refer to the video attached at the bottom.</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Approach:</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>Let’s first understand the Brute force approach to this problem. In Brute force, we just simply replace the startingWord <strong>character by character </strong>and then check whether the transformed word is present in the wordList. If a word is present in the wordList, we try replacing another character in that word by again following similar steps as above, in order to attain the targetWord. We do this for all the characters in the startWord and then eventually return the minimum length of transforming the startWord to targetWord.</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":6838,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-6838" src="assets/895f065c2ba6e0834192521cd0442323.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>Now, to make this algorithm a little less time-consuming and easier, we implement this using a BFS traversal technique.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Initial configuration:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li><strong>Queue: </strong>Define a queue data structure to store the BFS traversal.</li><li><strong>Hash set: </strong>Create a hash set to store the elements present in the word list to carry out the search and delete operations in O(1) time. </li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p>The Algorithm involves the following steps:</p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>Firstly, we start by creating a queue data structure in order to store the word and the length of the sequence to reach that word as a pair. We store them in form of {word, steps}. </li><li>Then, we push the startWord into the queue with length as ‘1’ indicating that this is the word from which the sequence needs to start from.</li><li>We now create a hash set wherein, we put all the elements in wordList to keep a check on if we’ve visited that word before or not. In order to mark a word as visited here, we simply delete the word from the hash set. There is no point in visiting someone multiple times during the algorithm. </li><li>Now, we pop the first element out of the queue and carry out the <a href="https://takeuforward.org/graph/breadth-first-search-bfs-level-order-traversal/" rel="noopener" target="_blank" title="">BFS traversal</a> where, for each word popped out of the queue, we try to replace every character with ‘a’ - ‘z’, and we get a transformed word. We check if the transformed word is present in the wordList or not.</li><li>If the word is present, we push it in the queue and increase the count of the sequence by 1 and if not, we simply move on to replacing the original character with the next character.</li><li>Remember, we also need to delete the word from the wordList if it matches with the transformed word to ensure that we do not reach the same point again in the transformation which would only increase our sequence length. </li><li>Now, we pop the next element out of the queue ds and if at any point in time, the transformed word becomes the same as the targetWord, we return the count of the steps taken to reach that word. Here, we’re only concerned about the first occurrence of the targetWord because after that it would only lead to an increase in the sequence length which is for sure not <strong>minimum.</strong></li><li>If a transformation sequence is not possible, return 0.</li></ul>
+<!-- /wp:list -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Intuition:</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>The intuition behind using the BFS traversal technique for this particular problem is that if we notice carefully, we go on replacing the characters one by one which seems just like we’re moving level-wise in order to reach the destination i.e. the targetWord.</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":6839,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-6839" src="assets/63d7da43716e67b555db3e4537e4e583.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>In level-order traversal, when we reach the destination, we stop the traversal. Similar to that, when we reach our targetWord, we terminate the algorithm and return the counted steps.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>We no longer continue the algorithm after that because that would only <strong>increase</strong> the step count to reach the targetWord.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong><em>Note: If you wish to see the dry run of the above approach, you can watch the video attached to this article.</em></strong> </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+ 
+class Solution
+{
+public:
+    int wordLadderLength(string startWord, string targetWord,
+                         vector&lt;string&gt; &amp;wordList)
+    {
+    // Creating a queue ds of type {word,transitions to reach ‘word’}.
+        queue&lt;pair&lt;string, int&gt;&gt; q;
+
+        // BFS traversal with pushing values in queue 
+        // when after a transformation, a word is found in wordList.
+        q.push({startWord, 1});
+
+        // Push all values of wordList into a set
+        // to make deletion from it easier and in less time complexity.
+        unordered_set&lt;string&gt; st(wordList.begin(), wordList.end());
+        st.erase(startWord);
+        while (!q.empty())
+        {
+            string word = q.front().first;
+            int steps = q.front().second;
+            q.pop();
+
+            // we return the steps as soon as
+            // the first occurence of targetWord is found.
+            if (word == targetWord)
+                return steps;
+
+            for (int i = 0; i &lt; word.size(); i++)
+            {
+                // Now, replace each character of ‘word’ with char
+                // from a-z then check if ‘word’ exists in wordList.
+                char original = word[i];
+                for (char ch = 'a'; ch &lt;= 'z'; ch++)
+                {
+                    word[i] = ch;
+                    // check if it exists in the set and push it in the queue.
+                    if (st.find(word) != st.end())
+                    {
+                        st.erase(word);
+                        q.push({word, steps + 1});
+                    }
+                }
+                word[i] = original;
+            }
+        }
+        // If there is no transformation sequence possible
+        return 0;
+    }
+};
+ 
+int main()
+{
+ 
+    vector&lt;string&gt; wordList = {"des", "der", "dfr", "dgt", "dfs"};
+    string startWord = "der", targetWord = "dfs";
+ 
+    Solution obj;
+ 
+    int ans = obj.wordLadderLength(startWord, targetWord, wordList);
+ 
+    cout &lt;&lt; ans;
+    cout &lt;&lt; endl;
+    return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output</strong>: </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>3 </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: </strong>O(N * M * 26)</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Where N = size of wordList Array and M = word length of words present in the wordList..</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Note that, hashing operations in an <strong>unordered set </strong>takes O(1) time, but if you want to use <strong>set </strong>here, then the time complexity would increase by a factor of log(N) as hashing operations in a set take O(log(N)) time.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity:  </strong>O( N ) { for creating an unordered set and copying all values from wordList into it }</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Where N = size of wordList Array.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class Main {
+
+    public static void main(String[] args) throws IOException {
+        String startWord = "der", targetWord = "dfs";
+        String[] wordList = {
+            "des",
+            "der",
+            "dfr",
+            "dgt",
+            "dfs"
+        };
+
+        Solution obj = new Solution();
+        int ans = obj.wordLadderLength(startWord, targetWord, wordList);
+
+        System.out.print(ans);
+
+        System.out.println();
+    }
+}
+
+class Pair {
+    String first;
+    int second;
+    Pair(String _first, int _second) {
+        this.first = _first;
+        this.second = _second;
+    }
+}
+class Solution {
+    public int wordLadderLength(String startWord, String targetWord, String[] wordList) {
+        // Creating a queue ds of type {word,transitions to reach ‘word’}.
+        Queue &lt; Pair &gt; q = new LinkedList &lt; &gt; ();
+ 
+        // BFS traversal with pushing values in queue 
+        // when after a transformation, a word is found in wordList.
+        q.add(new Pair(startWord, 1));
+
+        // Push all values of wordList into a set
+        // to make deletion from it easier and in less time complexity.
+        Set &lt; String &gt; st = new HashSet &lt; String &gt; ();
+        int len = wordList.length;
+        for (int i = 0; i &lt; len; i++) {
+            st.add(wordList[i]);
+        }
+        st.remove(startWord);
+        while (!q.isEmpty()) {
+            String word = q.peek().first;
+            int steps = q.peek().second;
+            q.remove();
+      
+            // we return the steps as soon as
+            // the first occurence of targetWord is found.
+            if (word.equals(targetWord) == true) return steps;
+
+            // Now, replace each character of ‘word’ with char
+            // from a-z then check if ‘word’ exists in wordList.
+            for (int i = 0; i &lt; word.length(); i++) {
+                for (char ch = 'a'; ch &lt;= 'z'; ch++) {
+                    char replacedCharArray[] = word.toCharArray();
+                    replacedCharArray[i] = ch;
+                    String replacedWord = new String(replacedCharArray);
+
+                    // check if it exists in the set and push it in the queue.
+                    if (st.contains(replacedWord) == true) {
+                        st.remove(replacedWord);
+                        q.add(new Pair(replacedWord, steps + 1));
+                    }
+                }
+
+            }
+        }
+        // If there is no transformation sequence possible
+        return 0;
+    }
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output</strong>: </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>3 </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: </strong>O(N * M * 26)</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Where N = size of wordList Array and M = word length of words present in the wordList..</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Note that, hashing operations in an <strong>unordered set </strong>takes O(1) time, but if you want to use <strong>set </strong>here, then the time complexity would increase by a factor of log(N) as hashing operations in a set take O(log(N)) time.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity:  </strong>O( N ) { for creating an unordered set and copying all values from wordList into it }</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Where N = size of wordList Array.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/priyanshi-goel-7b6a42210/" rel="noreferrer noopener" target="_blank">Priyanshi Goel</a></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/" rel="noreferrer noopener" target="_blank">please check out this article</a>. <em>If you want to suggest any improvement/correction in this article please mail us at write4tuf@gmail.com</em></p></blockquote>
+<!-- /wp:quote -->
+<!-- wp:embed {"url":"https://www.youtube.com/watch?v=tRPda0rcf8E","type":"video","providerNameSlug":"youtube","responsive":true,"className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+https://www.youtube.com/watch?v=tRPda0rcf8E
+</div></figure>
+<!-- /wp:embed -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Find the highest/lowest frequency element</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Find the highest/lowest frequency element</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement:</strong> Given an array of size N. Find the highest and lowest frequency element.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Pre-requisite: </strong><a href="https://www.youtube.com/watch?v=KEs5UyBJ39g&amp;t=1394s" rel="noopener" target="_blank" title=""><strong>Hashing Theory</strong></a> and  <a href="https://takeuforward.org/data-structure/count-frequency-of-each-element-in-the-array/" rel="noopener" target="_blank" title=""><strong>Counting frequencies of array elements</strong></a></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Examples:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted"><strong>Example 1:</strong>
+<strong>Input:</strong> array[] = {10,5,10,15,10,5};
+<strong>Output</strong>: 10 15
+<strong>Explanation:</strong> The frequency of 10 is 3, i.e. the highest and the frequency of 15 is 1 i.e. the lowest.
+
+<strong>Example 2:
+</strong>
+<strong>Input:</strong> array[] = {2,2,3,4,4,2};
+<strong>Output</strong>: 2 3
+<strong>Explanation:</strong> The frequency of 2 is 3, i.e. the highest and the frequency of 3 is 1 i.e. the lowest.</pre>
+<!-- /wp:preformatted -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Solution</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph {"textColor":"accent"} -->
+<p class="has-accent-color has-text-color"><strong><em>Disclaimer</em></strong>: <em>Don't jump directly to the solution, try it out yourself first.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Solution:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>In order to find the highest and lowest frequency element, first we need to find the frequencies of all the elements of the given array. In the previous article, we learned how to <a href="https://takeuforward.org/data-structure/count-frequency-of-each-element-in-the-array/" rel="noopener" target="_blank" title="">count the frequency of each element in the array</a>. </p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Approach</strong>: </h3>
+<!-- /wp:heading -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Brute-Force approach(Using two loops): </strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>We will be using the same countFreq() function used in the <a href="https://takeuforward.org/data-structure/count-frequency-of-each-element-in-the-array/" rel="noopener" target="_blank" title="">previous article</a> with slight modifications. We will use two loops, in which, the first loop will be used to iterate the given array. Selecting an element, we will use the second loop to traverse the remaining array to find the frequency(i.e. The number of times the element occurs in the array) of the selected element i.e. arr[i]. Now after the second loop completes traversing we will keep a track of the element with the highest and lowest frequency. We also have to maintain a visited array so that it will keep track of the duplicate elements that we already count.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The steps are as follows:</p>
+<!-- /wp:paragraph -->
+<!-- wp:list {"ordered":true} -->
+<ol><li>Make a visited array of type boolean.</li><li>Use the first loop to point to an element of the array.</li><li>Initialize the variable count to 1.</li><li>Make that index true in the visited array.</li><li>Run the second loop, if we find the element then mark the visited index true and increase the count.</li><li>If the visited index is already true then skip the other steps.</li><li>After step 5, we will keep a track of the element with the highest frequency and the lowest frequency.</li></ol>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>Code</strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+void countFreq(int arr[], int n)
+{
+    vector&lt;bool&gt; visited(n, false);
+    int maxFreq = 0, minFreq = n;
+    int maxEle = 0, minEle = 0;
+
+    for (int i = 0; i &lt; n; i++) {
+
+        // Skip this element if already processed
+        if (visited[i] == true)
+            continue;
+
+        // Count frequency
+        int count = 1;
+        for (int j = i + 1; j &lt; n; j++) {
+            if (arr[i] == arr[j]) {
+                visited[j] = true;
+                count++;
+            }
+        }
+        if (count &gt; maxFreq) {
+            maxEle = arr[i];
+            maxFreq = count;
+        }
+        if (count &lt; minFreq) {
+            minEle = arr[i];
+            minFreq = count;
+        }
+    }
+    cout &lt;&lt; "The highest frequency element is: " &lt;&lt; maxEle &lt;&lt; "\n";
+    cout &lt;&lt; "The lowest frequency element is: " &lt;&lt; minEle &lt;&lt; "\n";
+}
+
+int main()
+{
+    int arr[] = {10, 5, 10, 15, 10, 5};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    countFreq(arr, n);
+    return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output: </strong><br/>The highest frequency element is: 10<br/>The lowest frequency element is: 15<br/><strong>Time Complexity: </strong>O(N*N), where N = size of the array. We are using the nested loop to find the frequency.<br/><strong>Space Complexity: </strong> O(N), where N = size of the array. It is for the visited array we are using.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+
+public class tUf {
+
+    public static void main(String args[]) {
+
+        int arr[] = {10, 5, 10, 15, 10, 5};
+        int n = arr.length;
+        countFreq(arr, n);
+    }
+    public static void countFreq(int arr[], int n) {
+        boolean visited[] = new boolean[n];
+        int maxFreq = 0, minFreq = n;
+        int maxEle = 0, minEle = 0;
+        for (int i = 0; i &lt; n; i++) {
+
+            // Skip this element if already processed
+            if (visited[i] == true)
+                continue;
+
+            // Count frequency
+            int count = 1;
+            for (int j = i + 1; j &lt; n; j++) {
+                if (arr[i] == arr[j]) {
+                    visited[j] = true;
+                    count++;
+                }
+            }
+            if (count &gt; maxFreq) {
+                maxEle = arr[i];
+                maxFreq = count;
+            }
+            if (count &lt; minFreq) {
+                minEle = arr[i];
+                minFreq = count;
+            }
+        }
+        System.out.println("The highest frequency element is: " + maxEle);
+        System.out.println("The lowest frequency element is: " + minEle);
+
+    }
+}  
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p> <strong>Output: </strong><br/>The highest frequency element is: 10<br/>The lowest frequency element is: 15<br/><strong>Time Complexity: </strong>O(N*N), where N = size of the array. We are using the nested loop to find the frequency.<br/><strong>Space Complexity: </strong> O(N), where N = size of the array. It is for the visited array we are using. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Optimized approach(Using map):</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>We can use a map of value and frequency pair, in which we can easily update the frequency of an element if it is already present in the map, if it is not present in the map then insert it in the map with frequency as 1. After completing all the iterations, we will find the element with the highest frequency and the element with the lowest frequency.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The steps are as follows:</p>
+<!-- /wp:paragraph -->
+<!-- wp:list {"ordered":true} -->
+<ol><li>Take a unordered_map&lt;int, int&gt; / HashMap of &lt;Integer, Integer&gt; pair.</li><li>Use a for loop to iterate the array.</li><li>If the element is not present in the map then insert it with frequency 1, otherwise increase the existing frequency by 1.</li><li>After visiting the whole array, we will find the element with the highest frequency and the element with the lowest frequency by iterating the map.</li></ol>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>Code</strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+void Frequency(int arr[], int n)
+{
+    unordered_map&lt;int, int&gt; map;
+
+    for (int i = 0; i &lt; n; i++)
+        map[arr[i]]++;
+
+    int maxFreq = 0, minFreq = n;
+    int maxEle = 0, minEle = 0;
+    // Traverse through map to find the elements.
+    for (auto it : map) {
+        int count = it.second;
+        int element = it.first;
+
+        if (count &gt; maxFreq) {
+            maxEle = element;
+            maxFreq = count;
+        }
+        if (count &lt; minFreq) {
+            minEle = element;
+            minFreq = count;
+        }
+    }
+
+    cout &lt;&lt; "The highest frequency element is: " &lt;&lt; maxEle &lt;&lt; "\n";
+    cout &lt;&lt; "The lowest frequency element is: " &lt;&lt; minEle &lt;&lt; "\n";
+}
+
+int main()
+{
+    int arr[] = {10, 5, 10, 15, 10, 5};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    Frequency(arr, n);
+    return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output: </strong><br/>The highest frequency element is: 10<br/>The lowest frequency element is: 15<br/><strong>Time Complexity: </strong>O(N), where N = size of the array. The insertion and retrieval operation in the map takes O(1) time.<br/><strong>Space Complexity: </strong> O(N), where N = size of the array. It is for the map we are using.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+
+public class Main {
+
+    public static void main(String args[]) {
+
+        int arr[] = {10, 5, 10, 15, 10, 5};
+        int n = arr.length;
+        Frequency(arr, n);
+    }
+    static void Frequency(int arr[], int n) {
+        Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();
+
+        for (int i = 0; i &lt; n; i++) {
+            if (map.containsKey(arr[i])) {
+                map.put(arr[i], map.get(arr[i]) + 1);
+            } else {
+                map.put(arr[i], 1);
+            }
+        }
+
+        int maxFreq = 0, minFreq = n;
+        int maxEle = 0, minEle = 0;
+        // Traverse through map and find the elements
+        for (Map.Entry&lt;Integer, Integer&gt; entry : map.entrySet()) {
+            int count = entry.getValue();
+            int element = entry.getKey();
+
+            if (count &gt; maxFreq) {
+                maxEle = element;
+                maxFreq = count;
+            }
+            if (count &lt; minFreq) {
+                minEle = element;
+                minFreq = count;
+            }
+        }
+
+        System.out.println("The highest frequency element is: " + maxEle);
+        System.out.println("The lowest frequency element is: " + minEle);
+    }
+} 
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p> <strong>Output: </strong><br/>The highest frequency element is: 10<br/>The lowest frequency element is: 15<br/><strong>Time Complexity: </strong>O(N), where N = size of the array. The insertion and retrieval operation in the map takes O(1) time.<br/><strong>Space Complexity: </strong> O(N), where N = size of the array. It is for the map we are using. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/kriti39/" rel="noreferrer noopener" target="_blank"><strong>KRITIDIPTA GHOSH</strong></a></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a>. <em>If you want to suggest any improvement/correction in this article please mail us at write4tuf@gmail.com</em></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

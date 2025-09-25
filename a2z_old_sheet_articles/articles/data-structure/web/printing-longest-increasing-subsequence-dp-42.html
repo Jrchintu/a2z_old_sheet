@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Printing Longest Increasing Subsequence | (DP-42)</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Printing Longest Increasing Subsequence | (DP-42)</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p>This article will consist of three parts:</p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>First, we will discuss the tabulation dp approach in continuation of the previous article.(/** link to dp 41 *****/.</li><li>Next, we will discuss a new algorithm called the “Tabulation algorithm” to solve the problem of finding the longest increasing subsequence.</li><li>In the last section, we will discuss the approach to printing the longest increasing subsequence.</li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>Part 1: Writing the tabulation approach for finding LIS.</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Problem Link: </strong><a href="https://takeuforward.org/data-structure/longest-increasing-subsequence-dp-41/" title=""><strong>Longest Increasing Subsequence</strong></a></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>To convert the memoization approach to a tabulation one, create a dp array with the same size as done in memoization i.e dp[N][N+1]. </p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>Now the base case is if(ind==n), we return 0. We can initialize the entire dp array as 0. In this way, we need to write the base case explicitly.</li><li>The changing parameters in the recursive code are ind and prev_index. We will write them in the opposite direction of memoization. </li><li>We will set for a loop of ind to range from n-1 to 0.</li><li>If we look closely at the recursive tree, we will see a pattern that the second parameter, prev_index is always smaller than the first parameter ind. Therefore we will write the for loop for prev_index to start from ind-1 till -1.</li></ul>
+<!-- /wp:list -->
+<!-- wp:image -->
+<figure class="wp-block-image"><img alt="" src="assets/c24ea460fe45747255512b8a2ab1e48c"/></figure>
+<!-- /wp:image -->
+<!-- wp:list -->
+<ul><li>Next, we write the recursive logic inside the nested loops.</li><li>We need to keep in that mind that we are storing prev_index in the dp array by making a coordinate shift (discussed in /** link to dp - 41 ** /).</li><li>At last, we will print dp[0][0] as our answer.</li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int longestIncreasingSubsequence(int arr[], int n){
+    
+    vector&lt;vector&lt;int&gt;&gt; dp(n+1,vector&lt;int&gt;(n+1,0));
+    
+    for(int ind = n-1; ind&gt;=0; ind --){
+        for (int prev_index = ind-1; prev_index &gt;=-1; prev_index --){
+            
+            int notTake = 0 + dp[ind+1][prev_index +1];
+    
+            int take = 0;
+    
+            if(prev_index == -1 || arr[ind] &gt; arr[prev_index]){
+                
+                take = 1 + dp[ind+1][ind+1];
+            }
+    
+            dp[ind][prev_index+1] = max(notTake,take);
+            
+        }
+    }
+    
+    return dp[0][0];
+}
+
+int main() {
+	
+	int arr[] = {10,9,2,5,3,7,101,18};
+	
+	int n = sizeof(arr)/sizeof(arr[0]);
+	
+	cout&lt;&lt;"The length of the longest increasing subsequence is "
+        &lt;&lt;longestIncreasingSubsequence(arr,n);
+	
+	return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The length of the longest increasing subsequence is 4</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N*N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: There are two nested loops</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(N*N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: We are using an external array of size ‘(N+1)*(N+1)’. Stack Space is eliminated.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+
+class TUF{
+static int longestIncreasingSubsequence(int arr[], int n){
+    
+    int dp[][]=new int[n+1][n+1];
+    
+    for(int ind = n-1; ind&gt;=0; ind --){
+        for (int prev_index = ind-1; prev_index &gt;=-1; prev_index --){
+            
+            int notTake = 0 + dp[ind+1][prev_index +1];
+    
+            int take = 0;
+    
+            if(prev_index == -1 || arr[ind] &gt; arr[prev_index]){
+                
+                take = 1 + dp[ind+1][ind+1];
+            }
+    
+            dp[ind][prev_index+1] = Math.max(notTake,take);
+            
+        }
+    }
+    
+    return dp[0][0];
+}
+
+public static void main(String args[]) {
+	
+	int arr[] = {10,9,2,5,3,7,101,18};
+	
+	int n = arr.length;
+	
+	System.out.println("The length of the longest increasing subsequence is 
+        "+longestIncreasingSubsequence(arr,n));
+	
+}
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The length of the longest increasing subsequence is 4</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N*N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: There are two nested loops</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(N*N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: We are using an external array of size ‘(N+1)*(N+1)’. Stack Space is eliminated.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Part 3: Space Optimization</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>If we closely we are using two rows: <strong>dp[ind+1][ ], dp[ind][ ],</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>So we are not required to contain an entire array, we can simply have two rows next and cur where next corresponds to dp[ind+1] and cur to dp[ind].</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>After declaring next and cur, replace dp[ind+1] to next and dp[ind] with cur and after the inner loop executes, we will set next = cur, so that the cur row can serve as next for the coming iteration.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int longestIncreasingSubsequence(int arr[], int n){
+    
+    vector&lt;int&gt; next(n+1,0);
+    
+    vector&lt;int&gt; cur(n+1,0);
+    
+    for(int ind = n-1; ind&gt;=0; ind --){
+        for (int prev_index = ind-1; prev_index &gt;=-1; prev_index --){
+            
+            int notTake = 0 + next[prev_index +1];
+    
+            int take = 0;
+    
+            if(prev_index == -1 || arr[ind] &gt; arr[prev_index]){
+                
+                take = 1 + next[ind+1];
+            }
+    
+            cur[prev_index+1] = max(notTake,take);
+        }
+        next = cur;
+    }
+    
+    return cur[0];
+}
+
+int main() {
+	
+	int arr[] = {10,9,2,5,3,7,101,18};
+	
+	int n = sizeof(arr)/sizeof(arr[0]);
+	
+	cout&lt;&lt;"The length of the longest increasing subsequence is "
+        &lt;&lt;longestIncreasingSubsequence(arr,n);
+	
+	return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The length of the longest increasing subsequence is 4</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N*N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: There are two nested loops.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: We are only using two rows of size n.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+
+class TUF{
+static int longestIncreasingSubsequence(int arr[], int n){
+    
+    int next[]=new int[n+1];
+    int cur[]=new int[n+1];
+    
+    for(int ind = n-1; ind&gt;=0; ind --){
+        for (int prev_index = ind-1; prev_index &gt;=-1; prev_index --){
+            
+            int notTake = 0 + next[prev_index +1];
+    
+            int take = 0;
+    
+            if(prev_index == -1 || arr[ind] &gt; arr[prev_index]){
+                
+                take = 1 + next[ind+1];
+            }
+    
+            cur[prev_index+1] = Math.max(notTake,take);
+        }
+        next = cur.clone();
+    }
+    
+    return cur[0];
+}
+
+public static void main(String args[]) {
+	
+	int arr[] = {10,9,2,5,3,7,101,18};
+	
+	int n = arr.length;
+	
+	System.out.println("The length of the longest increasing subsequence is 
+        "+longestIncreasingSubsequence(arr,n));
+	
+}
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The length of the longest increasing subsequence is 4</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N*N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: There are two nested loops.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: We are only using two rows of size n.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Part 2: Tabulation algorithm to find the length of the longest increasing subsequence.</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Algorithm description:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>We need to find the length of the longest increasing subsequence if an array of length n.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>For example:</p>
+<!-- /wp:paragraph -->
+<!-- wp:image -->
+<figure class="wp-block-image"><img alt="" src="assets/2c1db6cedba05e022e48017725991a4c"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>Now in this algorithm, we need to build logic to get an array( say dp), For this particular example, the dp array will look like this:</p>
+<!-- /wp:paragraph -->
+<!-- wp:image -->
+<figure class="wp-block-image"><img alt="" src="assets/f0deba48af3fe1694ec5fbc83bd82a00"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>Now every cell value in this dp array is defined as follows:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>For every index i of the array ‘arr’;<br/>dp[ i ] is the length of the longest increasing subsequence that is possible that end with index ind of the original array.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Few examples:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>(i) For i = 0, dp[i] =1 , therefore LIS length with the element arr[0], i.e 5 as its last element is 1. The case :[ 5 ].</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>(ii) For i = 4, dp[i] =3 , therefore LIS length with the element arr[4], i.e 16 as its last element is 3. The case :[ 5, 11, 16 ].</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Once we get this dp array our job is to simply return the maximum cell value of the entire array as the length of the longest increasing subsequence.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Now, the main question arises: how do we get this dp[ ] array? The following section explains the logic and the approach.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Logic and approach for the dp array</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>We know that a single element can always be considered to be included in the LIS, as it can not break any rule of forming the LIS. Therefore we can initialize the dp array by 1, it simply means that currently, LIS is having only that particular men=mber element itself ([5], [4], [11], …). </p>
+<!-- /wp:paragraph -->
+<!-- wp:image -->
+<figure class="wp-block-image"><img alt="" src="assets/6106d31d96a3ebdb11ec130bebd70868"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>Now let us manually try to find dp[i], for some indexes in order to understand the algorithm.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>(i) For i = 0, 5 can be the only element that can be in the LIS, as there is no element before it therefore the final dp[i] for i=0, will be 1 only (marked in red).</p>
+<!-- /wp:paragraph -->
+<!-- wp:image -->
+<figure class="wp-block-image"><img alt="" src="assets/a491cb240ceb03bff91dbb60c5f6a30c"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>(ii)  For i = 1, 4 can be the only element that can be in the LIS, as there is only element 5 before but 5 is greater than 4 so cannot be considered in the LIS. therefore the final dp[i] for i=1, will be 1 only (marked in red).</p>
+<!-- /wp:paragraph -->
+<!-- wp:image -->
+<figure class="wp-block-image"><img alt="" src="assets/ce70e5ff71431a97b19c8b5566f4d449"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>(iii) For i = 2, either 5 or 4 can be considered in the LIS as the last element of 11. We will run a loop that checks all <strong>prev_index </strong>and if the arr[prev_index] &lt; arr[i], we can simply say that the element should be updated to 1+dp[prev_index]. 1 means that we are adding one element to the LIS, here 11, and also the LIS of the previous indexes which are given by dp[prev_index]. Note we will update only for that prev_index, whose prev_index is the maximum. We will discuss this in the next to next case also.</p>
+<!-- /wp:paragraph -->
+<!-- wp:image -->
+<figure class="wp-block-image"><img alt="" src="assets/be282e5fe7e5ba662ca4ce0721581cca"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>(iv) For i=3, it is the similar case as (ii), so dp[3] = 1.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>(v) For i=4, we will again loop for all the prev_index of 4 and we make the following observations:</p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>LIS ending at element 5 can be considered (dp[0] = 1)</li><li>LIS ending at element 4 can also be considered. (dp[1] = 1)</li><li>LIS ending at element 11 can also be considered. (dp[1] = 2)</li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p>Out of all these possible choices, we will consider LIS ending at element 11 because if we consider it we will have 2 elements of that  [ 5, 11] and element 16 itself, giving us a LIS of length 3, the maximum. All other options were giving a LIS of length 2.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>This is the reason that we consider that prev_index whose dp[prev_index] is maximum.</p>
+<!-- /wp:paragraph -->
+<!-- wp:image -->
+<figure class="wp-block-image"><img alt="" src="assets/1068ef1261f8a2d65ef5641d8c25d7df"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p><strong>Algorithm approach:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The algorithm approach can be stated as follows:</p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>Run an outer loop running from 0 to n-1. Every outer loop iteration will find the dp[i] value.</li><li>Nest another loop inside it. For particular index i, this inner loop will help us to find the maximum value of dp[prev_index].</li></ul>
+<!-- /wp:list -->
+<!-- wp:image {"width":584,"height":363} -->
+<figure class="wp-block-image is-resized"><img alt="" height="363" src="assets/c257fe2b2f24cbe646565bd58df4dfe7" width="584"/></figure>
+<!-- /wp:image -->
+<!-- wp:list -->
+<ul><li>Now inside the inner loop, we will first of all see that the element at the prev_index is smaller than the element at index i. If it is, we update dp[i] with the max(1+dp[prev_ind],dp[prev_index]).</li></ul>
+<!-- /wp:list -->
+<!-- wp:image {"width":669,"height":363} -->
+<figure class="wp-block-image is-resized"><img alt="" height="363" src="assets/4e983f8fd2105974ecff4f2e80f58586" width="669"/></figure>
+<!-- /wp:image -->
+<!-- wp:list -->
+<ul><li>At last, we will loop over the dp array and return its largest value as our answer.</li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int longestIncreasingSubsequence(int arr[], int n){
+    
+    vector&lt;int&gt; dp(n,1);
+    
+    for(int i=0; i&lt;=n-1; i++){
+        for(int prev_index = 0; prev_index &lt;=i-1; prev_index ++){
+            
+            if(arr[prev_index]&lt;arr[i]){
+                dp[i] = max(dp[i], 1 + dp[prev_index]);
+            }
+        }
+    }
+    
+    int ans = -1;
+    
+    for(int i=0; i&lt;=n-1; i++){
+        ans = max(ans, dp[i]);
+    }
+    
+    return ans;
+}
+
+int main() {
+	
+	int arr[] = {10,9,2,5,3,7,101,18};
+	
+	int n = sizeof(arr)/sizeof(arr[0]);
+	
+	cout&lt;&lt;"The length of the longest increasing subsequence is "
+        &lt;&lt;longestIncreasingSubsequence(arr,n);
+	
+	return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The length of the longest increasing subsequence is 4</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N*N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: There are two nested loops.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: We are only using two rows of size ‘N’.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+
+class TUF{
+static int longestIncreasingSubsequence(int arr[], int n){
+    
+    int dp[]=new int[n];
+    Arrays.fill(dp,1);
+    
+    for(int i=0; i&lt;=n-1; i++){
+        for(int prev_index = 0; prev_index &lt;=i-1; prev_index ++){
+            
+            if(arr[prev_index]&lt;arr[i]){
+                dp[i] = Math.max(dp[i], 1 + dp[prev_index]);
+            }
+        }
+    }
+    
+    int ans = -1;
+    
+    for(int i=0; i&lt;=n-1; i++){
+        ans = Math.max(ans, dp[i]);
+    }
+    
+    return ans;
+}
+
+public static void main(String args[]) {
+	
+	int arr[] = {10,9,2,5,3,7,101,18};
+	
+	int n = arr.length;
+	
+	System.out.println("The length of the longest increasing subsequence is 
+        "+longestIncreasingSubsequence(arr,n));
+	
+}
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The length of the longest increasing subsequence is 4</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N*N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: There are two nested loops.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: We are only using two rows of size ‘N’.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Part 3: Printing the LIS</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>In order to print the LIS, we maintain a separate array along with a dp array (say hash).</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Whenever we update our dp[i] value in the inner loop, we know that for index i, the previous index is prev_index. Therefore we simply store prev_index to hash[ i ]. In this way, we will have a way to trace back the LIS.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Whenever we have computed the entire dp array and we find the maximum value in it. We store that maximum value’s index in a variable ( say last_index). Now with this last_index, and the hash array we can trace back the LIS elements.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code</strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int longestIncreasingSubsequence(int arr[], int n){
+    
+    vector&lt;int&gt; dp(n,1);
+    vector&lt;int&gt; hash(n,1);
+    
+    for(int i=0; i&lt;=n-1; i++){
+        
+        hash[i] = i; // initializing with current index
+        for(int prev_index = 0; prev_index &lt;=i-1; prev_index ++){
+            
+            if(arr[prev_index]&lt;arr[i] &amp;&amp; 1 + dp[prev_index] &gt; dp[i]){
+                dp[i] = 1 + dp[prev_index];
+                hash[i] = prev_index;
+            }
+        }
+    }
+    
+    int ans = -1;
+    int lastIndex =-1;
+    
+    for(int i=0; i&lt;=n-1; i++){
+        if(dp[i]&gt; ans){
+            ans = dp[i];
+            lastIndex = i;
+        }
+    }
+    
+    vector&lt;int&gt; temp;
+    temp.push_back(arr[lastIndex]);
+    
+    while(hash[lastIndex] != lastIndex){ // till not reach the initialization value
+        lastIndex = hash[lastIndex];
+        temp.push_back(arr[lastIndex]);    
+    }
+    
+    // reverse the array 
+    reverse(temp.begin(),temp.end());
+    
+    cout&lt;&lt;"The subsequence elements are ";
+    
+    for(int i=0; i&lt;temp.size(); i++){
+        cout&lt;&lt;temp[i]&lt;&lt;" ";
+    }
+    cout&lt;&lt;endl;
+    
+    return ans;
+}
+
+int main() {
+	
+	int arr[] = {10,9,2,5,3,7,101,18};
+	
+	int n = sizeof(arr)/sizeof(arr[0]);
+	longestIncreasingSubsequence(arr,n);
+	return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The subsequence elements are 2 5 7 101 </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N*N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: There are two nested loops.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: We are only using two rows of size ‘N’.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+
+class TUF{
+static int longestIncreasingSubsequence(int arr[], int n){
+    
+    int[] dp=new int[n];
+    Arrays.fill(dp,1);
+    int[] hash=new int[n];
+    Arrays.fill(hash,1);
+    
+    for(int i=0; i&lt;=n-1; i++){
+        
+        hash[i] = i; // initializing with current index
+        for(int prev_index = 0; prev_index &lt;=i-1; prev_index ++){
+            
+            if(arr[prev_index]&lt;arr[i] &amp;&amp; 1 + dp[prev_index] &gt; dp[i]){
+                dp[i] = 1 + dp[prev_index];
+                hash[i] = prev_index;
+            }
+        }
+    }
+    
+    int ans = -1;
+    int lastIndex =-1;
+    
+    for(int i=0; i&lt;=n-1; i++){
+        if(dp[i]&gt; ans){
+            ans = dp[i];
+            lastIndex = i;
+        }
+    }
+    
+    ArrayList&lt;Integer&gt; temp=new ArrayList&lt;&gt;();
+    temp.add(arr[lastIndex]);
+    
+    while(hash[lastIndex] != lastIndex){ // till not reach the initialization value
+        lastIndex = hash[lastIndex];
+        temp.add(arr[lastIndex]);    
+    }
+    
+    // reverse the array 
+    
+    System.out.print("The subsequence elements are ");
+    
+    for(int i=temp.size()-1; i&gt;=0; i--){
+        System.out.print(temp.get(i)+" ");
+    }
+    System.out.println();
+    
+    return ans;
+}
+
+public static void main(String args[]) {
+	
+	int arr[] = {10,9,2,5,3,7,101,18};
+	
+	int n = arr.length;
+	longestIncreasingSubsequence(arr,n);
+	
+}
+}</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The subsequence elements are 2 5 7 101 </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N*N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: There are two nested loops.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: We are only using two rows of size ‘N’.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/anshuman-sharma-a1b245194/" rel="noreferrer noopener" target="_blank"><strong>Anshuman Sharma</strong></a></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a>. <em>If you want to suggest any improvement/correction in this article please mail us at write4tuf@gmail.com</em></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

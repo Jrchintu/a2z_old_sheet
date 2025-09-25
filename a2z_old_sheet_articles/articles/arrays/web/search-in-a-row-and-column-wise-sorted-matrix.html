@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Search in a row and column-wise sorted matrix</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Search in a row and column-wise sorted matrix</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement:</strong> You have been given a 2-D array <strong>'mat'</strong> of size <strong>'N x M' </strong>where <strong>'N'</strong> and <strong>'M'</strong> denote the number of rows and columns, respectively. The elements of each row and each column are sorted in non-decreasing order.<br/>But, the first element of a row is not necessarily greater than the last element of the previous row (if it exists).<br/>You are given an integer <strong>‘target’</strong>, and your task is to find if it exists in the given 'mat' or not.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Pre-requisite: </strong><a href="https://takeuforward.org/data-structure/search-in-a-sorted-2d-matrix/">Search in a 2D sorted matrix</a></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<!-- This is Examples Drop-Down -->
+<div id="article_examples">
+<details class="article_example_details">
+<summary class="article_example_summary">
+<span><strong>
+Examples
+</strong>
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="atricle_example_content">
+<pre class="wp-block-preformatted"><!-- Insert New Examples Here -->
+<pre class="wp-block-preformatted"><strong>Example 1:
+Input Format:</strong> N = 5, M = 5, target = 14
+mat[] = 
+<img alt="" class="wp-image-11938" src="assets/dea0eb46fbe7ee4c721fd506dfd1f120.png" style="width: 200px;"/>
+<strong>Result:</strong> true
+<strong>Explanation:</strong> Target 14 is present in the cell (3, 2)(0-based indexing) of the matrix. So, the answer is true.
+
+<strong>Example 2:
+Input Format:</strong> N = 3, M = 3, target = 12,
+mat[] = 
+<img alt="" class="wp-image-11939" src="assets/dea0eb46fbe7ee4c721fd506dfd1f120.png" style="width: 175px;"/>
+<strong>Result:</strong> false
+<strong>Explanation:</strong> As target 12 is not present in the matrix, the answer is false.</pre>
+</pre>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Practice Section-->
+<div class="practice">
+<span><strong>Practice: </strong></span>
+<div class="problem-buttons">
+<!-- Add Problem Link inside href -->
+<a href="https://www.codingninjas.com/studio/problems/search-in-a-sorted-2d-matrix_6917532?utm_source=striver&amp;utm_medium=website&amp;utm_campaign=a_zcoursetuf" rel="noopener" target="_blank">
+<span>Solve Problem</span>
+<img alt="code-studio" src="assets/86dd2cadbd0e7ef71ad98d3b7f2f2efc.png"/>
+</a>
+</div>
+</div>
+<p class="new-disclaimer"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out
+yourself first. </em></p>
+<!-- /wp:html -->
+<!-- wp:html -->
+<div class="horizontal_navbar_dsa_article">
+<div class="grid_container_three">
+<a class="three-boxes box-a" href="#brute-force-approach">
+Brute Force Approach
+</a>
+<a class="three-boxes box-b" href="#better-approach">
+Better Approach
+</a>
+<a class="three-boxes box-c" href="#optimal-approach">
+Optimal Approach 
+</a>
+<a class="three-boxes box-d" href="#dsa_article_video_explanation">
+<svg fill="none" height="26" viewbox="0 0 20 14" width="26" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 10L13.19 7L8 4V10ZM19.56 2.17C19.69 2.64 19.78 3.27 19.84 4.07C19.91 4.87 19.94 5.56 19.94 6.16L20 7C20 9.19 19.84 10.8 19.56 11.83C19.31 12.73 18.73 13.31 17.83 13.56C17.36 13.69 16.5 13.78 15.18 13.84C13.88 13.91 12.69 13.94 11.59 13.94L10 14C5.81 14 3.2 13.84 2.17 13.56C1.27 13.31 0.69 12.73 0.44 11.83C0.31 11.36 0.22 10.73 0.16 9.93C0.0900001 9.13 0.0599999 8.44 0.0599999 7.84L0 7C0 4.81 0.16 3.2 0.44 2.17C0.69 1.27 1.27 0.69 2.17 0.44C2.64 0.31 3.5 0.22 4.82 0.16C6.12 0.0899998 7.31 0.0599999 8.41 0.0599999L10 0C14.19 0 16.8 0.16 17.83 0.44C18.73 0.69 19.31 1.27 19.56 2.17Z" fill="red"></path>
+</svg>
+</a>
+<div class="box-e tooltip">
+<svg fill="none" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.842 9.25L11.9577 10.17C11.2502 10.89 10.8081 11.5 10.8081 13H8.84297V12.5C8.84297 11.39 9.28511 10.39 9.99255 9.67L11.2109 8.41C11.5745 8.05 11.7906 7.55 11.7906 7C11.7906 6.46957 11.5836 5.96086 11.2151 5.58579C10.8465 5.21071 10.3467 5 9.82552 5C9.30434 5 8.80451 5.21071 8.43598 5.58579C8.06745 5.96086 7.86041 6.46957 7.86041 7H5.89531C5.89531 5.93913 6.30938 4.92172 7.04644 4.17157C7.7835 3.42143 8.78316 3 9.82552 3C10.8679 3 11.8675 3.42143 12.6046 4.17157C13.3417 4.92172 13.7557 5.93913 13.7557 7C13.7543 7.84324 13.4259 8.65183 12.842 9.25ZM10.8081 17H8.84297V15H10.8081M9.82552 0C8.53521 0 7.25754 0.258658 6.06545 0.761205C4.87337 1.26375 3.79021 2.00035 2.87783 2.92893C1.03519 4.8043 0 7.34784 0 10C0 12.6522 1.03519 15.1957 2.87783 17.0711C3.79021 17.9997 4.87337 18.7362 6.06545 19.2388C7.25754 19.7413 8.53521 20 9.82552 20C12.4314 20 14.9306 18.9464 16.7732 17.0711C18.6158 15.1957 19.651 12.6522 19.651 10C19.651 4.47 15.2296 0 9.82552 0Z" fill="black"></path>
+</svg>
+<div class="bottom">
+<p>Expand any one approach by clicking the given options in the bar. Clicking one approach on bar,
+closes all other expands. You can manually expand more than one approach at a time</p>
+<i></i>
+</div>
+</div>
+</div>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Approaches Drop-Down -->
+<div class="dsa_article_dropdown_approachs">
+<!-- Brute Force Approach Starts from here -->
+<div id="brute-force-approach">
+<details>
+<summary class="main-summary">
+<span>
+Brute Force Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition of Brute Force Apporach Here -->
+<p>One key point to notice here is that the first element of a row is not necessarily greater than the last element of the previous row (if it exists). This means the matrix is not necessarily entirely sorted although each row and column is sorted in non-decreasing order.</p>
+<p>The extremely naive approach is to get the answer by checking all the elements of the given matrix. So, we will traverse the matrix and check every element if it is equal to the given ‘target’.</p>
+<p><strong>Algorithm:</strong></p>
+<ol><li>We will use a loop(say i) to select a particular row at a time.</li><li>Next, for every row, we will use another loop(say j) to traverse each column.</li><li>Inside the loops, we will check if the element i.e. matrix[i][j] is equal to the ‘target’. If we found any matching element, we will return true.</li><li>Finally, after completing the traversal, if we found no matching element, we will return false.</li></ol>
+<p><strong>Dry-run: </strong><em>Please refer to the attached </em><a href="https://youtu.be/9ZbB397jU4k?si=XQ6YgxVeH8-sX3sy"><em>video</em></a><em> for a detailed dry-run.</em></p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+
+<!-- Insert C++ code of Brute Force Here -->
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+bool searchElement(vector&lt;vector&lt;int&gt;&gt;&amp; matrix, int target) {
+    int n = matrix.size(), m = matrix[0].size();
+
+    //traverse the matrix:
+    for (int i = 0; i &lt; n; i++) {
+        for (int j = 0; j &lt; m; j++) {
+            if (matrix[i][j] == target)
+                return true;
+        }
+    }
+    return false;
+}
+
+int main()
+{
+    vector&lt;vector&lt;int&gt;&gt; matrix = {{1, 4, 7, 11, 15}, {2, 5, 8, 12, 19},
+        {3, 6, 9, 16, 22}, {10, 13, 14, 17, 24},
+        {18, 21, 23, 26, 30}
+    };
+    searchElement(matrix, 8) == true ? cout &lt;&lt; "true\n" : cout &lt;&lt; "false\n";
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+
+<!-- Insert Java code of Brute Force Here -->
+import java.util.*;
+
+public class tUf {
+    public static boolean searchElement(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; matrix, int target) {
+        int n = matrix.size(), m = matrix.get(0).size();
+
+        // traverse the matrix:
+        for (int i = 0; i &lt; n; i++) {
+            for (int j = 0; j &lt; m; j++) {
+                if (matrix.get(i).get(j) == target)
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; matrix = new ArrayList&lt;&gt;();
+        matrix.add(new ArrayList&lt;&gt;(Arrays.asList(1, 4, 7, 11, 15)));
+        matrix.add(new ArrayList&lt;&gt;(Arrays.asList(2, 5, 8, 12, 19)));
+        matrix.add(new ArrayList&lt;&gt;(Arrays.asList(3, 6, 9, 16, 22)));
+        matrix.add(new ArrayList&lt;&gt;(Arrays.asList(10, 13, 14, 17, 24)));
+        matrix.add(new ArrayList&lt;&gt;(Arrays.asList(18, 21, 23, 26, 30)));
+
+        boolean result = searchElement(matrix, 8);
+        System.out.println(result ? "true" : "false");
+    }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+
+<!-- Insert Python code of Brute Force Here -->
+def searchElement(matrix, target):
+    n = len(matrix)
+    m = len(matrix[0])
+
+    # Traverse the matrix:
+    for i in range(n):
+        for j in range(m):
+            if matrix[i][j] == target:
+                return True
+    return False
+
+matrix = [
+    [1, 4, 7, 11, 15],
+    [2, 5, 8, 12, 19],
+    [3, 6, 9, 16, 22],
+    [10, 13, 14, 17, 24],
+    [18, 21, 23, 26, 30]
+]
+
+result = searchElement(matrix, 8)
+print("true" if result else "false")
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+
+<!-- Insert JavaScript code of Brute Force Here -->
+function searchElement(matrix, target) {
+    const n = matrix.length, m = matrix[0].length;
+
+    // traverse the matrix:
+    for (let i = 0; i &lt; n; i++) {
+        for (let j = 0; j &lt; m; j++) {
+            if (matrix[i][j] === target)
+                return true;
+        }
+    }
+    return false;
+}
+
+const matrix = [
+    [1, 4, 7, 11, 15],
+    [2, 5, 8, 12, 19],
+    [3, 6, 9, 16, 22],
+    [10, 13, 14, 17, 24],
+    [18, 21, 23, 26, 30]
+];
+const result = searchElement(matrix, 8);
+console.log(result ? "true" : "false");
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Brute Force Here -->
+</p><p><strong>Output:</strong> true
+
+</p>
+<p></p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Brute Force Here -->
+</p><p><strong>Time Complexity: </strong>O(N X M), where N = given row number, M = given column number.<br/><strong>Reason: </strong>In order to traverse the matrix, we are using nested loops running for n and m times respectively.</p>
+<p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.</p>
+<p></p>
+</details>
+</div>
+</details>
+</div>
+<!-- Brute Force Approach Ends here -->
+<!-- Better Approach Starts from here -->
+<div id="better-approach">
+<details>
+<summary class="main-summary">
+<span>
+Better Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition For Better Approach Here -->
+<p>We are going to use the Binary Search algorithm to optimize the approach.</p>
+<p><em>The primary objective of the Binary Search algorithm is to efficiently determine the appropriate half to eliminate, thereby reducing the search space by half. It does this by determining a specific condition that ensures that the target is not present in that half.</em></p>
+<p>The question specifies that each row in the given matrix is sorted. Therefore, to determine if the target is present in a specific row, we don't need to search column by column. Instead, we can efficiently use the binary search algorithm.</p>
+<p><strong>Algorithm:</strong></p>
+<ol><li>We will use a loop(say i) to select a particular row at a time.</li><li>Next, for every row, i, we will check if it contains the target using binary search.<ol><li>After applying binary search on row, i, if we found any element equal to the target, we will return true. Otherwise, we will move on to the next row.</li></ol></li><li>Finally, after completing all the row traversals, if we found no matching element, we will return false.</li></ol>
+<p><strong>Dry-run: </strong><em>Please refer to the attached </em><a href="https://youtu.be/9ZbB397jU4k?si=WQXdvEavgcET9boV"><em>video</em></a><em> for a detailed dry-run.</em></p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+
+<!-- Insert C++ Code of Better Approach Here -->
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+bool binarySearch(vector&lt;int&gt;&amp; nums, int target) {
+    int n = nums.size(); //size of the array
+    int low = 0, high = n - 1;
+
+    // Perform the steps:
+    while (low &lt;= high) {
+        int mid = (low + high) / 2;
+        if (nums[mid] == target) return true;
+        else if (target &gt; nums[mid]) low = mid + 1;
+        else high = mid - 1;
+    }
+    return false;
+}
+
+bool searchElement(vector&lt;vector&lt;int&gt;&gt;&amp; matrix, int target) {
+    int n = matrix.size();
+
+    for (int i = 0; i &lt; n; i++) {
+        bool flag =  binarySearch(matrix[i], target);
+        if (flag) return true;
+    }
+    return false;
+}
+
+int main()
+{
+    vector&lt;vector&lt;int&gt;&gt; matrix = {{1, 4, 7, 11, 15}, {2, 5, 8, 12, 19},
+        {3, 6, 9, 16, 22}, {10, 13, 14, 17, 24},
+        {18, 21, 23, 26, 30}
+    };
+    searchElement(matrix, 8) == true ? cout &lt;&lt; "true\n" : cout &lt;&lt; "false\n";
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+
+<!-- Insert Java Code of Better Approach Here -->
+import java.util.*;
+
+public class tUf {
+    public static boolean binarySearch(ArrayList&lt;Integer&gt; nums, int target) {
+        int n = nums.size(); //size of the array
+        int low = 0, high = n - 1;
+
+        // Perform the steps:
+        while (low &lt;= high) {
+            int mid = (low + high) / 2;
+            if (nums.get(mid) == target) return true;
+            else if (target &gt; nums.get(mid)) low = mid + 1;
+            else high = mid - 1;
+        }
+        return false;
+    }
+
+    public static boolean searchElement(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; matrix, int target) {
+        int n = matrix.size();
+        int m = matrix.get(0).size();
+
+        for (int i = 0; i &lt; n; i++) {
+            boolean flag = binarySearch(matrix.get(i), target);
+            if (flag == true) return true;
+        }
+        return false;
+    }
+
+
+    public static void main(String[] args) {
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; matrix = new ArrayList&lt;&gt;();
+        matrix.add(new ArrayList&lt;&gt;(Arrays.asList(1, 4, 7, 11, 15)));
+        matrix.add(new ArrayList&lt;&gt;(Arrays.asList(2, 5, 8, 12, 19)));
+        matrix.add(new ArrayList&lt;&gt;(Arrays.asList(3, 6, 9, 16, 22)));
+        matrix.add(new ArrayList&lt;&gt;(Arrays.asList(10, 13, 14, 17, 24)));
+        matrix.add(new ArrayList&lt;&gt;(Arrays.asList(18, 21, 23, 26, 30)));
+
+        boolean result = searchElement(matrix, 8);
+        System.out.println(result ? "true" : "false");
+    }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+
+<!-- Insert Python Code of Better Approach Here -->
+def binarySearch(nums, target):
+    n = len(nums) # size of the array
+    low, high = 0, n - 1
+
+    # Perform the steps:
+    while low &lt;= high:
+        mid = (low + high) // 2
+        if nums[mid] == target:
+            return True
+        elif target &gt; nums[mid]:
+            low = mid + 1
+        else:
+            high = mid - 1
+    return False
+
+def searchElement(matrix, target):
+    n = len(matrix)
+
+    for i in range(n):
+        flag = binarySearch(matrix[i], target)
+        if flag:
+            return True
+    return False
+
+matrix = [
+    [1, 4, 7, 11, 15],
+    [2, 5, 8, 12, 19],
+    [3, 6, 9, 16, 22],
+    [10, 13, 14, 17, 24],
+    [18, 21, 23, 26, 30]
+]
+
+result = searchElement(matrix, 8)
+print("true" if result else "false")
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+
+<!-- Insert javascript Code of Better Approach Here -->
+function binarySearch(nums, target) {
+    const n = nums.length; // size of the array
+    let low = 0, high = n - 1;
+
+    // Perform the steps:
+    while (low &lt;= high) {
+        const mid = Math.floor((low + high) / 2);
+        if (nums[mid] === target) return true;
+        else if (target &gt; nums[mid]) low = mid + 1;
+        else high = mid - 1;
+    }
+    return false;
+}
+
+function searchElement(matrix, target) {
+    const n = matrix.length;
+
+    for (let i = 0; i &lt; n; i++) {
+        const flag = binarySearch(matrix[i], target);
+        if (flag) return true;
+    }
+    return false;
+}
+
+const matrix = [
+    [1, 4, 7, 11, 15],
+    [2, 5, 8, 12, 19],
+    [3, 6, 9, 16, 22],
+    [10, 13, 14, 17, 24],
+    [18, 21, 23, 26, 30]
+];
+const result = searchElement(matrix, 8);
+console.log(result ? "true" : "false");
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Better Approach Here -->
+<strong>Output:</strong>  true
+
+
+</p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Better Approach Here -->
+</p><p><strong>Time Complexity: </strong>O(N*logM), where N = given row number, M = given column number.<br/><strong>Reason: </strong>We are traversing all rows and it takes O(N) time complexity. And for all rows, we are applying binary search. So, the total time complexity is O(N*logM).</p>
+<p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.</p>
+<p></p>
+</details>
+</div>
+</details>
+</div>
+<!-- Better Approach Ends from here -->
+<!-- Optimal Approach Starts from here -->
+<div id="optimal-approach">
+<details>
+<summary class="main-summary">
+<span>
+Optimal Approach 
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm of Better Approach Here -->
+<p>We can enhance this method by adjusting how we move through the matrix. Let's take a look at the four corners: (0, 0), (0, m-1), (n-1, 0), and (n-1, m-1). By observing these corners, we can identify variations in how we traverse the matrix.</p>
+<p>Assume the given ‘target’ = 14 and given matrix = </p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-11945" height="209" src="assets/07853dc60f79127b054e5f22bdccefaf.png" width="227"/></figure>
+<p><strong>Observations:</strong></p>
+<ul><li><strong>Cell (0, 0): </strong>Assume we are starting traversal from (0, 0) and we are searching for 14. Now, this row and column are both sorted in increasing order. So, we cannot determine, how to move i.e. row-wise or column-wise. That is why, <strong><em>we cannot start traversal from (0, 0).<br/></em></strong><img alt="" class="wp-image-11941" src="assets/dea0eb46fbe7ee4c721fd506dfd1f120.png" style="width: 350px;"/></li><li><strong>Cell (0, m-1): </strong>Assume we are starting traversal from (0, m-1) and we are searching for 14. Now, in this case, the row is in decreasing order and the column is in increasing order. Therefore, if <strong><em>we start traversal from (0, m-1), in the following way, we can easily determine how we should move.</em></strong><ul><li><strong>If matrix[0][m-1] &gt; target: </strong>We should move row-wise.</li><li><strong>If matrix[0][m-1] &lt; target: </strong>We need bigger elements and so we should move column-wise.<strong><em><br/></em></strong><img alt="" class="wp-image-11942" src="assets/dea0eb46fbe7ee4c721fd506dfd1f120.png" style="width: 350px;"/></li></ul></li></ul>
+<ul><li><strong>Cell (n-1, m-1): </strong>Assume we are starting traversal from (n-1, m-1) and we are searching for 14. Now, this row and column are both sorted in decreasing order. So, we cannot determine, how to move i.e. row-wise or column-wise. That is why, <strong><em>we cannot start traversal from (n-1, m-1).<br/></em></strong><img alt="" class="wp-image-11943" src="assets/dea0eb46fbe7ee4c721fd506dfd1f120.png" style="width: 350px;"/></li><li><strong>Cell (n-1, 0): </strong>Assume we are starting traversal from (n-1, 0) and we are searching for 14. Now, in this case, the row is in increasing order and the column is in decreasing order. Therefore, if <strong><em>we start traversal from (n-1, 0), in the following way,  we can easily determine how we should move.</em></strong><ul><li><strong>If matrix[n-1][0] &lt; target: </strong>We should move row-wise.</li><li><strong>If matrix[n-1][0] &gt; target: </strong>We need smaller elements and so we should move column-wise.<strong><em><br/></em></strong><img alt="" class="wp-image-11944" src="assets/dea0eb46fbe7ee4c721fd506dfd1f120.png" style="width: 350px;"/></li></ul></li></ul>
+<p>From the above observations, it is quite clear that we should start the matrix traversal from either the cell (0, m-1) or (n-1, 0).</p>
+<p><strong>Note: </strong>Here in this approach, we have chosen the cell (0, m-1) to start with. You can choose otherwise.</p>
+<p>Using the above observations, we will start traversal from the cell (0, m-1) and every time we will compare the target with the element at the current cell. After comparing we will either eliminate the row or the column accordingly like the following:</p>
+<ul><li><strong>If current element &gt; target: </strong>We need the smaller elements to reach the target. But the column is in increasing order and so it contains only greater elements. So, we will eliminate the column by decreasing the current column value by 1(<em>i.e. col--</em>) and thus we will move row-wise.</li><li><strong>If current element &lt; target:</strong> In this case,<strong> </strong>We need the bigger elements to reach the target. But the row is in decreasing order and so it contains only smaller elements. So, we will eliminate the row by increasing the current row value by 1(<em>i.e. row++</em>) and thus we will move column-wise.</li></ul>
+<p><strong>Algorithm:</strong></p>
+<ol><li>As we are starting from the cell (0, m-1), the two variables i.e. ‘row’ and ‘col’ will point to 0 and m-1 respectively.</li><li>We will do the following steps until row &lt; n and col &gt;= 0(<em>i.e. while(row &lt; n &amp;&amp; col &gt;= 0)</em>):<ol><li><strong>If matrix[row][col] == target: </strong>We have found the target and so we will return true.</li><li><strong>If matrix[row][col] &gt; target: </strong>We need the smaller elements to reach the target. But the column is in increasing order and so it contains only greater elements. So, we will eliminate the column by decreasing the current column value by 1(<em>i.e. col--</em>) and thus we will move row-wise.</li><li><strong>If matrix[row][col] &lt; target:</strong> In this case,<strong> </strong>We need the bigger elements to reach the target. But the row is in decreasing order and so it contains only smaller elements. So, we will eliminate the row by increasing the current row value by 1(<em>i.e. row++</em>) and thus we will move column-wise.</li></ol></li><li>If we are outside the loop without getting any matching element, we will return false.</li></ol>
+<p><strong>Dry-run: </strong><em>Please refer to the attached </em><a href="https://youtu.be/9ZbB397jU4k?si=WQXdvEavgcET9boV"><em>video</em></a><em> for a detailed dry-run.</em></p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+
+<!-- Insert C++ code of Optimal Approach Here-->
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+bool searchElement(vector&lt;vector&lt;int&gt;&gt;&amp; matrix, int target) {
+    int n = matrix.size();
+    int m = matrix[0].size();
+    int row = 0, col = m - 1;
+
+    //traverse the matrix from (0, m-1):
+    while (row &lt; n &amp;&amp; col &gt;= 0) {
+        if (matrix[row][col] == target) return true;
+        else if (matrix[row][col] &lt; target) row++;
+        else col--;
+    }
+    return false;
+}
+
+int main()
+{
+    vector&lt;vector&lt;int&gt;&gt; matrix = {{1, 4, 7, 11, 15}, {2, 5, 8, 12, 19},
+        {3, 6, 9, 16, 22}, {10, 13, 14, 17, 24},
+        {18, 21, 23, 26, 30}
+    };
+    searchElement(matrix, 8) == true ? cout &lt;&lt; "true\n" : cout &lt;&lt; "false\n";
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+
+<!-- Insert Java code of Optimal Approach Here -->
+import java.util.*;
+
+public class tUf {
+    public static boolean searchElement(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; matrix, int target) {
+        int n = matrix.size();
+        int m = matrix.get(0).size();
+        int row = 0, col = m - 1;
+
+        //traverse the matrix from (0, m-1):
+        while (row &lt; n &amp;&amp; col &gt;= 0) {
+            if (matrix.get(row).get(col) == target) return true;
+            else if (matrix.get(row).get(col) &lt; target) row++;
+            else col--;
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; matrix = new ArrayList&lt;&gt;();
+        matrix.add(new ArrayList&lt;&gt;(Arrays.asList(1, 4, 7, 11, 15)));
+        matrix.add(new ArrayList&lt;&gt;(Arrays.asList(2, 5, 8, 12, 19)));
+        matrix.add(new ArrayList&lt;&gt;(Arrays.asList(3, 6, 9, 16, 22)));
+        matrix.add(new ArrayList&lt;&gt;(Arrays.asList(10, 13, 14, 17, 24)));
+        matrix.add(new ArrayList&lt;&gt;(Arrays.asList(18, 21, 23, 26, 30)));
+
+        boolean result = searchElement(matrix, 8);
+        System.out.println(result ? "true" : "false");
+    }
+}
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+
+<!-- Insert Python code of Optimal Approach Here -->
+def searchElement(matrix, target):
+    n = len(matrix)
+    m = len(matrix[0])
+    row = 0
+    col = m - 1
+
+    # Traverse the matrix from (0, m-1):
+    while row &lt; n and col &gt;= 0:
+        if matrix[row][col] == target:
+            return True
+        elif matrix[row][col] &lt; target:
+            row += 1
+        else:
+            col -= 1
+    return False
+
+matrix = [
+    [1, 4, 7, 11, 15],
+    [2, 5, 8, 12, 19],
+    [3, 6, 9, 16, 22],
+    [10, 13, 14, 17, 24],
+    [18, 21, 23, 26, 30]
+]
+
+result = searchElement(matrix, 8)
+print("true" if result else "false")
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+
+<!-- Insert Python code of Optimal Approach Here -->
+function searchElement(matrix, target) {
+    let n = matrix.length;
+    let m = matrix[0].length;
+    let row = 0;
+    let col = m - 1;
+
+    // Traverse the matrix from (0, m-1):
+    while (row &lt; n &amp;&amp; col &gt;= 0) {
+        if (matrix[row][col] === target) return true;
+        else if (matrix[row][col] &lt; target) row++;
+        else col--;
+    }
+    return false;
+}
+
+const matrix = [
+    [1, 4, 7, 11, 15],
+    [2, 5, 8, 12, 19],
+    [3, 6, 9, 16, 22],
+    [10, 13, 14, 17, 24],
+    [18, 21, 23, 26, 30]
+];
+
+const result = searchElement(matrix, 8);
+console.log(result ? "true" : "false");
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Optimal Apporach Here -->
+<strong>Output:</strong> true
+
+
+</p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Optimal Approach-->
+</p><p><strong>Time Complexity: </strong>O(N+M), where N = given row number, M = given column number.<br/><strong>Reason: </strong>We are starting traversal from (0, M-1), and at most, we can end up being in the cell (M-1, 0). So, the total distance can be at most (N+M). So, the time complexity is O(N+M).</p>
+<p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.</p>
+<p></p>
+</details>
+</div>
+</details>
+</div>
+<!-- Optimal Approach Starts from here -->
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Video Explination Drop-Down -->
+<div class="dsa_article_youtube_video" id="dsa_article_video_explanation">
+<details>
+<summary class="main-summary">
+<span>
+Video Explanation
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="yt-video-wrapper">
+<!-- Insert iframe embed Link of Youtube Video-->
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" class="lazy-loaded" data-lazy-type="iframe" data-src="https://www.youtube.com/embed/9ZbB397jU4k" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/Q9wXgdxJq48?feature=oembed" title="Search in a Row and Column wise sorted array" width="810"></iframe><noscript>
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/9ZbB397jU4k" title="Search in a Row and Column wise sorted array" width="810"></iframe></noscript>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script>
+
+const codeSections = document.querySelectorAll('.code-section');
+
+// Get last selected language from localStorage or set default value
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+// Update last selected language for all sections and store in localStorage
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+// Handle copy button click event
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+// Set initial state of the tabs
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<script>
+const codeSections = document.querySelectorAll('.code-section');
+
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<link href="assets/4237ffca7ce6aadb438c457e0a675b12.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+<script src="index.js"></script>
+<script>hljs.highlightAll();</script>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script src="https://takeuforward.org/UXApproachDropDowns/3ApproachJSScript.js"></script>
+<!-- /wp:html -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/kriti39/" rel="noreferrer noopener" target="_blank">KRITIDIPTA GHOSH</a></strong></em> <em>for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

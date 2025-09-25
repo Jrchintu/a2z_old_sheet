@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Number of Enclaves</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Number of Enclaves</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement: </strong>You are given an N x M binary matrix grid, where 0 represents a sea cell and 1 represents a land cell. A move consists of walking from one land cell to another adjacent (4-directionally) land cell or walking off the boundary of the grid. Find the number of land cells in the grid for which we cannot walk off the boundary of the grid in any number of moves.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Examples:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Example 1:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Input:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":6564,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-6564" src="assets/4301cec1db75f29f3d8bc98abd18becb.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong> 3</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Explanation:</strong> The highlighted cells represent the land cells.</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":6565,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-6565" src="assets/5515711a68cda8b2e87f1590c4af8c53.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p><strong>Example 2:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Input:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":6566,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-6566" src="assets/49ce4e5c96361f210553decf7d7b91bb.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong> 4</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Explanation:</strong> The highlighted cells represent the land cells.</p>
+<!-- /wp:paragraph -->
+<!-- wp:image -->
+<figure class="wp-block-image"><img alt="" src="blob:https://takeuforward.org/3f50b702-5fc3-488c-a99a-a16c75c359f7"/></figure>
+<!-- /wp:image -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Solution</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph {"textColor":"accent"} -->
+<p class="has-accent-color has-text-color"><strong><em>Disclaimer</em></strong>: <em>Don't jump directly to the solution, try it out yourself first.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Intuition:</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>The land cells present in the boundary cannot be counted in the answer as we will walk off the boundary of the grid. Also, land cells connected to the boundary land cell can never be the answer. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The intuition is that we need to figure out the boundary land cells, go through their connected land cells and mark them as visited. The sum of all the remaining land cells will be the answer.</p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Approach</strong>:</h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>We can follow either of the traversal techniques as long as we are starting with a boundary element and marking all those 1s connected to it. We will be solving it using BFS traversal, but you can apply DFS traversal as well, we have applied DFS traversal to solve a similar problem in the previous article. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Breadth First Search, BFS is a traversal technique where we visit the nodes level-wise, i.e., it visits the same level nodes simultaneously, and then moves to the next level. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Initial configuration:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li><strong>Queue:</strong> Define a queue and insert the coordinates of the cell &lt;row, column&gt; which are in the boundary and are marked as 1. The boundary cells will always have row i = 0 or row i = n-1 or col j = 0 or col j = m-1. </li><li><strong>Visited array: </strong>an array initialized to 0 indicating unvisited cells, apart from the ones in the boundary which are already in the queue ds.  </li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>The algorithm steps are as follows:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>For BFS traversal, we need a queue data structure and a visited array. Create a corresponding visited array. </li><li>Push the coordinates of boundary nodes in the queue and mark them as visited.</li><li>Start the BFS traversal, pop out an element from the queue every time and travel to all its <strong><em>unvisited neighboring land cells</em></strong> in the 4 directions. For every unvisited node, push it {row, col} into the Q and mark it as visited to avoid multiple traversals in the future. </li><li>Repeat the steps until the queue becomes empty. When all the boundaries are traversed and corresponding sets of 1s are marked as visited, use a counter variable to count the number of remaining unvisited land cells. </li><li>Return the value of the counter as it indicates the number of land cells that cannot cross the boundary.</li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p>Consider the following illustration to understand how BFS traverses the matrix and finds the number of land cells in the grid for which we cannot walk off the boundary of the grid in any number of moves.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><img height="478" src="assets/53d8aa6240fab1b1901a032bb0858bc4" width="652"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>How do set boundaries for 4 directions?</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The 4 neighbors will have the following indexes:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong><img height="118" src="assets/2f28127f1db4c47e1b4cb0ef9848cd6a" width="318"/></strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Now, either we can apply 4 conditions or follow the following method. From the above image, it is clear that the delta change in the row is -1, +0, +1, +0. Similarly, the delta change in the column is 0, +1, +0, -1.  So we can apply the same logic to find the neighbors of a particular pixel (&lt;row, column&gt;). </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+class Solution {
+  public:
+    int numberOfEnclaves(vector&lt;vector&lt;int&gt;&gt; &amp;grid) {
+        queue&lt;pair&lt;int,int&gt;&gt; q; 
+        int n = grid.size(); 
+        int m = grid[0].size(); 
+        int vis[n][m] = {0}; 
+        // traverse boundary elements
+        for(int i = 0;i&lt;n;i++) {
+            for(int j = 0;j&lt;m;j++) {
+                // first row, first col, last row, last col 
+                if(i == 0 || j == 0 || i == n-1 || j == m-1) {
+                    // if it is a land then store it in queue
+                    if(grid[i][j] == 1) {
+                        q.push({i, j}); 
+                        vis[i][j] = 1; 
+                    }
+                }
+            }
+        }
+        
+        int delrow[] = {-1, 0, +1, 0};
+        int delcol[] = {0, +1, +0, -1}; 
+        
+        while(!q.empty()) {
+            int row = q.front().first; 
+            int col = q.front().second; 
+            q.pop(); 
+            
+            // traverses all 4 directions
+            for(int i = 0;i&lt;4;i++) {
+                int nrow = row + delrow[i];
+                int ncol = col + delcol[i]; 
+                // check for valid coordinates and for land cell
+                if(nrow &gt;=0 &amp;&amp; nrow &lt;n &amp;&amp; ncol &gt;=0 &amp;&amp; ncol &lt; m 
+                &amp;&amp; vis[nrow][ncol] == 0 &amp;&amp; grid[nrow][ncol] == 1) {
+                    q.push({nrow, ncol});
+                    vis[nrow][ncol] = 1; 
+                }
+            }
+            
+        }
+        
+        int cnt = 0;
+        for(int i = 0;i&lt;n;i++) {
+            for(int j = 0;j&lt;m;j++) {
+                // check for unvisited land cell
+                if(grid[i][j] == 1 &amp; vis[i][j] == 0) 
+                    cnt++; 
+            }
+        }
+        return cnt; 
+    }
+};
+
+int main() {
+    
+    vector&lt;vector&lt;int&gt;&gt; grid{
+        {0, 0, 0, 0},
+        {1, 0, 1, 0},
+        {0, 1, 1, 0},
+        {0, 0, 0, 0}};
+        
+    Solution obj;
+    cout &lt;&lt; obj.numberOfEnclaves(grid) &lt;&lt; endl;
+
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:  </strong>3</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: </strong>O(NxMx4) ~ O(N x M), For the worst case, assuming all the pieces as land, the BFS function will be called for (N x M) nodes and for every node, we are traversing for 4 neighbors, so it will take O(N x M x 4) time. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity ~</strong> O(N x M), O(N x M) for the visited array, and queue space takes up N x M locations at max. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+
+class Solution {
+
+    int numberOfEnclaves(int[][] grid) {
+        Queue&lt;Pair&gt; q = new LinkedList&lt;Pair&gt;();
+        int n = grid.length; 
+        int m = grid[0].length; 
+        int vis[][] = new int[n][m];
+        // traverse boundary elements
+        for(int i = 0;i&lt;n;i++) {
+            for(int j = 0;j&lt;m;j++) {
+                // first row, first col, last row, last col 
+                if(i == 0 || j == 0 || i == n-1 || j == m-1) {
+                    // if it is a land then store it in queue
+                    if(grid[i][j] == 1) {
+                        q.add(new Pair(i, j)); 
+                        vis[i][j] = 1; 
+                    }
+                }
+            }
+        }
+        
+        int delrow[] = {-1, 0, +1, 0};
+        int delcol[] = {0, +1, +0, -1}; 
+        
+        while(!q.isEmpty()) {
+            int row = q.peek().first; 
+            int col = q.peek().second; 
+            q.remove(); 
+            
+            // traverses all 4 directions
+            for(int i = 0;i&lt;4;i++) {
+                int nrow = row + delrow[i];
+                int ncol = col + delcol[i]; 
+                // check for valid coordinates and for land cell
+                if(nrow &gt;=0 &amp;&amp; nrow &lt;n &amp;&amp; ncol &gt;=0 &amp;&amp; ncol &lt; m 
+                &amp;&amp; vis[nrow][ncol] == 0 &amp;&amp; grid[nrow][ncol] == 1) {
+                    q.add(new Pair(nrow, ncol));
+                    vis[nrow][ncol] = 1; 
+                }
+            }
+            
+        }
+        int cnt = 0;
+        for(int i = 0;i&lt;n;i++) {
+            for(int j = 0;j&lt;m;j++) {
+                // check for unvisited land cell
+                if(grid[i][j] == 1 &amp; vis[i][j] == 0) 
+                    cnt++; 
+            }
+        }
+        return cnt; 
+        
+    }
+    public static void main(String[] args)
+    {
+        int grid[][] = {
+        {0, 0, 0, 0},
+        {1, 0, 1, 0},
+        {0, 1, 1, 0},
+        {0, 0, 0, 0}};
+
+        Solution ob = new Solution();
+        int ans = ob.numberOfEnclaves(grid);
+        System.out.println(ans);
+    }
+
+}
+class Pair {
+    int first;
+    int second; 
+    public Pair(int first, int second) {
+        this.first = first; 
+        this.second = second; 
+    }
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:  </strong>3</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: </strong>O(NxMx4) ~ O(N x M), For the worst case, assuming all the pieces as land, the BFS function will be called for (N x M) nodes and for every node, we are traversing for 4 neighbors, so it will take O(N x M x 4) time. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity ~</strong> O(N x M), O(N x M) for the visited array, and queue space takes up N x M locations at max. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/vanshika-singh-ba6b15157" rel="noreferrer noopener" target="_blank">Vanshika Singh Gour</a></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a>. <em>If you want to suggest any improvement/correction in this article please mail us at write4tuf@gmail.com</em></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

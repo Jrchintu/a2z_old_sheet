@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Longest Increasing Subsequence | Binary Search | (DP-43)</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Longest Increasing Subsequence | Binary Search | (DP-43)</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p>This article will be an extension of the <a href="https://takeuforward.org/data-structure/longest-increasing-subsequence-dp-41/" rel="noreferrer noopener" target="_blank">Longest Increasing Subsequence</a> and <a href="https://takeuforward.org/data-structure/printing-longest-increasing-subsequence-dp-42/" rel="noreferrer noopener" target="_blank">Printing Longest Increasing Subsequence</a>. In this article, we will solve the problem of the longest-increasing subsequence using binary search.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Let us first revise the concept of the longest increasing subsequence.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>What is the Longest Increasing Subsequence?</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The <a href="https://takeuforward.org/data-structure/longest-increasing-subsequence-dp-41/" rel="noreferrer noopener" target="_blank" title="longest increasing subsequence">longest increasing subsequence</a> is described as a subsequence of an array where:</p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>All elements of the subsequence are in increasing order.</li><li>This subsequence itself is of the longest length possible.</li></ul>
+<!-- /wp:list -->
+<!-- wp:html -->
+<!-- This is Examples Drop-Down -->
+<div id="article_examples">
+<details class="article_example_details">
+<summary class="article_example_summary">
+<span><strong>
+Examples
+</strong>
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="atricle_example_content">
+<pre class="wp-block-preformatted"><!-- Insert New Examples Here -->
+<figure class="wp-block-image"><img alt="" src="assets/15921d59299a5516aa5c97143df2df71"/></figure>
+</pre>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:paragraph -->
+<p>We need to return the length of the longest increasing subsequence as the answer.</p>
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<!-- This is Practice Section-->
+<div class="practice">
+<span><strong>Practice: </strong></span>
+<div class="problem-buttons">
+<!-- Add Problem Link inside href -->
+<a href="https://www.codingninjas.com/studio/problems/longest-increasing-subsequence_630459?utm_source=striver&amp;utm_medium=website&amp;utm_campaign=a_zcoursetuf" rel="noopener" target="_blank">
+<span>Solve Problem</span>
+<img alt="code-studio" src="assets/86dd2cadbd0e7ef71ad98d3b7f2f2efc.png"/>
+</a>
+</div>
+</div>
+<p class="new-disclaimer"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out
+yourself first. </em></p>
+<!-- /wp:html -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Solution :</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>Pre-req: <a href="https://takeuforward.org/data-structure/binary-search-explained/" rel="noreferrer noopener" target="_blank">Binary Search</a>, <a href="https://www.youtube.com/watch?v=edJ19qIL8WQ" rel="noreferrer noopener" target="_blank">lower_bound C++</a></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Intuition:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Let us take an example and build up the intuition from here to solve this problem using binary search.</p>
+<!-- /wp:paragraph -->
+<!-- wp:image -->
+<figure class="wp-block-image"><img alt="" src="assets/efcde32cb07f406d727fec1ccf382aaf"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>Now let us loop through every element and try to form a new subsequence.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>(i) index = 0, arr[i] is 1.</p>
+<!-- /wp:paragraph -->
+<!-- wp:image -->
+<figure class="wp-block-image"><img alt="" src="assets/599f8cb62d47d8a7e68fef87775beac4"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>We can start forming the LIS from this index. Currently the LIS formed will be [1].</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>(ii) index = 1, arr[i] is 7.</p>
+<!-- /wp:paragraph -->
+<!-- wp:image -->
+<figure class="wp-block-image"><img alt="" src="assets/b9bc4ff4e28ce30a1d0e0df0687aeba8"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>As 7 is greater than the last element of the LIS, i.e 0; we can push it to the LIS array. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>(iii) index = 2, arr[i] is 8.</p>
+<!-- /wp:paragraph -->
+<!-- wp:image -->
+<figure class="wp-block-image"><img alt="" src="assets/ffab8daec6b154c7269317818a7aa0fa"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>As 8 is greater than the last element of the LIS, i.e 7; we can push it to the LIS array.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p> (iv) index = 3, arr[i] is 4.</p>
+<!-- /wp:paragraph -->
+<!-- wp:image -->
+<figure class="wp-block-image"><img alt="" src="assets/7ab0300e2732f647e4bbda83e68d8c04"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>Now, 4 is less than 8, the last element of the LIS array, therefore we can’t push it like before. Rather we can make a second LIS array as shown in the figure above for the time being.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p> (v) index = 4, arr[i] is 5.</p>
+<!-- /wp:paragraph -->
+<!-- wp:image -->
+<figure class="wp-block-image"><img alt="" src="assets/741c712f118067a50f2a5d19a82d14ca"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>5 is not greater than 8, but it is greater than 4, the last element of the second LIS array that we made so we push it there.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>(vi) index = 5, arr[i] is 6</p>
+<!-- /wp:paragraph -->
+<!-- wp:image -->
+<figure class="wp-block-image"><img alt="" src="assets/ddb2ca34eb9f4cbc228067848152bd68"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>6 is not greater than 8, but it is greater than 5, the last element of the second LIS array that we made so we push it there.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>(vii) index = 6, arr[i] is -1</p>
+<!-- /wp:paragraph -->
+<!-- wp:image -->
+<figure class="wp-block-image"><img alt="" src="assets/c05212c85f1c20e843962184f388df10"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>-1 is smaller than all the elements of both arrays, therefore we can’t push it anywhere in the first two LIS arrays. Therefore, we make a separate LIS array as shown in the figure.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>(viii) index = 7, arr[i] is 9</p>
+<!-- /wp:paragraph -->
+<!-- wp:image -->
+<figure class="wp-block-image"><img alt="" src="assets/c2ec604862c0f678cf4d33153911324f"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>9 is greater than the last elements of all three LIS arrays, therefore we can push it to the last of all three.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Now, we can return the length of the longest LIS array among the three, [1,  4,  5,  6,  9] i.e 5 as the final answer.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>This is the basic intuition of the algorithm. If we make a new LIS array at every junction, it will take up a lot of space. Now the question arises, do we need to store all these extra LIS arrays in a data structure to keep track of all the LIS formed as we traverse the array?</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The answer is <strong>No</strong>, We can maintain a single array (say temp) and rewrite this temp array again in order to find the length of the LIS. We are concerned about the length of the LIS rather than the LIS itself.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Intuition for rewriting the temp array</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Now we will revisit this example again and find out how we can maintain a single array (temp) that gives us the length of the LIS.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>We can straight away to index = 3, where we originally made the second LIS array.</p>
+<!-- /wp:paragraph -->
+<!-- wp:image -->
+<figure class="wp-block-image"><img alt="" src="assets/7ab0300e2732f647e4bbda83e68d8c04"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>Now, instead of creating a second LIS array, we will try to place it in the first LIS array (renamed as a temp). As temp is an increasing subsequence, 4 will come <strong>in place of 7</strong> in the temp array as shown below.</p>
+<!-- /wp:paragraph -->
+<!-- wp:image -->
+<figure class="wp-block-image"><img alt="" src="assets/1933e4ddddc7406d0d9446241a489a6f"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>Now, let us dig in to answer these three basic question that arises from this step:</p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li><strong>What is the purpose of replacing 7 with 4?</strong></li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p>The purpose is to maintain a single array that can be used to calculate the length of LIS.</p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li><strong>Will this not affect the answer already calculated?</strong></li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p>The answer is no. Before this replacement, the length of the LIS was 3. We know that already. By this replacement of 7 with 4, we are not changing the length of the temp array. Suppose a number 9 comes later we will simply append it to temp and its length will increase. In no way is this replacement affecting the length of the temp array from which we deduce the answer. Readers are highly advised to take some random examples and try to implement this step and understand how this step is not affecting the answer.</p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li><strong>What is this temp array?</strong></li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p>The ‘temp’ array is <strong>not</strong> the LIS. It is a simple array we maintain to figure out the length of the LIS of the given array. It will always have one property that the elements that are present inside it will always be <strong>sorted</strong>.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>It is due to all these factors discussed above that instead of creating two separate arrays to store subsequences, we can maintain a single array (temp) and overwrite it again and again.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Next, we have i = 4, arr[i] = 5 which will also be replaced in a similar way.</p>
+<!-- /wp:paragraph -->
+<!-- wp:image -->
+<figure class="wp-block-image"><img alt="" src="assets/134a4a1c955401729b9f665b979d1b8a"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>Next we have i=5, arr[i] = 6. As 6 is greater than the last element of the temp array, i.e 5, we append it to the temp array.</p>
+<!-- /wp:paragraph -->
+<!-- wp:image -->
+<figure class="wp-block-image"><img alt="" src="assets/6f3bdfdbee3cab1210faf7ee86f6e106"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>Next, we have i = 6, arr[i] = -1. We replace it with 1 in the array.</p>
+<!-- /wp:paragraph -->
+<!-- wp:image -->
+<figure class="wp-block-image"><img alt="" src="assets/50bcb41293cf296456852739af17227a"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>Next, we have i = 7, arr[i] = 9. We simply append it to the temp array.</p>
+<!-- /wp:paragraph -->
+<!-- wp:image -->
+<figure class="wp-block-image"><img alt="" src="assets/54ea5155855812048975dc6e915347de"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>Now, we see that the final temp array is <strong>not </strong>the LIS, but its length is giving us the answer (i.e the length of LIS of the original array).</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Now, the main part left is to find the index at which we need to do the replacement. If we have to insert an element X in the temp array, the following properties should be satisfied: </p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>The elements smaller than X should be present on the left side of X after replacement.</li><li>The elements greater than or equal to X should be on the right side after replacement.</li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p>Now as we are inserting in this particular manner, the array will always be <strong>sorted.</strong> Therefore we can search for the index by using<strong> binary search</strong>. In C++ the lower_bound function can be used to give us the particular index.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The lower bound function(X) returns us the iterator (or in simple terms the index) of :</p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>The element X itself, if it is present.</li><li>Or the next largest element, if the element is not present.</li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>Approach</strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Now, as we have understood the entire intuition of the algorithm we will summarize the approach:</p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>Initialize a temp array.</li><li>Push the first element of the array to temp.</li><li>Iterate over the next elements.</li><li>In every iteration, if arr[i] is greater than the last element of the temp array simply push it to the temp array.</li><li>Else, just find the lower_bound index of that element in the temp array (say ind). THen simply initialize temp[ind] = arr[i] (// replacement step).</li><li>Maintain a len variable to calculate the length of the temp array in the iteration itself.</li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+// Function to find the length of the longest increasing subsequence
+int longestIncreasingSubsequence(int arr[], int n) {
+    // Create a temporary vector to store the increasing subsequence
+    vector&lt;int&gt; temp;
+    temp.push_back(arr[0]);
+
+    int len = 1;
+
+    for (int i = 1; i &lt; n; i++) {
+        if (arr[i] &gt; temp.back()) {
+            // If arr[i] is greater than the last element of temp, extend the subsequence
+            temp.push_back(arr[i]);
+            len++;
+        } else {
+            // If arr[i] is not greater, replace the element in temp with arr[i]
+            int ind = lower_bound(temp.begin(), temp.end(), arr[i]) - temp.begin();
+            temp[ind] = arr[i];
+        }
+    }
+
+    return len;
+}
+
+int main() {
+    int arr[] = {10, 9, 2, 5, 3, 7, 101, 18};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    cout &lt;&lt; "The length of the longest increasing subsequence is " &lt;&lt; longestIncreasingSubsequence(arr, n);
+
+    return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The length of the longest increasing subsequence is 4</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N*logN)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: We iterate over the array of size N and in every iteration, we perform a binary search which takes logN time.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: We are using an extra array of size N to store the temp variable.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+
+class LIS {
+    // Function to find the length of the longest increasing subsequence
+    static int longestIncreasingSubsequence(int[] arr, int n) {
+        List&lt;Integer&gt; temp = new ArrayList&lt;&gt;();
+        temp.add(arr[0]);
+
+        int len = 1;
+
+        for (int i = 1; i &lt; n; i++) {
+            if (arr[i] &gt; temp.get(temp.size() - 1)) {
+                // arr[i] &gt; the last element of temp array
+
+                temp.add(arr[i]);
+                len++;
+            } else {
+                // Replacement step
+                int ind = Collections.binarySearch(temp, arr[i]);
+
+                if (ind &lt; 0) {
+                    ind = -ind - 1;
+                }
+
+                temp.set(ind, arr[i]);
+            }
+        }
+
+        return len;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {10, 9, 2, 5, 3, 7, 101, 18};
+        int n = arr.length;
+
+        System.out.println("The length of the longest increasing subsequence is " +
+                longestIncreasingSubsequence(arr, n));
+    }
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The length of the longest increasing subsequence is 4</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N*logN)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: We iterate over the array of size N and in every iteration, we perform a binary search which takes logN time.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: We are using an extra array of size N to store the temp variable.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="python">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-python" lang="python">def longest_increasing_subsequence_length(arr):
+    n = len(arr)
+
+    # Initialize a temporary list to store the increasing subsequence
+    temp = [arr[0]]
+    length = 1
+
+    for i in range(1, n):
+        if arr[i] &gt; temp[-1]:
+            # If arr[i] is greater than the last element of temp, extend the subsequence
+            temp.append(arr[i])
+            length += 1
+        else:
+            # Use binary search to find the position to replace the element in temp
+            ind = bisect_left(temp, arr[i])
+            temp[ind] = arr[i]
+
+    return length
+
+
+if __name__ == "__main__":
+    arr = [10, 9, 2, 5, 3, 7, 101, 18]
+
+    result = longest_increasing_subsequence_length(arr)
+    print("The length of the longest increasing subsequence is", result)
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The length of the longest increasing subsequence is 4</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N*logN)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: We iterate over the array of size N and in every iteration, we perform a binary search which takes logN time.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: We are using an extra array of size N to store the temp variable.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>[tabby title="JavaScript Code"]</p>
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">function longestIncreasingSubsequence(arr) {
+    const n = arr.length;
+
+    // Create an empty array 'temp' to store the increasing subsequence
+    const temp = [arr[0]];
+
+    // Initialize the length of the longest increasing subsequence
+    let len = 1;
+
+    // Iterate through the input array starting from the second element
+    for (let i = 1; i &lt; n; i++) {
+        if (arr[i] &gt; temp[temp.length - 1]) {
+            // If arr[i] is greater than the last element of 'temp', it extends the subsequence
+            temp.push(arr[i]);
+            len++;
+        } else {
+            // If not, we find the index where arr[i] can replace an element in 'temp'
+            const ind = temp.findIndex((el) =&gt; el &gt;= arr[i]);
+            temp[ind] = arr[i];
+        }
+    }
+
+    // 'len' now represents the length of the longest increasing subsequence
+    return len;
+}
+
+// Main function
+function main() {
+    const arr = [10, 9, 2, 5, 3, 7, 101, 18];
+
+    const result = longestIncreasingSubsequence(arr);
+    console.log("The length of the longest increasing subsequence is", result);
+}
+
+// Call the main function
+main();
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The length of the longest increasing subsequence is 4</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N*logN)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: We iterate over the array of size N and in every iteration, we perform a binary search which takes logN time.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: We are using an extra array of size N to store the temp variable.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/anshuman-sharma-a1b245194/" rel="noreferrer noopener" target="_blank"><strong>Anshuman Sharma</strong></a></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a>. <em>If you want to suggest any improvement/correction in this article please mail us at write4tuf@gmail.com</em></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

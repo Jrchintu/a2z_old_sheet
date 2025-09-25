@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Add two numbers represented as Linked Lists</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Add two numbers represented as Linked Lists</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement</strong>: Given the<strong> heads</strong> of two non-empty linked lists representing two non-negative integers. The digits are stored in <strong>reverse order</strong>, and each of their nodes contains a single digit. Add the two numbers and return the <strong>sum</strong> as a linked list.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Examples</strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted"><strong>Input Format</strong>: 
+(Pointer/Access to the head of the two linked lists)
+
+num1  = 243, num2 = 564
+
+l1 = [2,4,3]
+l2 = [5,6,4]
+
+<strong>Result</strong>: sum = 807; L = [7,0,8]
+
+<strong>Explanation</strong>: Since the digits are stored in reverse order, reverse the numbers first to get the or                                                original number and then add them as → 342 + 465 = 807. <em><strong>Refer to the image below.</strong></em></pre>
+<!-- /wp:preformatted -->
+<!-- wp:paragraph -->
+<p>  <br/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><img height="185" src="assets/3a03bb9f44c45880ed5007081b240fc4" width="214"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted"><strong>Input Format:</strong> 
+(Pointer/Access to the head of the two linked lists)
+
+l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]
+
+<strong>Result</strong>: [8,9,9,9,0,0,0,1]
+
+<strong>Explanation</strong>: Since the digits are stored in reverse order, reverse the numbers first to get the     original number and then add them as → 9999999 + 9999 = 8999001. <strong><em>Refer to the image below.</em></strong></pre>
+<!-- /wp:preformatted -->
+<!-- wp:paragraph -->
+<p><img height="377" src="assets/24475156c4fa07d522986fe5524b5f92" width="627"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Solution</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p><span class="has-inline-color has-vivid-red-color"><strong><em>Disclaimer</em></strong>: <em>Don't jump directly to the solution, try it out yourself first.</em></span></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Solution 1: </strong>Elementary Math</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Intuition</strong>: Keep track of the <em><strong>carry</strong></em> using a variable and simulate digits-by-digits sum starting from the head of the list, which contains the least significant digit.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Approach</strong>: </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><img height="238" src="assets/a69bad18b1e7c96ef1a62b5f36fa10ef" width="445"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><em>Visualization of the addition of two numbers: </em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><em>342 + 465 = 807</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><em>342+465=807</em><em>.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><em>Each node contains a single digit and the digits are stored in reverse order.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Just like how you would sum two numbers on a piece of paper, we begin by summing the least significant digits, which is the head of l1 and l2. Since each digit is in the range of 0…9, summing two digits may "overflow". For example </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>5 + 7 = 12. In this case, we set the current digit to 2 and bring over the carry=1 to the next iteration. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>carry must be either 0 or 1 because the largest possible sum of two digits (including the carry) is 9 + 9 + 1 = 19.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Psuedocode:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>Create a dummy node which is the head of new linked list.</li><li>Create a node temp, initialise it with dummy.</li><li>Initialize carry to 0.</li><li>Loop through lists l1 and l2 until you reach both ends, and until carry is present.<ul><li>Set sum=l1.val+ l2.val + carry.</li><li>Update carry=sum/10.</li><li>Create a new node with the digit value of (sum%10) and set it to temp node's next, then advance temp node to next.</li><li>Advance both l1 and l2.</li></ul></li><li>Return dummy's next node.</li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><em><strong>Note</strong></em> that we use a dummy head to simplify the code. Without a dummy head, you would have to write extra conditional statements to initialize the head's value.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Take extra caution in the following cases:</p>
+<!-- /wp:paragraph -->
+<!-- wp:table -->
+<figure class="wp-block-table"><table><tbody><tr><td>Test case</td><td>Explanation</td></tr><tr><td>l1=[0,1], l2=[0,1,2]</td><td>When one list is longer than the other.</td></tr><tr><td>l1=[], l2=[0,1]</td><td>When one list is null, which means an empty list.</td></tr><tr><td>l1=[9,9], l2=[1]</td><td>The sum could have an extra carry of one at the end, which is easy to forget.</td></tr></tbody></table></figure>
+<!-- /wp:table -->
+<!-- wp:paragraph -->
+<p><strong>Code</strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="python">Python</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode *dummy = new ListNode(); 
+        ListNode *temp = dummy; 
+        int carry = 0;
+        while( (l1 != NULL || l2 != NULL) || carry) {
+            int sum = 0; 
+            if(l1 != NULL) {
+                sum += l1-&gt;val; 
+                l1 = l1 -&gt; next; 
+            }
+            
+            if(l2 != NULL) {
+                sum += l2 -&gt; val; 
+                l2 = l2 -&gt; next; 
+            }
+            
+            sum += carry; 
+            carry = sum / 10; 
+            ListNode *node = new ListNode(sum % 10); 
+            temp -&gt; next = node; 
+            temp = temp -&gt; next; 
+        }
+        return dummy -&gt; next; 
+    }
+};</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(); 
+        ListNode temp = dummy; 
+        int carry = 0;
+        while( l1 != null || l2 != null || carry == 1) {
+            int sum = 0; 
+            if(l1 != null) {
+                sum += l1.val; 
+                l1 = l1.next; 
+            }
+            
+            if(l2 != null) {
+                sum += l2.val; 
+                l2 = l2.next; 
+            }
+            
+            sum += carry; 
+            carry = sum / 10; 
+            ListNode node = new ListNode(sum % 10); 
+            temp.next = node; 
+            temp = temp.next; 
+        }
+        return dummy.next;
+    }
+}</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="python">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-python" lang="python"># Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+
+class Solution:
+    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -&gt; ListNode:
+        dummy = ListNode()
+        temp = dummy
+        carry = 0
+        while (l1 != None or l2 != None) or carry:
+            sum = 0
+            if l1 != None:
+                sum += l1.val
+                l1 = l1.next
+            if l2 != None:
+                sum += l2.val
+                l2 = l2.next
+            sum += carry
+            carry = sum // 10
+            node = ListNode(sum % 10)
+            temp.next = node
+            temp = temp.next
+        return dummy.next</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity</strong>: O(max(m,n)). Assume that m and n represent the length of l1 and l2 respectively, the algorithm above iterates at most max(m,n) times.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity</strong>: O(max(m,n)). The length of the new list is at most max(m,n)+1.</p>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <a data-id="https://www.linkedin.com/in/anshu-patidar" data-type="URL" href="https://www.linkedin.com/in/anshu-patidar" rel="noreferrer noopener" target="_blank">Anshu Patidar</a> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/contribute/help-us-grow-takeuforward/">please check out this article</a><em>.</em></p></blockquote>
+<!-- /wp:quote -->
+
+https://www.youtube.com/watch?v=LBVsXSMOIk4
+</article></div>
+<!-- /wp:embed -->
+
+
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

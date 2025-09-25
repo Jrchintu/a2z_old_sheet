@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Accounts Merge - DSU: G-50</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Accounts Merge - DSU: G-50</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement:</strong> Given a list of accounts where each element account [ i ] is a list of strings, where the first element account [ i ][ 0 ]  is a name, and the rest of the elements are emails representing emails of the account.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Now, we would like to merge these accounts. Two accounts definitely belong to the same person if there is some common email to both accounts. Note that even if two accounts have the same name, they may belong to different people as people could have the same name. A person can have any number of accounts initially, but all of their accounts definitely have the same name.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>After merging the accounts, return the accounts in the following format: the first element of each account is the name, and the rest of the elements are emails in sorted order.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Note:</strong> Accounts themselves can be returned in any order.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Pre-requisite: </strong><a href="https://takeuforward.org/data-structure/disjoint-set-union-by-rank-union-by-size-path-compression-g-46/" rel="noopener" target="_blank" title="">Disjoint Set data structure</a></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Examples:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted"><strong>Example 1:</strong>
+<strong>Input:</strong> N = 4
+accounts [ ] =
+[["John","johnsmith@mail.com","john_newyork@mail.com"],
+["John","johnsmith@mail.com","john00@mail.com"],
+["Mary","mary@mail.com"],
+["John","johnnybravo@mail.com"]]
+
+<strong>Output:</strong> [["John","john00@mail.com","john_newyork@mail.com", "johnsmith@mail.com"],
+["Mary","mary@mail.com"],
+["John","johnnybravo@mail.com"]]
+
+<strong>Explanation:</strong> The first and the second John are the same person as they have a common email. But the third Mary and fourth John are not the same as they do not have any common email.  The result can be in any order but the emails must be in sorted order. The following is also a valid result:
+[['Mary', 'mary@mail.com'],
+['John', 'johnnybravo@mail.com'],
+['John', 'john00@mail.com' , 'john_newyork@mail.com', 'johnsmith@mail.com' ]]
+
+<strong>Example 2:</strong>
+<strong>Input:</strong> N = 6
+accounts [ ] =
+[["John","j1@com","j2@com","j3@com"],
+["John","j4@com"],
+["Raj",”r1@com”, “r2@com”],
+["John","j1@com","j5@com"],
+["Raj",”r2@com”, “r3@com”],
+["Mary","m1@com"]]
+
+<strong>Output</strong>: [["John","j1@com","j2@com","j3@com","j5@com"],
+["John","j4@com"],
+["Raj",”r1@com”, “r2@com”,  “r3@com”],
+["Mary","m1@com"]]
+
+<strong>Explanation:</strong> The first and the fourth John are the same person here as they have a common email. And the third and the fifth Raj are also the same person. So, the same accounts are merged.</pre>
+<!-- /wp:preformatted -->
+<!-- wp:paragraph -->
+<p><strong>Solution</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph {"textColor":"accent"} -->
+<p class="has-accent-color has-text-color"><strong><em>Disclaimer</em></strong>: <em>Don't jump directly to the solution, try it out yourself first. </em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><a href="https://practice.geeksforgeeks.org/problems/account-merge/1?utm_source=youtube&amp;utm_medium=collab_striver_ytdescription&amp;utm_campaign=account-merge" rel="noopener" target="_blank" title=""><em>Problem link</em></a><em>.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Solution:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Let’s quickly understand the question before moving on to the solution part. According to the question, we can only merge two accounts with the same name only if the accounts contain at least one common email. After merging the accounts accordingly, we should return the answer where for each account the emails must be in the sorted order. But the order of the accounts does not matter. In order to solve this problem we are going to use the <a href="https://takeuforward.org/data-structure/disjoint-set-union-by-rank-union-by-size-path-compression-g-46/" rel="noopener" target="_blank" title="">Disjoint Set data structure</a>. Now, let’s discuss the approach using the following example:</p>
+<!-- /wp:paragraph -->
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted">Given: N = 6
+accounts [ ] =
+[["John","j1@com","j2@com","j3@com"],
+["John","j4@com"],
+["Raj",”r1@com”, “r2@com”],
+["John","j1@com","j5@com"],
+["Raj",”r2@com”, “r3@com”],
+["Mary","m1@com"]]
+</pre>
+<!-- /wp:preformatted -->
+<!-- wp:paragraph -->
+<p>First, we will try to iterate over every single email and add them with their respective indices(i.e. Index of the accounts the email belongs to)  in a map data structure. While doing this, when we will reach out to “j1@com” in the fourth account, we will find that it is already mapped with index 0. This incident means that we are currently in an account that can be merged. So, we will perform the union operation between the current index i.e. 3, and index 0(As in this case, we are following 0-based indexing). It will mean that the ultimate parent of index 3 is index 0. Similarly, this incident will repeat in the case of the third and fifth Raj. So we will perform the union of index 2 and 4. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>After completing the above process, the situation will be like the following:</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7097,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7097" src="assets/70f8f49c3d7189fdb2aab89bae900cab.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>Now, it’s time to merge the emails. So, we will iterate over each email and will add them to the ultimate parent of the current account’s index. Like, while adding the emails of account 4, we will add them to index 2 as the ultimate parent of 4 is index 2.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Finally, we will sort the emails for each account individually to get our answers in the format specified in the question.</p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Approach</strong>: </h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p><strong>Note: </strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>Here we will perform the disjoint set operations on the indices of the accounts considering them as the nodes. </li><li>As in each account, the first element is the name, we will start iterating from the second element in each account to visit only the emails sequentially.</li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p>The algorithm steps are the following:</p>
+<!-- /wp:paragraph -->
+<!-- wp:list {"ordered":true} -->
+<ol><li>First, we will <strong><em>create a map data structure.</em></strong> Then we will store each email with the respective index of the account(the email belongs to) in that map data structure.</li><li>While doing so, if we encounter an email again(i.e. If any index is previously assigned for the email), we will perform union(<strong><em>either unionBySize() or unionByRank()</em></strong>) of the current index and the previously assigned index.</li><li>After completing step 2, now it’s time to <strong><em>merge the accounts</em></strong>. For merging, we will iterate over all the emails individually and find the ultimate parent(<strong><em>using the findUPar() method</em></strong>) of the assigned index of every email. Then we will add the email of the current account to the index(account index) that is the ultimate parent. Thus the accounts will be merged.</li><li>Finally, we will <strong><em>sort the emails for every account separately</em></strong> and store the final results in the answer array accordingly.</li></ol>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>Note</strong>: <em>If you wish to see the dry run of the above approach, you can watch the video attached to this article.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+//User function Template for C++
+class DisjointSet {
+    vector&lt;int&gt; rank, parent, size;
+public:
+    DisjointSet(int n) {
+        rank.resize(n + 1, 0);
+        parent.resize(n + 1);
+        size.resize(n + 1);
+        for (int i = 0; i &lt;= n; i++) {
+            parent[i] = i;
+            size[i] = 1;
+        }
+    }
+
+    int findUPar(int node) {
+        if (node == parent[node])
+            return node;
+        return parent[node] = findUPar(parent[node]);
+    }
+
+    void unionByRank(int u, int v) {
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+        if (ulp_u == ulp_v) return;
+        if (rank[ulp_u] &lt; rank[ulp_v]) {
+            parent[ulp_u] = ulp_v;
+        }
+        else if (rank[ulp_v] &lt; rank[ulp_u]) {
+            parent[ulp_v] = ulp_u;
+        }
+        else {
+            parent[ulp_v] = ulp_u;
+            rank[ulp_u]++;
+        }
+    }
+
+    void unionBySize(int u, int v) {
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+        if (ulp_u == ulp_v) return;
+        if (size[ulp_u] &lt; size[ulp_v]) {
+            parent[ulp_u] = ulp_v;
+            size[ulp_v] += size[ulp_u];
+        }
+        else {
+            parent[ulp_v] = ulp_u;
+            size[ulp_u] += size[ulp_v];
+        }
+    }
+};
+
+class Solution {
+public:
+    vector&lt;vector&lt;string&gt;&gt; accountsMerge(vector&lt;vector&lt;string&gt;&gt; &amp;details) {
+        int n = details.size();
+        DisjointSet ds(n);
+        sort(details.begin(), details.end());
+        unordered_map&lt;string, int&gt; mapMailNode;
+        for (int i = 0; i &lt; n; i++) {
+            for (int j = 1; j &lt; details[i].size(); j++) {
+                string mail = details[i][j];
+                if (mapMailNode.find(mail) == mapMailNode.end()) {
+                    mapMailNode[mail] = i;
+                }
+                else {
+                    ds.unionBySize(i, mapMailNode[mail]);
+                }
+            }
+        }
+
+        vector&lt;string&gt; mergedMail[n];
+        for (auto it : mapMailNode) {
+            string mail = it.first;
+            int node = ds.findUPar(it.second);
+            mergedMail[node].push_back(mail);
+        }
+
+        vector&lt;vector&lt;string&gt;&gt; ans;
+
+        for (int i = 0; i &lt; n; i++) {
+            if (mergedMail[i].size() == 0) continue;
+            sort(mergedMail[i].begin(), mergedMail[i].end());
+            vector&lt;string&gt; temp;
+            temp.push_back(details[i][0]);
+            for (auto it : mergedMail[i]) {
+                temp.push_back(it);
+            }
+            ans.push_back(temp);
+        }
+        sort(ans.begin(), ans.end());
+        return ans;
+    }
+};
+
+
+int main() {
+
+    vector&lt;vector&lt;string&gt;&gt; accounts = {{"John", "j1@com", "j2@com", "j3@com"},
+        {"John", "j4@com"},
+        {"Raj", "r1@com", "r2@com"},
+        {"John", "j1@com", "j5@com"},
+        {"Raj", "r2@com", "r3@com"},
+        {"Mary", "m1@com"}
+    };
+
+
+    Solution obj;
+    vector&lt;vector&lt;string&gt;&gt; ans = obj.accountsMerge(accounts);
+    for (auto acc : ans) {
+        cout &lt;&lt; acc[0] &lt;&lt; ":";
+        int size = acc.size();
+        for (int i = 1; i &lt; size; i++) {
+            cout &lt;&lt; acc[i] &lt;&lt; " ";
+        }
+        cout &lt;&lt; endl;
+    }
+    return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>John:j1@com j2@com j3@com j5@com<br/>John:j4@com<br/>Mary:m1@com<br/>Raj:r1@com r2@com r3@com</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: </strong>O(N+E) + O(E*4ɑ) + O(N*(ElogE + E)) where N = no. of indices or nodes and E = no. of emails. The first term is for visiting all the emails. The second term is for merging the accounts. And the third term is for sorting the emails and storing them in the answer array.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: </strong>O(N)+ O(N) +O(2N) ~ O(N) where N = no. of nodes/indices. The first and second space is for the ‘mergedMail’ and the ‘ans’ array. The last term is for the parent and size array used inside the Disjoint set data structure.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.io.*;
+import java.util.*;
+
+
+
+//User function Template for Java
+class DisjointSet {
+    List&lt;Integer&gt; rank = new ArrayList&lt;&gt;();
+    List&lt;Integer&gt; parent = new ArrayList&lt;&gt;();
+    List&lt;Integer&gt; size = new ArrayList&lt;&gt;();
+    public DisjointSet(int n) {
+        for (int i = 0; i &lt;= n; i++) {
+            rank.add(0);
+            parent.add(i);
+            size.add(1);
+        }
+    }
+
+    public int findUPar(int node) {
+        if (node == parent.get(node)) {
+            return node;
+        }
+        int ulp = findUPar(parent.get(node));
+        parent.set(node, ulp);
+        return parent.get(node);
+    }
+
+    public void unionByRank(int u, int v) {
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+        if (ulp_u == ulp_v) return;
+        if (rank.get(ulp_u) &lt; rank.get(ulp_v)) {
+            parent.set(ulp_u, ulp_v);
+        } else if (rank.get(ulp_v) &lt; rank.get(ulp_u)) {
+            parent.set(ulp_v, ulp_u);
+        } else {
+            parent.set(ulp_v, ulp_u);
+            int rankU = rank.get(ulp_u);
+            rank.set(ulp_u, rankU + 1);
+        }
+    }
+
+    public void unionBySize(int u, int v) {
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+        if (ulp_u == ulp_v) return;
+        if (size.get(ulp_u) &lt; size.get(ulp_v)) {
+            parent.set(ulp_u, ulp_v);
+            size.set(ulp_v, size.get(ulp_v) + size.get(ulp_u));
+        } else {
+            parent.set(ulp_v, ulp_u);
+            size.set(ulp_u, size.get(ulp_u) + size.get(ulp_v));
+        }
+    }
+}
+class Solution {
+    static List&lt;List&lt;String&gt;&gt; accountsMerge(List&lt;List&lt;String&gt;&gt; details) {
+        int n = details.size();
+        DisjointSet ds = new DisjointSet(n);
+        HashMap&lt;String, Integer&gt; mapMailNode = new HashMap&lt;String, Integer&gt;();
+
+        for (int i = 0; i &lt; n; i++) {
+            for (int j = 1; j &lt; details.get(i).size(); j++) {
+                String mail = details.get(i).get(j);
+                if (mapMailNode.containsKey(mail) == false) {
+                    mapMailNode.put(mail, i);
+                } else {
+                    ds.unionBySize(i, mapMailNode.get(mail));
+                }
+            }
+        }
+
+        ArrayList&lt;String&gt;[] mergedMail = new ArrayList[n];
+        for (int i = 0; i &lt; n; i++) mergedMail[i] = new ArrayList&lt;String&gt;();
+        for (Map.Entry&lt;String, Integer&gt; it : mapMailNode.entrySet()) {
+            String mail = it.getKey();
+            int node = ds.findUPar(it.getValue());
+            mergedMail[node].add(mail);
+        }
+
+        List&lt;List&lt;String&gt;&gt; ans = new ArrayList&lt;&gt;();
+
+        for (int i = 0; i &lt; n; i++) {
+            if (mergedMail[i].size() == 0) continue;
+            Collections.sort(mergedMail[i]);
+            List&lt;String&gt; temp = new ArrayList&lt;&gt;();
+            temp.add(details.get(i).get(0));
+            for (String it : mergedMail[i]) {
+                temp.add(it);
+            }
+            ans.add(temp);
+        }
+        return ans;
+
+    }
+}
+
+class Main {
+    public static void main (String[] args) {
+        List&lt;List&lt;String&gt;&gt; accounts = new ArrayList() {
+            {
+                add(new ArrayList&lt;String&gt;(Arrays.asList("John", "j1@com", "j2@com", "j3@com")));
+                add(new ArrayList&lt;String&gt;(Arrays.asList("John", "j4@com")));
+                add(new ArrayList&lt;String&gt;(Arrays.asList("Raj", "r1@com", "r2@com")));
+                add(new ArrayList&lt;String&gt;(Arrays.asList("John", "j1@com", "j5@com")));
+                add(new ArrayList&lt;String&gt;(Arrays.asList("Raj", "r2@com", "r3@com")));
+                add(new ArrayList&lt;String&gt;(Arrays.asList("Mary", "m1@com")));
+
+            }
+        };
+
+        Solution obj = new Solution();
+        List&lt;List&lt;String&gt;&gt; ans = obj.accountsMerge(accounts);
+
+        int n = ans.size();
+        for (int i = 0; i &lt; n; i++) {
+            System.out.print(ans.get(i).get(0) + ": ");
+            int size = ans.get(i).size();
+            for (int j = 1; j &lt; size; j++) {
+                System.out.print(ans.get(i).get(j) + " ");
+            }
+
+            System.out.println("");
+        }
+
+    }
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>John:j1@com j2@com j3@com j5@com<br/>John:j4@com<br/>Mary:m1@com<br/>Raj:r1@com r2@com r3@com</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: </strong>O(N+E) + O(E*4ɑ) + O(N*(ElogE + E)) where N = no. of indices or nodes and E = no. of emails. The first term is for visiting all the emails. The second term is for merging the accounts. And the third term is for sorting the emails and storing them in the answer array.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: </strong>O(N)+ O(N) +O(2N) ~ O(N) where N = no. of nodes/indices. The first and second space is for the ‘mergedMail’ and the ‘ans’ array. The last term is for the parent and size array used inside the Disjoint set data structure.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/kriti39/" rel="noreferrer noopener" target="_blank"><strong>KRITIDIPTA GHOSH</strong></a></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a>. <em>If you want to suggest any improvement/correction in this article please mail us at write4tuf@gmail.com</em></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

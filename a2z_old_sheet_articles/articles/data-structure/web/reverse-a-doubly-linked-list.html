@@ -1,0 +1,1765 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Reverse a Doubly Linked List</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Reverse a Doubly Linked List</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement:</strong> Given a doubly linked list of size <strong>‘N’ </strong>consisting of positive integers, your task is to <strong>reverse</strong> it and return the head of the modified doubly linked list.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<!-- This is Examples Drop-Down -->
+<div id="article_examples">
+<details class="article_example_details">
+<summary class="article_example_summary">
+<span><strong>
+Examples
+</strong>
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="atricle_example_content">
+<pre class="wp-block-preformatted"><!-- Insert New Examples Here -->
+<p><strong>Example 1:</strong></p>
+<p><strong>Input Format</strong>:</p>
+<p>DLL: 1 &lt;-&gt; 2 &lt;-&gt; 3 &lt;-&gt; 4</p>
+<figure class="wp-block-image size-large"><img alt="" class="wp-image-12952" src="assets/eb179972025b073a35a44e91dd25d4f4.png"/></figure>
+<p><strong>Result</strong>: DLL: 4 &lt;-&gt; 3 &lt;-&gt; 2 &lt;-&gt; 1</p>
+<figure class="wp-block-image size-large"><img alt="" class="wp-image-12953" src="assets/c163a0389a44fad621c93caab4e7eae3.png"/></figure>
+<p><strong>Explanation</strong>: The doubly linked list is reversed and its last node is returned at the new head pointer.</p>
+<p><strong>Example 2:</strong></p>
+<p><strong>Input Format:</strong></p>
+<p>DLL: 10 &lt;-&gt; 20 &lt;-&gt; 30</p>
+<figure class="wp-block-image size-large"><img alt="" class="wp-image-12954" src="assets/1261f38d26936a5eedb4d253e68fe929.png"/></figure>
+<p><strong>Result</strong>: DLL: 30 &lt;-&gt; 20 &lt;-&gt; 10</p>
+<figure class="wp-block-image size-large"><img alt="" class="wp-image-12955" src="assets/a557ac72ab04e0162c187fd93f6f26c0.png"/></figure>
+<p><strong>Explanation</strong>: In this case, the doubly linked list is reversed and its former tail is returned as its new head.</p>
+</pre>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Practice Section-->
+<div class="practice">
+<span><strong>Practice: </strong></span>
+<div class="problem-buttons">
+<!-- Add Problem Link inside href -->
+<a href="https://www.codingninjas.com/studio/problems/reverse-a-doubly-linked-list_1116098?utm_source=striver&amp;utm_medium=website&amp;utm_campaign=a_zcoursetuf" rel="noopener" target="_blank">
+<span>Solve Problem</span>
+<img alt="code-studio" src="assets/86dd2cadbd0e7ef71ad98d3b7f2f2efc.png"/>
+</a>
+</div>
+</div>
+<p class="new-disclaimer"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out
+yourself first. </em></p>
+<!-- /wp:html -->
+<!-- wp:html -->
+<div class="horizontal_navbar_dsa_article">
+<div class="grid_container_two">
+<a class="two-boxes box-a" href="#brute-force-approach">
+Brute Force Approach
+</a>
+<a class="two-boxes box-c" href="#optimal-approach">
+Optimal Approach
+</a>
+<a class="three-boxes box-d" href="#dsa_article_video_explanation">
+<svg fill="none" height="26" viewbox="0 0 20 14" width="26" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 10L13.19 7L8 4V10ZM19.56 2.17C19.69 2.64 19.78 3.27 19.84 4.07C19.91 4.87 19.94 5.56 19.94 6.16L20 7C20 9.19 19.84 10.8 19.56 11.83C19.31 12.73 18.73 13.31 17.83 13.56C17.36 13.69 16.5 13.78 15.18 13.84C13.88 13.91 12.69 13.94 11.59 13.94L10 14C5.81 14 3.2 13.84 2.17 13.56C1.27 13.31 0.69 12.73 0.44 11.83C0.31 11.36 0.22 10.73 0.16 9.93C0.0900001 9.13 0.0599999 8.44 0.0599999 7.84L0 7C0 4.81 0.16 3.2 0.44 2.17C0.69 1.27 1.27 0.69 2.17 0.44C2.64 0.31 3.5 0.22 4.82 0.16C6.12 0.0899998 7.31 0.0599999 8.41 0.0599999L10 0C14.19 0 16.8 0.16 17.83 0.44C18.73 0.69 19.31 1.27 19.56 2.17Z" fill="red"></path>
+</svg>
+</a>
+<div class="box-e tooltip">
+<svg fill="none" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.842 9.25L11.9577 10.17C11.2502 10.89 10.8081 11.5 10.8081 13H8.84297V12.5C8.84297 11.39 9.28511 10.39 9.99255 9.67L11.2109 8.41C11.5745 8.05 11.7906 7.55 11.7906 7C11.7906 6.46957 11.5836 5.96086 11.2151 5.58579C10.8465 5.21071 10.3467 5 9.82552 5C9.30434 5 8.80451 5.21071 8.43598 5.58579C8.06745 5.96086 7.86041 6.46957 7.86041 7H5.89531C5.89531 5.93913 6.30938 4.92172 7.04644 4.17157C7.7835 3.42143 8.78316 3 9.82552 3C10.8679 3 11.8675 3.42143 12.6046 4.17157C13.3417 4.92172 13.7557 5.93913 13.7557 7C13.7543 7.84324 13.4259 8.65183 12.842 9.25ZM10.8081 17H8.84297V15H10.8081M9.82552 0C8.53521 0 7.25754 0.258658 6.06545 0.761205C4.87337 1.26375 3.79021 2.00035 2.87783 2.92893C1.03519 4.8043 0 7.34784 0 10C0 12.6522 1.03519 15.1957 2.87783 17.0711C3.79021 17.9997 4.87337 18.7362 6.06545 19.2388C7.25754 19.7413 8.53521 20 9.82552 20C12.4314 20 14.9306 18.9464 16.7732 17.0711C18.6158 15.1957 19.651 12.6522 19.651 10C19.651 4.47 15.2296 0 9.82552 0Z" fill="black"></path>
+</svg>
+<div class="bottom">
+<p>Expand any one approach by clicking the given options in the bar. Clicking one approach on bar,
+closes all other expands. You can manually expand more than one approach at a time</p>
+<i></i>
+</div>
+</div>
+</div>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Approaches Drop-Down -->
+<div class="dsa_article_dropdown_approachs">
+<!-- Brute Force Approach Starts from here -->
+<div id="brute-force-approach">
+<details>
+<summary class="main-summary">
+<span>
+Brute Force Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition of Brute Force Apporach Here -->
+<p>A brute-force approach involves replacing data in a doubly linked list. First, we traverse the list and store node data in a stack. Then, in a second pass, we assign elements from the stack to nodes, ensuring a reverse order replacement since stacks follow the <strong>Last-In-First-Out (LIFO)</strong> principle.</p>
+<h3><strong>Algorithm:</strong> </h3>
+<p>Step 1: Initialization a <strong>temp</strong> pointer to the <strong>head</strong> of the doubly linked list and a <strong>stack</strong> data structure to store the values from the list.</p>
+<figure class="wp-block-image size-large"><img alt="" class="wp-image-12957" src="assets/fca8e3e0609d6ea08b8e709d403b4e07.png"/></figure>
+<p><strong>Step 2:</strong> <strong>Traverse</strong> the doubly linked list with the <strong>temp</strong> pointer and while traversing push the value<strong> </strong>at the <strong>current</strong> <strong>node</strong> <strong>temp</strong> onto the stack. Move the <strong>temp</strong> to the <strong>next</strong> <strong>node</strong> continuing <strong>until temp reaches null</strong> indicating the end of the list.</p>
+<figure class="wp-block-image size-large"><img alt="" class="wp-image-12958" src="assets/8a43ee2d32c26f7ff472d8fbb1aa2529.jpg"/></figure>
+<p><strong>Step 3:</strong> <strong>Reset </strong>the<strong> temp </strong>pointer back to the <strong>head</strong> of the list and in thissecond iteration <strong>pop the element </strong>from the stack, replace the data at the <strong>current node</strong> with the popped value from the<strong> top </strong>of the stack and move temp to the next node. Repeat this step until temp reaches <strong>null</strong> or the<strong> stack </strong>becomes<strong> empty.</strong></p>
+<figure class="wp-block-image size-large"><img alt="" class="wp-image-12959" src="assets/24837c29d391a715e5f14d9b9b5f3e7c.jpg"/></figure>
+<p></p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+// Define a Node class for doubly linked list
+class Node {
+public:
+    // Data stored in the node
+    int data;   
+    // Pointer to the next node in the list 
+    //(forward direction)
+    Node* next;     
+    // Pointer to the previous node in the list
+    //(backward direction)
+    Node* back;     
+
+    // Constructor for a Node with both data,
+    //a reference to the next node,
+    //and a reference to the previous node
+    Node(int data1, Node* next1, Node* back1) {
+        data = data1;
+        next = next1;
+        back = back1;
+    }
+
+    // Constructor for a Node with data,
+    //and no references to the next and
+    //previous nodes (end of the list)
+    Node(int data1) {
+        data = data1;
+        next = nullptr;
+        back = nullptr;
+    }
+};
+
+// Function to convert an array
+// to a doubly linked list
+Node* convertArr2DLL(vector&lt;int&gt; arr) {
+    // Create the head node with
+    //the first element of the array
+    
+    Node* head = new Node(arr[0]);
+    
+    // Initialize 'prev' to the head node
+    Node* prev = head;            
+
+    for (int i = 1; i &lt; arr.size(); i++) {
+        // Create a new node with data from the
+        //array and set its 'back' pointer to
+        //the previous node
+        
+        Node* temp = new Node(arr[i], nullptr, prev);
+        // Update the 'next' pointer of the
+        //previous node to point to
+        //the new node
+        prev-&gt;next = temp; 
+         // Move 'prev' to the newly created
+         //node for the next iteration
+        prev = temp;       
+    }
+    // Return the head of the doubly linked list
+    return head;  
+}
+
+// Function to print the elements
+//of the doubly linked list
+void print(Node* head) {
+    while (head != nullptr) {
+        // Print the data in the tail node
+        cout &lt;&lt; head-&gt;data &lt;&lt; " ";  
+         // Move to the next node
+        head = head-&gt;next;         
+    }
+}
+
+ 
+// Funcion to reverse a doubly linked list
+// Stack Brute Force Approach
+Node* reverseDLL(Node* head){
+    // if head is empty or there is only one element
+    // we can directly just return the head
+    if(head==NULL || head-&gt;next == NULL){
+        return head;
+    }
+    
+    // Initialise a stack st
+    stack&lt;int&gt; st;
+    
+    // Initialise the node pointer temp at head
+    Node* temp = head;
+    
+    // Traverse the doubly linked list via the temp pointer
+    while(temp!=NULL){
+        // insert the data of the current node into the stack
+        st.push(temp-&gt;data);
+        // traverse further
+        temp = temp-&gt;next;
+    }
+    
+    // Reinitialise temp to head
+    temp = head;
+    
+    // Second iteration of the DLL to replace the values
+    while(temp!=NULL){
+        // Replace the value pointed via temp with
+        // the value from the top of the stack
+        temp-&gt;data = st.top();
+        // Pop the value from the stack
+        st.pop();
+        // Traverse further
+        temp = temp-&gt;next;
+    }
+    
+    // Return the updated doubly linked 
+    // where the values of nodes from both ends 
+    // has been swapped
+    return head;
+
+}
+
+
+int main() {
+    vector&lt;int&gt; arr = {12, 5, 8, 7, 4};
+    Node* head = convertArr2DLL(arr);
+    cout &lt;&lt; endl &lt;&lt; "Doubly Linked List Initially:  " &lt;&lt; endl;
+    print(head);
+    cout &lt;&lt; endl &lt;&lt; "Doubly Linked List After Reversing " &lt;&lt; endl;
+    
+     // Insert a node with value 10 at the end
+    head = reverseDLL(head);
+    print(head);
+}
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.Stack;
+
+public class DLinkedList {
+    public static class Node {
+        // Data stored in the node
+        public int data;
+        // Reference to the next node
+        //in the list (forward direction)
+        public Node next;
+        // Reference to the previous nod
+        //in the list (backward direction)
+        public Node back;
+
+        // Constructor for a Node with both data, 
+        //a reference to the next node, and a
+        //reference to the previous node
+        public Node(int data1, Node next1, Node back1) {
+            data = data1;
+            next = next1;
+            back = back1;
+        }
+
+        // Constructor for a Node with data,
+        //and no references to the next and
+        //previous nodes (end of the list)
+        public Node(int data1) {
+            data = data1;
+            next = null;
+            back = null;
+        }
+    }
+
+    private static Node convertArr2DLL(int[] arr) {
+        // Create the head node with the
+        //first element of the array
+        Node head = new Node(arr[0]);
+        // Initialize 'prev' to the head node
+        Node prev = head;
+
+        for (int i = 1; i &lt; arr.length; i++) {
+            // Create a new node with data from
+            // the array and set its 'back' pointer
+            // to the previous node
+            
+            Node temp = new Node(arr[i], null, prev);
+            // Update the 'next' pointer of the
+            // previous node to point to the new node
+            
+            prev.next = temp;
+            // Move 'prev' to the newly created node
+            //for the next iteration
+            prev = temp;
+        }
+        // Return the head of the doubly linked list
+        return head;
+    }
+
+    private static void print(Node head) {
+        while (head != null) {
+            // Print the data in the current node
+            System.out.print(head.data + " ");
+            // Move to the next node
+            head = head.next; 
+        }
+        System.out.println();
+    }
+    
+        // Initialise a stack st
+    Stack&lt;Integer&gt; st = new Stack&lt;&gt;();
+    
+    // Initialise the node pointer temp at head
+    Node temp = head;
+    
+    // Traverse the doubly linked list via the temp pointer
+    while(temp!=null){
+        // insert the data of the current node into the stack
+        st.push(temp.data);
+        // traverse further
+        temp = temp.next;
+    }
+    
+    // Reinitialise temp to head
+    temp = head;
+    
+    // Second iteration of the DLL to replace the values
+    while(temp!=null){
+        // Replace the value pointed via temp with
+        // the value from the top of the stack and pop it
+        temp.data = st.pop();
+
+        // Traverse further
+        temp = temp.next;
+    }
+    
+    // Return the updated doubly linked 
+    // where the values of nodes from both ends 
+    // has been swapped
+    return head;
+
+    }
+
+    
+
+    public static void main(String[] args) {
+        int[] arr = {12, 5, 6, 8, 4};
+        // Convert the array to a doubly linked list
+        Node head = convertArr2DLL(arr);
+
+        // Print the doubly linked list
+        System.out.println(“Doubly Linked List Initially:  “);
+        print(head);
+
+        System.out.println("Doubly Linked List After Reversing :");
+
+        head = reverseDLL(head);
+        print(head);
+
+    }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+class Node:
+    def __init__(self, data, next_node=None, back_node=None):
+        # Data stored in the node
+        self.data = data
+        # Reference to the next node
+        # in the list (forward direction)
+        self.next = next_node
+        # Reference to the previous node
+        # in the list (backward direction)
+        self.back = back_node
+
+def convert_arr_to_dll(arr):
+    # Create the head node with
+    # the first element of the array
+    head = Node(arr[0])
+    # Initialize 'prev' to the head node
+    prev = head
+
+    for i in range(1, len(arr)):
+        # Create a new node with data from the
+        # array and set its 'back' pointer
+        # to the previous node
+        temp = Node(arr[i], None, prev)
+        
+        # Update the 'next' pointer of the
+        # previous node to point to the new node
+        prev.next = temp
+        # Move 'prev' to the newly created 
+        # node for the next iteration
+        prev = temp
+
+    # Return the head of the doubly linked list
+    return head
+
+def print_dll(head):
+    while head is not None:
+        # Print the data in the current node
+        print(head.data, end=" ")
+        # Move to the next node
+        head = head.next
+    print()
+
+
+def reverse_dll(head):
+    # If head is empty or there is only
+    # one element, return the head directly
+    if head is None or head.next is None:
+        return head
+
+    # Initialize a stack to store values
+    st = []
+    # Initialize the node pointer
+    #'temp' at head
+    temp = head
+
+    # Traverse the doubly linked list
+    # via the 'temp' pointer
+    while temp is not None:
+        # Insert the data of the current
+        # node into the stack
+        st.append(temp.data)
+        # Traverse further
+        temp = temp.next
+
+    # Reinitialize 'temp' to head
+    temp = head
+
+    # Second iteration of the DLL
+    # to replace the values
+    while temp is not None:
+        # Replace the value pointed to
+        # by 'temp' with the value from
+        # the top of the stack and pop it
+        temp.data = st.pop()
+        # Traverse further
+        temp = temp.next
+
+    # Return the updated doubly linked list
+    # where the values of nodes from both
+    # ends have been swapped
+    return head
+
+
+# Example usage:
+arr = [12, 5, 6, 8, 4]
+# Convert the array to a
+# doubly linked list
+head = convert_arr_to_dll(arr)
+# Print the doubly linked list
+print('Doubly Linked List Initially:  ')
+print_dll(head)
+
+print('Doubly Linked List After Reversing :')
+
+# Reverse the doubly linked list
+head = reverse_dll(head)
+# Print the reversed doubly linked list
+print_dll(head)
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+// Define the Node class for a doubly linked list
+class Node {
+    constructor(data, next, back) {
+        this.data = data;
+        this.next = next;
+        this.back = back;
+    }
+}
+
+// Function to convert an array
+// to a doubly linked list
+function convertArr2DLL(arr) {
+    // Create the head node with 
+    // the first element of the array
+    let head = new Node(arr[0]);
+    // Initialize 'prev' to the head node
+    let prev = head;
+
+    for (let i = 1; i &lt; arr.length; i++) {
+        // Create a new node with data from
+        // the array and set its 'back' pointer
+        // to the previous node
+        let temp = new Node(arr[i], null, prev);
+        // Update the 'next' pointer of the
+        // previous node to point to the new node
+        prev.next = temp;
+        // Move 'prev' to the newly created
+        // node for the next iteration
+        prev = temp;
+    }
+    // Return the head of the
+    // doubly linked list
+    return head;
+}
+
+// Function to print the elements
+// of the doubly linked list
+function print(head) {
+    while (head !== null) {
+        // Print the data in the current node
+        console.log(head.data + " ");
+        // Move to the next node
+        head = head.next;
+    }
+    console.log();
+}
+
+// Function to reverse the data of a doubly linked list
+function reverseDLL(head) {
+    if (head === null || head.next === null) {
+        // If the list is empty or has only one element, no need to reverse
+        return head;
+    }
+
+    let st = []; // Create a stack to store data temporarily
+    let temp = head;
+
+    // First iteration: Push data into the stack while traversing
+    while (temp !== null) {
+        st.push(temp.data);
+        temp = temp.next;
+    }
+
+    temp = head;
+
+    // Second iteration: Pop data from the stack and update the list's nodes
+    while (temp !== null) {
+        temp.data = st.pop();
+        temp = temp.next;
+    }
+
+    return head;
+}
+
+const arr = [12, 5, 6, 8, 4];
+// Convert the array to a doubly linked list
+let head = convertArr2DLL(arr);
+// Print the doubly linked list
+console.log("Doubly Linked List Initially:  ");
+print(head);
+
+console.log("Doubly Linked List After Reversing :");
+
+head = reverseDLL(head);
+print(head);
+
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Brute Force Here -->
+<strong>Output:</strong> 
+Doubly Linked List Initially:  
+12 5 6 8 4 
+Doubly Linked List After Reversing :
+4 8 6 5 12
+
+</p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Brute Force Here -->
+Time Complexity : O(2N) During the first traversal, each node's value is pushed into the stack once, which requires O(N) time. Then, during the second iteration, the values are popped from the stack and used to update the nodes.
+Space Complexity : O(N) This is because we are using an external stack data structure. At the end of the first iteration, the stack will hold all N values of the doubly linked list therefore the space required for stack is directly proportional to the size of the input doubly linked list.
+</p>
+</details>
+</div>
+</details>
+</div>
+<!-- Brute Force Approach Ends here -->
+<!-- Optimal Approach Starts from here -->
+<div id="optimal-approach">
+<details>
+<summary class="main-summary">
+<span>
+Optimal Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm of Better Approach Here -->
+<h3><strong>Reverse the Links in a Single Traversal</strong></h3>
+<p>Instead of performing two separate traversals of the linked list and storing its node values in an external data structure, we can <strong>optimize</strong> our approach by directly <strong>modifying the links between the nodes </strong>within the doubly linked list <strong>in place</strong>, as visualized below:</p>
+<figure class="wp-block-image size-large"><img alt="" class="wp-image-12962" src="assets/e18929c0bb4d489333eaa541abc1cf50.png"/></figure>
+<p>We need to traverse on every node, and for every node change the next pointer and back pointer. If we can do this for all nodes, at the end of traversal, the doubly linked list will be reversed.</p>
+<figure class="wp-block-image size-large"><img alt="" class="wp-image-12963" src="assets/8cf6723ece1b26f8a902651597444f2f.png"/></figure>
+<h3><strong>Algorithm:</strong></h3>
+<p><strong>Step 1</strong>: Initialise <strong>two pointers</strong> that are needed for the reversal. Initialize a <strong>current</strong> pointer to the <strong>head</strong> of the linked list. This pointer will <strong>traverse</strong> the list as we <strong>reverse</strong> it. Initialize a second pointer <strong>last</strong> to null. This pointer will be used for <span style="background-color: rgba(48, 48, 48, 0.2);"><b>temporary s</b></span><strong>torage</strong> during <strong>pointer swapping, </strong>as we need a third variable while swapping two data<strong>.</strong></p>
+<figure class="wp-block-image size-large"><img alt="" class="wp-image-12964" src="assets/646e66d7ce8ee8a5827c09fbd5f66417.png"/></figure>
+<p><strong>Step 2: </strong>Traverse through the DLL by looping over all the nodes.<strong>.</strong></p>
+<p><strong>Step 3: </strong>While iterating over all nodes in the linked list, we make changes to set the <strong>backward</strong> pointer of a node to the <strong>next</strong> changing its <strong>previous</strong> <strong>link</strong>. Along with this, the <strong>forward</strong> pointer is adjusted to point to the <strong>previous</strong> node, reversing the <strong>next</strong> <strong>link</strong>. To prevent losing the last node in this process, we use a <strong>reference</strong> to the <strong>last</strong> <strong>node</strong> to retain it.</p>
+<figure class="wp-block-image size-large"><img alt="" class="wp-image-12965" src="assets/af6e9cf1b719c02168271c2e5cfbe59c.png"/></figure>
+<ul><li>Update the <strong>current</strong> <strong>node's</strong> <strong>back</strong> pointer to point to the <strong>next</strong> <strong>node</strong> (c<strong>urrent-&gt;back = current-&gt;next</strong>). This step reverses the direction of the <strong>backward</strong> pointer.</li></ul>
+<figure class="wp-block-image size-large"><img alt="" class="wp-image-12966" src="assets/01cf32549ecbb1f6e34d48c14e714494.png"/></figure>
+<ul><li>Update the <strong>current</strong> <strong>node's</strong> <strong>next</strong> pointer to point to the <strong>previous</strong> <strong>node</strong> (current-&gt;next = last). This step r<strong>everses the direction of the forward pointer.</strong></li></ul>
+<figure class="wp-block-image size-large"><img alt="" class="wp-image-12967" src="assets/306b8b804ffabd758bd1ecac9b237695.png"/></figure>
+<ul><li>Move the current pointer <strong>one step forward </strong>(current = current-&gt;back). This allows us to continue the reversal process.</li></ul>
+<p><strong>Step 4:</strong> After completing the traversal, the <strong>last</strong> node ends up at the <strong>second</strong> <strong>node</strong> in the reversed doubly linked list. To obtain the <strong>new</strong> <strong>head</strong> of the reversed list, we simply use the <strong>backward</strong> <strong>pointer</strong> of the <strong>last</strong> <strong>node</strong>, which points to the <strong>new</strong> <strong>head</strong>.</p>
+<p>To ensure that we handle the case where the traversal ended at the original list's end (i.e., the last pointer is not null), we <strong>update</strong> the <strong>head</strong> <strong>pointer</strong> to point to the <strong>new</strong> <strong>head</strong> of the reversed list, which is stored in the <strong>last</strong> <strong>pointer</strong>.</p>
+<p>Finally, we return the <strong>head</strong> <strong>pointer</strong>, now pointing to the head of the fully reversed doubly linked list.</p>
+<figure class="wp-block-image size-large"><img alt="" class="wp-image-12968" src="assets/c8b19f2e2fbbce57cca2bb8d3d868877.jpg"/></figure>
+<p></p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;iostream&gt;
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+// Define a Node class for doubly linked list
+class Node {
+public:
+    // Data stored in the node
+    int data;   
+    // Pointer to the next node in the list 
+    //(forward direction)
+    Node* next;     
+    // Pointer to the previous node in the list
+    //(backward direction)
+    Node* back;     
+
+    // Constructor for a Node with both data,
+    //a reference to the next node,
+    //and a reference to the previous node
+    Node(int data1, Node* next1, Node* back1) {
+        data = data1;
+        next = next1;
+        back = back1;
+    }
+
+    // Constructor for a Node with data,
+    //and no references to the next and
+    //backious nodes (end of the list)
+    Node(int data1) {
+        data = data1;
+        next = nullptr;
+        back = nullptr;
+    }
+};
+
+// Function to convert an array
+// to a doubly linked list
+Node* convertArr2DLL(vector&lt;int&gt; arr) {
+    // Create the head node with
+    //the first element of the array
+    
+    Node* head = new Node(arr[0]);
+    
+    // Initialize 'prev' to the head node
+    Node* prev = head;            
+
+    for (int i = 1; i &lt; arr.size(); i++) {
+        // Create a new node with data from the
+        //array and set its 'back' pointer to
+        //the previous node
+        
+        Node* temp = new Node(arr[i], nullptr, prev);
+        // Update the 'next' pointer of the
+        //previous node to point to
+        //the new node
+        prev-&gt;next = temp; 
+         // Move 'prev' to the newly created
+         //node for the next iteration
+        prev = temp;       
+    }
+    // Return the head of the doubly linked list
+    return head;  
+}
+
+// Function to print the elements
+//of the doubly linked list
+void print(Node* head) {
+    while (head != nullptr) {
+        // Print the data in the tail node
+        cout &lt;&lt; head-&gt;data &lt;&lt; " ";  
+         // Move to the next node
+        head = head-&gt;next;         
+    }
+}
+
+ 
+// Function to reverse a doubly linked list
+// In-place link exchange method
+Node* reverseDLL(Node* head) {
+    
+    // Check if the list is empty
+    // or has only one node
+    if (head == NULL || head-&gt;next == NULL) {
+        // No change is needed;
+        // return the current head
+        return head; 
+    }
+    
+     // Initialize a pointer to
+     // the previous node
+    Node* prev = NULL;  
+    
+    // Initialize a pointer to
+    // the current node
+    Node* current = head;   
+
+    // Traverse the linked list
+    while (current != NULL) {
+        // Store a reference to
+        // the previous node
+        prev = current-&gt;back; 
+        
+        // Swap the previous and
+        // next pointers
+        current-&gt;back = current-&gt;next; 
+        
+        // This step reverses the links
+        current-&gt;next = prev;          
+        
+        // Move to the next node
+        // in the original list
+        current = current-&gt;back; 
+    }
+    
+    // The final node in the original list
+    // becomes the new head after reversal
+    return prev-&gt;back;
+}
+
+
+int main() {
+    vector&lt;int&gt; arr = {12, 5, 8, 7, 4};
+    Node* head = convertArr2DLL(arr);
+    cout &lt;&lt; endl &lt;&lt; "Doubly Linked List Initially:  " &lt;&lt; endl;
+    print(head);
+    cout &lt;&lt; endl &lt;&lt; "Doubly Linked List After Reversing " &lt;&lt; endl;
+    
+     // Insert a node with value 10 at the end
+    head = reverseDLL(head);
+    print(head);
+
+    return 0;
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.Stack;
+
+public class DLinkedList {
+    public static class Node {
+        // Data stored in the node
+        public int data;
+        // Reference to the next node
+        //in the list (forward direction)
+        public Node next;
+        // Reference to the previous nod
+        //in the list (backward direction)
+        public Node back;
+
+        // Constructor for a Node with both data, 
+        //a reference to the next node, and a
+        //reference to the previous node
+        public Node(int data1, Node next1, Node back1) {
+            data = data1;
+            next = next1;
+            back = back1;
+        }
+
+        // Constructor for a Node with data,
+        //and no references to the next and
+        //previous nodes (end of the list)
+        public Node(int data1) {
+            data = data1;
+            next = null;
+            back = null;
+        }
+    }
+
+    private static Node convertArr2DLL(int[] arr) {
+        // Create the head node with the
+        //first element of the array
+        Node head = new Node(arr[0]);
+        // Initialize 'prev' to the head node
+        Node prev = head;
+
+        for (int i = 1; i &lt; arr.length; i++) {
+            // Create a new node with data from
+            // the array and set its 'back' pointer
+            // to the previous node
+            
+            Node temp = new Node(arr[i], null, prev);
+            // Update the 'next' pointer of the
+            // previous node to point to the new node
+            
+            prev.next = temp;
+            // Move 'prev' to the newly created node
+            //for the next iteration
+            prev = temp;
+        }
+        // Return the head of the doubly linked list
+        return head;
+    }
+
+    private static void print(Node head) {
+        while (head != null) {
+            // Print the data in the current node
+            System.out.print(head.data + " ");
+            // Move to the next node
+            head = head.next; 
+        }
+        System.out.println();
+    }
+    
+    private static Node reverseDLL(Node head) {
+        // Check if the list is empty
+        // or has only one node
+        if (head == null || head.next == null) {
+            // No change is needed;
+            // return the current head
+            return head; 
+        }
+        
+         // Initialize a pointer to
+         // the previous node        
+        Node prev = null;
+        
+        // Initialize a pointer to
+        // the current node
+        Node current = head;
+        
+        // Traverse the linked list
+        while (current != null) {
+            
+            // Store a reference to
+            // the previous node
+            prev = current.back;
+            
+            // Swap the previous and
+            // next pointers
+            current.back = current.next;
+            
+            // This step reverses the links
+            current.next = prev;
+            
+            // Move to the next node
+            // in the orignal list
+            
+            current = current.back;
+        }
+
+        // The final node in the original list
+        // becomes the new head after reversal
+        return prev.back;
+    }
+
+    
+
+    public static void main(String[] args) {
+        int[] arr = {12, 5, 6, 8, 4};
+        // Convert the array to a doubly linked list
+        Node head = convertArr2DLL(arr);
+
+        // Print the doubly linked list
+        System.out.println(“Doubly Linked List Initially:  “);
+        print(head);
+
+        System.out.println("Doubly Linked List After Reversing :");
+
+        head = reverseDLL(head);
+        print(head);
+
+    }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+class Node:
+    def __init__(self, data, next_node=None, back_node=None):
+        # Data stored in the node
+        self.data = data
+        # Reference to the next node
+        # in the list (forward direction)
+        self.next = next_node
+        # Reference to the previous node
+        # in the list (backward direction)
+        self.back = back_node
+
+def convert_arr_to_dll(arr):
+    # Create the head node with
+    # the first element of the array
+    head = Node(arr[0])
+    # Initialize 'prev' to the head node
+    prev = head
+
+    for i in range(1, len(arr)):
+        # Create a new node with data from the
+        # array and set its 'back' pointer
+        # to the previous node
+        temp = Node(arr[i], None, prev)
+        
+        # Update the 'next' pointer of the
+        # previous node to point to the new node
+        prev.next = temp
+        # Move 'prev' to the newly created 
+        # node for the next iteration
+        prev = temp
+
+    # Return the head of the doubly linked list
+    return head
+
+def print_dll(head):
+    while head is not None:
+        # Print the data in the current node
+        print(head.data, end=" ")
+        # Move to the next node
+        head = head.next
+    print()
+
+def reverse_dll(head):
+    # Check if the list is empty
+    # or has only one node
+    if head is None or head.next is None:
+        # No change is needed;
+        # return the current head
+        return head
+    
+    # Initialize a pointer to
+    # the previous node
+    prev = None  
+    
+    # Initialize a pointer
+    # to the current node
+    current = head  
+
+    # Traverse the linked list
+    while current is not None:
+        
+        # Store a reference to
+        # the previous node
+        prev = current.back 
+
+        # Swap the previous and next pointers
+        current.back = current.next
+        
+         # This step reverses the links
+        current.next = prev 
+        
+        # Move to the next node
+        # in the original list
+        current = current.back  
+
+    # The final node in the original list
+    # becomes the new head after reversal
+    return prev.back
+
+# Example usage:
+arr = [12, 5, 6, 8, 4]
+# Convert the array to a
+# doubly linked list
+head = convert_arr_to_dll(arr)
+# Print the doubly linked list
+print('Doubly Linked List Initially:  ')
+print_dll(head)
+
+print('Doubly Linked List After Reversing :')
+
+# Reverse the doubly linked list
+head = reverse_dll(head)
+# Print the reversed doubly linked list
+print_dll(head)
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+// Define the Node class for a doubly linked list
+class Node {
+    constructor(data, next, back) {
+        this.data = data;
+        this.next = next;
+        this.back = back;
+    }
+}
+
+// Function to convert an array
+// to a doubly linked list
+function convertArr2DLL(arr) {
+    // Create the head node with 
+    // the first element of the array
+    let head = new Node(arr[0]);
+    // Initialize 'prev' to the head node
+    let prev = head;
+
+    for (let i = 1; i &lt; arr.length; i++) {
+        // Create a new node with data from
+        // the array and set its 'back' pointer
+        // to the previous node
+        let temp = new Node(arr[i], null, prev);
+        // Update the 'next' pointer of the
+        // previous node to point to the new node
+        prev.next = temp;
+        // Move 'prev' to the newly created
+        // node for the next iteration
+        prev = temp;
+    }
+    // Return the head of the
+    // doubly linked list
+    return head;
+}
+
+// Function to print the elements
+// of the doubly linked list
+function print(head) {
+    while (head !== null) {
+        // Print the data in the current node
+        console.log(head.data + " ");
+        // Move to the next node
+        head = head.next;
+    }
+    console.log();
+}
+
+// Function to reverse a doubly linked list
+function reverseDLL(head) {
+    // Check if the list is empty
+    // or has only one node
+    if (head === null || head.next === null) {
+        // No change is needed;
+        // return the current head
+        return head;
+    }
+    
+    // Initialize a pointer to
+    // the previous node
+    let prev = null; 
+    
+    // Initialize a pointer
+    // to the current node
+    let current = head; 
+
+    // Traverse the linked list
+    while (current !== null) {
+        // Store a reference to
+        // the previous node
+        prev = current.prev;
+
+        // Swap the previous
+        // and next pointers
+        current.prev = current.next;
+        
+         // This step reverses the links
+        current.next = prev;
+
+        // Move to the next node
+        // in the original list
+        current = current.prev; 
+    }
+
+    // The final node in the original
+    // list becomes the new head after reversal
+    return prev.prev;
+}
+
+const arr = [12, 5, 6, 8, 4];
+// Convert the array to a doubly linked list
+let head = convertArr2DLL(arr);
+// Print the doubly linked list
+console.log("Doubly Linked List Initially:  ");
+print(head);
+
+console.log("Doubly Linked List After Reversing :");
+
+head = reverseDLL(head);
+print(head);
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Optimal Apporach Here -->
+<strong>Output:</strong> 
+Doubly Linked List Initially:  
+12 5 6 8 4 
+Doubly Linked List After Reversing :
+4 8 6 5 12
+
+</p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Optimal Approach-->
+</p><p><strong>Time Complexity : O(N) </strong>We only have to <strong>traverse</strong> the doubly linked list <strong>once</strong>, hence our time complexity is O(N).</p>
+<p><strong>Space Complexity : O(1), </strong>as the reversal is done in place.</p>
+<p></p>
+</details>
+</div>
+</details>
+</div>
+<!-- Optimal Approach Starts from here -->
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Video Explination Drop-Down -->
+<div class="dsa_article_youtube_video" id="dsa_article_video_explanation">
+<details>
+<summary class="main-summary">
+<span>
+Video Explanation
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="yt-video-wrapper">
+<!-- Insert iframe embed Link of Youtube Video-->
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" class="lazy-loaded" data-lazy-type="iframe" data-src="https://www.youtube.com/embed/u3WUW2qe6ww?si=xGoLY3QIqFycpPlo" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/u3WUW2qe6ww?feature=oembed" title="Reverse a Doubly Linked List" width="810"></iframe><noscript>
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/u3WUW2qe6ww?si=xGoLY3QIqFycpPlo" title="Reverse a Doubly Linked List" width="810"></iframe></noscript>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script>
+
+const codeSections = document.querySelectorAll('.code-section');
+
+// Get last selected language from localStorage or set default value
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+// Update last selected language for all sections and store in localStorage
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+// Handle copy button click event
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+// Set initial state of the tabs
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<script>
+const codeSections = document.querySelectorAll('.code-section');
+
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<link href="assets/4237ffca7ce6aadb438c457e0a675b12.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+<script src="index.js"></script>
+<script>hljs.highlightAll();</script>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script src="https://takeuforward.org/UXApproachDropDowns/2ApproachJSScript.js"></script>
+<!-- /wp:html -->
+<!-- wp:paragraph -->
+<p>In case you are learning DSA, you should definitely check out our free <a href="https://takeuforward.org/strivers-a2z-dsa-course/strivers-a2z-dsa-course-sheet-2/">A2Z DSA Course</a> with videos and blogs.</p>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to </em><strong><a href="https://www.linkedin.com/in/gauri-tomar-005048268" rel="noreferrer noopener" target="_blank">Gauri Tomar</a></strong><em> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Making a Large Island - DSU: G-52</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Making a Large Island - DSU: G-52</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement:</strong> You are given an n x n binary grid. A grid is said to be binary if every value in the grid is either 1 or 0. You can change at most one cell in the grid from 0 to 1. You need to find the largest group of connected  1's. Two cells are said to be connected if both are adjacent to each other and both have the same value.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Pre-requisite: </strong><a href="https://takeuforward.org/data-structure/disjoint-set-union-by-rank-union-by-size-path-compression-g-46/">Disjoint Set data structure</a></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Example 1</strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<pre>
+<b>Input Format:</b> The following grid is given:
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7112" src="assets/11e991c4f5721b2e9f4e67438880e0c5.png"/></figure>
+<b>Result:</b> 20
+<b>Explanation:</b> We can get the largest group of 20 connected 1s if we change the (2,2) to 1. The groups are shown with colored cells.
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7113" src="assets/45cf3c78928e25cad6f27b7953907555.png"/></figure>
+</pre>
+<!-- /wp:html -->
+<!-- wp:paragraph -->
+<p><strong>Example 2</strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<b>Input Format:</b> The following grid is given:
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7114" src="assets/b4d2f2de882bcbc002463237c1d6a73e.png"/></figure>
+<b>Result:</b> 11
+<b>Explanation:</b> We can get the largest group of 11 connected 1s if we change the (3,0) to 1. The groups are shown with colored cells.
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7115" src="assets/bff9cd82ec231b647b70e9367c36903f.png"/></figure>
+<!-- /wp:html -->
+<!-- wp:paragraph -->
+<p><span class="has-inline-color has-accent-color"><strong><em>Disclaimer</em></strong>: <em>Don't jump directly to the solution, try it out yourself first. </em></span></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><a href="https://practice.geeksforgeeks.org/problems/maximum-connected-group/1?utm_source=youtube&amp;utm_medium=collab_striver_ytdescription&amp;utm_campaign=maximum-connected-group" rel="noopener" target="_blank" title=""><em>Problem Link</em></a><em>.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Solution:</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>Before moving on to the solution, let’s quickly discuss some points about the question. First, we need to remember that a group means a group of cells with the value 1 such that they share a common side. If we look into it from the matrix view, the statement actually means that two cells with value 1 are considered a single group if one of them is located in any of the four directions (Up, Down, Left, Right) of the other cell. But two diagonal adjacent cells will not be considered a single group rather they will be counted as different groups. The following illustration will depict the concept:</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7116,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7116" src="assets/545f59e9f3fb1d3b7603a3095ecb13b7.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>Here cells [0,0] and [0,1] are considered a single group as they share a common side but cells [0,1] and [1,2] must be considered two different groups as they do not have any common side.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Now, we need to discuss the approach with which we are trying to solve this question. Here, we are selecting the cells with value 0 one at a time, then placing the value 1 to that selected cell and finally, we are trying to connect the cells to get the largest possible group of connected 1’s.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Basically, we are checking the largest group of connected 1’s we can get by changing each possible cell with the value 0 one at a time.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>So, here is a concept of connecting cells as well as dynamically changing the matrix. We can imagine this matrix as a dynamic graph. So, from these observations, we can easily decide to choose the<strong> </strong><a href="https://takeuforward.org/data-structure/disjoint-set-union-by-rank-union-by-size-path-compression-g-46/">Disjoint Set data structure</a> to solve this problem.  </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Let’s discuss the following observations:</p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Observation 1: </strong><strong><em>How to connect cells to include them in the same group.</em></strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>Generally, a cell is represented by two parameters i.e. row and column. But to connect the cells as we have done with nodes, we need to first represent each cell with a single number. So, we will number them from 0 to n*m-1(from left to right) where n = no. of total rows and m = total no. of columns.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>For example, if a 5X4 matrix is given we will number the cell in the following way:</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7117,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7117" src="assets/07c08b7f54d346ac161da71cda041477.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>Now if we want to connect cells (1,0) and (2,0), we will just perform a union of 5 and 10. The number for representing each cell can be found using the following formula:<br/>node number = (row of the current cell*total number of columns)+column of the current cell for example, for the cell (2, 0) the number is = (2*5) + 0 = 10.</p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Observation 2: </strong><strong><em>How to find the cell in which if we invert the value, we will get the largest possible group of connected 1s.</em></strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>In order to find the cell, we will follow the brute force approach. We will check for every possible cell with a value of 0 one by one and we will try to figure out the largest group we can get after inverting that particular cell to 1 in each case. Among all the answers we will find the cell that creates the largest possible group.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong><em>Now, with these two observations, the following is our first approach</em></strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>We will first invert a cell from the value 0 to 1 and will check all its four adjacent cells(Up, Down, Left, Right). If any component/group exists, we will just connect the current cell to that adjacent component and add the component’s size to our answer. Finally, checking all four cells, we will add an extra 1 to our answer for the current cell being included in the group, and then we will get the total size of the newly created group. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong><em>But</em></strong> <strong><em>How to get the size of an existing group/component of connected 1s:</em></strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>In order to get the size of the existing groups, first, we need to create the existing group by connecting the cells with the value 1. To do so we will do a union of the two node numbers calculated using the above-specified formula if the cells contain 1 and they share a common side. Now after connecting all such cells we will get the different existing components.<br/>Now <strong><em>to find the size of the components</em></strong>, we will just find their ultimate parents and refer to the ultimate parent index of the size array inside the Disjoint Set data structure(size[ultimateParent]).</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Thus we can calculate the size of the components/groups. But there exists an edge case in this approach.</p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Edge Case:</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>Here is the edge case. Let’s understand it using the following example.</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7118,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7118" src="assets/84cc0009f1bb58e5b3b3e45013b7300f.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>In this given grid, we will check for every cell with the value 0. When we come to cell (3,3), we will check all four adjacent cells to get the components’ sizes. Now it will first add the component of size 7 in our answer while checking the left cell and will again add the same component while checking the downward cell. This is where the answer gets incorrect. <strong><em>So, to avoid this edge case,</em></strong> <strong><em>instead of adding the component sizes to our answer we will store the ultimate parents in a set data structure</em></strong>. This process will automatically discard the case of adding duplicate components. After that, to get the size of the ultimate parents we will just refer to the ultimate parent index of the size array inside the Disjoint Set data structure(size[ultimateParent]). Thus we will get the final answer.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Approach</strong>: </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The algorithm steps are as follows (<strong><em>step 3 is very important</em></strong>):</p>
+<!-- /wp:paragraph -->
+<!-- wp:list {"ordered":true} -->
+<ol><li>Our first objective is to connect all the nodes that have formed groups. In order to do so, we will visit each cell of the grid and check if it contains the value 1.<ol><li>If the value is 1, we will check all four adjacent cells of the current cell. If we find any adjacent cell with the same value 1, we will perform the union(<strong><em>either unionBySize() or unionByRank()</em></strong>) of the two node numbers that represent those two cells i.e. the current cell and the adjacent cell.</li><li>Now, step 1 is completed.</li></ol></li><li>Then, we will again visit each cell of the grid and check if it contains the value 0.<ol><li>If the value is 0, we will check all four adjacent cells of the current cell. If we found any cell with value 1, we will just insert the ultimate parent of that cell(using the <strong><em>findUPar()</em></strong> method) in the set data structure. This process will add the adjacent components to our answer.</li><li>After doing so for all the adjacent cells containing 1, we will iterate through the set data structure and add the size of each ultimate parent(<em>referring to the size array inside the Disjoint Set data structure</em>) to our answer. Finally, we will add an extra 1 to our answer for the current cell being included in the group.</li><li>Now, we will compare to get the maximum answer among all the previous answers we got for the previous cells with the value 0 and the current one.</li></ol></li><li>But if the matrix does not contain any cell with 0, step 2 will not be executed. For that reason, we will just run a loop from node number 0 to n*n and for each node number, we will find the ultimate parent. After that, we will find the sizes of those ultimate parents and will take the size of the largest one.</li><li>Thus we will get the maximum size of the group of connected 1s stored in our answer.</li></ol>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>Note</strong>: <em>If you wish to see the dry run of the above approach, you can watch the video attached to this article.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+// User function Template for C++
+class DisjointSet {
+
+public:
+    vector&lt;int&gt; rank, parent, size;
+    DisjointSet(int n) {
+        rank.resize(n + 1, 0);
+        parent.resize(n + 1);
+        size.resize(n + 1);
+        for (int i = 0; i &lt;= n; i++) {
+            parent[i] = i;
+            size[i] = 1;
+        }
+    }
+
+    int findUPar(int node) {
+        if (node == parent[node])
+            return node;
+        return parent[node] = findUPar(parent[node]);
+    }
+
+    void unionByRank(int u, int v) {
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+        if (ulp_u == ulp_v) return;
+        if (rank[ulp_u] &lt; rank[ulp_v]) {
+            parent[ulp_u] = ulp_v;
+        }
+        else if (rank[ulp_v] &lt; rank[ulp_u]) {
+            parent[ulp_v] = ulp_u;
+        }
+        else {
+            parent[ulp_v] = ulp_u;
+            rank[ulp_u]++;
+        }
+    }
+
+    void unionBySize(int u, int v) {
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+        if (ulp_u == ulp_v) return;
+        if (size[ulp_u] &lt; size[ulp_v]) {
+            parent[ulp_u] = ulp_v;
+            size[ulp_v] += size[ulp_u];
+        }
+        else {
+            parent[ulp_v] = ulp_u;
+            size[ulp_u] += size[ulp_v];
+        }
+    }
+};
+class Solution {
+private:
+    bool isValid(int newr, int newc, int n) {
+        return newr &gt;= 0 &amp;&amp; newr &lt; n &amp;&amp; newc &gt;= 0 &amp;&amp; newc &lt; n;
+    }
+public:
+    int MaxConnection(vector&lt;vector&lt;int&gt;&gt;&amp; grid) {
+        int n = grid.size();
+        DisjointSet ds(n * n);
+        // step - 1
+        for (int row = 0; row &lt; n ; row++) {
+            for (int col = 0; col &lt; n ; col++) {
+                if (grid[row][col] == 0) continue;
+                int dr[] = { -1, 0, 1, 0};
+                int dc[] = {0, -1, 0, 1};
+                for (int ind = 0; ind &lt; 4; ind++) {
+                    int newr = row + dr[ind];
+                    int newc = col + dc[ind];
+                    if (isValid(newr, newc, n) &amp;&amp; grid[newr][newc] == 1) {
+                        int nodeNo = row * n + col;
+                        int adjNodeNo = newr * n + newc;
+                        ds.unionBySize(nodeNo, adjNodeNo);
+                    }
+                }
+            }
+        }
+        // step 2
+        int mx = 0;
+        for (int row = 0; row &lt; n; row++) {
+            for (int col = 0; col &lt; n; col++) {
+                if (grid[row][col] == 1) continue;
+                int dr[] = { -1, 0, 1, 0};
+                int dc[] = {0, -1, 0, 1};
+                set&lt;int&gt; components;
+                for (int ind = 0; ind &lt; 4; ind++) {
+                    int newr = row + dr[ind];
+                    int newc = col + dc[ind];
+                    if (isValid(newr, newc, n)) {
+                        if (grid[newr][newc] == 1) {
+                            components.insert(ds.findUPar(newr * n + newc));
+                        }
+                    }
+                }
+                int sizeTotal = 0;
+                for (auto it : components) {
+                    sizeTotal += ds.size[it];
+                }
+                mx = max(mx, sizeTotal + 1);
+            }
+        }
+        for (int cellNo = 0; cellNo &lt; n * n; cellNo++) {
+            mx = max(mx, ds.size[ds.findUPar(cellNo)]);
+        }
+        return mx;
+    }
+};
+
+
+int main() {
+
+    vector&lt;vector&lt;int&gt;&gt; grid = {
+        {1, 1, 0, 1, 1, 0}, {1, 1, 0, 1, 1, 0},
+        {1, 1, 0, 1, 1, 0}, {0, 0, 1, 0, 0, 0},
+        {0, 0, 1, 1, 1, 0}, {0, 0, 1, 1, 1, 0}
+    };
+
+    Solution obj;
+    int ans = obj.MaxConnection(grid);
+    cout &lt;&lt; "The largest group of connected 1s is of size: " &lt;&lt; ans &lt;&lt; endl;
+    return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output: The largest group of connected 1s is of size: 20</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: </strong>O(N<sup>2</sup>)+O(N<sup>2</sup>) ~ O(N<sup>2</sup>) where N = total number of rows of the grid. Inside those nested loops, all the operations are taking apparently constant time. So, O(N<sup>2</sup>) for the nested loop only, is the time complexity. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: </strong>O(2*N<sup>2</sup>) where N = the total number of rows of the grid. This is for the two arrays i.e. parent array and size array of size N<sup>2</sup> inside the Disjoint set.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.io.*;
+import java.util.*;
+
+
+class DisjointSet {
+    List&lt;Integer&gt; rank = new ArrayList&lt;&gt;();
+    List&lt;Integer&gt; parent = new ArrayList&lt;&gt;();
+    List&lt;Integer&gt; size = new ArrayList&lt;&gt;();
+    public DisjointSet(int n) {
+        for (int i = 0; i &lt;= n; i++) {
+            rank.add(0);
+            parent.add(i);
+            size.add(1);
+        }
+    }
+
+    public int findUPar(int node) {
+        if (node == parent.get(node)) {
+            return node;
+        }
+        int ulp = findUPar(parent.get(node));
+        parent.set(node, ulp);
+        return parent.get(node);
+    }
+
+    public void unionByRank(int u, int v) {
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+        if (ulp_u == ulp_v) return;
+        if (rank.get(ulp_u) &lt; rank.get(ulp_v)) {
+            parent.set(ulp_u, ulp_v);
+        } else if (rank.get(ulp_v) &lt; rank.get(ulp_u)) {
+            parent.set(ulp_v, ulp_u);
+        } else {
+            parent.set(ulp_v, ulp_u);
+            int rankU = rank.get(ulp_u);
+            rank.set(ulp_u, rankU + 1);
+        }
+    }
+
+    public void unionBySize(int u, int v) {
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+        if (ulp_u == ulp_v) return;
+        if (size.get(ulp_u) &lt; size.get(ulp_v)) {
+            parent.set(ulp_u, ulp_v);
+            size.set(ulp_v, size.get(ulp_v) + size.get(ulp_u));
+        } else {
+            parent.set(ulp_v, ulp_u);
+            size.set(ulp_u, size.get(ulp_u) + size.get(ulp_v));
+        }
+    }
+}
+class Solution {
+    private boolean isValid(int newr, int newc, int n) {
+        return newr &gt;= 0 &amp;&amp; newr &lt; n &amp;&amp; newc &gt;= 0 &amp;&amp; newc &lt; n;
+    }
+
+    public int MaxConnection(int grid[][]) {
+        int n = grid.length;
+        DisjointSet ds = new DisjointSet(n * n);
+        // step - 1
+        for (int row = 0; row &lt; n ; row++) {
+            for (int col = 0; col &lt; n ; col++) {
+                if (grid[row][col] == 0) continue;
+                int dr[] = { -1, 0, 1, 0};
+                int dc[] = {0, -1, 0, 1};
+                for (int ind = 0; ind &lt; 4; ind++) {
+                    int newr = row + dr[ind];
+                    int newc = col + dc[ind];
+                    if (isValid(newr, newc, n) &amp;&amp; grid[newr][newc] == 1) {
+                        int nodeNo = row * n + col;
+                        int adjNodeNo = newr * n + newc;
+                        ds.unionBySize(nodeNo, adjNodeNo);
+                    }
+                }
+            }
+        }
+        // step 2
+        int mx = 0;
+        for (int row = 0; row &lt; n; row++) {
+            for (int col = 0; col &lt; n; col++) {
+                if (grid[row][col] == 1) continue;
+                int dr[] = { -1, 0, 1, 0};
+                int dc[] = {0, -1, 0, 1};
+                HashSet&lt;Integer&gt; components = new HashSet&lt;&gt;();
+                for (int ind = 0; ind &lt; 4; ind++) {
+                    int newr = row + dr[ind];
+                    int newc = col + dc[ind];
+                    if (isValid(newr, newc, n)) {
+                        if (grid[newr][newc] == 1) {
+                            components.add(ds.findUPar(newr * n + newc));
+                        }
+                    }
+                }
+                int sizeTotal = 0;
+                for (Integer parents : components) {
+                    sizeTotal += ds.size.get(parents);
+                }
+                mx = Math.max(mx, sizeTotal + 1);
+            }
+        }
+        for (int cellNo = 0; cellNo &lt; n * n; cellNo++) {
+            mx = Math.max(mx, ds.size.get(ds.findUPar(cellNo)));
+        }
+        return mx;
+    }
+
+}
+
+class Main {
+    public static void main (String[] args) {
+        int[][] grid = {
+            {1, 1, 0, 1, 1, 0}, {1, 1, 0, 1, 1, 0},
+            {1, 1, 0, 1, 1, 0}, {0, 0, 1, 0, 0, 0},
+            {0, 0, 1, 1, 1, 0}, {0, 0, 1, 1, 1, 0}
+        };
+
+        Solution obj = new Solution();
+        int ans = obj.MaxConnection(grid);
+        System.out.println("The largest group of connected 1s is of size: " + ans);
+    }
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output: The largest group of connected 1s is of size: 20</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: </strong>O(N<sup>2</sup>)+O(N<sup>2</sup>) ~ O(N<sup>2</sup>) where N = total number of rows of the grid. Inside those nested loops, all the operations are taking apparently constant time. So, O(N<sup>2</sup>) for the nested loop only, is the time complexity. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: </strong>O(2*N<sup>2</sup>) where N = the total number of rows of the grid. This is for the two arrays i.e. parent array and size array of size N<sup>2</sup> inside the Disjoint set.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

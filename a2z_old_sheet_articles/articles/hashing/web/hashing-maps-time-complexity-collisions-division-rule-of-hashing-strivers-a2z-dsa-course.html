@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Hashing | Maps | Time Complexity | Collisions | Division Rule of Hashing | Strivers A2Z DSA Course</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Hashing | Maps | Time Complexity | Collisions | Division Rule of Hashing | Strivers A2Z DSA Course</h1>
+</header>
+<article>
+<!-- wp:heading -->
+<h2><strong>Hashing:</strong></h2>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>Let’s first try to understand the importance of hashing using an example:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Given an array of integers: [1, 2, 1, 3, 2] and we are given some queries: [1, 3, 4, 2, 10]. For each query, we need to find out how many times the number appears in the array. For example, if the query is 1 our answer would be 2, and if the query is 4 the answer will be 0. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Similarly, the following will be the answers to the given queries:</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7330,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7330" src="assets/53131850c047619198aec05359730922.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:heading {"level":4} -->
+<h4><strong>Brute Force approach:</strong></h4>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>As we have learned the ‘for loop’, the first approach that should come to our mind is to use it to solve this problem. For each query, we will iterate over the array using a loop. We will count the number of times the query number appears in that array i.e. increment the counter variable if the array element at that index equals the query number. In terms of function, it will look like the following:</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7331,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7331" src="assets/d8cde6b989a5e32ecb12921a8f0bc74b.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>Now, for each query, we will call the function and it will return the number of times the given query appears in the array. </p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":5} -->
+<h5><strong>Time Complexity analysis of the function:</strong></h5>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>We have learned how to compute the time complexity of any code. The above function contains a for loop that runs for N times. So,<strong> the time complexity of the function will be O(N)</strong> ignoring the other constant operations. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Now, for each query, we are calling this function. So, if the query contains 5 numbers and we call the function 5 times, the total time complexity will be O(5*N). <strong>If the number of queries is Q, the time complexity will be O(Q*N)</strong>. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Now, if the length of the query becomes large like 10<sup>5</sup> and the array size also becomes large like 10<sup>5</sup>, the time complexity will be O(10<sup>10</sup>).</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>We know from our previous knowledge that 10<sup>8</sup> operations take 1 second to get executed. So, 10<sup>10</sup> operations will take around 100 seconds(10<sup>10</sup>/10<sup>8</sup>). We cannot say a code is good if it takes 100 seconds to get executed.</p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Optimized approach using Hashing:</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:heading {"level":5} -->
+<h5><strong>Definition of Hashing:</strong></h5>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>In order to optimize this approach, we need to use hashing. If we say <strong>the definition of hashing in a naive way</strong>, it is nothing but <strong>the combination of the steps, pre-storing, and fetching</strong>.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Now, let’s understand how to solve the given problem using the two steps:<br/><strong>Assumption: </strong>We are assuming that the maximum element in the given array can be 12.<br/><br/><strong>Step 1 - Pre-storing: </strong>In this step, we will create an array(named hash array) of size 13(so that we can get the index 12) initialized with 0. In this hash array, we are going to store the frequency of each element(i.e. The number of times each element appears in the array) of the given array. To do so, we will iterate over the given array, and for each element arr[i], we will do hash[arr[i]] += 1. After completing this process the hash array will look like the following:</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7332,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7332" src="assets/ae04ba2d6ac840894b25c8d91da152a2.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>This step is named pre-storing as we are pre-calculating the information about the element of the array before answering the queries.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Step 2 - Fetching: </strong>In this step, we will select each query i.e. the number and for the query, we will just fetch the value of hash[number] and return it instead of running a ‘for loop’ every time. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The implementation is given below:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main() {
+
+    int n;
+    cin &gt;&gt; n;
+    int arr[n];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; arr[i];
+    }
+
+    //precompute:
+    int hash[13] = {0};
+    for (int i = 0; i &lt; n; i++) {
+        hash[arr[i]] += 1;
+    }
+
+    int q;
+    cin &gt;&gt; q;
+    while (q--) {
+        int number;
+        cin &gt;&gt; number;
+        // fetching:
+        cout &lt;&lt; hash[number] &lt;&lt; endl;
+    }
+    return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Input:</strong> </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>5<br/>1 3 2 1 3<br/>5<br/>1 4 2 3 12</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Output: </strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>2<br/>0<br/>1<br/>2<br/>0</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+
+class tUf {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n;
+        n = sc.nextInt();
+        int[] arr = new int[n];
+        for (int i = 0; i &lt; n; i++) {
+            arr[i] = sc.nextInt();
+        }
+
+        //precompute:
+        int[] hash = new int[13];
+        for (int i = 0; i &lt; n; i++) {
+            hash[arr[i]] += 1;
+        }
+
+        int q;
+        q = sc.nextInt();
+        while (q-- != 0) {
+            int number;
+            number = sc.nextInt();
+            // fetching:
+            System.out.println(hash[number]);
+        }
+    }
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Input:</strong> </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>5<br/>1 3 2 1 3<br/>5<br/>1 4 2 3 12</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Output: </strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>2<br/>0<br/>1<br/>2<br/>0</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":5} -->
+<h5><strong>Point to remember:</strong></h5>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>We may encounter a problem where the maximum array element may be very large like 10<sup>9</sup>. In that case, theoretically, we should declare an array of size 10<sup>9</sup>+1. But we cannot do so. The maximum size of an array can be the following:</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7333,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7333" src="assets/bc6c212837417b11557bde04e3023936.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p><strong>Note: </strong><em>So, with this method, we can solve the problems where the array is within a specific size. We are going to discuss later in the article, how we can overcome this limitation of the specific size.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Until now, we have learned the <strong>number hashing</strong>. Now, let’s discuss the character hashing.</p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Character Hashing:</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>Given the string: “abcdabefc” we are given some queries: [a, c, z]. For each query, we need to find out how many times the character appears in the string. For example, if the query is ‘a’ our answer would be 2, and if the query is ‘z’ the answer will be 0. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Similarly, the following will be the answers to the given queries:</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7334,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7334" src="assets/b0766eb04d7377a0275a6f5cb1fbeea6.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:heading {"level":4} -->
+<h4><strong>Brute Force approach:</strong></h4>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>It is similar to the previous problem. Here, for each query, we will iterate over the string using a for loop and will count the number of times the character appears in that string i.e. increment the counter variable if the character at that index of the string equals the given character. In terms of function, it will look like the following:</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7335,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7335" src="assets/2f1bc918d6050eee9828979727940067.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>Now, for each query, we will call the function and it will return the number of times the given character appears in the string. </p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":5} -->
+<h5><strong>Time Complexity analysis of the function:</strong></h5>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>It is as same as the one we calculated for the previous problem. <strong>If the number of queries is Q, the time complexity will be O(Q*N) where N = size of the string</strong>. </p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":4} -->
+<h4><strong>Optimized approach using Hashing:</strong></h4>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>In number hashing, each index of the hash array represents an element in the given array. So, somehow, we need to map the characters of the string to an integer so that we can represent them using the indices of the hash array. So, let’s discuss the mapping technique:</p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":5} -->
+<h5><strong>Mapping characters to integers:</strong></h5>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>In order to map the characters we need to use the <a href="https://www.w3schools.com/charsets/ref_html_ascii.asp#:~:text=ASCII%20is%20a%207%2Dbit,are%20all%20based%20on%20ASCII." rel="noopener" target="_blank" title="">ASCII values</a> of the respective characters. The ASCII value of lowercase a is 97. So, if we write int x = ‘a’, it will typecast the character, ‘a’, into the ASCII value, 97, and store it in the variable x instead of throwing an error. So, similarly, if we write hash[‘a’], it will signify hash[97]. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Now, we can do the mapping more efficiently for specific cases like the following:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Case 1 - If the string contains only lowercase letters: </strong>In this case, we can map the characters like: </p>
+<!-- /wp:paragraph -->
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted">‘a’ -&gt; 0, ‘b’ -&gt; 1, ‘c’ -&gt; 2,....., ‘z’ -&gt; 25. </pre>
+<!-- /wp:preformatted -->
+<!-- wp:paragraph -->
+<p>In order to get the corresponding value for a character, we will use the following formula:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>corresponding value = given character - 'a'</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>For example, if the given character is ‘f’, we will get the value as (‘f’ - ‘a’) = (102-97) = 5.  Here, we can easily observe that the maximum value can be 25. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>So, for character hashing in this case, we need a hash array of size 26. And while pre-storing we will do hash[s[i]-’a’] += 1 instead of hash[arr[i]] += 1, and while fetching we will do hash[character-’a’] instead of hash[number]. The rest of the methods will be as same as in the case of number hashing.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Case 2 -  If the string contains only uppercase letters: </strong>In this case, we can map the characters like: </p>
+<!-- /wp:paragraph -->
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted">‘A’ -&gt; 0, ‘B’ -&gt; 1, ‘C’ -&gt; 2,....., ‘Z’ -&gt; 25. </pre>
+<!-- /wp:preformatted -->
+<!-- wp:paragraph -->
+<p>In order to get the corresponding value for a character, we will use the following formula:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>corresponding value = given character - 'A'</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Then the process will be similar to case 1.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Case 3 - If the string contains both uppercase and lowercase letters: </strong>We have 256 characters in total in this case. So, we will create a hash array of size 256. We will not subtract anything from the given character and will use the character as it is, to access the hash array while pre-storing and fetching. For pre-storing hash[s[i]] += 1 and for fetching we will use hash[character] only. The rest of the process will be exactly the same as in the number hashing.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Note: </strong><em>The case 3 method also applies to case 1 and case 2. In character hashing, the limit will not cross 256 and so we will always use this method.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The implementation is given below:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code if the string contains only lowercase</strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main() {
+
+    string s;
+    cin &gt;&gt; s;
+
+    //precompute:
+    int hash[26] = {0};
+    for (int i = 0; i &lt; s.size(); i++) {
+        hash[s[i] - 'a']++;
+    }
+
+    int q;
+    cin &gt;&gt; q;
+    while (q--) {
+        char c;
+        cin &gt;&gt; c;
+        // fetch:
+        cout &lt;&lt; hash[c - 'a'] &lt;&lt; endl;
+    }
+    return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Input:</strong> </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>abcdabehf<br/>5<br/>a<br/>g<br/>h<br/>b<br/>c</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Output: </strong>2<br/>0<br/>1<br/>2<br/>1</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+
+class tUf {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        String s;
+        s = sc.next();
+
+        //precompute:
+        int[] hash = new int[26];
+        for (int i = 0; i &lt; s.length(); i++) {
+            hash[s.charAt(i) - 'a']++;
+        }
+
+        int q;
+        q = sc.nextInt();
+        while (q-- &gt; 0) {
+            char c;
+            c = sc.next().charAt(0);
+            // fetch:
+            System.out.println(hash[c - 'a']);
+        }
+    }
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Input:</strong> </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>abcdabehf<br/>5<br/>a<br/>g<br/>h<br/>b<br/>c</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Output: </strong>2<br/>0<br/>1<br/>2<br/>1</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code if the string contains both uppercase and lowercase</strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main() {
+
+    string s;
+    cin &gt;&gt; s;
+
+    //precompute:
+    int hash[256] = {0};
+    for (int i = 0; i &lt; s.size(); i++) {
+        hash[s[i]]++;
+    }
+
+    int q;
+    cin &gt;&gt; q;
+    while (q--) {
+        char c;
+        cin &gt;&gt; c;
+        // fetch:
+        cout &lt;&lt; hash[c] &lt;&lt; endl;
+    }
+    return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Input:</strong><br/>abcdabehf<br/>5<br/>a<br/>g<br/>h<br/>b<br/>c</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Output: </strong><br/>2<br/>0<br/>1<br/>2<br/>1</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java"> import java.util.*;
+
+class tUf {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        String s;
+        s = sc.next();
+
+        //precompute:
+        int[] hash = new int[256];
+        for (int i = 0; i &lt; s.length(); i++) {
+            hash[s.charAt(i)]++;
+        }
+
+        int q;
+        q = sc.nextInt();
+        while (q-- &gt; 0) {
+            char c;
+            c = sc.next().charAt(0);
+            // fetch:
+            System.out.println(hash[c]);
+        }
+    }
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Input:</strong><br/>abcdabehf<br/>5<br/>a<br/>g<br/>h<br/>b<br/>c</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Output: </strong><br/>2<br/>0<br/>1<br/>2<br/>1</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>How to hash large numbers like 10</strong><strong><sup>9</sup></strong><strong> or higher:</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>Until now, we have learned the method of number hashing but using this method we cannot hash large numbers like 10<sup>9</sup> or higher. We can solve this problem using the STL map and unordered_map in C++ or the HashMap in Java collection. Now, we are going to discuss these concepts in detail and most of the concepts are the same in map/unordered_map(in C++) and HashMap(in Java).</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>map and unordered_map in C++ / HashMap in Java:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Let’s understand the concepts considering the same example, we have used before, in the case of number hashing.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The data structure looks like the following:</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7336,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7336" src="assets/377628672285bc0ead176ee0246440c9.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p><strong>Key: </strong>In a map, a key refers to the element, for which we want to store information. We can access the value of a key using the key itself like mp[key].</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Value: </strong>Value refers to the information stored corresponding to a key.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>In our example, we want to store the frequency(i.e. How many times an element appears in the array) of each element of the given array. So, here each element of the array will be the key of the map and frequencies will be the value corresponding to the keys. In terms of code, it will look like the following:</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7337,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7337" src="assets/479df2e46d80b41b80213668d0516574.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p><strong>Difference between map and unordered_map in C++:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7338,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7338" src="assets/95d30fdd5c46e9fab20aed9ac7169608.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:heading {"level":4} -->
+<h4><strong>Difference between array hashing and hashing using the map:</strong></h4>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>Let’s understand the difference considering the array: [1, 2, 3, 1, 3, 2, 12]. Here, the maximum element of the array is 12. So, if we apply array hashing, we need an array of size 13. But if we apply the map data structure, it will be the following:</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7339,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7339" src="assets/2b62e98b51428e0d2af1af3aee6dde87.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p><strong>Note: </strong><em>If we want to fetch the value of a key that does not exist in the map, the map will always return 0 in C++ and null in Java.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code</strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main() {
+
+    int n;
+    cin &gt;&gt; n;
+    int arr[n];
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; arr[i];
+    }
+
+    //precompute:
+    map&lt;int, int&gt; mp;
+    for (int i = 0; i &lt; n; i++) {
+        mp[arr[i]]++;
+    }
+
+    // iterate over the map:
+    /* for(auto it : mp){
+            cout &lt;&lt; it.first &lt;&lt; "-&gt;" &lt;&lt; it.second &lt;&lt; endl;
+        }
+    */
+
+    int q;
+    cin &gt;&gt; q;
+    while (q--) {
+        int number;
+        cin &gt;&gt; number;
+        // fetch:
+        cout &lt;&lt; mp[number] &lt;&lt; endl;
+    }
+    return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Input:</strong> <br/>7<br/>1 2 3 1 3 2 12<br/>5<br/>1 2 3 4 12</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Output: </strong><br/>2<br/>2<br/>2<br/>0<br/>1</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+
+class tUf {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n;
+        n = sc.nextInt();
+        int[] arr = new int[n];
+        for (int i = 0; i &lt; n; i++) {
+            arr[i] = sc.nextInt();
+        }
+
+        //precompute:
+        HashMap&lt;Integer, Integer&gt; mp = new HashMap&lt;&gt;();
+        for (int i = 0; i &lt; n; i++) {
+            int key = arr[i];
+            int freq = 0;
+            if (mp.containsKey(key)) freq = mp.get(key); // fetching from the map
+            freq++;
+            mp.put(key, freq); // inserting into the map
+        }
+
+        // Iterate over the map:
+        /*
+        for (Map.Entry&lt;Integer, Integer&gt; it : mp.entrySet()) {
+            System.out.println(it.getKey() + "-&gt;" + it.getValue());
+        }
+        */
+
+        int q;
+        q = sc.nextInt();
+        while (q-- &gt; 0) {
+            int number;
+            number = sc.nextInt();
+            // fetch:
+            if (mp.containsKey(number)) System.out.println(mp.get(number));
+            else System.out.println(0);
+        }
+    }
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Input:</strong> <br/>7<br/>1 2 3 1 3 2 12<br/>5<br/>1 2 3 4 12</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Output: </strong><br/>2<br/>2<br/>2<br/>0<br/>1</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Note: </strong>We can similarly perform <strong>character hashing</strong> using the map data structure. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The syntax will be the following:</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7340,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7340" src="assets/3dd0e06f835a81daf56d329cc3d5b722.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Time complexity of map data structure:</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>The total time complexity will be O(N * time taken by map data structure).</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Storing(i.e. insertion) and fetching(i.e. retrieval) in a C++ map, both take always O(logN) time complexity, where N = the size of the map. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>But the unordered_map in C++ and HashMap in Java, both take O(1) time complexity to perform storing(i.e. insertion) and fetching(i.e. retrieval). Now, it is valid for the best case and the average case. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>But in the worst case, this time complexity will be O(N) for unordered_map. Now, the worst case occurs very very rarely. It almost never happens and most of the time, we will be using unordered_map. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Note:</strong> <em>Our first priority will be always to use unordered_map and then map.</em> <em>If unordered_map gives a time limit exceeded error(TLE), we will then use the map.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The time complexity in the worst case is O(N) because of the internal collision.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>In order to understand collision properly, we need to understand the concept of how the hashing work with an optimized space.</p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>What is collision &amp; How the hashing works:</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>Hashing is done using several methods. Among them, the three most common ones are</p>
+<!-- /wp:paragraph -->
+<!-- wp:list {"ordered":true} -->
+<ol><li><strong>Division method</strong></li><li><strong>Folding method</strong></li><li><strong>Mid-Square method</strong></li></ol>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p>Here, we are only interested to discuss the division method. The rest two methods may be important for college exams but not much important in terms of interviews or coding rounds. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The map data structures in the C++ STL or in Java are implemented using different and complex methods. We need not know about them. But here we are going to discuss the <strong>division method</strong> so that we can understand the collision properly.</p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":4} -->
+<h4><strong>Division Method:</strong></h4>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>Let’s discuss it considering the following example:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Assume, we are given an array: <strong>[2, 5, 16, 28, 139]</strong>. Here, we can apply array hashing, and to use that, we need to create an array of size 140. Now, what to do if we are given a constraint that <strong>we cannot use an array whose length is greater than 10</strong>?</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>In order to solve this we will use the division method. We will simply consider the modulo 10 of each element of the array(element % 10) and we will hash(pre-store and fetch) the elements on the basis of the modulo value i.e. the remainder. The steps will look like the following:<br/>Pre storing: hash[arr[i]%10] += 1 and Fetching: hash[number%10]</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Now if we apply this method to the given array, the hash array will look like the following:</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7341,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7341" src="assets/d586ba51d52dcee3bb5a52b1a5521778.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>This is how the division method works. We simply reduce the array elements and apply array hashing.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Let’s discuss the questions that come up in the mind:<br/></p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":5} -->
+<h5><strong>Question: What if two or more array elements give the same remainder for modulo 10?</strong></h5>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>In this case, we apply the <strong>linear chaining</strong> method. This method is implemented using Linked List which will be discussed later in another article. Here, we just need to understand the logic. While storing the elements we will maintain a chain(i.e. inserting the element itself to the corresponding index instead of just keeping the count) for each index(i.e. the remainder we get). And in that chains, we will store the elements in a sorted fashion.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Let’s understand it considering the following example:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Given array: <strong>[2, 5, 16, 28, 139, 38, 48, 28, 18]</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>In this array 28, 38, 48, and 18 are giving the same value for modulo 10. So, we will apply linear chaining. The hash array will look like the following:</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7342,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7342" src="assets/e667696a0aa55c3f01bc73a04075fc68.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>Now to get the frequency of a number, we will first go to (number % 10) indexed chain and count the frequency of that number.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Note:</strong> <em>We can choose to take modulo of any number as per our need. Here for example we have taken the number 10.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":4} -->
+<h4><strong>Collision:</strong></h4>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>Now, if we are applying linear chaining and division rule and we find that all elements of an array get stored in a single index, then we will call it a case of collision.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Example:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted">Given array: [8, 18, 28, 38, 48, 58, 68, ….., 1008]</pre>
+<!-- /wp:preformatted -->
+<!-- wp:paragraph -->
+<p>If we apply the methods and take modulo 10 for every number, the hash array will look like the following:</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7343,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7343" src="assets/8d6e032c456000c36de1b4c9ecf88dab.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>Now, while fetching we have to traverse N times(N = size of the given array) to find the frequency of an element. This is when the worst case happens and the time complexity becomes O(N). But this happens very very rarely.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong><em>Whatever method the map is using, if all the elements go to the same hash index, we will call it a case of collision.</em></strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Note: </strong><em>In the map data structure, the data type of key can be anything like int, double, pair&lt;int, int&gt;, etc. But for unordered_map the data type is limited to integer, double, string, etc. We cannot have an unordered_map whose key is pair&lt;int, int&gt;.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/kriti39/" rel="noreferrer noopener" target="_blank"><strong>KRITIDIPTA GHOSH</strong></a></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a>. <em>If you want to suggest any improvement/correction in this article please mail us at write4tuf@gmail.com</em></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

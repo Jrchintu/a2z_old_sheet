@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Selection Sort Algorithm</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Selection Sort Algorithm</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement:</strong> Given an array of <strong>N integers</strong>, write a program to implement the Selection sorting algorithm.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Examples:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted"><strong>Example 1:</strong>
+<strong>Input:</strong> N = 6, array[] = {13,46,24,52,20,9}
+<strong>Output:</strong> 9,13,20,24,46,52
+<strong>Explanation: </strong>After sorting the array is: 9, 13, 20, 24, 46, 52
+
+<strong>Example 2:</strong>
+<strong>Input:</strong> N=5, array[] = {5,4,3,2,1}
+<strong>Output:</strong> 1,2,3,4,5
+<strong>Explanation: </strong>After sorting the array is: 1, 2, 3, 4, 5</pre>
+<!-- /wp:preformatted -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Solution</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p><strong><em>Disclaimer</em></strong>: <em>Don't jump directly to the solution, try it out yourself first.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Approach:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The algorithm steps are as follows:</p>
+<!-- /wp:paragraph -->
+<!-- wp:list {"ordered":true} -->
+<ol><li>First, we will select the range of the unsorted array using a loop (say i) that indicates the starting index of the range.<br/>The loop will run forward from 0 to n-1. The value i = 0 means the range is from 0 to n-1, and similarly, i = 1 means the range is from 1 to n-1, and so on.<br/>(<em>Initially, the range will be the whole array starting from the first index.</em>)</li><li>Now, in each iteration, we will select the minimum element from the range of the unsorted array using an inner loop.</li><li>After that, we will swap the minimum element with the first element of the selected range(<em>in step 1</em>). </li><li>Finally, after each iteration, we will find that the array is sorted up to the first index of the range. </li></ol>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>Note: </strong><em>Here, after each iteration, the array becomes sorted up to the first index of the range. That is why the starting index of the range increases by 1 after each iteration. This increment is achieved by the outer loop and the starting index is represented by variable </em><strong><em>i</em></strong><em> in the following code. And the inner loop(</em><strong><em>i.e. j</em></strong><em>) helps to find the minimum element of the range </em><strong>[i…..n-1].</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Dry run:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The following dry run will clarify the concepts:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Assume the given array is: {7, 5, 9, 2, 8}</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Outer loop iteration 1: <br/></strong>The range will be the whole array starting from the 1st index as this is the first iteration. The minimum element of this range is 2(<strong>found using the inner loop</strong>).</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7880,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7880" src="assets/245351edf1f82b067a4d4cd0d9cb9849.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p><strong>Outer loop iteration 2: <br/></strong>The range will be from the <strong>[2nd index to the last index]</strong> as the array is sorted up to the first index. The minimum element of this range is 5(<strong>found using the inner loop</strong>).</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7881,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7881" src="assets/8e1b5194782f445edf04473d15bcaade.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p><strong>Outer loop iteration 3: <br/></strong>The range will be from the <strong>[3rd index to the last index]</strong>. The minimum element of this range is 7(<strong>found using the inner loop</strong>).</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7884,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7884" src="assets/6f1aead7e64473296d57084c8af058dc.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p><strong>Outer loop iteration 4: <br/></strong>The range will be from the <strong>[4th index to the last index]</strong>. The minimum element of this range is 8(<strong>found using the inner loop</strong>).</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7885,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7885" src="assets/ccf4e444c4f4cb51aabe2029c15e84be.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>So, after 4 iterations(i.e. n-1 iterations where n = size of the array), the given array is sorted.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include&lt;bits/stdc++.h&gt;
+
+using namespace std;
+void selection_sort(int arr[], int n) {
+  // selection sort
+  for (int i = 0; i &lt; n - 1; i++) {
+    int mini = i;
+    for (int j = i + 1; j &lt; n; j++) {
+      if (arr[j] &lt; arr[mini]) {
+        mini = j;
+      }
+    }
+    int temp = arr[mini];
+    arr[mini] = arr[i];
+    arr[i] = temp;
+  }
+
+  cout &lt;&lt; "After selection sort: " &lt;&lt; "\n";
+  for (int i = 0; i &lt; n; i++) {
+    cout &lt;&lt; arr[i] &lt;&lt; " ";
+  }
+  cout &lt;&lt; "\n";
+
+}
+int main() {
+  int arr[] = {13,46,24,52,20,9};
+  int n = sizeof(arr) / sizeof(arr[0]);
+   cout &lt;&lt; "Before selection sort: " &lt;&lt; "\n";
+   for (int i = 0; i &lt; n; i++) {
+    cout &lt;&lt; arr[i] &lt;&lt; " ";
+  }
+  cout &lt;&lt; "\n";
+  selection_sort(arr, n);
+  return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong> </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Before selection sort:<br/>13 46 24 52 20 9<br/>After selection sort:<br/>9 13 20 24 46 52</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong><strong>Time complexity:</strong> </strong>O(N<sup>2</sup>), (where N = size of the array), for the best, worst, and average cases.<br/>Reason: If we carefully observe, we can notice that the outer loop, say i, is running from 0 to n-2 i.e. n-1 times, and for each i, the inner loop j runs from i to n-1. For, i = 0, the inner loop runs n-1 times, for i = 1, the inner loop runs n-2 times, and so on. So, the total steps will be approximately the following: (n-1) + (n-2) + (n-3) + ……..+ 3 + 2 + 1. The summation is approximately the sum of the first n natural numbers i.e. (n*(n+1))/2. The precise time complexity will be O(n<sup>2</sup>/2 + n/2). Previously, we have learned that we can ignore the lower values as well as the constant coefficients. So, the time complexity is O(n<sup>2</sup>). Here the value of n is N i.e. the size of the array.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(1)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+
+public class tUf {
+    static void selection_sort(int arr[], int n) {
+        for (int i = 0; i &lt; n - 1; i++) {
+            int mini = i;
+            for (int j = i + 1; j &lt; n; j++) {
+                if (arr[j] &lt; arr[mini]) {
+                    mini = j;
+                }
+            }
+            //swap
+            int temp = arr[mini];
+            arr[mini] = arr[i];
+            arr[i] = temp;
+        }
+
+        System.out.println("After selection sort:");
+        for (int i = 0; i &lt; n; i++) {
+            System.out.print(arr[i] + " ");
+        }
+        System.out.println();
+    }
+
+    public static void main(String args[]) {
+
+        int arr[] = {13, 46, 24, 52, 20, 9};
+        int n = arr.length;
+        System.out.println("Before selection sort:");
+        for (int i = 0; i &lt; n; i++) {
+            System.out.print(arr[i] + " ");
+        }
+        System.out.println();
+        selection_sort(arr, n);
+    }
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong> </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Before selection sort:<br/>13 46 24 52 20 9<br/>After selection sort:<br/>9 13 20 24 46 52</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong><strong>Time complexity:</strong> </strong>O(N<sup>2</sup>), (where N = size of the array), for the best, worst, and average cases.<br/>Reason: If we carefully observe, we can notice that the outer loop, say i, is running from 0 to n-2 i.e. n-1 times, and for each i, the inner loop j runs from i to n-1. For, i = 0, the inner loop runs n-1 times, for i = 1, the inner loop runs n-2 times, and so on. So, the total steps will be approximately the following: (n-1) + (n-2) + (n-3) + ……..+ 3 + 2 + 1. The summation is approximately the sum of the first n natural numbers i.e. (n*(n+1))/2. The precise time complexity will be O(n<sup>2</sup>/2 + n/2). Previously, we have learned that we can ignore the lower values as well as the constant coefficients. So, the time complexity is O(n<sup>2</sup>). Here the value of n is N i.e. the size of the array.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(1)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/rishirajgirmal/" rel="noreferrer noopener" target="_blank">Rishiraj Girmal</a></strong> <em>and <em> <strong><a href="https://www.linkedin.com/in/kriti39/" rel="noreferrer noopener" target="_blank"><strong>KRITIDIPTA GHOSH</strong></a></strong></em></em></em> <em>for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

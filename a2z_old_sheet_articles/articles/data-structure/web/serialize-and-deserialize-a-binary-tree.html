@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Serialize And Deserialize a Binary Tree</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Serialize And Deserialize a Binary Tree</h1>
+</header>
+<article>
+<p><strong>Problem Statement: </strong>  Given a Binary Tree, design an algorithm to serialise and deserialise it. There is no restriction on how the serialisation and deserialization takes place. But it needs to be ensured that the serialised binary tree can be deserialized to the original tree structure. 
+Serialisation is the process of translating a data structure or object state into a format that can be stored or transmitted (for example, across a computer network) and reconstructed later. The opposite operation, that is, extracting a data structure from stored information, is deserialization.
+
+</p>
+<div id="article_examples">
+<details class="article_example_details">
+<summary class="article_example_summary">
+<span><strong>
+                    Examples
+                </strong>
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="atricle_example_content">
+<pre class="wp-block-preformatted">
+                <span><strong>Example 1:</strong></span>
+				<span><strong>Input:</strong>Binary Tree: 1 2 3 -1 -1 4 5
+				</span>
+				<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/93c80593b11a1232571fa9587dfb2294" width="439"/></figure>
+				<span><strong>Output:</strong>After Serialisation: 1,2,3,#,#,4,5,#,#,#,#, After Deserialization: (Original Tree Back)</span>			
+				<span><strong>Explanation: </strong> Any algorithm that compresses this binary tree to a string which can be transmitted and from which the binary tree can be reconstructed later can be used.
+				Here we have used a serialisation algorithm based on level order traversal where comma separates the nodes and # denotes null nodes.</span>
+				<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/ea9a7b40d2a8c7f3344101042af05fcc" width="439"/></figure>
+				
+				<span><strong>Example 2:</strong></span>
+				<span><strong>Input:</strong>Binary Tree: 1 2 3 -1 4 5 -1
+				</span>
+				<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/660a5f41421352a6141bdbecbd987cd7" width="439"/></figure>
+				<span><strong>Output :</strong>After Serialisation: 1,2,3,#,4,5,#, After Deserialization: (Original Tree Back)</span>
+				
+				<span><strong>Explanation: </strong> Any algorithm that compresses this binary tree to a string which can be transmitted and from which the binary tree can be reconstructed later can be used.
+				Here we have used a serialisation algorithm based on level order traversal where comma separates the nodes and # denotes null nodes. </span>
+				<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/efebfd8da98f12cd93f8a256f5859fed" width="439"/></figure>		
+            </pre>
+</div>
+</details>
+</div>
+<!-- This is Practice Section-->
+<div class="practice">
+<span><strong>Practice: </strong></span>
+<div class="problem-buttons">
+<!-- Add Problem Link inside href -->
+<a href="https://www.codingninjas.com/studio/problems/serialize-and-deserialize-binary-tree_920328?utm_source=striver&amp;utm_medium=website&amp;utm_campaign=a_zcoursetuf" rel="noopener" target="_blank">
+<span>Solve Problem</span>
+<img alt="code-studio" src="assets/20f60e7969e701b07a63accd93ffe638"/>
+</a>
+</div>
+<!--<div class="problem-buttons">
+         Add Problem Link inside href 
+        <a href="" target="_blank" rel="noopener">
+            <span>Solve Problem</span>
+            <img src="https://cdn.iconscout.com/icon/free/png-256/free-leetcode-3521542-2944960.png?f=webp"
+                alt="leetcode">
+        </a>
+    </div>-->
+</div>
+<p class="new-disclaimer"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out
+        yourself first. </em></p>
+<div id="brute-force-approach">
+<details>
+<summary class="main-summary">
+<span>
+                Optimal Approach 
+            </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+                        Algorithm / Intuition
+                    </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition of Brute Force Apporach Here -->
+<h3>Serialisation:</h3>
+<p><strong>Step 1:</strong> Check if the tree is empty: If the root is null, return an empty string.</p>
+<p><strong>Step 2:</strong> Initialise an empty string: This string will store the serialised binary tree.</p>
+<p><strong>Step 3:</strong> Use a queue for level-order traversal: Initialise a queue and enqueue the root.</p>
+<p><figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/f6dbe6e07ae5b259e26e20cefe10d613" width="439"/></figure></p>
+<p><strong>Step 4:</strong> Within the level-order traversal loop:
+                    <ol><li>Dequeue a node from the queue.</li><li>If the node is null, append "#" to the string.</li><li>If the node is not null, append its data value along with a ‘,’ (comma) to the string.  This comma acts as a delimiter that separates the different node values in the string. Enqueue its left and right children.</li></ol></p>
+<p><figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/1db31ecdae1171a1ab04fe8286adef31" width="439"/></figure></p>
+<p><strong>Step 5:</strong> Return the final string containing the serialised representation of the tree.</p>
+<h3>Deserialization: </h3>
+<p><strong>Step 1:</strong>Check if the serialised data is empty: If it is, return null.</p>
+<p><strong>Step 2: </strong>Tokenize the serialised data: Use a stringstream to tokenize the input string using the comma as a delimiter. </p>
+<p><strong>Step 3: </strong>
+                    Read the root value: Read the first token and create the root node with this value.</p>
+<p><strong>Step 4: </strong>
+                    Use a queue for level-order traversal: Initialise a queue and enqueue the root.</p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/a23708b1c37e8a2159552e50454d3444" width="439"/></figure>
+<p><strong>Step 5: </strong>
+                   	Within the level-order traversal loop:
+                   	<ol><li>Dequeue a node from the queue.</li><li>Read the value for the left child from the stringstream.</li><li>If it is "#", set the left child to null. If it's not "#", create a new node with the value and set it as the left child.</li><li>Read the next value in the stringstream for the right child.</li><li>If it is "#", set the right child to null. If it's not "#", create a new node with the value and set it as the right child.</li><li>Enqueue the left and right children into the queue for further traversal.</li></ol></p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/37e66bc6314e607c03194d58d8a07cec" width="439"/></figure>
+<p><strong>Step 6: </strong>
+                    Return the reconstructed root: The final result is the root of the reconstructed tree.</p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+                        Code
+                    </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code">
+                            <code class="language-cpp" lang="cpp">
+#include &lt;iostream&gt;
+#include &lt;queue&gt;
+#include &lt;sstream&gt;
+using namespace std;
+
+// Definition for a
+// binary tree node.
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    // Encodes the tree into a single string
+    string serialize(TreeNode* root) {
+        // Check if the tree is empty
+        if (!root) {
+            return "";
+        }
+
+        // Initialize an empty string
+        // to store the serialized data
+        string s = "";
+        // Use a queue for
+        // level-order traversal
+        queue&lt;TreeNode*&gt; q;
+        // Start with the root node
+        q.push(root);
+
+        // Perform level-order traversal
+        while (!q.empty()) {
+            // Get the front node in the queue
+            TreeNode* curNode = q.front();
+            q.pop();
+
+            // Check if the current node is
+            // null and append "#" to the string
+            if (curNode == nullptr) {
+                s += "#,";
+            } else {
+                // Append the value of the
+                // current node to the string
+                s += to_string(curNode-&gt;val) + ",";
+                // Push the left and right children
+                // to the queue for further traversal
+                q.push(curNode-&gt;left);
+                q.push(curNode-&gt;right);
+            }
+        }
+
+        // Return the
+        // serialized string
+        return s;
+    }
+
+    // Decode the encoded
+    // data to a tree
+    TreeNode* deserialize(string data) {
+        // Check if the
+        // serialized data is empty
+        if (data.empty()) {
+            return nullptr;
+        }
+
+        // Use a stringstream to
+        // tokenize the serialized data
+        stringstream s(data);
+        string str;
+        // Read the root value
+        // from the serialized data
+        getline(s, str, ',');
+        TreeNode* root = new TreeNode(stoi(str));
+
+        // Use a queue for 
+        // level-order traversal
+        queue&lt;TreeNode*&gt; q;
+        // Start with the root node
+        q.push(root);
+
+        // Perform level-order traversal
+        // to reconstruct the tree
+        while (!q.empty()) {
+            // Get the front node in the queue
+            TreeNode* node = q.front();
+            q.pop();
+
+            // Read the value of the left
+            // child from the serialized data
+            getline(s, str, ',');
+            // If the value is not "#", create a new
+            // left child and push it to the queue
+            if (str != "#") {
+                TreeNode* leftNode = new TreeNode(stoi(str));
+                node-&gt;left = leftNode;
+                q.push(leftNode);
+            }
+
+            // Read the value of the right child
+            // from the serialized data
+            getline(s, str, ',');
+            // If the value is not "#", create a
+            // new right child and push it to the queue
+            if (str != "#") {
+                TreeNode* rightNode = new TreeNode(stoi(str));
+                node-&gt;right = rightNode;
+                q.push(rightNode);
+            }
+        }
+
+        // Return the reconstructed
+        // root of the tree
+        return root;
+    }
+};
+
+
+void inorder(TreeNode* root){
+    if(!root){
+        return;
+    }
+    inorder(root-&gt;left);
+    cout &lt;&lt; root-&gt;val &lt;&lt; " ";
+    inorder(root-&gt;right);
+}
+
+int main() {
+    TreeNode* root = new TreeNode(1);
+    root-&gt;left = new TreeNode(2);
+    root-&gt;right = new TreeNode(3);
+    root-&gt;right-&gt;left = new TreeNode(4);
+    root-&gt;right-&gt;right = new TreeNode(5);
+
+    Solution solution;
+    cout &lt;&lt; "Orignal Tree: ";
+    inorder(root);
+    cout &lt;&lt; endl;
+
+    string serialized = solution.serialize(root);
+    cout &lt;&lt; "Serialized: " &lt;&lt; serialized &lt;&lt; endl;
+
+    TreeNode* deserialized = solution.deserialize(serialized);
+    cout &lt;&lt; "Tree after deserialisation: ";
+    inorder(deserialized);
+    cout &lt;&lt; endl;
+
+    return 0;
+}
+                            </code>
+                        </pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code">
+                            <code class="language-java" lang="java">
+import java.util.LinkedList;
+import java.util.Queue;
+
+// Definition for a binary tree node.
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int x) { val = x; }
+}
+
+public class Solution {
+
+    // Encodes the tree into a single string
+    public String serialize(TreeNode root) {
+        // Check if the tree is empty
+        if (root == null) {
+            return "";
+        }
+
+        // Initialize an empty string
+        // to store the serialized data
+        StringBuilder sb = new StringBuilder();
+        // Use a queue for
+        // level-order traversal
+        Queue&lt;TreeNode&gt; q = new LinkedList&lt;&gt;();
+        // Start with the root node
+        q.offer(root);
+
+        // Perform level-order traversal
+        while (!q.isEmpty()) {
+            // Get the front node in the queue
+            TreeNode curNode = q.poll();
+
+            // Check if the current node is
+            // null and append "#" to the string
+            if (curNode == null) {
+                sb.append("#,");
+            } else {
+                // Append the value of the
+                // current node to the string
+                sb.append(curNode.val).append(",");
+                // Push the left and right children
+                // to the queue for further traversal
+                q.offer(curNode.left);
+                q.offer(curNode.right);
+            }
+        }
+
+        // Return the
+        // serialized string
+        return sb.toString();
+    }
+
+    // Decode the encoded
+    // data to a tree
+    public TreeNode deserialize(String data) {
+        // Check if the
+        // serialized data is empty
+        if (data.isEmpty()) {
+            return null;
+        }
+
+        // Use a StringBuilder to
+        // tokenize the serialized data
+        StringBuilder s = new StringBuilder(data);
+        // Read the root value
+        // from the serialized data
+        int commaIndex = s.indexOf(",");
+        String str = s.substring(0, commaIndex);
+        s.delete(0, commaIndex + 1);
+        TreeNode root = new TreeNode(Integer.parseInt(str));
+
+        // Use a queue for 
+        // level-order traversal
+        Queue&lt;TreeNode&gt; q = new LinkedList&lt;&gt;();
+        // Start with the root node
+        q.offer(root);
+
+        // Perform level-order traversal
+        // to reconstruct the tree
+        while (!q.isEmpty()) {
+            // Get the front node in the queue
+            TreeNode node = q.poll();
+
+            // Read the value of the left
+            // child from the serialized data
+            commaIndex = s.indexOf(",");
+            str = s.substring(0, commaIndex);
+            s.delete(0, commaIndex + 1);
+            // If the value is not "#", create a new
+            // left child and push it to the queue
+            if (!str.equals("#")) {
+                TreeNode leftNode = new TreeNode(Integer.parseInt(str));
+                node.left = leftNode;
+                q.offer(leftNode);
+            }
+
+            // Read the value of the right child
+            // from the serialized data
+            commaIndex = s.indexOf(",");
+            str = s.substring(0, commaIndex);
+            s.delete(0, commaIndex + 1);
+            // If the value is not "#", create a
+            // new right child and push it to the queue
+            if (!str.equals("#")) {
+                TreeNode rightNode = new TreeNode(Integer.parseInt(str));
+                node.right = rightNode;
+                q.offer(rightNode);
+            }
+        }
+
+        // Return the reconstructed
+        // root of the tree
+        return root;
+    }
+
+    public static void inorder(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        inorder(root.left);
+        System.out.print(root.val + " ");
+        inorder(root.right);
+    }
+
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.right.left = new TreeNode(4);
+        root.right.right = new TreeNode(5);
+
+        Solution solution = new Solution();
+        System.out.print("Orignal Tree: ");
+        inorder(root);
+        System.out.println();
+
+        String serialized = solution.serialize(root);
+        System.out.println("Serialized: " + serialized);
+
+        TreeNode deserialized = solution.deserialize(serialized);
+        System.out.print("Tree after deserialization: ");
+        inorder(deserialized);
+        System.out.println();
+    }
+}
+                            </code>
+                        </pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code">
+                            <code class="language-python" lang="python">
+from queue import Queue
+from typing import Optional
+
+# Definition for a
+# binary tree node.
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+class Solution:
+    def serialize(self, root: Optional[TreeNode]) -&gt; str:
+        # Check if the tree is empty
+        if not root:
+            return ""
+
+        # Initialize an empty string
+        # to store the serialized data
+        s = ""
+        # Use a queue for
+        # level-order traversal
+        q = Queue()
+        # Start with the root node
+        q.put(root)
+
+        # Perform level-order traversal
+        while not q.empty():
+            # Get the front node in the queue
+            cur_node = q.get()
+
+            # Check if the current node is
+            # null and append "#" to the string
+            if not cur_node:
+                s += "#,"
+            else:
+                # Append the value of the
+                # current node to the string
+                s += str(cur_node.val) + ","
+                # Push the left and right children
+                # to the queue for further traversal
+                q.put(cur_node.left)
+                q.put(cur_node.right)
+
+        # Return the
+        # serialized string
+        return s
+
+    def deserialize(self, data: str) -&gt; Optional[TreeNode]:
+        # Check if the
+        # serialized data is empty
+        if not data:
+            return None
+
+        # Use a queue for
+        # level-order traversal
+        q = Queue()
+        # Use a list to store tokens
+        tokens = data.split(',')
+        # Read the root value
+        # from the serialized data
+        root_val = int(tokens.pop(0))
+        root = TreeNode(root_val)
+        q.put(root)
+
+        # Perform level-order traversal
+        # to reconstruct the tree
+        while not q.empty():
+            # Get the front node in the queue
+            node = q.get()
+
+            # Read the value of the left
+            # child from the serialized data
+            left_val = tokens.pop(0)
+            # If the value is not "#", create a new
+            # left child and push it to the queue
+            if left_val != "#":
+                left_node = TreeNode(int(left_val))
+                node.left = left_node
+                q.put(left_node)
+
+            # Read the value of the right child
+            # from the serialized data
+            right_val = tokens.pop(0)
+            # If the value is not "#", create a
+            # new right child and push it to the queue
+            if right_val != "#":
+                right_node = TreeNode(int(right_val))
+                node.right = right_node
+                q.put(right_node)
+
+        # Return the reconstructed
+        # root of the tree
+        return root
+
+def inorder(root):
+    if not root:
+        return
+    inorder(root.left)
+    print(root.val, end=" ")
+    inorder(root.right)
+
+if __name__ == "__main__":
+    root = TreeNode(1)
+    root.left = TreeNode(2)
+    root.right = TreeNode(3)
+    root.right.left = TreeNode(4)
+    root.right.right = TreeNode(5)
+
+    solution = Solution()
+    print("Original Tree: ", end="")
+    inorder(root)
+    print()
+
+    serialized = solution.serialize(root)
+    print("Serialized: " + serialized)
+
+    deserialized = solution.deserialize(serialized)
+    print("Tree after deserialization: ", end="")
+    inorder(deserialized)
+    print()
+                           </code>
+                        </pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code">
+                            <code class="language-javascript" lang="javascript">
+// Definition for a binary tree node.
+class TreeNode {
+    constructor(val) {
+        this.val = val;
+        this.left = this.right = null;
+    }
+}
+
+class Solution {
+    // Encodes the tree into a single string
+    serialize(root) {
+        // Check if the tree is empty
+        if (!root) {
+            return "";
+        }
+
+        // Initialize an empty string
+        // to store the serialized data
+        let s = "";
+        // Use a queue for
+        // level-order traversal
+        let q = [];
+        // Start with the root node
+        q.push(root);
+
+        // Perform level-order traversal
+        while (q.length &gt; 0) {
+            // Get the front node in the queue
+            let curNode = q.shift();
+
+            // Check if the current node is
+            // null and append "#" to the string
+            if (curNode === null) {
+                s += "#,";
+            } else {
+                // Append the value of the
+                // current node to the string
+                s += curNode.val + ",";
+                // Push the left and right children
+                // to the queue for further traversal
+                q.push(curNode.left);
+                q.push(curNode.right);
+            }
+        }
+
+        // Return the
+        // serialized string
+        return s;
+    }
+
+    // Decode the encoded
+    // data to a tree
+    deserialize(data) {
+        // Check if the
+        // serialized data is empty
+        if (data === "") {
+            return null;
+        }
+
+        // Use a stringstream to
+        // tokenize the serialized data
+        let s = data.split(",");
+        // Read the root value
+        // from the serialized data
+        let rootVal = s.shift();
+        let root = new TreeNode(parseInt(rootVal));
+
+        // Use a queue for 
+        // level-order traversal
+        let q = [];
+        // Start with the root node
+        q.push(root);
+
+        // Perform level-order traversal
+        // to reconstruct the tree
+        while (q.length &gt; 0) {
+            // Get the front node in the queue
+            let node = q.shift();
+
+            // Read the value of the left
+            // child from the serialized data
+            let leftVal = s.shift();
+            // If the value is not "#", create a new
+            // left child and push it to the queue
+            if (leftVal !== "#") {
+                let leftNode = new TreeNode(parseInt(leftVal));
+                node.left = leftNode;
+                q.push(leftNode);
+            }
+
+            // Read the value of the right child
+            // from the serialized data
+            let rightVal = s.shift();
+            // If the value is not "#", create a
+            // new right child and push it to the queue
+            if (rightVal !== "#") {
+                let rightNode = new TreeNode(parseInt(rightVal));
+                node.right = rightNode;
+                q.push(rightNode);
+            }
+        }
+
+        // Return the reconstructed
+        // root of the tree
+        return root;
+    }
+}
+
+function inorder(root) {
+    if (!root) {
+        return;
+    }
+    inorder(root.left);
+    console.log(root.val + " ");
+    inorder(root.right);
+}
+
+// Main function
+function main() {
+    let root = new TreeNode(1);
+    root.left = new TreeNode(2);
+    root.right = new TreeNode(3);
+    root.right.left = new TreeNode(4);
+    root.right.right = new TreeNode(5);
+
+    let solution = new Solution();
+    console.log("Original Tree: ");
+    inorder(root);
+    console.log("\n");
+
+    let serialized = solution.serialize(root);
+    console.log("Serialized: " + serialized + "\n");
+
+    let deserialized = solution.deserialize(serialized);
+    console.log("Tree after deserialization: ");
+    inorder(deserialized);
+    console.log("\n");
+}
+
+// Run the main function
+main();
+
+                            </code>
+                        </pre>
+</div>
+<p>
+<strong>Output</strong> 
+                      	Original Tree: 2 1 4 3 5, Serialized: 1,2,3,#,#,4,5,#,#,#,#, Tree after deserialization: 2 1 4 3 5 
+                    </p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+                        Complexity Analysis
+                    </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity  Here -->
+<p><strong>Time Complexity: O(N)</strong>
+<ol><li>serialize function: O(N), where N is the number of nodes in the tree. This is because the function performs a level-order traversal of the tree, visiting each node once.</li><li>deserialize function: O(N), where N is the number of nodes in the tree. Similar to the serialize function, it processes each node once while reconstructing the tree.</li></ol></p>
+<p><strong>Space Complexity: O(N)</strong>
+<ol><li>serialize function: O(N), where N is the maximum number of nodes at any level in the tree. In the worst case, the queue can hold all nodes at the last level of the tree.</li><li>deserialize function: O(N), where N is the maximum number of nodes at any level in the tree. The queue is used to store nodes during the reconstruction process, and in the worst case, it may hold all nodes at the last level.</li></ol></p>
+</p>
+</details>
+</div>
+</details>
+</div>
+<!-- This is Video Explination Drop-Down -->
+<div class="dsa_article_youtube_video" id="dsa_article_video_explanation">
+<details>
+<summary class="main-summary">
+<span>
+                Video Explanation
+            </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="yt-video-wrapper">
+<!-- Insert iframe embed Link of Youtube Video-->
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" frameborder="0" height="315" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/-YbXySKJsX8?si=-Yyd-M1gR_yHYuq6" title="YouTube video player" width="560"></iframe>
+</div>
+</details>
+</div>
+<blockquote class="wp-block-quote">
+    Special thanks to <strong><a href="https://www.linkedin.com/in/gauri-tomar-005048268">Gauri Tomar</a></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam,<strong><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/"> please check out this article</a></strong>
+</blockquote>
+<script>
+
+    const codeSections = document.querySelectorAll('.code-section');
+
+    // Get last selected language from localStorage or set default value
+    let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+    codeSections.forEach((section, sectionIndex) => {
+        const codeTabs = section.querySelectorAll('.code-tab');
+        const codeBlocks = section.querySelectorAll('.code-block');
+        const copyBtn = section.querySelector('.copy-btn');
+
+        codeTabs.forEach((tab) => {
+            tab.addEventListener('click', () => {
+                codeTabs.forEach((t) => {
+                    t.classList.remove('dsa_article_code_active');
+                });
+                tab.classList.add('dsa_article_code_active');
+
+                const lang = tab.dataset.lang;
+                const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+                codeBlocks.forEach((block) => {
+                    if (block === activeBlock) {
+                        block.classList.add('dsa_article_code_active');
+                    } else {
+                        block.classList.remove('dsa_article_code_active');
+                    }
+                });
+
+                // Update last selected language for all sections and store in localStorage
+                lastSelectedLanguage = lang;
+                localStorage.setItem('lastSelectedLanguage', lang);
+                codeSections.forEach((otherSection, otherIndex) => {
+                    if (otherIndex !== sectionIndex) {
+                        const otherTabs = otherSection.querySelectorAll('.code-tab');
+                        otherTabs.forEach((otherTab) => {
+                            if (otherTab.dataset.lang === lang) {
+                                otherTab.classList.add('dsa_article_code_active');
+                            } else {
+                                otherTab.classList.remove('dsa_article_code_active');
+                            }
+                        });
+                        const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+                        const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+                        otherCodeBlocks.forEach((block) => {
+                            if (block === otherActiveBlock) {
+                                block.classList.add('dsa_article_code_active');
+                            } else {
+                                block.classList.remove('dsa_article_code_active');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+        // Handle copy button click event
+        copyBtn.addEventListener('click', () => {
+            const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+            navigator.clipboard.writeText(activeBlock.innerText);
+            copyBtn.classList.add('dsa_article_code_active');
+            setTimeout(() => {
+                copyBtn.classList.remove('dsa_article_code_active');
+            }, 1000);
+        });
+    });
+
+    // Set initial state of the tabs
+    codeSections.forEach((section) => {
+        const codeTabs = section.querySelectorAll('.code-tab');
+        const codeBlocks = section.querySelectorAll('.code-block');
+
+        codeTabs.forEach((tab) => {
+            if (tab.dataset.lang === lastSelectedLanguage) {
+                tab.classList.add('dsa_article_code_active');
+            } else {
+                tab.classList.remove('dsa_article_code_active');
+            }
+        });
+
+        codeBlocks.forEach((block) => {
+            if (block.dataset.lang === lastSelectedLanguage) {
+                block.classList.add('dsa_article_code_active');
+            } else {
+                block.classList.remove('dsa_article_code_active');
+            }
+        });
+    });
+</script>
+<link href="assets/4237ffca7ce6aadb438c457e0a675b12.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+<script src="index.js"></script>
+<script>hljs.highlightAll();</script>
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

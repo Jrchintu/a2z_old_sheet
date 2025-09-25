@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Remove N-th node from the end of a Linked List</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Remove N-th node from the end of a Linked List</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement: </strong> Given a linked list and an integer N, the task is to <strong>delete the Nth node from the end</strong> of the linked list and print the updated linked list. </p>
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<!-- This is Examples Drop-Down -->
+<div id="article_examples">
+<details class="article_example_details">
+<summary class="article_example_summary">
+<span><strong>
+Examples
+</strong>
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="atricle_example_content">
+<pre class="wp-block-preformatted"><p><strong>Example 1:</strong></p>
+<p><strong>Input Format:</strong> 5-&gt;1-&gt;2, N=2</p>
+<p><strong>Result</strong>: 5-&gt;2</p>
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-13081" src="assets/3d609bd7737dd092416d6d1144cb4dcd.png"/></figure>
+<p><strong>Explanation</strong>: The 2nd node from the end of the linked list is 1. Therefore, we get this result after removing 1 from the linked list.</p>
+<p><strong>Example 2:</strong></p>
+<p><strong>Input Format: </strong>1-&gt;2-&gt;3-&gt;4-&gt;5, N=3</p>
+<p><strong>Result</strong>: 1-&gt;2-&gt;4-&gt;5</p>
+<p><strong>Explanation</strong>: The 3rd node from the end is 3, therefore, we remove 3 from the linked list.</p>
+</pre>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Practice Section-->
+<div class="practice">
+<span><strong>Practice: </strong></span>
+<div class="problem-buttons">
+<!-- Add Problem Link inside href -->
+<a href="https://www.codingninjas.com/studio/problems/delete-kth-node-from-end_799912?utm_source=striver&amp;utm_medium=website&amp;utm_campaign=a_zcoursetuf" rel="noopener" target="_blank">
+<span>Solve Problem</span>
+<img alt="code-studio" src="assets/86dd2cadbd0e7ef71ad98d3b7f2f2efc.png"/>
+</a>
+</div>
+</div>
+<p class="new-disclaimer"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out
+yourself first. </em></p>
+<!-- /wp:html -->
+<!-- wp:html -->
+<div class="horizontal_navbar_dsa_article">
+<div class="grid_container_two">
+<a class="two-boxes box-a" href="#brute-force-approach">
+Brute Force Approach
+</a>
+<a class="two-boxes box-c" href="#optimal-approach">
+Optimal Approach
+</a>
+<a class="three-boxes box-d" href="#dsa_article_video_explanation">
+<svg fill="none" height="26" viewbox="0 0 20 14" width="26" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 10L13.19 7L8 4V10ZM19.56 2.17C19.69 2.64 19.78 3.27 19.84 4.07C19.91 4.87 19.94 5.56 19.94 6.16L20 7C20 9.19 19.84 10.8 19.56 11.83C19.31 12.73 18.73 13.31 17.83 13.56C17.36 13.69 16.5 13.78 15.18 13.84C13.88 13.91 12.69 13.94 11.59 13.94L10 14C5.81 14 3.2 13.84 2.17 13.56C1.27 13.31 0.69 12.73 0.44 11.83C0.31 11.36 0.22 10.73 0.16 9.93C0.0900001 9.13 0.0599999 8.44 0.0599999 7.84L0 7C0 4.81 0.16 3.2 0.44 2.17C0.69 1.27 1.27 0.69 2.17 0.44C2.64 0.31 3.5 0.22 4.82 0.16C6.12 0.0899998 7.31 0.0599999 8.41 0.0599999L10 0C14.19 0 16.8 0.16 17.83 0.44C18.73 0.69 19.31 1.27 19.56 2.17Z" fill="red"></path>
+</svg>
+</a>
+<div class="box-e tooltip">
+<svg fill="none" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.842 9.25L11.9577 10.17C11.2502 10.89 10.8081 11.5 10.8081 13H8.84297V12.5C8.84297 11.39 9.28511 10.39 9.99255 9.67L11.2109 8.41C11.5745 8.05 11.7906 7.55 11.7906 7C11.7906 6.46957 11.5836 5.96086 11.2151 5.58579C10.8465 5.21071 10.3467 5 9.82552 5C9.30434 5 8.80451 5.21071 8.43598 5.58579C8.06745 5.96086 7.86041 6.46957 7.86041 7H5.89531C5.89531 5.93913 6.30938 4.92172 7.04644 4.17157C7.7835 3.42143 8.78316 3 9.82552 3C10.8679 3 11.8675 3.42143 12.6046 4.17157C13.3417 4.92172 13.7557 5.93913 13.7557 7C13.7543 7.84324 13.4259 8.65183 12.842 9.25ZM10.8081 17H8.84297V15H10.8081M9.82552 0C8.53521 0 7.25754 0.258658 6.06545 0.761205C4.87337 1.26375 3.79021 2.00035 2.87783 2.92893C1.03519 4.8043 0 7.34784 0 10C0 12.6522 1.03519 15.1957 2.87783 17.0711C3.79021 17.9997 4.87337 18.7362 6.06545 19.2388C7.25754 19.7413 8.53521 20 9.82552 20C12.4314 20 14.9306 18.9464 16.7732 17.0711C18.6158 15.1957 19.651 12.6522 19.651 10C19.651 4.47 15.2296 0 9.82552 0Z" fill="black"></path>
+</svg>
+<div class="bottom">
+<p>Expand any one approach by clicking the given options in the bar. Clicking one approach on bar,
+closes all other expands. You can manually expand more than one approach at a time</p>
+<i></i>
+</div>
+</div>
+</div>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Approaches Drop-Down -->
+<div class="dsa_article_dropdown_approachs">
+<!-- Brute Force Approach Starts from here -->
+<div id="brute-force-approach">
+<details>
+<summary class="main-summary">
+<span>
+Brute Force Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition of Brute Force Apporach Here -->
+<p>The simplest way to delete the Nth node from the end is to delete the <strong>(L-N+1)th node</strong> from the start of the linked list, where L is the total length of the linked list. </p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-13062" height="231" src="assets/b4b0ed5fa2720dfe318dd0f215206a5c.jpg" width="759"/></figure>
+<p>Therefore, this problem can be broken down into two sub-problems:</p>
+<ol><li>The first part involves the calculation of the length of the linked list. You can read about finding the length <a href="https://docs.google.com/document/d/1ibgOTykB8oj_BRJuPZDASI7hbBtuqcg-xaLTbutTIT0/edit?usp=sharing">here</a>.</li><li>The second part involves the deletion of the (L-N+1)th node from the start of the linked list. You can read about the deletion of a node <a href="https://docs.google.com/document/d/1I2OUC6SiG55kJBEXdYnq0g7tiYwyR_6424tYDa6MwyQ/edit">here</a>.</li></ol>
+<p>There are two edge cases to consider:</p>
+<ol><li>If N equals 1, this means we have to delete the tail of the linked list.  You can read about the deletion of the tail <a href="https://docs.google.com/document/d/1xq0fr9hJo00vc_ao2j4ntbP-JcWnKYkatYPgASct68Y/edit">here</a>.</li><li>If N equals the length of the linked list, we have to delete the head of the linked list. You can read about the deletion of the head <a href="https://docs.google.com/document/d/1R18ExbmQvYeldzIwrdJ8GBiw1_ECa37HtFC0Hg9jHoE/edit">here</a>.</li></ol>
+<h3><strong>Algorithm</strong></h3>
+<ol><li>Initialize a<strong> temp pointer</strong> that will be used to traverse the list.</li></ol>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-13064" height="161" src="assets/f526df4b7941f6aa5ad2e8ffc1489f06.jpg" width="745"/></figure>
+<p>2. Create a <strong>cnt variable</strong> and initialize it to 0. Traverse the linked list, and at each node, <strong>increment cnt</strong>. Finally, when the pointer reaches NULL, return cnt, which contains the <strong>total length of the linked list</strong>.</p>
+<p>3. Now, after knowing the length of the linked list, the <strong>first sub-problem is solved</strong>. To solve the second sub-problem, we will follow the steps that we used to delete the Kth node of the linked list.</p>
+<p>4. To delete the (L-N+1)th node of the linked list, create a new temp pointer to the head. Initialize a variable <strong>res to L-N</strong>, and start iterating the linked list while <strong>decrementing res at each node</strong>. Once <strong>res equals 0</strong>, we know that temp will be pointing to the (L-N)th node, therefore, stop the traversal.</p>
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-13065" height="190" src="assets/9e1441c43c77ad7252cab520d4f19a5a.jpg" width="768"/></figure>
+<p>5. To create a new link, point the (L-N)th node to the (L-N+2)th node of the linked list, effectively skipping the (L-N+1)th node.</p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-13066" height="191" src="assets/718accf6fbd40590513c3321256e5b78.jpg" width="752"/></figure>
+<p>6. Finally, free up the memory being occupied by the (L-N+1)th node, thus deleting this node.</p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-13067" height="142" src="assets/c45bd3fb40adb6b58eb8fe3193f7a59a.jpg" width="650"/></figure>
+<p><strong>Note</strong>: In the case of languages like Java, Python, and Javascript, there is no need for the deletion of objects or nodes because these have an<strong> automatic garbage collection mechanism</strong> that automatically<strong> identifies </strong>and <strong>reclaims</strong> memory that is no longer in use.</p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+class Node {
+public:
+    int data;
+    Node* next;
+
+    // Constructor for Node with data and next node
+    Node(int data1, Node* next1) {
+        data = data1;
+        next = next1;
+    }
+
+    // Constructor for Node with 
+    //only data (next set to nullptr)
+    Node(int data1) {
+        data = data1;
+        next = nullptr;
+    }
+};
+
+// Function to print the linked list
+void printLL(Node* head) {
+    while (head != NULL) {
+        cout &lt;&lt; head-&gt;data &lt;&lt; " ";
+        head = head-&gt;next;
+    }
+}
+
+// Function to delete the Nth node
+// from the end of the linked list
+Node* DeleteNthNodefromEnd(Node* head, int N) {
+    if (head == NULL) {
+        return NULL;
+    }
+    int cnt = 0;
+    Node* temp = head;
+
+    // Count the number of nodes in the linked list
+    while (temp != NULL) {
+        cnt++;
+        temp = temp-&gt;next;
+    }
+
+    // If N equals the total number of
+    // nodes, delete the head
+    if (cnt == N) {
+        Node* newhead = head-&gt;next;
+        delete (head);
+        return newhead;
+    }
+
+    // Calculate the position of the node to delete (res)
+    int res = cnt - N;
+    temp = head;
+
+    // Traverse to the node just before the one to delete
+    while (temp != NULL) {
+        res--;
+        if (res == 0) {
+            break;
+        }
+        temp = temp-&gt;next;
+    }
+
+    // Delete the Nth node from the end
+    Node* delNode = temp-&gt;next;
+    temp-&gt;next = temp-&gt;next-&gt;next;
+    delete (delNode);
+    return head;
+}
+
+int main() {
+    vector&lt;int&gt; arr = {1, 2, 3, 4, 5};
+    int N = 3;
+    Node* head = new Node(arr[0]);
+    head-&gt;next = new Node(arr[1]);
+    head-&gt;next-&gt;next = new Node(arr[2]);
+    head-&gt;next-&gt;next-&gt;next = new Node(arr[3]);
+    head-&gt;next-&gt;next-&gt;next-&gt;next = new Node(arr[4]);
+
+    // Delete the Nth node from the end
+    // and print the modified linked list
+    head = DeleteNthNodefromEnd(head, N);
+    printLL(head);
+}
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+class Node {
+    public int data;
+    public Node next;
+
+    // Constructor for Node with data and next node
+    public Node(int data1, Node next1) {
+        data = data1;
+        next = next1;
+    }
+
+    // Constructor for Node with only data (next set to null)
+    public Node(int data1) {
+        data = data1;
+        next = null;
+    }
+}
+
+public class Main {
+    // Function to print the linked list
+    public static void printLL(Node head) {
+        while (head != null) {
+            System.out.print(head.data + " ");
+            head = head.next;
+        }
+    }
+
+    // Function to delete the Nth node 
+    //from the end of the linked list
+    public static Node DeleteNthNodefromEnd(Node head, int N) {
+        if (head == null) {
+            return null;
+        }
+        int cnt = 0;
+        Node temp = head;
+
+        // Count the number of nodes in the linked list
+        while (temp != null) {
+            cnt++;
+            temp = temp.next;
+        }
+
+        // If N equals the total number of nodes, delete the head
+        if (cnt == N) {
+            Node newhead = head.next;
+            head = null;
+            return newhead;
+        }
+
+        // Calculate the position of the node to delete (res)
+        int res = cnt - N;
+        temp = head;
+
+        // Traverse to the node just before the one to delete
+        while (temp != null) {
+            res--;
+            if (res == 0) {
+                break;
+            }
+            temp = temp.next;
+        }
+
+        // Delete the Nth node from the end
+        Node delNode = temp.next;
+        temp.next = temp.next.next;
+        delNode = null;
+        return head;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {1, 2, 3, 4, 5};
+        int N = 3;
+        Node head = new Node(arr[0]);
+        head.next = new Node(arr[1]);
+        head.next.next = new Node(arr[2]);
+        head.next.next.next = new Node(arr[3]);
+        head.next.next.next.next = new Node(arr[4]);
+
+        // Delete the Nth node from 
+        // the end and print the modified linked list
+        head = DeleteNthNodefromEnd(head, N);
+        printLL(head);
+    }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+class Node:
+    def __init__(self, data, next_node=None):
+        self.data = data
+        self.next = next_node
+
+# Function to print the linked list
+def printLL(head):
+    while head is not None:
+        print(head.data, end=' ')
+        head = head.next
+
+# Function to delete the Nth node from the end of the linked list
+def DeleteNthNodefromEnd(head, N):
+    if head is None:
+        return None
+    cnt = 0
+    temp = head
+
+    # Count the number of nodes in the linked list
+    while temp is not None:
+        cnt += 1
+        temp = temp.next
+
+    # If N equals the total number of nodes, delete the head
+    if cnt == N:
+        newhead = head.next
+        head = None
+        return newhead
+
+    # Calculate the position of the node to delete (res)
+    res = cnt - N
+    temp = head
+
+    # Traverse to the node just before the one to delete
+    while temp is not None:
+        res -= 1
+        if res == 0:
+            break
+        temp = temp.next
+
+    # Delete the Nth node from the end
+    delNode = temp.next
+    temp.next = temp.next.next
+    delNode = None
+    return head
+
+arr = [1, 2, 3, 4, 5]
+N = 3
+head = Node(arr[0])
+head.next = Node(arr[1])
+head.next.next = Node(arr[2])
+head.next.next.next = Node(arr[3])
+head.next.next.next.next = Node(arr[4])
+
+# Delete the Nth node from the end and print the modified linked list
+head = DeleteNthNodefromEnd(head, N)
+printLL(head)
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+class Node {
+    constructor(data, next) {
+        this.data = data;
+        this.next = next;
+    }
+}
+
+// Function to print the linked list
+function printLL(head) {
+    while (head !== null) {
+        console.log(head.data + ' ');
+        head = head.next;
+    }
+}
+
+// Function to delete the Nth node from the end of the linked list
+function DeleteNthNodefromEnd(head, N) {
+    if (head === null) {
+        return null;
+    }
+    let cnt = 0;
+    let temp = head;
+
+    // Count the number of nodes in the linked list
+    while (temp !== null) {
+        cnt++;
+        temp = temp.next;
+    }
+
+    // If N equals the total number of nodes, delete the head
+    if (cnt === N) {
+        let newhead = head.next;
+        head = null;
+        return newhead;
+    }
+
+    // Calculate the position of the node to delete (res)
+    let res = cnt - N;
+    temp = head;
+
+    // Traverse to the node just before the one to delete
+    while (temp !== null) {
+        res--;
+        if (res === 0) {
+            break;
+        }
+        temp = temp.next;
+    }
+
+    // Delete the Nth node from the end
+    let delNode = temp.next;
+    temp.next = temp.next.next;
+    delNode = null;
+    return head;
+}
+
+const arr = [1, 2, 3, 4, 5];
+const N = 3;
+let head = new Node(arr[0]);
+head.next = new Node(arr[1]);
+head.next.next = new Node(arr[2]);
+head.next.next.next = new Node(arr[3]);
+head.next.next.next.next = new Node(arr[4]);
+
+// Delete the Nth node from the end and print the modified linked list
+head = DeleteNthNodefromEnd(head, N);
+printLL(head);
+
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Brute Force Here -->
+<strong>Output:</strong> 
+1 2 4 5 
+
+</p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Brute Force Here -->
+</p><p><strong>Time Complexity:</strong> <strong>O(L)+O(L-N)</strong>, We are calculating the length of the linked list and then iterating up to the (L-N)th node of the linked list<strong>, </strong>where L is the total length of the list.</p>
+<p><strong>Space Complexity:</strong>  <strong>O(1)</strong>, as we have not used any extra space.</p>
+<p></p>
+</details>
+</div>
+</details>
+</div>
+<!-- Brute Force Approach Ends here -->
+<!-- Optimal Approach Starts from here -->
+<div id="optimal-approach">
+<details>
+<summary class="main-summary">
+<span>
+Optimal Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm of Better Approach Here -->
+<p>The brute force, in the worst case, has a time complexity of <strong>O(2*L)</strong>, where L is the length of the linked list. Therefore, it is not the most efficient algorithm, as we are traversing the <strong>entire list twice.</strong></p>
+<p>To enhance efficiency, we will involve two pointers, a fast pointer and a slow pointer. The fast-moving pointer will initially be exactly N nodes ahead of the slow-moving pointer. After which, both of them will move one step at a time. When the fast pointer reaches the last node, i.e., the <strong>L-th node</strong>, the slow is guaranteed to be at the <strong>(L-N)-th node</strong>, where L is the total length of the linked list.</p>
+<h3><strong>Algorithm</strong></h3>
+<ol><li>Initialize two pointers, <strong>`slow`</strong> and <strong>`fast`</strong>, to the head of the linked list. Initially, only fast will move till it crosses <strong>N nodes</strong>, after which both of the pointers will <strong>move simultaneously</strong>.</li></ol>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-13069" height="200" src="assets/3aecf25d6e08ad415c81b31176b0e06c.jpg" width="758"/></figure>
+<p>2. Traverse the linked list till the <strong>fast pointer reaches the last node</strong>, that is, the Lth Node, at this stage, the slow pointer is guaranteed to be at the <strong>(L-N)th node</strong>.</p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-13070" height="209" src="assets/6552b652bae15dfa520f507548ba9d62.jpg" width="758"/></figure>
+<p>3. Point this slow pointer to the (L-N+2)th node, effectively <strong>skipping </strong>the <strong>Nth node from the end</strong> or the (L-N+1)th node from the start.</p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-13072" height="176" src="assets/d8a3bae65ab07a2e77552bb62b14e2d0.jpg" width="758"/></figure>
+<p>4. Finally, free up the space occupied by this to delete it.</p>
+<p><strong>Note</strong>: In the case of languages like Java, Python, and Javascript, there is no need for the deletion of objects or nodes because these have an<strong> automatic garbage collection mechanism</strong> that automatically<strong> identifies </strong>and <strong>reclaims</strong> memory that is no longer in use.</p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+class Node {
+public:
+    int data;
+    Node* next;
+
+    // Constructor
+    Node(int data1, Node* next1) {
+        data = data1;
+        next = next1;
+    }
+
+    // Constructor 
+    Node(int data1) {
+        data = data1;
+        next = nullptr;
+    }
+};
+
+// Function to print the linked list
+void printLL(Node* head) {
+    while (head != NULL) {
+        cout &lt;&lt; head-&gt;data &lt;&lt; " ";
+        head = head-&gt;next;
+    }
+}
+
+// Function to delete the Nth node
+// from the end of the linked list
+Node* DeleteNthNodefromEnd(Node* head, int N) {
+    // Create two pointers, fastp and slowp
+    Node* fastp = head;
+    Node* slowp = head;
+
+    // Move the fastp pointer N nodes ahead
+    for (int i = 0; i &lt; N; i++)
+        fastp = fastp-&gt;next;
+
+    // If fastp becomes NULL,
+    // the Nth node from the end is the head
+    if (fastp == NULL)
+        return head-&gt;next;
+
+    // Move both pointers until fastp reaches the end
+    while (fastp-&gt;next != NULL) {
+        fastp = fastp-&gt;next;
+        slowp = slowp-&gt;next;
+    }
+
+    // Delete the Nth node from the end
+    Node* delNode = slowp-&gt;next;
+    slowp-&gt;next = slowp-&gt;next-&gt;next;
+    delete delNode;
+    return head;
+}
+
+int main() {
+    vector&lt;int&gt; arr = {1, 2, 3, 4, 5};
+    int N = 3;
+    Node* head = new Node(arr[0]);
+    head-&gt;next = new Node(arr[1]);
+    head-&gt;next-&gt;next = new Node(arr[2]);
+    head-&gt;next-&gt;next-&gt;next = new Node(arr[3]);
+    head-&gt;next-&gt;next-&gt;next-&gt;next = new Node(arr[4]);
+
+    // Delete the Nth node from the end 
+    // and print the modified linked list
+    head = DeleteNthNodefromEnd(head, N);
+    printLL(head);
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+class Node {
+    public int data;
+    public Node next;
+
+    // Constructor for Node with data and next node
+    public Node(int data1, Node next1) {
+        data = data1;
+        next = next1;
+    }
+
+    // Constructor for Node with only data (next set to null)
+    public Node(int data1) {
+        data = data1;
+        next = null;
+    }
+}
+
+public class Main {
+    // Function to print the linked list
+    public static void printLL(Node head) {
+        while (head != null) {
+            System.out.print(head.data + " ");
+            head = head.next;
+        }
+    }
+
+    // Function to delete the Nth node from the end of the linked list
+    public static Node DeleteNthNodefromEnd(Node head, int N) {
+        // Create two pointers, fastp and slowp
+        Node fastp = head;
+        Node slowp = head;
+
+        // Move the fastp pointer N nodes ahead
+        for (int i = 0; i &lt; N; i++)
+            fastp = fastp.next;
+
+        // If fastp becomes null, the Nth node from the end is the head
+        if (fastp == null)
+            return head.next;
+
+        // Move both pointers until fastp reaches the end
+        while (fastp.next != null) {
+            fastp = fastp.next;
+            slowp = slowp.next;
+        }
+
+        // Delete the Nth node from the end
+        Node delNode = slowp.next;
+        slowp.next = slowp.next.next;
+        delNode = null;
+        return head;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {1, 2, 3, 4, 5};
+        int N = 3;
+        Node head = new Node(arr[0]);
+        head.next = new Node(arr[1]);
+        head.next.next = new Node(arr[2]);
+        head.next.next.next = new Node(arr[3]);
+        head.next.next.next.next = new Node(arr[4]);
+
+        // Delete the Nth node from the end and print the modified linked list
+        head = DeleteNthNodefromEnd(head, N);
+        printLL(head);
+    }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+class Node:
+    def __init__(self, data, next_node=None):
+        self.data = data
+        self.next = next_node
+
+# Function to print the linked list
+def printLL(head):
+    while head is not None:
+        print(head.data, end=' ')
+        head = head.next
+
+# Function to delete the Nth node from the end of the linked list
+def DeleteNthNodefromEnd(head, N):
+    # Create two pointers, fastp and slowp
+    fastp = head
+    slowp = head
+
+    # Move the fastp pointer N nodes ahead
+    for i in range(N):
+        fastp = fastp.next
+
+    # If fastp becomes None, the Nth node from the end is the head
+    if fastp is None:
+        return head.next
+
+    # Move both pointers until fastp reaches the end
+    while fastp.next is not None:
+        fastp = fastp.next
+        slowp = slowp.next
+
+    # Delete the Nth node from the end
+    delNode = slowp.next
+    slowp.next = slowp.next.next
+    delNode = None
+    return head
+
+arr = [1, 2, 3, 4, 5]
+N = 3
+head = Node(arr[0])
+head.next = Node(arr[1])
+head.next.next = Node(arr[2])
+head.next.next.next = Node(arr[3])
+head.next.next.next.next = Node(arr[4])
+
+# Delete the Nth node from the end and print the modified linked list
+head = DeleteNthNodefromEnd(head, N)
+printLL(head)
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+class Node {
+    constructor(data, next) {
+        this.data = data;
+        this.next = next;
+    }
+}
+
+// Function to print the linked list
+function printLL(head) {
+    while (head !== null) {
+        console.log(head.data + ' ');
+        head = head.next;
+    }
+}
+
+// Function to delete the Nth node from the end of the linked list
+function DeleteNthNodefromEnd(head, N) {
+    // Create two pointers, fastp and slowp
+    let fastp = head;
+    let slowp = head;
+
+    // Move the fastp pointer N nodes ahead
+    for (let i = 0; i &lt; N; i++)
+        fastp = fastp.next;
+
+    // If fastp becomes null, the Nth node from the end is the head
+    if (fastp === null)
+        return head.next;
+
+    // Move both pointers until fastp reaches the end
+    while (fastp.next !== null) {
+        fastp = fastp.next;
+        slowp = slowp.next;
+    }
+
+    // Delete the Nth node from the end
+    let delNode = slowp.next;
+    slowp.next = slowp.next.next;
+    delNode = null;
+    return head;
+}
+
+const arr = [1, 2, 3, 4, 5];
+const N = 3;
+let head = new Node(arr[0]);
+head.next = new Node(arr[1]);
+head.next.next = new Node(arr[2]);
+head.next.next.next = new Node(arr[3]);
+head.next.next.next.next = new Node(arr[4]);
+
+// Delete the Nth node from the end and print the modified linked list
+head = DeleteNthNodefromEnd(head, N);
+printLL(head);
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Optimal Apporach Here -->
+<strong>Output:</strong> 
+1 2 4 5
+
+</p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Optimal Approach-->
+</p><p><strong>Time Complexity</strong>: <strong>O(N) </strong>since the fast pointer will traverse the entire linked list, where N is the length of the linked list.</p>
+<p><strong>Space Complexity</strong>: <strong>O(1)</strong>, as we have not used any extra space.</p>
+<p></p>
+</details>
+</div>
+</details>
+</div>
+<!-- Optimal Approach Starts from here -->
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Video Explination Drop-Down -->
+<div class="dsa_article_youtube_video" id="dsa_article_video_explanation">
+<details>
+<summary class="main-summary">
+<span>
+Video Explanation
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="yt-video-wrapper">
+<!-- Insert iframe embed Link of Youtube Video-->
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" class="lazy-loaded" data-lazy-type="iframe" data-src="https://www.youtube.com/embed/3kMKYQ2wNIU?si=QRJGfGW8NAeOMt7X" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/3kMKYQ2wNIU?feature=oembed" title="Remove Nth Node from End" width="810"></iframe><noscript>
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/3kMKYQ2wNIU?si=QRJGfGW8NAeOMt7X" title="Remove Nth Node from End " width="810"></iframe></noscript>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script>
+
+const codeSections = document.querySelectorAll('.code-section');
+
+// Get last selected language from localStorage or set default value
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+// Update last selected language for all sections and store in localStorage
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+// Handle copy button click event
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+// Set initial state of the tabs
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<script>
+const codeSections = document.querySelectorAll('.code-section');
+
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<link href="assets/4237ffca7ce6aadb438c457e0a675b12.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+<script src="index.js"></script>
+<script>hljs.highlightAll();</script>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script src="https://takeuforward.org/UXApproachDropDowns/2ApproachJSScript.js"></script>
+<!-- /wp:html -->
+<!-- wp:paragraph -->
+<p>In case you are learning DSA, you should definitely check out our free <a href="https://takeuforward.org/strivers-a2z-dsa-course/strivers-a2z-dsa-course-sheet-2/" rel="noopener" target="_blank" title="">A2Z DSA Course</a> with videos and blogs.</p>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to </em><strong><a href="https://www.linkedin.com/in/neerav-sethi-0b6047103" rel="noreferrer noopener" target="_blank">Neerav Sethi</a></strong><em> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/" rel="noopener" target="_blank" title="">please check out this article</a></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

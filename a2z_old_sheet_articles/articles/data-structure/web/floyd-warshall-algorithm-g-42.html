@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Floyd Warshall Algorithm: G-42</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Floyd Warshall Algorithm: G-42</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement:</strong> The problem is to find the shortest distances between every pair of vertices in a given edge-weighted directed graph. The graph is represented as an adjacency matrix of size n*n. Matrix[i][j] denotes the weight of the edge from i to j. If Matrix[i][j]=-1, it means there is no edge from i to j.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Do it in place.</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Example 1</strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<pre><b>Input Format:</b> 
+matrix[][] = { {0, 2, -1, -1},
+        {1, 0, 3, -1},{-1, -1, 0, -1},{3, 5, 4, 0} }
+
+<b>Result:</b>
+0 2 5 -1 
+1 0 3 -1 
+-1 -1 0 -1 
+3 5 4 0 
+<strong>Explanation</strong>: In this example, the final matrix 
+is storing the shortest distances. For example, matrix[i][j] is 
+storing the shortest distance from node i to j.
+</pre>
+<!-- /wp:html -->
+<!-- wp:paragraph -->
+<p><strong>Example 2</strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<pre><b>Input Format</b>: 
+matrix[][] = {{0,25},
+              {-1,0}}
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-6957" src="assets/3314cd8fa6e972de1de85fa7a8f1b34a.png"/></figure>
+<b>Result:</b>   
+0 25  
+-1 0﻿
+<b>Explanation:</b> In this example, the shortest distance 
+is already given (if it exists).
+</pre>
+<!-- /wp:html -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Solution</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p><strong><em>Disclaimer</em></strong>: <em>Don't jump directly to the solution, try it out yourself first. </em><a href="https://practice.geeksforgeeks.org/problems/implementing-floyd-warshall2042/1?utm_source=youtube&amp;utm_medium=collab_striver_ytdescription&amp;utm_campaign=implementing-floyd-warshall"><em>Problem link</em></a><em>.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Solution:</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>In this article, we will be discussing Floyd Warshall Algorithm which is very much different from the two which we have previously learned: Dijkstra's Shortest Path algorithm and the Bellman-Ford algorithm. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Dijkstra's Shortest Path algorithm and Bellman-Ford algorithm are <strong><em>single-source shortest path algorithms</em></strong> where we are given a single source node and are asked to find out the shortest path to every other node from that given source. But in the Floyd Warshall algorithm, we need to figure out the shortest distance from each node to every other node.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Basically, the Floyd Warshall algorithm is a <strong><em>multi-source shortest path algorithm</em></strong> and it <strong><em>helps</em></strong> <strong><em>to detect negative cycles as well</em></strong>. The <strong><em>shortest path</em></strong> between node u and v necessarily means the path(from u to v) for which the sum of the edge weights is minimum.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>In Floyd Warshall's algorithm, we need to check every possible path going via each possible node. And after checking every possible path, we will figure out the shortest path(a kind of brute force approach to find the shortest path). Let’s understand it using the following illustration:</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":6958,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-6958" src="assets/fe082137e33f515c44f2e9a1bd5d3bd0.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>From the above example we can derive the following formula:<br/><strong>matrix[i][j] =min(matrix[i][j], matrix[i ][k]+matrix[k][j]), where i = source node, j = destination node, and k = the node via which we are reaching from i to j.</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Here we will calculate dist[i][j] for every possible node k (k = 0, 1….V, where V = no. of nodes), and will select the minimum value as our result.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>In order to apply this algorithm to an undirected graph, we just need to convert the undirected edges into directed edges like the following:</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":6959,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-6959" src="assets/8ae4f34fc5934ee052a0fc1a96103473.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p><strong>Explanation:</strong> An undirected edge between nodes u and v necessarily means that there are two opposite-directed edges, one towards node u and the other towards node v. So the above conversion is valid.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Note:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li><strong> </strong><em>Until now, to store a graph we have used the adjacency list. But in this algorithm, we are going to use the </em><strong><em>adjacency matrix</em></strong><em> method. </em></li><li><em>One additional point to remember is that the cost of reaching a node from itself must always be 0 i.e. </em><em>dist[i][i] = 0, where i = current node.</em></li></ul>
+<!-- /wp:list -->
+<!-- wp:heading {"level":3} -->
+<h3><strong><br/></strong><strong>Intuition:</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p><strong> </strong><em>The intuition is to check all possible paths between every possible pair of nodes and to choose the shortest one. Checking all possible paths means going via each and every possible node.  </em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>The follow-up questions for interviews:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li><strong><em>How to detect a negative cycle using the Floyd Warshall algorithm?</em></strong></li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong><em>Negative Cycle: </em></strong><em>A cycle is called a negative cycle if the sum of all its weights becomes negative. The following illustration is an example of a negative cycle:</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":6960,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-6960" src="assets/312a38d3792789192e072e85c3dda4ea.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:list -->
+<ul><li><em>We have previously said that the cost of reaching a node from itself must be 0. But in the above graph, if we try to reach node 0 from itself we can follow the path: 0-&gt;1-&gt;2-&gt;0. In this case, the cost to reach node 0 from itself becomes -3 which is less than 0. This is only possible if the graph contains a negative cycle.</em></li><li><em>So, if we find that the cost of reaching any node from itself is less than 0, we can conclude that the graph has a negative cycle.</em></li><li><strong><em>What will happen if we will apply Dijkstra’s algorithm for this purpose?</em></strong><ul><li><strong><em>If the graph has a negative cycle:</em></strong><em> We cannot apply Dijkstra’s algorithm to the graph which contains a negative cycle. It will give TLE error in that case.</em><em><br/></em></li><li><strong><em>If the graph does not contain a negative cycle: </em></strong><em>In this case, we will apply Dijkstra’s algorithm for every possible node to make it work like a multi-source shortest path algorithm like Floyd Warshall. The time complexity of </em><strong><em>Floyd Warshall is O(V</em></strong><strong><em><sup>3</sup></em></strong><strong><em>)</em></strong><em>(Which we will discuss later in this article) whereas if we apply </em><strong><em>Dijkstra’s algorithm </em></strong><em>for the same purpose the time complexity reduces to </em><strong><em>O(V*(E*logV))</em></strong><em> (where v = no. of vertices). </em></li></ul></li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>Approach</strong>: </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The algorithm is not much intuitive as the other ones’. It is more of a brute force, where all combinations of paths have been tried to get the shortest paths. Nothing to panic much with the intuition, it is a simple brute force approach on all paths. Focus on the three<em> ‘for’</em> loops.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Formula:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>matrix[i][j] =min(matrix[i][j], matrix[i ][k]+matrix[k][j]), where i = source node,</strong><strong><br/></strong><strong>                   j = destination node and k = the node via which we are reaching from i to j.</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The algorithm steps are as follows:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Initial Configuration: </strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Adjacency Matrix: </strong>The adjacency matrix should store the edge weights for the given edges and the rest of the cells must be initialized with infinity().</p>
+<!-- /wp:paragraph -->
+<!-- wp:list {"ordered":true} -->
+<ol><li>After having set the adjacency matrix accordingly, we will run a loop from 0 to V-1(V = no. of vertices). In the k<sup>th</sup> iteration, this loop will help us to check the path via node k for every possible pair of nodes. Basically, this loop will change the value of k in the formula.</li><li>Inside the loop, there will be two nested loops for generating every possible pair of nodes(Nothing but to visit each cell of a 2D matrix using the nested loop). Among these two loops, the first loop will change the value of i and the second one will change the value of j in the formula.</li><li>Inside these nested loops, we will apply the above formula to calculate the shortest distance between the pair of nodes.</li><li>Finally, the adjacency matrix will store all the shortest paths. For example, matrix[i][j] will store the shortest path from node i to node j.</li></ol>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>If we want to check for a negative cycle:</strong><strong><br/></strong>After completing the steps(outside those three loops), we will run a loop and check if any cell having the row and column the same(i = j) contains a value less than 0.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Note</strong>: <em>If you wish to see the dry run of the above approach, you can watch the video attached to this article.</em><strong><br/>Code</strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+
+class Solution {
+public:
+	void shortest_distance(vector&lt;vector&lt;int&gt;&gt;&amp;matrix) {
+		int n = matrix.size();
+		for (int i = 0; i &lt; n; i++) {
+			for (int j = 0; j &lt; n; j++) {
+				if (matrix[i][j] == -1) {
+					matrix[i][j] = 1e9;
+				}
+				if (i == j) matrix[i][j] = 0;
+			}
+		}
+
+		for (int k = 0; k &lt; n; k++) {
+			for (int i = 0; i &lt; n; i++) {
+				for (int j = 0; j &lt; n; j++) {
+					matrix[i][j] = min(matrix[i][j],
+					                   matrix[i][k] + matrix[k][j]);
+				}
+			}
+		}
+
+
+
+
+		for (int i = 0; i &lt; n; i++) {
+			for (int j = 0; j &lt; n; j++) {
+				if (matrix[i][j] == 1e9) {
+					matrix[i][j] = -1;
+				}
+			}
+		}
+	}
+};
+
+
+int main() {
+
+	int V = 4;
+	vector&lt;vector&lt;int&gt;&gt; matrix(V, vector&lt;int&gt;(V, -1));
+	matrix[0][1] = 2;
+	matrix[1][0] = 1;
+	matrix[1][2] = 3;
+	matrix[3][0] = 3;
+	matrix[3][1] = 5;
+	matrix[3][2] = 4;
+
+	Solution obj;
+	obj.shortest_distance(matrix);
+
+	for (auto row : matrix) {
+		for (auto cell : row) {
+			cout &lt;&lt; cell &lt;&lt; " ";
+		}
+		cout &lt;&lt; endl;
+	}
+
+	return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>0 2 5 -1<br/>1 0 3 -1<br/>-1 -1 0 -1<br/>3 5 4 0</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: </strong>O(V<sup>3</sup>), as we have three nested loops each running for V times, where V = no. of vertices.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: </strong>O(V<sup>2</sup>), where V = no. of vertices. This space complexity is due to storing the adjacency matrix of the given graph.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+
+
+//User function template for JAVA
+
+class Solution {
+    public void shortest_distance(int[][] matrix) {
+        int n = matrix.length;
+        for (int i = 0; i &lt; n; i++) {
+            for (int j = 0; j &lt; n; j++) {
+                if (matrix[i][j] == -1) {
+                    matrix[i][j] = (int)(1e9);
+                }
+                if (i == j) matrix[i][j] = 0;
+            }
+        }
+
+        for (int k = 0; k &lt; n; k++) {
+            for (int i = 0; i &lt; n; i++) {
+                for (int j = 0; j &lt; n; j++) {
+                    matrix[i][j] = Math.min(matrix[i][j],
+                                            matrix[i][k] + matrix[k][j]);
+                }
+            }
+        }
+
+        for (int i = 0; i &lt; n; i++) {
+            for (int j = 0; j &lt; n; j++) {
+                if (matrix[i][j] == (int)(1e9)) {
+                    matrix[i][j] = -1;
+                }
+            }
+        }
+    }
+}
+
+public class tUf {
+    public static void main(String[] args) {
+        int V = 4;
+        int[][] matrix = new int[V][V];
+
+        for (int i = 0; i &lt; V; i++) {
+            for (int j = 0; j &lt; V; j++) {
+                matrix[i][j] = -1;
+            }
+        }
+
+        matrix[0][1] = 2;
+        matrix[1][0] = 1;
+        matrix[1][2] = 3;
+        matrix[3][0] = 3;
+        matrix[3][1] = 5;
+        matrix[3][2] = 4;
+
+        Solution obj = new Solution();
+        obj.shortest_distance(matrix);
+
+        for (int i = 0; i &lt; V; i++) {
+            for (int j = 0; j &lt; V; j++) {
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println("");
+        }
+    }
+} 
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>0 2 5 -1<br/>1 0 3 -1<br/>-1 -1 0 -1<br/>3 5 4 0</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: </strong>O(V<sup>3</sup>), as we have three nested loops each running for V times, where V = no. of vertices.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: </strong>O(V<sup>2</sup>), where V = no. of vertices. This space complexity is due to storing the adjacency matrix of the given graph.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/kriti39/" rel="noreferrer noopener" target="_blank"><strong>KRITIDIPTA GHOSH</strong></a></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a>. <em>If you want to suggest any improvement/correction in this article please mail us at write4tuf@gmail.com</em></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

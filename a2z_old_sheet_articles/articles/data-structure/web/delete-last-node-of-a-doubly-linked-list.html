@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Delete Last Node of a Doubly Linked List</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Delete Last Node of a Doubly Linked List</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement: </strong>Given a Doubly Linked List. Delete the last of a Doubly Linked List.</p>
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<!-- This is Examples Drop-Down -->
+<div id="article_examples">
+<details class="article_example_details">
+<summary class="article_example_summary">
+<span><strong>
+Examples
+</strong>
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="atricle_example_content">
+<pre class="wp-block-preformatted"><!-- Insert New Examples Here -->
+<p><strong>Example 1:</strong> DLL: 1 &lt;-&gt; 3 &lt;-&gt; 4 &lt;-&gt; 1</p>
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-12783" height="136" src="assets/5d15c814f4d6b6a360d192f7bb543a88.png" width="768"/></figure>
+<p><strong>Result</strong>: DLL: 1 &lt;-&gt; 3 &lt;-&gt; 4</p>
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-12784" height="163" src="assets/30ba198f228cdffbabd1ff38ec773d8d.png" width="768"/></figure>
+<p><strong>Explanation: </strong>After deleting the tail node we will get a doubly linked list. The node at the end of the doubly linked list will no longer be a part of it.</p>
+<p><strong>Input Format: </strong>DLL: 7 &lt;-&gt; 5</p>
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-12785" height="180" src="assets/c2ed4a50a4cf5fce6f5bc10d8432139a.png" width="768"/></figure>
+<p><strong>Result</strong>: DLL: 7</p>
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-12786" height="210" src="assets/a3beac46279922b8fd0e90607f1681ba.png" width="768"/></figure>
+<p><strong>Explanation: </strong>7 will be the only node left after we delete the tail node of the doubly linked list.</p>
+</pre>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Practice Section-->
+<div class="practice">
+<span><strong>Practice: </strong></span>
+<div class="problem-buttons">
+<!-- Add Problem Link inside href -->
+<a href="https://www.codingninjas.com/studio/problems/delete-last-node-of-a-doubly-linked-list_8160469?utm_source=striver&amp;utm_medium=website&amp;utm_campaign=a_zcoursetuf" rel="noopener" target="_blank">
+<span>Solve Problem</span>
+<img alt="code-studio" src="assets/86dd2cadbd0e7ef71ad98d3b7f2f2efc.png"/>
+</a>
+</div>
+</div>
+<p class="new-disclaimer"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out
+yourself first. </em></p>
+<!-- /wp:html -->
+<!-- wp:heading -->
+<h2><strong>Solution:</strong></h2>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p><strong>Approach</strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>To delete the tail of a doubly linked list, we update the linkage between its last node and its second last node. Since a doubly linked list is bidirectional, we set the second last node's next pointer and the last node's back pointer to null. Then, we return the head as the result.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Two edge cases to consider are:</p>
+<!-- /wp:paragraph -->
+<!-- wp:list {"ordered":true} -->
+<ol><li>If the input doubly linked list is empty, we return null.</li><li>If there is only one node in the list, that node itself will be the tail and we return null after deleting that node.</li></ol>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>Algorithm</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Step 1: </strong>Traverse the doubly linked list to the last node and keep<strong> </strong>track of it using the tail pointer.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>We start from the head of the doubly linked list and iterate through the list using a while loop until we reach the last node. The <strong>tail</strong> pointer is used to keep track of this last node.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Step 2: </strong>Obtain the second last node using the tail's back pointer, and name it the <strong>prev</strong> pointer.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Step 3:</strong> Set the 'next' pointer of the prev node to null. This step effectively disconnects the initial tail node from the list in the forward direction, making <strong>prev</strong> the new tail node.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Step 4: </strong>Set the 'back' pointer of the tail node to null. This ensures that the <strong>tail</strong> node no longer points back to the <strong>prev</strong> node, as it is now the last node in the list.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Step 5: </strong>Return the head of the doubly linked list as the result. Now that we have updated the doubly linked list, the list is now one node shorter than before.</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":12787,"width":768,"height":591,"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-12787" height="591" src="assets/824e1ad80ddd2d173afb386a3b914eca.png" width="768"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p><strong>Step 6: Delete tail (C++ Only)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p> Note that in C++, it's essential to explicitly<strong> delete the previous tail</strong> to <strong>free</strong> <strong>memory</strong>. In Java, <strong>memory management </strong>is<strong> </strong>automatic, handled by the <strong>garbage collector</strong>, which cleans up unreferenced objects.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;iostream&gt;
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+// Define a Node class for doubly linked list
+class Node {
+public:
+    int data;       // Data stored in the node
+    Node* next;     // Pointer to the next node in the list (forward direction)
+    Node* back;     // Pointer to the previous node in the list (backward direction)
+
+    // Constructor for a Node with both data, a reference to the next node, and a reference to the previous node
+    Node(int data1, Node* next1, Node* back1) {
+        data = data1;
+        next = next1;
+        back = back1;
+    }
+
+    // Constructor for a Node with data, and no references to the next and previous nodes (end of the list)
+    Node(int data1) {
+        data = data1;
+        next = nullptr;
+        back = nullptr;
+    }
+};
+
+// Function to convert an array to a doubly linked list
+Node* convertArr2DLL(vector&lt;int&gt; arr) {
+   // Create the head node with the first element of the array
+    Node* head = new Node(arr[0]); 
+   // Initialize 'prev' to the head node
+
+    Node* prev = head;             
+    for (int i = 1; i &lt; arr.size(); i++) {
+        // Create a new node with data from the array and set its 'back' pointer to the previous node
+        Node* temp = new Node(arr[i], nullptr, prev);
+        // Update the 'next' pointer of the previous node to point to the new node
+
+        prev-&gt;next = temp;    
+        // Move 'prev' to the newly created node for the next iteration
+   
+       prev = temp;         
+     }
+    // Return the head of the doubly linked list
+
+    return head;  
+}
+
+// Function to print the elements of the doubly linked list
+void print(Node* head) {
+    while (head != nullptr) {
+        // Print the data in the current node
+        cout &lt;&lt; head-&gt;data &lt;&lt; " "; 
+        // Move to the next node
+        head = head-&gt;next;         
+    }
+}
+
+// Function to delete the head of the doubly linked list
+// The functionality of this has been explained in our previous
+// article, please refer to it. 
+Node* deleteHead(Node* head) {
+    if (head == nullptr || head-&gt;next == nullptr) {
+      // Return NULL if the list is empty or contains only one element
+        return nullptr; 
+    }
+
+   // Store the current head as 'prev'
+    Node* prev = head;      
+     // Move 'head' to the next node
+    head = head-&gt;next;    
+
+ // Set 'back' pointer of the new head to nullptr
+    head-&gt;back = nullptr;   
+
+ // Set 'next' pointer of 'prev' to nullptr
+    prev-&gt;next = nullptr;  
+
+   // Return the new head
+    return head;          
+}
+
+// Function to delete the tail of the doubly linked list
+Node* deleteTail(Node* head) {
+    if (head == nullptr || head-&gt;next == nullptr) {
+     // If the list is empty or has only one node, return null
+        return nullptr;  
+    }
+    
+    Node* tail = head;
+    while (tail-&gt;next != nullptr) {
+     // Traverse to the last node (tail)
+        tail = tail-&gt;next; 
+    }
+    
+    Node* newTail = tail-&gt;back;
+    newTail-&gt;next = nullptr;
+    tail-&gt;back = nullptr;
+    
+    // Free memory of the deleted node
+    delete tail;  
+    
+    return head;
+}
+
+int main() {
+    vector&lt;int&gt; arr = {12, 5, 8, 7};
+    Node* head = convertArr2DLL(arr);
+    
+    cout &lt;&lt; "Original Doubly Linked List: ";
+    print(head);
+    
+    cout &lt;&lt; "\n\nAfter deleting the tail node: ";
+    head = deleteTail(head);
+    print(head);
+
+    return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong> </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>12 5 8 7<br/>After deleting tail node: <br/>12 5 8</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(1)</strong> Removing the head of a doubly linked list is a quick operation, taking constant time because it only involves updating references.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(1) </strong>Deleting the head also has minimal memory usage, using a few extra pointers without regard to the list's size.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">public class DLinkedList {
+    public static class Node {
+        public int data;      // Data stored in the node
+        public Node next;     // Reference to the next node in the list (forward direction)
+        public Node back;     // Reference to the previous node in the list (backward direction)
+
+        // Constructor for a Node with both data, a reference to the next node, and a reference to the previous node
+        public Node(int data1, Node next1, Node back1) {
+            data = data1;
+            next = next1;
+            back = back1;
+        }
+
+        // Constructor for a Node with data, and no references to the next and previous nodes (end of the list)
+        public Node(int data1) {
+            data = data1;
+            next = null;
+            back = null;
+        }
+    }
+
+    // Function to convert an array to a doubly linked list
+    private static Node convertArr2DLL(int[] arr) {
+        Node head = new Node(arr[0]); // Create the head node with the first element of the array
+        Node prev = head; // Initialize 'prev' to the head node
+
+        for (int i = 1; i &lt; arr.length; i++) {
+            // Create a new node with data from the array and set its 'back' pointer to the previous node
+            Node temp = new Node(arr[i], null, prev);
+            prev.next = temp; // Update the 'next' pointer of the previous node to point to the new node
+            prev = temp; // Move 'prev' to the newly created node for the next iteration
+        }
+        return head; // Return the head of the doubly linked list
+    }
+
+    // Function to delete the tail of the doubly linked list
+    private static Node deleteTail(Node head) {
+        if (head == null || head.next == null) {
+            return null; // Return null if the list is empty or contains only one element
+        }
+        
+        Node tail = head;
+        while (tail.next != null) {
+            tail = tail.next;
+        }
+        
+        Node newtail = tail.back;
+        
+        newtail.next = null;
+        tail.back = null;
+        
+        return head;
+    }
+
+    // Function to delete the head of the doubly linked list
+    private static Node deleteHead(Node head) {
+        if (head == null || head.next == null) {
+            return null; // Return null if the list is empty or contains only one element
+        }
+        
+        Node prev = head;
+        head = head.next;
+        
+        head.back = null; // Set 'back' pointer of the new head to null
+        prev.next = null; // Set 'next' pointer of 'prev' to null
+        
+        return head;
+    }
+
+    // Function to print the elements of the doubly linked list
+    private static void print(Node head) {
+        while (head != null) {
+            System.out.print(head.data + " "); // Print the data in the current node
+            head = head.next; // Move to the next node
+        }
+        System.out.println();
+    }
+
+     public static void main(String[] args) {
+        int[] arr = {12, 5, 6, 8};
+        Node head = convertArr2DLL(arr); // Convert the array to a doubly linked list
+        print(head); // Print the doubly linked list
+        
+        System.out.println("Doubly Linked List after deleting tail node: ");
+        head = deleteTail(head);
+        print(head);
+    }
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong> </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>12 5 8 7<br/>After deleting tail node: <br/>12 5 8</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(1)</strong> Removing the head of a doubly linked list is a quick operation, taking constant time because it only involves updating references.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(1) </strong>Deleting the head also has minimal memory usage, using a few extra pointers without regard to the list's size.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="python">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-python" lang="python">class Node:
+    def __init__(self, data, next_node=None, back_node=None):
+        self.data = data
+        self.next = next_node
+        self.back = back_node
+
+def convert_arr_to_dll(arr):
+    # Create the head node with the first element of the array
+    head = Node(arr[0])
+    # Initialize 'prev' to the head node
+    prev = head
+
+    for i in range(1, len(arr)):
+        # Create a new node with data from the array and set its 'back' pointer to the previous node
+        temp = Node(arr[i], None, prev)
+        # Update the 'next' pointer of the previous node to point to the new node
+        prev.next = temp
+        # Move 'prev' to the newly created node for the next iteration
+        prev = temp
+
+    # Return the head of the doubly linked list
+    return head
+
+def print_dll(head):
+    while head is not None:
+        # Print the data in the current node
+        print(head.data, end=" ")
+        # Move to the next node
+        head = head.next
+
+def delete_tail(head):
+    if head is None or head.next is None:
+        return None  # If the list is empty or has only one node, return None
+
+    tail = head
+    while tail.next is not None:
+        # Traverse to the last node (tail)
+        tail = tail.next
+
+    new_tail = tail.back
+    new_tail.next = None
+    tail.back = None
+
+    # Free memory of the deleted node
+    del tail
+
+    return head
+
+if __name__ == "__main__":
+    arr = [12, 5, 8, 7]
+    head = convert_arr_to_dll(arr)
+
+    print("Original Doubly Linked List:", end=" ")
+    print_dll(head)
+
+    print("\n\nAfter deleting the tail node:", end=" ")
+    head = delete_tail(head)
+    print_dll(head)
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong> </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>12 5 8 7<br/>After deleting tail node: <br/>12 5 8</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(1)</strong> Removing the head of a doubly linked list is a quick operation, taking constant time because it only involves updating references.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(1) </strong>Deleting the head also has minimal memory usage, using a few extra pointers without regard to the list's size.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>[tabby title="JavaScript Code"]</p>
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">// Define a Node class for doubly linked list
+class Node {
+    constructor(data, nextNode = null, backNode = null) {
+        this.data = data;
+        this.next = nextNode;
+        this.back = backNode;
+    }
+}
+
+// Function to convert an array to a doubly linked list
+function convertArrToDLL(arr) {
+    // Create the head node with the first element of the array
+    const head = new Node(arr[0]);
+    // Initialize 'prev' to the head node
+    let prev = head;
+
+    for (let i = 1; i &lt; arr.length; i++) {
+        // Create a new node with data from the array and set its 'back' pointer to the previous node
+        const temp = new Node(arr[i], null, prev);
+        // Update the 'next' pointer of the previous node to point to the new node
+        prev.next = temp;
+        // Move 'prev' to the newly created node for the next iteration
+        prev = temp;
+    }
+
+    // Return the head of the doubly linked list
+    return head;
+}
+
+// Function to print the elements of the doubly linked list
+function printDLL(head) {
+    while (head !== null) {
+        // Print the data in the current node
+        console.log(head.data + " ");
+        // Move to the next node
+        head = head.next;
+    }
+}
+
+// Function to delete the tail node of the doubly linked list
+function deleteTail(head) {
+    if (head === null || head.next === null) {
+        return null;  // If list is empty or has only one node, return null
+    }
+
+    let tail = head;
+    while (tail.next !== null) {
+        // Traverse to the last node (tail)
+        tail = tail.next;
+    }
+
+    const newTail = tail.back;
+    newTail.next = null;
+    tail.back = null;
+
+    // Free memory of the deleted node
+    delete tail;
+
+    return head;
+}
+
+const arr = [12, 5, 8, 7];
+let head = convertArrToDLL(arr);
+
+console.log("Original Doubly Linked List:", end=" ");
+printDLL(head);
+
+console.log("\n\nAfter deleting the tail node:", end=" ");
+head = deleteTail(head);
+printDLL(head);
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong> </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>12 5 8 7<br/>After deleting tail node: <br/>12 5 8</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(1)</strong> Removing the head of a doubly linked list is a quick operation, taking constant time because it only involves updating references.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(1) </strong>Deleting the head also has minimal memory usage, using a few extra pointers without regard to the list's size.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>In case you are learning DSA, you should definitely check out our free <a href="https://takeuforward.org/strivers-a2z-dsa-course/strivers-a2z-dsa-course-sheet-2/">A2Z DSA Course</a> with videos and blogs.</p>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to </em><strong><a href="https://www.linkedin.com/in/gauri-tomar-005048268" rel="noreferrer noopener" target="_blank">Gauri Tomar</a></strong><em> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a></p></blockquote>
+<!-- /wp:quote -->
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

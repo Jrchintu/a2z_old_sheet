@@ -1,0 +1,1785 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>3-d DP : Ninja and his friends (DP-13)</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>3-d DP : Ninja and his friends (DP-13)</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p>In this article, we will solve the most asked coding interview problem: Ninja and his friends.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Problem Link: </strong><a href="https://www.codingninjas.com/codestudio/problems/ninja-and-his-friends_3125885?source=youtube&amp;campaign=striver_dp_videos&amp;utm_source=youtube&amp;utm_medium=affiliate&amp;utm_campaign=striver_dp_videos&amp;leftPanelTab=0"><strong>Ninja and his friends</strong></a></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Problem Description: </strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>We are given an ‘N*M’ matrix. Every cell of the matrix has some chocolates on it, mat[i][j] gives us the number of chocolates. We have two friends ‘Alice’ and ‘Bob’. initially, Alice is standing on the cell(0,0) and Bob is standing on the cell(0, M-1). Both of them can move only to the cells below them in these three directions: to the bottom cell (↓), to the bottom-right cell(↘), or to the bottom-left cell(↙).</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>When Alica and Bob visit a cell, they take all the chocolates from that cell with them. It can happen that they visit the same cell, in that case, the chocolates need to be considered only once.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>They cannot go out of the boundary of the given matrix, we need to return the maximum number of chocolates that Bob and Alice can <strong>together</strong> collect.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<!-- This is Examples Drop-Down -->
+<div id="article_examples">
+<details class="article_example_details">
+<summary class="article_example_summary">
+<span><strong>
+Examples
+</strong>
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="atricle_example_content">
+<pre class="wp-block-preformatted"><!-- Insert New Examples Here -->
+<pre class="wp-block-preformatted"><strong>Example:</strong>
+
+<img height="351" src="assets/a6f6b4ecede15749a8ab39958f8cf77a" width="624"/></pre>
+</pre>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Practice Section-->
+<div class="practice">
+<span><strong>Practice: </strong></span>
+<div class="problem-buttons">
+<!-- Add Problem Link inside href -->
+<a href="https://www.codingninjas.com/studio/problems/chocolate-pickup_3125885?utm_source=striver&amp;utm_medium=website&amp;utm_campaign=a_zcoursetuf" rel="noopener" target="_blank">
+<span>Solve Problem</span>
+<img alt="code-studio" src="assets/86dd2cadbd0e7ef71ad98d3b7f2f2efc.png"/>
+</a>
+</div>
+</div>
+<p class="new-disclaimer"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out
+yourself first. </em></p>
+<!-- /wp:html -->
+<!-- wp:html -->
+<div class="horizontal_navbar_dsa_article">
+<div class="grid_container_three">
+<a class="three-boxes box-a" href="#brute-force-approach">
+Memorization approach
+</a>
+<a class="three-boxes box-b" href="#better-approach">
+Tabulation approach
+</a>
+<a class="three-boxes box-c" href="#optimal-approach">
+Space Optimization
+</a>
+<a class="three-boxes box-d" href="#dsa_article_video_explanation">
+<svg fill="none" height="26" viewbox="0 0 20 14" width="26" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 10L13.19 7L8 4V10ZM19.56 2.17C19.69 2.64 19.78 3.27 19.84 4.07C19.91 4.87 19.94 5.56 19.94 6.16L20 7C20 9.19 19.84 10.8 19.56 11.83C19.31 12.73 18.73 13.31 17.83 13.56C17.36 13.69 16.5 13.78 15.18 13.84C13.88 13.91 12.69 13.94 11.59 13.94L10 14C5.81 14 3.2 13.84 2.17 13.56C1.27 13.31 0.69 12.73 0.44 11.83C0.31 11.36 0.22 10.73 0.16 9.93C0.0900001 9.13 0.0599999 8.44 0.0599999 7.84L0 7C0 4.81 0.16 3.2 0.44 2.17C0.69 1.27 1.27 0.69 2.17 0.44C2.64 0.31 3.5 0.22 4.82 0.16C6.12 0.0899998 7.31 0.0599999 8.41 0.0599999L10 0C14.19 0 16.8 0.16 17.83 0.44C18.73 0.69 19.31 1.27 19.56 2.17Z" fill="red"></path>
+</svg>
+</a>
+<div class="box-e tooltip">
+<svg fill="none" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.842 9.25L11.9577 10.17C11.2502 10.89 10.8081 11.5 10.8081 13H8.84297V12.5C8.84297 11.39 9.28511 10.39 9.99255 9.67L11.2109 8.41C11.5745 8.05 11.7906 7.55 11.7906 7C11.7906 6.46957 11.5836 5.96086 11.2151 5.58579C10.8465 5.21071 10.3467 5 9.82552 5C9.30434 5 8.80451 5.21071 8.43598 5.58579C8.06745 5.96086 7.86041 6.46957 7.86041 7H5.89531C5.89531 5.93913 6.30938 4.92172 7.04644 4.17157C7.7835 3.42143 8.78316 3 9.82552 3C10.8679 3 11.8675 3.42143 12.6046 4.17157C13.3417 4.92172 13.7557 5.93913 13.7557 7C13.7543 7.84324 13.4259 8.65183 12.842 9.25ZM10.8081 17H8.84297V15H10.8081M9.82552 0C8.53521 0 7.25754 0.258658 6.06545 0.761205C4.87337 1.26375 3.79021 2.00035 2.87783 2.92893C1.03519 4.8043 0 7.34784 0 10C0 12.6522 1.03519 15.1957 2.87783 17.0711C3.79021 17.9997 4.87337 18.7362 6.06545 19.2388C7.25754 19.7413 8.53521 20 9.82552 20C12.4314 20 14.9306 18.9464 16.7732 17.0711C18.6158 15.1957 19.651 12.6522 19.651 10C19.651 4.47 15.2296 0 9.82552 0Z" fill="black"></path>
+</svg>
+<div class="bottom">
+<p>Expand any one approach by clicking the given options in the bar. Clicking one approach on bar,
+closes all other expands. You can manually expand more than one approach at a time</p>
+<i></i>
+</div>
+</div>
+</div>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Approaches Drop-Down -->
+<div class="dsa_article_dropdown_approachs">
+<!-- Brute Force Approach Starts from here -->
+<div id="brute-force-approach">
+<details>
+<summary class="main-summary">
+<span>
+Memorization Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition of Brute Force Apporach Here -->
+<p>In this question, there are two fixed starting and variable ending points, but as per the movement of Alice and Bob, we know that they will end in the last row. They have to move together at a time to the next row.</p>
+<p><strong>Why a Greedy Solution doesn’t work?</strong></p>
+<p>As we have to return the <strong>maximum</strong> chocolates collected, the first approach that comes to our mind is to take a greedy approach and always form a path by locally choosing the option that gives us more chocolates. But there is no <strong>‘uniformity’ </strong>in the values of the matrix, therefore it can happen that whenever we are making a local choice that gives us a better path, we actually take a path that in the later stages is giving us fewer chocolates.</p>
+<p>As a greedy solution doesn’t work, our next choice will be to try out all the possible paths. To generate all possible paths we will use <strong>recursion</strong>.</p>
+<p><strong>Steps to form the recursive solution: </strong></p>
+<p>We will first form the recursive solution by the three points mentioned in <a href="https://takeuforward.org/data-structure/dynamic-programming-introduction/">Dynamic Programming Introduction</a>. </p>
+<p><strong>Step 1: </strong>Express the problem in terms of indexes.</p>
+<p>This question is slightly different from all the previous questions, here we are given two starting points from where Alice and Bob can move.</p>
+<p>We are given an ‘N*M’ matrix. We need to define the function with four parameters  i1,j1,i2, and j2 to describe the positions of Alice and Bob at a time.</p>
+<p><img height="357" src="assets/33145b7a5fff604c086c17cb791b13cf" width="624"/></p>
+<p>If we observe, initially Alice and Bob are at the first row, and they always move to the row below them every time, so they will always be in the same row. Therefore two different variables i1 and i2, to describe their positions are redundant. We can just use single parameter i, which tells us in which row of the grid both of them are.</p>
+<p>Therefore, we can modify the function. It now takes three parameters: i,j1, and j2. f(i,j1,j2) will give us the maximum number of chocolates collected by Alice and Bob from their current positions to the last position.</p>
+<p><img height="109" src="assets/a280f601d2a0d78608dd154d7d82c494" width="624"/></p>
+<p><strong>Base Case:</strong></p>
+<p>There will be the following base cases:</p>
+<ul><li>When i == N-1, it means we are at the last row, so we need to return from here. Now it can happen that at the last row, both Alice and Bob are at the same cell, in this condition we will return only chocolates collected by Alice, mat[i][j1]( as question states that the chocolates cannot be doubly calculated), otherwise we return sum of chocolates collected by both, mat[i][j1] + mat[i][j1][j2].</li></ul>
+<p>At every cell, we have three options to go: to the bottom cell (↓), to the bottom-right cell(↘) or to the bottom-left cell(↙)</p>
+<p>As we are moving to the bottom cell (↓), at max we will reach the last row, from where we return, so we will never go out of the bounding index.</p>
+<p>To move to the bottom-right cell(↘) or to the bottom-left cell(↙), it can happen that we may go out of bound as shown in the figure(below). So we need to handle it, we can return -1e9, whenever we go out of bound, in this way this path will not be selected by the calling function as we have to return the maximum chocolates.</p>
+<p><img height="351" src="assets/799964f915de8fc3b710a4b1045e459f" width="624"/></p>
+<ul><li>If j1&lt;0 or j1&gt;=M or j2&lt;0 or j2&gt;=M  , then we return -1e9 </li></ul>
+<p>The pseudocode till this step will be:</p>
+<p><img height="407" src="assets/5596aef23390bb4b07713f69ecd07357" width="471"/></p>
+<p><strong>Step 2: </strong>Try out all possible choices at a given index.</p>
+<p>At every cell, we have three options to go: to the bottom cell (↓), to the bottom-right cell(↘) or to the bottom-left cell(↙)</p>
+<p>Now, we need to understand that we want to move Alice and Bob together. Both of them can individually move three moves but say Alice moves to bottom-left, then Bob can have three different moves for Alice’s move, and so on. The following figures will help to understand this:</p>
+<p><img height="351" src="assets/41d807791ad9288ee6319094317e663b" width="624"/></p>
+<p>Hence we have a total of 9 different options at every f(i,j1,j2) to move Alice and Bob. Now we can manually write these 9 options or we can observe a pattern in them, first Alice moves to one side and Bob tries all three choices, then again Alice moves, then Bob, and so on. This pattern can be easily captured by using two nested loops that change the column numbers(j1 and j2).</p>
+<p><strong>Note: </strong>if (j1===j2), as discussed in the base case, we will only consider chocolates collected by one of them otherwise we will consider chocolates collected by both of them.</p>
+<p><img height="631" src="assets/3b2b934ec49fa675ccb2450544fed857" width="561"/></p>
+<p><strong>Step 3:  Take the maximum of all choices</strong></p>
+<p>As we have to find the<strong> maximum chocolates collected</strong> of<strong> </strong>all the possible paths, we will return the <strong>maximum</strong> of all the choices(the 9 choices of step 2). We will take a maxi variable( initialized to INT_MIN). We will update maxi to the maximum of the previous maxi and the answer of the current choice. At last, we will return maxi from our function as the answer.</p>
+<p>The final pseudocode after steps 1, 2, and 3:</p>
+<p><img height="715" src="assets/91c8ab9129245bf1a2082ad9a324c62a" width="549"/></p>
+<p><strong>Steps to memoize a recursive solution:</strong></p>
+<p>Before moving to the memoization steps, we need to understand the dp array we are taking. The recursive function has three parameters: i,j1, and j2. Therefore, we will also need to take a 3D DP Array. Its dimensions will be [N][M][M] because when we are moving, i can go from 0 to N-1, and j1 and j2 can go from 0 to M-1.</p>
+<p>If we draw the recursion tree, we will see that there are overlapping subproblems. In order to convert a recursive solution the following steps will be taken:</p>
+<ol><li>Create a dp array of size [N][M][M], initialized to -1.</li><li>Whenever we want to find the answer of a particular row and column (say f(i,j1,j2)), we first check whether the answer is already calculated using the dp array(i.e dp[i][j1][j2]!= -1 ). If yes, simply return the value from the dp array.</li><li>If not, then we are finding the answer for the given values for the first time, we will use the recursive relation as usual but before returning from the function, we will set dp[i][j1][j2] to the solution we get.</li></ol>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+// Function to find the maximum chocolates that can be collected recursively
+int maxChocoUtil(int i, int j1, int j2, int n, int m, vector&lt;vector&lt;int&gt;&gt; &amp;grid, vector&lt;vector&lt;vector&lt;int&gt;&gt;&gt; &amp;dp) {
+    // Check if the positions (j1, j2) are valid
+    if (j1 &lt; 0 || j1 &gt;= m || j2 &lt; 0 || j2 &gt;= m)
+        return -1e9; // A very large negative value to represent an invalid position
+
+    // Base case: If we are at the last row, return the chocolate at the positions (j1, j2)
+    if (i == n - 1) {
+        if (j1 == j2)
+            return grid[i][j1];
+        else
+            return grid[i][j1] + grid[i][j2];
+    }
+
+    // If the result for this state is already computed, return it
+    if (dp[i][j1][j2] != -1)
+        return dp[i][j1][j2];
+
+    int maxi = INT_MIN;
+    
+    // Try all possible moves (up, left, right) for both positions (j1, j2)
+    for (int di = -1; di &lt;= 1; di++) {
+        for (int dj = -1; dj &lt;= 1; dj++) {
+            int ans;
+            
+            if (j1 == j2)
+                ans = grid[i][j1] + maxChocoUtil(i + 1, j1 + di, j2 + dj, n, m, grid, dp);
+            else
+                ans = grid[i][j1] + grid[i][j2] + maxChocoUtil(i + 1, j1 + di, j2 + dj, n, m, grid, dp);
+            
+            // Update the maximum result
+            maxi = max(maxi, ans);
+        }
+    }
+    
+    // Store the maximum result for this state in dp
+    return dp[i][j1][j2] = maxi;
+}
+
+// Function to find the maximum chocolates that can be collected
+int maximumChocolates(int n, int m, vector&lt;vector&lt;int&gt;&gt; &amp;grid) {
+    // Create a 3D DP array to store computed results
+    vector&lt;vector&lt;vector&lt;int&gt;&gt;&gt; dp(n, vector&lt;vector&lt;int&gt;&gt;(m, vector&lt;int&gt;(m, -1)));
+
+    // Call the recursive utility function to find the maximum chocolates starting from the first row
+    return maxChocoUtil(0, 0, m - 1, n, m, grid, dp);
+}
+
+int main() {
+    // Define the grid as a 2D vector
+    vector&lt;vector&lt;int&gt;&gt; matrix{
+        {2, 3, 1, 2},
+        {3, 4, 2, 2},
+        {5, 6, 3, 5},
+    };
+
+    int n = matrix.size();
+    int m = matrix[0].size();
+
+    // Call the maximumChocolates function and print the result
+    cout &lt;&lt; maximumChocolates(n, m, matrix);
+
+    return 0;
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.*;
+
+class TUF {
+  // Function to find the maximum number of chocolates using dynamic programming
+  static int maxChocoUtil(int i, int j1, int j2, int n, int m, int[][] grid,
+                          int[][][] dp) {
+    // Check if j1 and j2 are valid column indices
+    if (j1 &lt; 0 || j1 &gt;= m || j2 &lt; 0 || j2 &gt;= m)
+      return (int) (Math.pow(-10, 9));
+
+    // If we are at the last row, return the sum of chocolates in the selected columns
+    if (i == n - 1) {
+      if (j1 == j2)
+        return grid[i][j1];
+      else
+        return grid[i][j1] + grid[i][j2];
+    }
+
+    // If the result for this state is already computed, return it
+    if (dp[i][j1][j2] != -1)
+      return dp[i][j1][j2];
+
+    int maxi = Integer.MIN_VALUE;
+    // Iterate through possible moves in the next row
+    for (int di = -1; di &lt;= 1; di++) {
+      for (int dj = -1; dj &lt;= 1; dj++) {
+        int ans;
+        // If j1 and j2 are the same, add chocolates from grid[i][j1] only
+        if (j1 == j2)
+          ans = grid[i][j1] + maxChocoUtil(i + 1, j1 + di, j2 + dj, n, m, grid, dp);
+        else
+          // Add chocolates from both j1 and j2
+          ans = grid[i][j1] + grid[i][j2] + maxChocoUtil(i + 1, j1 + di, j2 + dj, n, m, grid, dp);
+        // Update maxi with the maximum result
+        maxi = Math.max(maxi, ans);
+      }
+    }
+    // Store the result in the dp array and return it
+    return dp[i][j1][j2] = maxi;
+  }
+
+  // Function to find the maximum number of chocolates
+  static int maximumChocolates(int n, int m, int[][] grid) {
+    // Create a 3D array to store computed results
+    int dp[][][] = new int[n][m][m];
+
+    // Initialize the dp array with -1
+    for (int row1[][] : dp) {
+      for (int row2[] : row1) {
+        Arrays.fill(row2, -1);
+      }
+    }
+
+    // Call the utility function to find the maximum number of chocolates
+    return maxChocoUtil(0, 0, m - 1, n, m, grid, dp);
+  }
+
+  public static void main(String args[]) {
+    int matrix[][] = {{2, 3, 1, 2},
+                      {3, 4, 2, 2},
+                      {5, 6, 3, 5}};
+    int n = matrix.length;
+    int m = matrix[0].length;
+
+    // Call the maximumChocolates function and print the result
+    System.out.println(maximumChocolates(n, m, matrix));
+  }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+import sys
+
+# Recursive function to find the maximum chocolates collected
+def maxChocoUtil(i, j1, j2, n, m, grid, dp):
+    # Base cases:
+    # - If either of the indices is out of bounds, return a large negative value
+    # - If we're at the last row, return the sum of chocolates in the two selected columns
+    if j1 &lt; 0 or j1 &gt;= m or j2 &lt; 0 or j2 &gt;= m:
+        return int(-1e9)
+    if i == n - 1:
+        if j1 == j2:
+            return grid[i][j1]
+        else:
+            return grid[i][j1] + grid[i][j2]
+    
+    # If the result for these indices has already been computed, return it
+    if dp[i][j1][j2] != -1:
+        return dp[i][j1][j2]
+    
+    # Initialize the maximum chocolates collected to a large negative value
+    maxi = -sys.maxsize
+    
+    # Iterate through the adjacent cells in the next row
+    for di in range(-1, 2):
+        for dj in range(-1, 2):
+            ans = 0
+            if j1 == j2:
+                ans = grid[i][j1] + maxChocoUtil(i + 1, j1 + di, j2 + dj, n, m, grid, dp)
+            else:
+                ans = grid[i][j1] + grid[i][j2] + maxChocoUtil(i + 1, j1 + di, j2 + dj, n, m, grid, dp)
+            maxi = max(maxi, ans)
+    
+    # Store the maximum chocolates collected in the memoization table
+    dp[i][j1][j2] = maxi
+    return maxi
+
+# Function to find the maximum chocolates collected
+def maximumChocolates(n, m, grid):
+    # Initialize a memoization table with -1 values
+    dp = [[[-1 for j in range(m)] for i in range(m)] for k in range(n)]
+    
+    # Start the recursion from the first row, columns 0 and m-1
+    return maxChocoUtil(0, 0, m - 1, n, m, grid, dp)
+
+def main():
+    # Define the input matrix and its dimensions
+    matrix = [[2, 3, 1, 2], [3, 4, 2, 2], [5, 6, 3, 5]]
+    n = len(matrix)
+    m = len(matrix[0])
+    
+    # Call the maximumChocolates function and print the result
+    print(maximumChocolates(n, m, matrix))
+
+if __name__ == "__main__":
+    main()
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+function maxChocoUtil(i, j1, j2, n, m, grid, dp) {
+  // Check if the indices are out of bounds
+  if (j1 &lt; 0 || j1 &gt;= m || j2 &lt; 0 || j2 &gt;= m) {
+    return -1e9; // A very large negative value for invalid states
+  }
+
+  // Base case: if we are at the last row
+  if (i == n - 1) {
+    // If both indices are the same, return the value at that position
+    if (j1 == j2) {
+      return grid[i][j1];
+    } else {
+      // If the indices are different, return the sum of values at both positions
+      return grid[i][j1] + grid[i][j2];
+    }
+  }
+
+  // If the result for this state is already computed, return it
+  if (dp[i][j1][j2] != -1) {
+    return dp[i][j1][j2];
+  }
+
+  let maxi = Number.MIN_SAFE_INTEGER; // Initialize the maximum value to a very small number
+
+  // Iterate through neighboring positions
+  for (let di = -1; di &lt;= 1; di++) {
+    for (let dj = -1; dj &lt;= 1; dj++) {
+      let ans;
+      if (j1 == j2) {
+        ans = grid[i][j1] + maxChocoUtil(i + 1, j1 + di, j2 + dj, n, m, grid, dp);
+      } else {
+        ans = grid[i][j1] + grid[i][j2] + maxChocoUtil(i + 1, j1 + di, j2 + dj, n, m, grid, dp);
+      }
+      // Update the maximum value
+      maxi = Math.max(maxi, ans);
+    }
+  }
+
+  // Store the maximum value in the dp array and return it
+  dp[i][j1][j2] = maxi;
+  return maxi;
+}
+
+function maximumChocolates(n, m, grid) {
+  // Initialize a 3D dp array with -1 values
+  const dp = new Array(n).fill(null).map(() =&gt;
+    new Array(m).fill(null).map(() =&gt;
+      new Array(m).fill(-1)
+    )
+  );
+
+  // Call the recursive utility function to find the maximum chocolates
+  return maxChocoUtil(0, 0, m - 1, n, m, grid, dp);
+}
+
+function main() {
+  const matrix = [
+    [2, 3, 1, 2],
+    [3, 4, 2, 2],
+    [5, 6, 3, 5]
+  ];
+
+  const n = matrix.length;
+  const m = matrix[0].length;
+
+  console.log(maximumChocolates(n, m, matrix));
+}
+
+// Call the main function to execute the code
+main();
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Brute Force Here -->
+</p><p><strong>Output:</strong> 21
+
+</p>
+<p></p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Brute Force Here -->
+</p><p><strong>Time Complexity: O(N*M*M) * 9</strong></p>
+<p>Reason: At max, there will be N*M*M calls of recursion to solve a new problem and in every call, two nested loops together run for 9 times.</p>
+<p><strong>Space Complexity: O(N) + O(N*M*M)</strong></p>
+<p>Reason: We are using a recursion stack space: O(N), where N is the path length and an external DP Array of size ‘N*M*M’.</p>
+<p></p>
+</details>
+</div>
+</details>
+</div>
+<!-- Brute Force Approach Ends here -->
+<!-- Better Approach Starts from here -->
+<div id="better-approach">
+<details>
+<summary class="main-summary">
+<span>
+Tabulation Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition For Better Approach Here -->
+<p><strong>Steps to convert Recursive Solution to Tabulation one.</strong></p>
+<p>For the tabulation approach, it is better to understand what a cell in the 3D DP array means. As we had done in memoization, we will initialize a dp[] array of size [N][M][M].</p>
+<p>So now, when we say dp[2][0][3], what does it mean? It means that we are getting the value of the maximum chocolates collected by Alice and Bob, when Alice is at (2,0) and Bob is at (2,3).</p>
+<p>The below figure gives us a bit more clarity.</p>
+<p><img height="351" src="assets/05f89dab3424a3c100083165b7fdc4c6" width="624"/></p>
+<p>Next, we need to initialize the base value conditions. In the recursive code, our base condition is when we reach the last row, therefore in our dp array, we will also initialize dp[n-1][][], i.e (the last plane of 3D Array) as the base condition. Dp[n-1][j1][j2] means Alice is at (n-1,j1) and Bob is at (n-1,j2). As this is the last row, its value will be equal to mat[i][j1], if (j1==j2) and mat[i][j1] + mat[i][j2] otherwise.</p>
+<p>Once we have filled the last plane, we can move to the second-last plane and so on, we will need three nested loops to do this traversal.</p>
+<p>The steps to convert to the tabular solution are given below:</p>
+<ul><li>Declare a dp[] array of size [N][M][M]</li><li>First, initialize the base condition values as explained above.</li><li>We will then move from dp[n-2][][] to dp[0][][]. We will set three nested loops to do this traversal.</li><li>Inside the three nested loops( say i,j1,j2 as loop variables), we will use the recursive relations, i.e we will again set two nested loops to try all the nine options.</li><li>The outer three loops are just for traversal, and the inner two loops that run for 9 times mainly decide, what should be the value of the cell. If you are getting confused, please see the code.</li><li>Inside the inner two nested loops, we will calculate an answer as we had done in the recursive relation, but this time using values from the next plane of the 3D DP Array( dp[i+1][x][y] instead of recursive calls, where x and y will vary according to inner 2 nested loops).</li><li>At last, we will set dp[i][j1][j2] as the maximum of all the 9 options.</li><li>After the outer three nested loops iteration has ended, we will return dp[0][0][m-1] as our answer.</li></ul>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+// Function to find the maximum chocolates that can be collected
+int maximumChocolates(int n, int m, vector&lt;vector&lt;int&gt;&gt; &amp;grid) {
+    // Create a 3D DP array to store computed results
+    vector&lt;vector&lt;vector&lt;int&gt;&gt;&gt; dp(n, vector&lt;vector&lt;int&gt;&gt;(m, vector&lt;int&gt;(m, 0)));
+
+    // Initialize the DP array for the last row
+    for (int j1 = 0; j1 &lt; m; j1++) {
+        for (int j2 = 0; j2 &lt; m; j2++) {
+            if (j1 == j2)
+                dp[n - 1][j1][j2] = grid[n - 1][j1];
+            else
+                dp[n - 1][j1][j2] = grid[n - 1][j1] + grid[n - 1][j2];
+        }
+    }
+
+    // Outer nested loops for traversing the DP array from the second-to-last row up to the first row
+    for (int i = n - 2; i &gt;= 0; i--) {
+        for (int j1 = 0; j1 &lt; m; j1++) {
+            for (int j2 = 0; j2 &lt; m; j2++) {
+                int maxi = INT_MIN;
+
+                // Inner nested loops to try out 9 options (diagonal moves)
+                for (int di = -1; di &lt;= 1; di++) {
+                    for (int dj = -1; dj &lt;= 1; dj++) {
+                        int ans;
+
+                        if (j1 == j2)
+                            ans = grid[i][j1];
+                        else
+                            ans = grid[i][j1] + grid[i][j2];
+
+                        // Check if the move is valid (within the grid boundaries)
+                        if ((j1 + di &lt; 0 || j1 + di &gt;= m) || (j2 + dj &lt; 0 || j2 + dj &gt;= m))
+                            ans += -1e9; // A very large negative value to represent an invalid move
+                        else
+                            ans += dp[i + 1][j1 + di][j2 + dj]; // Include the DP result from the next row
+
+                        maxi = max(ans, maxi); // Update the maximum result
+                    }
+                }
+                dp[i][j1][j2] = maxi; // Store the maximum result for this state in the DP array
+            }
+        }
+    }
+
+    // The maximum chocolates that can be collected is stored at the top-left corner of the DP array
+    return dp[0][0][m - 1];
+}
+
+int main() {
+    // Define the grid as a 2D vector
+    vector&lt;vector&lt;int&gt;&gt; matrix{
+        {2, 3, 1, 2},
+        {3, 4, 2, 2},
+        {5, 6, 3, 5},
+    };
+
+    int n = matrix.size(); // Number of rows
+    int m = matrix[0].size(); // Number of columns
+
+    // Call the maximumChocolates function and print the result
+    cout &lt;&lt; maximumChocolates(n, m, matrix);
+
+    return 0;
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.*;
+
+class TUF {
+  // Function to find the maximum number of chocolates using dynamic programming
+  static int maximumChocolates(int n, int m, int[][] grid) {
+    // Create a 3D array to store computed results
+    int dp[][][] = new int[n][m][m];
+
+    // Initialize the dp array with values from the last row of the grid
+    for (int j1 = 0; j1 &lt; m; j1++) {
+      for (int j2 = 0; j2 &lt; m; j2++) {
+        if (j1 == j2)
+          dp[n - 1][j1][j2] = grid[n - 1][j1];
+        else
+          dp[n - 1][j1][j2] = grid[n - 1][j1] + grid[n - 1][j2];
+      }
+    }
+
+    // Outer nested loops to traverse the DP array from the second last row to the first row
+    for (int i = n - 2; i &gt;= 0; i--) {
+      for (int j1 = 0; j1 &lt; m; j1++) {
+        for (int j2 = 0; j2 &lt; m; j2++) {
+          int maxi = Integer.MIN_VALUE;
+
+          // Inner nested loops to try out 9 options
+          for (int di = -1; di &lt;= 1; di++) {
+            for (int dj = -1; dj &lt;= 1; dj++) {
+              int ans;
+
+              if (j1 == j2)
+                ans = grid[i][j1];
+              else
+                ans = grid[i][j1] + grid[i][j2];
+
+              // Check if the indices are valid
+              if ((j1 + di &lt; 0 || j1 + di &gt;= m) || (j2 + dj &lt; 0 || j2 + dj &gt;= m))
+                ans += (int) Math.pow(-10, 9);
+              else
+                ans += dp[i + 1][j1 + di][j2 + dj];
+
+              // Update maxi with the maximum result
+              maxi = Math.max(ans, maxi);
+            }
+          }
+          // Store the result in the dp array
+          dp[i][j1][j2] = maxi;
+        }
+      }
+    }
+
+    // The final result is stored at the top row (first row) of the dp array
+    return dp[0][0][m - 1];
+  }
+
+  public static void main(String args[]) {
+    int matrix[][] = {{2, 3, 1, 2},
+                      {3, 4, 2, 2},
+                      {5, 6, 3, 5}};
+    int n = matrix.length;
+    int m = matrix[0].length;
+
+    // Call the maximumChocolates function and print the result
+    System.out.println(maximumChocolates(n, m, matrix));
+  }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+import sys
+
+# Function to find the maximum chocolates collected
+def maximumChocolates(n, m, grid):
+    # Initialize a 3D memoization table dp with zeros
+    dp = [[[0 for _ in range(m)] for _ in range(m)] for _ in range(n)]
+
+    # Initialize the values for the last row of dp based on grid values
+    for j1 in range(m):
+        for j2 in range(m):
+            if j1 == j2:
+                dp[n - 1][j1][j2] = grid[n - 1][j1]
+            else:
+                dp[n - 1][j1][j2] = grid[n - 1][j1] + grid[n - 1][j2]
+
+    # Iterate through rows from the second-to-last row to the first row
+    for i in range(n - 2, -1, -1):
+        for j1 in range(m):
+            for j2 in range(m):
+                maxi = -sys.maxsize
+
+                # Try out 9 possible options by changing the indices
+                for di in range(-1, 2):
+                    for dj in range(-1, 2):
+                        ans = 0
+                        if j1 == j2:
+                            ans = grid[i][j1]
+                        else:
+                            ans = grid[i][j1] + grid[i][j2]
+
+                        if ((j1 + di &lt; 0 or j1 + di &gt;= m) or (j2 + dj &lt; 0 or j2 + dj &gt;= m)):
+                            ans += int(-1e9)  # A large negative value if out of bounds
+                        else:
+                            ans += dp[i + 1][j1 + di][j2 + dj]  # Add the value from the next row
+
+                        maxi = max(ans, maxi)
+
+                # Store the maximum chocolates collected in the memoization table
+                dp[i][j1][j2] = maxi
+
+    # Return the maximum chocolates collected in the top row and the last column
+    return dp[0][0][m - 1]
+
+def main():
+    # Define the input matrix and its dimensions
+    matrix = [[2, 3, 1, 2], [3, 4, 2, 2], [5, 6, 3, 5]]
+    n = len(matrix)
+    m = len(matrix[0])
+
+    # Call the maximumChocolates function and print the result
+    print(maximumChocolates(n, m, matrix))
+
+if __name__ == '__main__':
+    main()
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+function maximumChocolates(n, m, grid) {
+  // Initialize a 3D dp array with zeros
+  const dp = new Array(n).fill(null).map(() =&gt;
+    new Array(m).fill(null).map(() =&gt;
+      new Array(m).fill(0)
+    )
+  );
+
+  // Initialize dp array for the last row based on grid values
+  for (let j1 = 0; j1 &lt; m; j1++) {
+    for (let j2 = 0; j2 &lt; m; j2++) {
+      if (j1 === j2) {
+        dp[n - 1][j1][j2] = grid[n - 1][j1];
+      } else {
+        dp[n - 1][j1][j2] = grid[n - 1][j1] + grid[n - 1][j2];
+      }
+    }
+  }
+
+  // Iterate through rows in reverse order
+  for (let i = n - 2; i &gt;= 0; i--) {
+    for (let j1 = 0; j1 &lt; m; j1++) {
+      for (let j2 = 0; j2 &lt; m; j2++) {
+        let maxi = Number.MIN_SAFE_INTEGER;
+
+        // Iterate through all possible move combinations
+        for (let di = -1; di &lt;= 1; di++) {
+          for (let dj = -1; dj &lt;= 1; dj++) {
+            let ans;
+
+            if (j1 === j2) {
+              ans = grid[i][j1];
+            } else {
+              ans = grid[i][j1] + grid[i][j2];
+            }
+
+            // Check if the move is valid (within grid bounds)
+            if (
+              j1 + di &gt;= 0 &amp;&amp; j1 + di &lt; m &amp;&amp;
+              j2 + dj &gt;= 0 &amp;&amp; j2 + dj &lt; m
+            ) {
+              ans += dp[i + 1][j1 + di][j2 + dj];
+            } else {
+              ans += -1e9; // A very large negative value for invalid moves
+            }
+
+            maxi = Math.max(ans, maxi);
+          }
+        }
+
+        dp[i][j1][j2] = maxi;
+      }
+    }
+  }
+
+  // The maximum chocolates will be stored in dp[0][0][m - 1]
+  return dp[0][0][m - 1];
+}
+
+function main() {
+  const matrix = [
+    [2, 3, 1, 2],
+    [3, 4, 2, 2],
+    [5, 6, 3, 5]
+  ];
+
+  const n = matrix.length;
+  const m = matrix[0].length;
+
+  console.log(maximumChocolates(n, m, matrix));
+}
+
+// Call the main function to execute the code
+main();
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Better Approach Here -->
+<strong>Output:</strong> 21
+
+</p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Better Approach Here -->
+</p><p><strong>Time Complexity: O(N*M*M)*9</strong></p>
+<p>Reason: The outer nested loops run for (N*M*M) times and the inner two nested loops run for 9 times.</p>
+<p><strong>Space Complexity: O(N*M*M)</strong></p>
+<p>Reason: We are using an external array of size ‘N*M*M’. The stack space will be eliminated.</p>
+<p></p>
+</details>
+</div>
+</details>
+</div>
+<!-- Better Approach Ends from here -->
+<!-- Optimal Approach Starts from here -->
+<div id="optimal-approach">
+<details>
+<summary class="main-summary">
+<span>
+Space Optimization Approach 
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm of Better Approach Here -->
+<p>If we look closely, to compute dp[i][j1][j2], we need values only from dp[i+1][][]. Therefore it is not necessary to store a three-dimensional array. Instead, we can store a two-dimensional array and update it as we move from one plane to the other in the 3D Array.</p>
+<p>The Steps to space optimize the tabulation approach are as follows: </p>
+<ul><li>Initially, we can take a dummy 2D Array ( say front). We initialize this 2D Array as we had done in the Tabulation Approach.</li><li>Next, we also initialize a 2D Array( say cur), which we will need in the traversal.</li><li>Now we set our three nested loops to traverse the 3D Array, from the second last plane.</li><li>Following the same approach as we did in the tabulation approach, we find the maximum number of chocolates collected at each cell. To calculate it we have all the values in our ‘front’ 2D Array.</li><li>Previously, we assigned dp[i][j1][j2] to maxi, now we will simply assign cur[j1][j2] to maxi.</li><li>Then whenever the plane of the 3D DP(the first parameter) is going to change, we assign the front to cur.</li></ul>
+<p>At last, we will return front[0][m-1] as our answer.</p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+// Function to find the maximum chocolates that can be collected
+int maximumChocolates(int n, int m, vector&lt;vector&lt;int&gt;&gt; &amp;grid) {
+    // Create two 2D vectors 'front' and 'cur' to store computed results
+    vector&lt;vector&lt;int&gt;&gt; front(m, vector&lt;int&gt;(m, 0));
+    vector&lt;vector&lt;int&gt;&gt; cur(m, vector&lt;int&gt;(m, 0));
+
+    // Initialize 'front' for the last row
+    for (int j1 = 0; j1 &lt; m; j1++) {
+        for (int j2 = 0; j2 &lt; m; j2++) {
+            if (j1 == j2)
+                front[j1][j2] = grid[n - 1][j1];
+            else
+                front[j1][j2] = grid[n - 1][j1] + grid[n - 1][j2];
+        }
+    }
+
+    // Outer nested loops for traversing the DP array from the second-to-last row up to the first row
+    for (int i = n - 2; i &gt;= 0; i--) {
+        for (int j1 = 0; j1 &lt; m; j1++) {
+            for (int j2 = 0; j2 &lt; m; j2++) {
+                int maxi = INT_MIN;
+
+                // Inner nested loops to try out 9 options (diagonal moves)
+                for (int di = -1; di &lt;= 1; di++) {
+                    for (int dj = -1; dj &lt;= 1; dj++) {
+                        int ans;
+
+                        if (j1 == j2)
+                            ans = grid[i][j1];
+                        else
+                            ans = grid[i][j1] + grid[i][j2];
+
+                        // Check if the move is valid (within the grid boundaries)
+                        if ((j1 + di &lt; 0 || j1 + di &gt;= m) || (j2 + dj &lt; 0 || j2 + dj &gt;= m))
+                            ans += -1e9; // A very large negative value to represent an invalid move
+                        else
+                            ans += front[j1 + di][j2 + dj]; // Include the value from the 'front' array
+
+                        maxi = max(ans, maxi); // Update the maximum result
+                    }
+                }
+                cur[j1][j2] = maxi; // Store the maximum result for this state in the 'cur' array
+            }
+        }
+        front = cur; // Update 'front' with the values from 'cur' for the next iteration
+    }
+
+    // The maximum chocolates that can be collected is stored at the top-left corner of the 'front' array
+    return front[0][m - 1];
+}
+
+int main() {
+    // Define the grid as a 2D vector
+    vector&lt;vector&lt;int&gt;&gt; matrix{
+        {2, 3, 1, 2},
+        {3, 4, 2, 2},
+        {5, 6, 3, 5},
+    };
+
+    int n = matrix.size(); // Number of rows
+    int m = matrix[0].size(); // Number of columns
+
+    // Call the maximumChocolates function and print the result
+    cout &lt;&lt; maximumChocolates(n, m, matrix);
+
+    return 0;
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.*;
+
+class TUF {
+  // Function to find the maximum number of chocolates using dynamic programming
+  static int maximumChocolates(int n, int m, int[][] grid) {
+    // Create two 2D arrays to store computed results: front and cur
+    int[][] front = new int[m][m];
+    int[][] cur = new int[m][m];
+
+    // Initialize the front array with values from the last row of the grid
+    for (int j1 = 0; j1 &lt; m; j1++) {
+      for (int j2 = 0; j2 &lt; m; j2++) {
+        if (j1 == j2)
+          front[j1][j2] = grid[n - 1][j1];
+        else
+          front[j1][j2] = grid[n - 1][j1] + grid[n - 1][j2];
+      }
+    }
+
+    // Outer nested loops to traverse the DP array from the second last row to the first row
+    for (int i = n - 2; i &gt;= 0; i--) {
+      for (int j1 = 0; j1 &lt; m; j1++) {
+        for (int j2 = 0; j2 &lt; m; j2++) {
+          int maxi = Integer.MIN_VALUE;
+
+          // Inner nested loops to try out 9 options
+          for (int di = -1; di &lt;= 1; di++) {
+            for (int dj = -1; dj &lt;= 1; dj++) {
+              int ans;
+
+              if (j1 == j2)
+                ans = grid[i][j1];
+              else
+                ans = grid[i][j1] + grid[i][j2];
+
+              // Check if the indices are valid
+              if ((j1 + di &lt; 0 || j1 + di &gt;= m) || (j2 + dj &lt; 0 || j2 + dj &gt;= m))
+                ans += (int) Math.pow(-10, 9);
+              else
+                ans += front[j1 + di][j2 + dj];
+
+              // Update maxi with the maximum result
+              maxi = Math.max(ans, maxi);
+            }
+          }
+          // Store the result in the cur array
+          cur[j1][j2] = maxi;
+        }
+      }
+
+      // Update the front array with the values from the cur array for the next row
+      for (int a = 0; a &lt; m; a++) {
+        front[a] = cur[a].clone();
+      }
+    }
+
+    // The final result is stored at the top left corner of the front array
+    return front[0][m - 1];
+  }
+
+  public static void main(String args[]) {
+    int matrix[][] = {{2, 3, 1, 2},
+                      {3, 4, 2, 2},
+                      {5, 6, 3, 5}};
+
+    int n = matrix.length;
+    int m = matrix[0].length;
+
+    // Call the maximumChocolates function and print the result
+    System.out.println(maximumChocolates(n, m, matrix));
+  }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+import sys
+
+# Function to find the maximum chocolates collected
+def maximumChocolates(n, m, grid):
+    # Initialize two matrices: front (for the current row) and cur (for the next row)
+    front = [[0] * m for _ in range(m)]
+    cur = [[0] * m for _ in range(m)]
+
+    # Initialize the values for the last row of front based on grid values
+    for j1 in range(m):
+        for j2 in range(m):
+            if j1 == j2:
+                front[j1][j2] = grid[n - 1][j1]
+            else:
+                front[j1][j2] = grid[n - 1][j1] + grid[n - 1][j2]
+
+    # Iterate through rows from the second-to-last row to the first row
+    for i in range(n - 2, -1, -1):
+        for j1 in range(m):
+            for j2 in range(m):
+                maxi = -sys.maxsize
+
+                # Try out 9 possible options by changing the indices
+                for di in range(-1, 2):
+                    for dj in range(-1, 2):
+                        ans = 0
+                        if j1 == j2:
+                            ans = grid[i][j1]
+                        else:
+                            ans = grid[i][j1] + grid[i][j2]
+
+                        if ((j1 + di &lt; 0 or j1 + di &gt;= m) or (j2 + dj &lt; 0 or j2 + dj &gt;= m)):
+                            ans += int(-1e9)  # A large negative value if out of bounds
+                        else:
+                            ans += front[j1 + di][j2 + dj]  # Add the value from the current front row
+
+                        maxi = max(ans, maxi)
+                cur[j1][j2] = maxi
+
+        # Update front with the values of cur for the next iteration
+        front = [row[:] for row in cur]
+
+    # Return the maximum chocolates collected in the top-left corner of front
+    return front[0][m - 1]
+
+def main():
+    # Define the input matrix and its dimensions
+    matrix = [[2, 3, 1, 2], [3, 4, 2, 2], [5, 6, 3, 5]]
+    n = len(matrix)
+    m = len(matrix[0])
+
+    # Call the maximumChocolates function and print the result
+    print(maximumChocolates(n, m, matrix))
+
+if __name__ == '__main__':
+    main()
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+function maximumChocolates(n, m, grid) {
+  // Initialize two 2D arrays: front and cur
+  let front = new Array(m).fill(null).map(() =&gt; new Array(m).fill(0));
+  let cur = new Array(m).fill(null).map(() =&gt; new Array(m).fill(0));
+
+  // Initialize front array for the last row based on grid values
+  for (let j1 = 0; j1 &lt; m; j1++) {
+    for (let j2 = 0; j2 &lt; m; j2++) {
+      if (j1 === j2) {
+        front[j1][j2] = grid[n - 1][j1];
+      } else {
+        front[j1][j2] = grid[n - 1][j1] + grid[n - 1][j2];
+      }
+    }
+  }
+
+  // Outer nested loops for traversing the DP array
+  for (let i = n - 2; i &gt;= 0; i--) {
+    for (let j1 = 0; j1 &lt; m; j1++) {
+      for (let j2 = 0; j2 &lt; m; j2++) {
+        let maxi = Number.MIN_SAFE_INTEGER;
+
+        // Inner nested loops to try out 9 options
+        for (let di = -1; di &lt;= 1; di++) {
+          for (let dj = -1; dj &lt;= 1; dj++) {
+            let ans;
+
+            if (j1 === j2) {
+              ans = grid[i][j1];
+            } else {
+              ans = grid[i][j1] + grid[i][j2];
+            }
+
+            // Check if the move is valid (within grid bounds)
+            if (
+              j1 + di &gt;= 0 &amp;&amp; j1 + di &lt; m &amp;&amp;
+              j2 + dj &gt;= 0 &amp;&amp; j2 + dj &lt; m
+            ) {
+              ans += front[j1 + di][j2 + dj];
+            } else {
+              ans += -1e9; // A very large negative value for invalid moves
+            }
+
+            maxi = Math.max(ans, maxi);
+          }
+        }
+        cur[j1][j2] = maxi;
+      }
+    }
+    // Update the front array with values from the cur array
+    front = [...cur];
+  }
+
+  // The maximum chocolates will be stored in front[0][m - 1]
+  return front[0][m - 1];
+}
+
+function main() {
+  const matrix = [
+    [2, 3, 1, 2],
+    [3, 4, 2, 2],
+    [5, 6, 3, 5]
+  ];
+
+  const n = matrix.length;
+  const m = matrix[0].length;
+
+  console.log(maximumChocolates(n, m, matrix));
+}
+
+// Call the main function to execute the code
+main();
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Optimal Apporach Here -->
+<strong>Output:</strong>21
+
+
+</p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Optimal Approach-->
+</p><p><strong>Time Complexity: O(N*M*M)*9</strong></p>
+<p>Reason: The outer nested loops run for (N*M*M) times and the inner two nested loops run for 9 times.</p>
+<p><strong>Space Complexity: O(M*M)</strong></p>
+<p>Reason: We are using an external array of size ‘M*M’.</p>
+<p></p>
+</details>
+</div>
+</details>
+</div>
+<!-- Optimal Approach Starts from here -->
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Video Explination Drop-Down -->
+<div class="dsa_article_youtube_video" id="dsa_article_video_explanation">
+<details>
+<summary class="main-summary">
+<span>
+Video Explanation
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="yt-video-wrapper">
+<!-- Insert iframe embed Link of Youtube Video-->
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" class="lazy-loaded" data-lazy-type="iframe" data-src="https://www.youtube.com/embed/QGfn7JeXK54?si=KUpj2kCzQsJByRVK" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/QGfn7JeXK54?feature=oembed" title="Cherry Pickup II" width="810"></iframe><noscript>
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/QGfn7JeXK54?si=KUpj2kCzQsJByRVK" title="Cherry Pickup II" width="810"></iframe></noscript>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script>
+
+const codeSections = document.querySelectorAll('.code-section');
+
+// Get last selected language from localStorage or set default value
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+// Update last selected language for all sections and store in localStorage
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+// Handle copy button click event
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+// Set initial state of the tabs
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<script>
+const codeSections = document.querySelectorAll('.code-section');
+
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<link href="assets/4237ffca7ce6aadb438c457e0a675b12.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+<script src="index.js"></script>
+<script>hljs.highlightAll();</script>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script src="https://takeuforward.org/UXApproachDropDowns/3ApproachJSScript.js"></script>
+<!-- /wp:html -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/anshuman-sharma-a1b245194/" rel="noreferrer noopener" target="_blank">Anshuman Sharma</a></strong> <em><em>and <a href="https://www.linkedin.com/in/abhipsita-das-5b7069212/?originalSubdomain=in" rel="noreferrer noopener" target="_blank"><strong>Abhipsita Das</strong></a></em></em> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

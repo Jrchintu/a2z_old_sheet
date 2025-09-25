@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Rotate a Linked List</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Rotate a Linked List</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p>In this article, we will solve the problem: "Rotate a Linked List"</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Problem Statement: </strong>Given the head of a <a href="https://takeuforward.org/linked-list/linked-list-introduction/" rel="noreferrer noopener" target="_blank">linked list</a>, rotate the list to the right by k places.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Examples:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted"><strong>Example 1:</strong>
+<strong>Input:</strong>
+	head = [1,2,3,4,5] 
+	k = 2
+<strong>Output:</strong>
+ head = [4,5,1,2,3]
+<strong>Explanation:
+</strong> We have to rotate the list to the right twice.
+
+<strong><img height="371" src="assets/de92e1057b00078602240be77c5ddfe6" width="624"/></strong></pre>
+<!-- /wp:preformatted -->
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted"><strong>Example 2:</strong>
+<strong>Input:</strong>
+	head = [1,2,3]
+	k = 4
+<strong>Output:</strong>
+head = [3,1,2]
+<strong>Explanation:
+</strong>
+<strong><img height="339" src="assets/0b4283ef90b13414b009a22ffe05a724" width="624"/></strong></pre>
+<!-- /wp:preformatted -->
+<!-- wp:paragraph -->
+<p><strong>Solution: Brute Force</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Approach:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>We have to move the last element to first for each k.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>For each k, find the last element from the list. Move it to the first.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+class node {
+    public:
+        int num;
+        node* next;
+        node(int a) {
+            num = a;
+            next = NULL;
+        }
+};
+//utility function to insert node at the end of the list
+void insertNode(node* &amp;head,int val) {
+    node* newNode = new node(val);
+    if(head == NULL) {
+        head = newNode;
+        return;
+    }
+    node* temp = head;
+    while(temp-&gt;next != NULL) temp = temp-&gt;next;
+    
+    temp-&gt;next = newNode;
+    return;
+}
+//utility function to rotate list by k times
+node* rotateRight(node* head,int k) {
+    if(head == NULL||head-&gt;next == NULL) return head;
+    for(int i=0;i&lt;k;i++) {
+        node* temp = head;
+        while(temp-&gt;next-&gt;next != NULL) temp = temp-&gt;next;
+        node* end = temp-&gt;next;
+        temp-&gt;next = NULL;
+        end-&gt;next = head;
+        head = end;
+    }
+    return head;
+}
+//utility function to print list
+void printList(node* head) {
+    while(head-&gt;next != NULL) {
+        cout&lt;&lt;head-&gt;num&lt;&lt;"-&gt;";
+        head = head-&gt;next;
+    } 
+    cout&lt;&lt;head-&gt;num&lt;&lt;endl;
+    return;
+}
+
+int main() {
+    node* head = NULL;
+    //inserting Node
+    insertNode(head,1);
+    insertNode(head,2);
+    insertNode(head,3);
+    insertNode(head,4);
+    insertNode(head,5);
+    
+    cout&lt;&lt;"Original list: ";
+    printList(head);
+    
+    int k = 2;
+    node* newHead = rotateRight(head,k);//calling function for rotating right of 
+    the nodes by k times
+    
+    cout&lt;&lt;"After "&lt;&lt;k&lt;&lt;" iterations: ";
+    printList(newHead);//list after rotating nodes
+    return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong> </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Original list: 1-&gt;2-&gt;3-&gt;4-&gt;5<br/>After 2 iterations: 4-&gt;5-&gt;1-&gt;2-&gt;3</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity:</strong> O(Number of nodes present in the list*k)</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><em>Reason</em>: For k times, we are iterating through the entire list to get the last element and move it to first.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity:</strong> O(1)</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><em>Reason</em>: No extra data structures is used for computations</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+class Node {
+  int num;
+  Node next;
+  Node(int a) {
+    num = a;
+    next = null;
+  }
+}
+class TUF {
+  //utility function to insert node at the end of the list
+  static Node insertNode(Node head, int val) {
+    Node newNode = new Node(val);
+    if (head == null) {
+      head = newNode;
+      return head;
+    }
+    Node temp = head;
+    while (temp.next != null) temp = temp.next;
+
+    temp.next = newNode;
+    return head;
+  }
+  //utility function to rotate list by k times
+  static Node rotateRight(Node head, int k) {
+    if (head == null || head.next == null) return head;
+    for (int i = 0; i &lt; k; i++) {
+      Node temp = head;
+      while (temp.next.next != null) temp = temp.next;
+      Node end = temp.next;
+      temp.next = null;
+      end.next = head;
+      head = end;
+    }
+    return head;
+  }
+  //utility function to print list
+  static void printList(Node head) {
+    while (head.next != null) {
+      System.out.print(head.num + "-&gt;");
+      head = head.next;
+    }
+    System.out.println(head.num);
+
+  }
+
+  public static void main(String args[]) {
+    Node head = null;
+    //inserting Node
+    head = insertNode(head, 1);
+    head = insertNode(head, 2);
+    head = insertNode(head, 3);
+    head = insertNode(head, 4);
+    head = insertNode(head, 5);
+
+    System.out.println("Original list: ");
+    printList(head);
+
+    int k = 2;
+    Node newHead = rotateRight(head, k); //calling function for rotating 
+    right of the nodes by k times
+
+    System.out.println("After " + k + " iterations: ");
+    printList(newHead); //list after rotating nodes
+
+  }
+}</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong> </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Original list:<br/>1-&gt;2-&gt;3-&gt;4-&gt;5<br/>After 2 iterations:<br/>4-&gt;5-&gt;1-&gt;2-&gt;3</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity:</strong> O(Number of nodes present in the list*k)</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><em>Reason</em>: For k times, we are iterating through the entire list to get the last element and move it to first.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity:</strong> O(1)</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><em>Reason</em>: No extra data structures are used for computations</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="python">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-python" lang="python">class Node:
+    def __init__(self, val):
+        self.val = val
+        self.next = None
+
+
+
+
+# utility function to insert node at the end of the linked list
+def insertNode(head, val):
+    newNode = Node(val)
+    if head == None:
+        head = newNode
+        return head
+    temp = head
+    while temp.next != None:
+        temp = temp.next
+    temp.next = newNode
+    return head
+
+
+
+
+# utility function to rotate list by k times
+def rotateRight(head, k):
+    if head == None or head.next == None:
+        return head
+    for i in range(k):
+        temp = head
+        while temp.next.next != None:
+            temp = temp.next
+        end = temp.next
+        temp.next = None
+        end.next = head
+        head = end
+    return head
+
+
+
+
+# utility function to print list
+def printList(head):
+    while head.next != None:
+        print(head.val, end='-&gt;')
+        head = head.next
+    print(head.val)
+    return
+
+
+
+
+if __name__ == '__main__':
+    head = None
+    # inserting Node
+    head = insertNode(head, 1)
+    head = insertNode(head, 2)
+    head = insertNode(head, 3)
+    head = insertNode(head, 4)
+    head = insertNode(head, 5)
+
+
+    print("Original list: ", end='')
+    printList(head)
+
+
+    k = 2
+    # calling function for rotating right of the nodes by k times
+    newHead = rotateRight(head, k)
+
+
+    print("After", k, "iterations: ", end='')
+    printList(newHead)  # list after rotating nodes
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong> </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Original list: 1-&gt;2-&gt;3-&gt;4-&gt;5<br/>After 2 iterations: 4-&gt;5-&gt;1-&gt;2-&gt;3</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity:</strong> O(Number of nodes present in the list*k)</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><em>Reason</em>: For k times, we are iterating through the entire list to get the last element and move it to first.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity:</strong> O(1)</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><em>Reason</em>: No extra data structures is used for computations</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Solution: Optimal Solution</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Approach:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Let’s take an example. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>head = [1,2,3,4,5] k = 2000000000</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>If we see a brute force approach, it will take O(5*2000000000) which is not a good time complexity when we can optimize it.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>We can see that for every k which is multiple of the length of the list, we get back the original list. Try to operate brute force on any linked list for k as a multiple of the length of the list.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>This gives us a hint that for k greater than the length of the list, we have to rotate the list for k%length of the list. This reduces our time complexity.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Steps to the algorithm:-</p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>Calculate the length of the list.</li><li>Connect the last node to the first node, converting it to a <a href="https://takeuforward.org/data-structure/circular-linked-list-in-c/" rel="noreferrer noopener" target="_blank"><strong>circular linked list</strong></a>.</li><li>Iterate to cut the link of the last node and start a node of k%length of the list rotated list.</li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>Dry Run:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Let’s calculate the length of the list by iterating on it until it reaches null and increasing the count. Once the length is calculated we will connect the last node to the first node.</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":2054,"width":690,"height":371,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-2054" height="371" src="assets/bdaefa0284b2f9da6ed798ae7026af2d.png" width="690"/></figure>
+<!-- /wp:image -->
+<!-- wp:image {"id":2055,"width":688,"height":371,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-2055" height="371" src="assets/52812a18a0bd30bcfa278358ba521433.png" width="688"/></figure>
+<!-- /wp:image -->
+<!-- wp:image {"id":2056,"width":683,"height":361,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-2056" height="361" src="assets/93511f8a22a65d9a4c01e5828f9f0c8a.png" width="683"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>Now, the length of the list is 5 and k is 2. k is less than the length of the given list. So, we will have the head of the rotating list at the kth element from the end remove the link from the length-k node from its next node and make it NULL.</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":2057,"width":702,"height":382,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-2057" height="382" src="assets/4a04c92001746edc20a8478cec89920c.png" width="702"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>Thus, we received our desired output.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+class node {
+    public:
+        int num;
+        node* next;
+        node(int a) {
+            num = a;
+            next = NULL;
+        }
+};
+//utility function to insert node at the end of the list
+void insertNode(node* &amp;head,int val) {
+    node* newNode = new node(val);
+    if(head == NULL) {
+        head = newNode;
+        return;
+    }
+    node* temp = head;
+    while(temp-&gt;next != NULL) temp = temp-&gt;next;
+    
+    temp-&gt;next = newNode;
+    return;
+}
+//utility function to rotate list by k times
+node* rotateRight(node* head,int k) {
+    if(head == NULL||head-&gt;next == NULL||k == 0) return head;
+    //calculating length
+    node* temp = head;
+    int length = 1;
+    while(temp-&gt;next != NULL) {
+        ++length;
+        temp = temp-&gt;next;
+    }
+    //link last node to first node
+    temp-&gt;next = head;
+    k = k%length; //when k is more than length of list
+    int end = length-k; //to get end of the list
+    while(end--) temp = temp-&gt;next;
+    //breaking last node link and pointing to NULL
+    head = temp-&gt;next;
+    temp-&gt;next = NULL;
+        
+    return head;
+}
+
+//utility function to print list
+void printList(node* head) {
+    while(head-&gt;next != NULL) {
+        cout&lt;&lt;head-&gt;num&lt;&lt;"-&gt;";
+        head = head-&gt;next;
+    } 
+    cout&lt;&lt;head-&gt;num&lt;&lt;endl;
+    return;
+}
+
+int main() {
+    node* head = NULL;
+    //inserting Node
+    insertNode(head,1);
+    insertNode(head,2);
+    insertNode(head,3);
+    insertNode(head,4);
+    insertNode(head,5);
+    
+    cout&lt;&lt;"Original list: ";
+    printList(head);
+    
+    int k = 2;
+    node* newHead = rotateRight(head,k);//calling function for rotating right of the nodes by k times
+    
+    cout&lt;&lt;"After "&lt;&lt;k&lt;&lt;" iterations: ";
+    printList(newHead);//list after rotating nodes
+    return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Original list: 1-&gt;2-&gt;3-&gt;4-&gt;5<br/>After 2 iterations: 4-&gt;5-&gt;1-&gt;2-&gt;3</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity:</strong> O(length of list) + O(length of list - (length of list%k))</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><em>Reason</em>: O(length of the list) for calculating the length of the list. O(length of the list - (length of list%k)) for breaking link.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity:</strong> O(1)</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><em>Reason</em>: No extra data structure is used for computation.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+class Node {
+        int num;
+        Node next;
+        Node(int a) {
+            num = a;
+            next = null;
+        }
+}
+class TUF{
+//utility function to insert node at the end of the list
+static Node insertNode(Node head,int val) {
+    Node newNode = new Node(val);
+    if(head == null) {
+        head = newNode;
+        return head;
+    }
+    Node temp = head;
+    while(temp.next != null) temp = temp.next;
+    
+    temp.next = newNode;
+    return head;
+}
+//utility function to rotate list by k times
+static Node rotateRight(Node head,int k) {
+    if(head == null||head.next == null||k == 0) return head;
+    //calculating length
+    Node temp = head;
+    int length = 1;
+    while(temp.next != null) {
+        ++length;
+        temp = temp.next;
+    }
+    //link last node to first node
+    temp.next = head;
+    k = k%length; //when k is more than length of list
+    int end = length-k; //to get end of the list
+    while(end--!=0) temp = temp.next;
+    //breaking last node link and pointing to NULL
+    head = temp.next;
+    temp.next = null;
+        
+    return head;
+}
+
+//utility function to print list
+static void printList(Node head) {
+    while(head.next != null) {
+        System.out.print(head.num+"-&gt;");
+        head = head.next;
+    } 
+    System.out.println(head.num);
+    
+}
+
+public static void main(String args[]) {
+    Node head = null;
+    //inserting Node
+    head=insertNode(head,1);
+    head=insertNode(head,2);
+    head=insertNode(head,3);
+    head=insertNode(head,4);
+    head=insertNode(head,5);
+    
+    System.out.println("Original list: ");
+    printList(head);
+    
+    int k = 2;
+    Node newHead = rotateRight(head,k);//calling function for rotating right 
+    of the nodes by k times
+    
+    System.out.println("After "+k+" iterations: ");
+    printList(newHead);//list after rotating nodes
+
+}
+}</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Original list:<br/>1-&gt;2-&gt;3-&gt;4-&gt;5<br/>After 2 iterations:<br/>4-&gt;5-&gt;1-&gt;2-&gt;3</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity:</strong> O(length of list) + O(length of list - (length of list%k))</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><em>Reason</em>: O(length of the list) for calculating the length of the list. O(length of the list - (length of list%k)) for breaking link.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity:</strong> O(1)</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><em>Reason</em>: No extra data structure is used for computation.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="python">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-python" lang="python">class Node:
+    def __init__(self, val):
+        self.val = val
+        self.next = None
+
+
+
+
+# utility function to insert node at the end of the linked list
+def insertNode(head, val):
+    newNode = Node(val)
+    if head == None:
+        head = newNode
+        return head
+    temp = head
+    while temp.next != None:
+        temp = temp.next
+    temp.next = newNode
+    return head
+
+
+
+
+# utility function to rotate list by k times
+def rotateRight(head, k):
+    if head == None or head.next == None or k == 0:
+        return head
+    # calculating length
+    temp = head
+    length = 1
+    while temp.next != None:
+        length += 1
+        temp = temp.next
+    # link last node to first node
+    temp.next = head
+    k = k % length  # when k is more than length of list
+    end = length - k  # to get end of the list
+    while end:
+        temp = temp.next
+        end -= 1
+    # breaking last node link and pointing to NULL
+    head = temp.next
+    temp.next = None
+
+
+    return head
+
+
+
+
+# utility function to print list
+def printList(head):
+    while head.next != None:
+        print(head.val, end='-&gt;')
+        head = head.next
+    print(head.val)
+    return
+
+
+
+
+if __name__ == '__main__':
+    head = None
+    # inserting Node
+    head = insertNode(head, 1)
+    head = insertNode(head, 2)
+    head = insertNode(head, 3)
+    head = insertNode(head, 4)
+    head = insertNode(head, 5)
+
+
+    print("Original list: ", end='')
+    printList(head)
+
+
+    k = 2
+    # calling function for rotating right of the nodes by k times
+    newHead = rotateRight(head, k)
+
+
+    print("After", k, "iterations: ", end='')
+    printList(newHead)  # list after rotating nodes</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Original list: 1-&gt;2-&gt;3-&gt;4-&gt;5<br/>After 2 iterations: 4-&gt;5-&gt;1-&gt;2-&gt;3</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity:</strong> O(length of list) + O(length of list - (length of list%k))</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><em>Reason</em>: O(length of the list) for calculating the length of the list. O(length of the list - (length of list%k)) for breaking link.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity:</strong> O(1)</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><em>Reason</em>: No extra data structure is used for computation.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em><em>Special thanks to <strong><a href="https://www.linkedin.com/in/dewanshi-paul-2515091b9" rel="noreferrer noopener" target="_blank">Dewanshi Paul</a> and <em><a href="https://www.linkedin.com/in/imsudip/" rel="noopener" target="_blank" title="">Sudip Ghosh</a></em></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/contribute/help-us-grow-takeuforward/">please check out this articl</a></em>e</p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

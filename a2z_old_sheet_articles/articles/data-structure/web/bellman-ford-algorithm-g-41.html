@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bellman Ford Algorithm: G-41</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Bellman Ford Algorithm: G-41</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement:</strong> Given a weighted, directed and connected graph of V vertices and E edges, Find the shortest distance of all the vertices from the source vertex S.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Note:</strong> If the Graph contains a negative cycle then return an array consisting of only -1.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Example 1</strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<pre><b>Input Format:</b> 
+V = 6, 
+E = [[3, 2, 6], [5, 3, 1], [0, 1, 5], [1, 5, -3], [1, 2, -2], [3, 4, -2], [2, 4, 3]], 
+S = 0
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-6947" src="assets/58778476335bba940f28eee9017c310a.png"/></figure>
+<b>Result</b>: 0 5 3 3 1 2
+<b>Explanation:</b> Shortest distance of all nodes from the source node is returned.
+</pre>
+<!-- /wp:html -->
+<!-- wp:paragraph -->
+<p><strong>Example 2</strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<pre><b>Input Format:</b> V = 2, E = [[0,1,9]],  S = 0
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-6948" src="assets/49eaa7c7df37acd861016b1da1675e2e.png"/></figure>
+<b>Result:</b> 0 9
+<b>Explanation:</b> Shortest distance of all nodes from the source node is returned.
+</pre>
+<!-- /wp:html -->
+<!-- wp:heading -->
+<h2><strong>Solution</strong></h2>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p><strong><em>Disclaimer</em></strong>: <em>Don't jump directly to the solution, try it out yourself first. </em><a href="https://practice.geeksforgeeks.org/problems/distance-from-the-source-bellman-ford-algorithm/1?utm_source=youtube&amp;utm_medium=collab_striver_ytdescription&amp;utm_campaign=distance-from-the-source-bellman-ford-algorithm"><em>Problem link</em></a><em>.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Solution:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong><em>The bellman-Ford algorithm</em></strong> helps to find the shortest distance from the source node to all other nodes. But, we have already learned <strong><em>Dijkstra's algorithm (</em></strong>Dijkstra's algorithm article link<strong><em>)</em></strong> to fulfill the same purpose. Now, the question is <strong><em>how this algorithm is different from Dijkstra's algorithm</em></strong>.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>While learning Dijkstra's algorithm, we came across the following two situations, where Dijkstra's algorithm failed:</p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li><strong><em>If the graph contains negative edges.</em></strong></li><li><strong><em>If the graph has a negative cycle (In this case Dijkstra's algorithm fails to minimize the distance, keeps on running, and goes into an infinite loop. As a result it gives TLE error).</em></strong></li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong><em>Negative Cycle: </em></strong><em>A cycle is called a negative cycle if the sum of all its weights becomes negative. The following illustration is an example of a negative cycle:</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":6949,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-6949" src="assets/256e429ec3e8ecf5470e26531e291f85.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p><strong><em>Bellman-Ford's algorithm </em></strong>successfully solves these problems. <strong><em>It works fine with negative edges</em></strong> as well as <strong><em>it is able to detect if the graph contains a negative cycle</em></strong>. But this algorithm is only applicable for <strong><em>directed graphs</em></strong>. In order to apply this algorithm to an undirected graph, we just need to convert the undirected edges into directed edges like the following:</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":6950,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-6950" src="assets/f6c77916bd039b5eb19956dbe4af6240.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p><strong>Explanation:</strong> An undirected edge between nodes u and v necessarily means that there are two opposite-directed edges, one towards node u and the other towards node v. So the above conversion is valid.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>After converting the undirected graph into a directed graph following the above method, we can use the Bellman-Ford algorithm as it is. </p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Intuition:</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p><em>In this algorithm, the edges can be given in any order. The intuition is to relax all the edges for N-1( N = no. of nodes) times sequentially. After N-1 iterations, we should have minimized the distance to every node.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong><em>Let’s understand what the relaxation of edges means using an example.</em></strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":6952,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-6952" src="assets/006e20adf77b15bd6a7c7ac706555d0e.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>Let's consider the above graph with dist[u], dist[v], and wt. Here, wt is the weight of the edge and dist[u] signifies the shortest distance to reach node u found until now. Similarly, dist[v](maybe infinite) signifies the shortest distance to reach node v found until now. If the distance to reach v through u(i.e. dist[u] + wt) is smaller than dist[v], we will update the value of dist[v] with (dist[u] + wt). This process of updating the distance is called the relaxation of edges.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>We will apply the above process(i.e. minimizing the distance to reach every node) N-1 times in the Bellman-Ford algorithm.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong><em>Two follow-up questions about the algorithm: Why do we need exact N-1 iterations?<br/></em></strong>Let’s try to first understand this using an example:</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":6953,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-6953" src="assets/e499d8f0e58a1339b3d3d0884c0aaac8.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:list -->
+<ul><li>In the above graph, the algorithm will minimize the distance of the i<sup>th</sup> node in the i<sup>th</sup> iteration like dist[1] will be updated in the 1st iteration, dist[2] will be updated in the 2nd iteration, and so on. So we will need a total of 4 iterations(i.e. N-1 iterations) to minimize all the distances as dist[0] is already set to 0.<br/><strong>Note: </strong><em>Points to remember since, in a graph of N nodes we will take at most N-1 edges to reach from the first to the last node, we need exact N-1 iterations. It is impossible to draw a graph that takes more than N-1 edges to reach any node.  <br/></em></li><li><strong><em>How to detect a negative cycle in the graph?</em></strong><strong><em><br/></em></strong><ul><li>We know if we keep on rotating inside a negative cycle, the path weight will be decreased in every iteration. But according to our intuition, we should have minimized all the distances within N-1 iterations(that means, after N-1 iterations no relaxation of edges is possible). </li><li>In order to check the existence of a negative cycle, we will relax the edges one more time after the completion of N-1 iterations. And if in that N<sup>th</sup> iteration, it is found that further relaxation of any edge is possible, we can conclude that the graph has a negative cycle. Thus, the Bellman-Ford algorithm detects negative cycles.</li></ul></li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>Approach</strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Initial Configuration:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>distance array(dist[ ]): </strong>The dist[] array will be initialized with infinity, except for the source node as dist[src] will be initialized to 0.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The algorithm steps will be the following:</p>
+<!-- /wp:paragraph -->
+<!-- wp:list {"ordered":true} -->
+<ol><li>First, we will initialize the source node in the distance array to 0 and the rest of the nodes to infinity.</li><li>Then we will run a loop for N-1 times.</li><li>Inside that loop, we will try to relax every given edge.<br/>For example, one of the given edge information is like (u, v, wt), where u = starting node of the edge, v = ending node, and wt = edge weight. For all edges like this we will be checking if node u is reachable and if the distance to reach v through u is less than the distance to v found until now(i.e. <strong>dist[u]  and dist[u]+ wt &lt; dist[v]</strong>).</li><li>After repeating the 3rd step for N-1 times, we will apply the same step one more time to check if the negative cycle exists. If we found further relaxation is possible, we will conclude the graph has a negative cycle and from this step, we will return a distance array of -1(i.e. minimization of distances is not possible).</li><li>Otherwise, we will return the distance array which contains all the minimized distances.</li></ol>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>Note</strong>: <em>If you wish to see the dry run of the above approach, you can watch the video attached to this article.</em><strong><br/>Code</strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+class Solution {
+public:
+	/*  Function to implement Bellman Ford
+	*   edges: vector of vectors which represents the graph
+	*   S: source vertex to start traversing graph with
+	*   V: number of vertices
+	*/
+	vector&lt;int&gt; bellman_ford(int V, vector&lt;vector&lt;int&gt;&gt;&amp; edges, int S) {
+		vector&lt;int&gt; dist(V, 1e8);
+		dist[S] = 0;
+		for (int i = 0; i &lt; V - 1; i++) {
+			for (auto it : edges) {
+				int u = it[0];
+				int v = it[1];
+				int wt = it[2];
+				if (dist[u] != 1e8 &amp;&amp; dist[u] + wt &lt; dist[v]) {
+					dist[v] = dist[u] + wt;
+				}
+			}
+		}
+		// Nth relaxation to check negative cycle
+		for (auto it : edges) {
+			int u = it[0];
+			int v = it[1];
+			int wt = it[2];
+			if (dist[u] != 1e8 &amp;&amp; dist[u] + wt &lt; dist[v]) {
+				return { -1};
+			}
+		}
+
+
+		return dist;
+	}
+};
+
+
+int main() {
+
+	int V = 6;
+	vector&lt;vector&lt;int&gt;&gt; edges(7, vector&lt;int&gt;(3));
+	edges[0] = {3, 2, 6};
+	edges[1] = {5, 3, 1};
+	edges[2] = {0, 1, 5};
+	edges[3] = {1, 5, -3};
+	edges[4] = {1, 2, -2};
+	edges[5] = {3, 4, -2};
+	edges[6] = {2, 4, 3};
+
+	int S = 0;
+	Solution obj;
+	vector&lt;int&gt; dist = obj.bellman_ford(V, edges, S);
+	for (auto d : dist) {
+		cout &lt;&lt; d &lt;&lt; " ";
+	}
+	cout &lt;&lt; endl;
+
+	return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output: 0 5 3 3 1 2</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: </strong>O(V*E), where V = no. of vertices and E = no. of Edges.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: </strong>O(V) for the distance array which stores the minimized distances.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+
+/*
+*   edges: vector of vectors which represents the graph
+*   S: source vertex to start traversing graph with
+*   V: number of vertices
+*/
+class Solution {
+    static int[] bellman_ford(int V,
+                              ArrayList&lt;ArrayList&lt;Integer&gt;&gt; edges, int S) {
+        int[] dist = new int[V];
+        for (int i = 0; i &lt; V; i++) dist[i] = (int)(1e8);
+        dist[S] = 0;
+        // V x E
+        for (int i = 0; i &lt; V - 1; i++) {
+            for (ArrayList&lt;Integer&gt; it : edges) {
+                int u = it.get(0);
+                int v = it.get(1);
+                int wt = it.get(2);
+                if (dist[u] != 1e8 &amp;&amp; dist[u] + wt &lt; dist[v]) {
+                    dist[v] = dist[u] + wt;
+                }
+            }
+        }
+        // Nth relaxation to check negative cycle
+        for (ArrayList&lt;Integer&gt; it : edges) {
+            int u = it.get(0);
+            int v = it.get(1);
+            int wt = it.get(2);
+            if (dist[u] != 1e8 &amp;&amp; dist[u] + wt &lt; dist[v]) {
+                int temp[] = new int[1];
+                temp[0] = -1;
+                return temp;
+            }
+        }
+        return dist;
+    }
+}
+
+public class tUf {
+    public static void main(String[] args) {
+        int V = 6;
+        int S = 0;
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; edges = new ArrayList&lt;&gt;() {
+            {
+                add(new ArrayList&lt;Integer&gt;(Arrays.asList(3, 2, 6)));
+                add(new ArrayList&lt;Integer&gt;(Arrays.asList(5, 3, 1)));
+                add(new ArrayList&lt;Integer&gt;(Arrays.asList(0, 1, 5)));
+                add(new ArrayList&lt;Integer&gt;(Arrays.asList(1, 5, -3)));
+                add(new ArrayList&lt;Integer&gt;(Arrays.asList(1, 2, -2)));
+                add(new ArrayList&lt;Integer&gt;(Arrays.asList(3, 4, -2)));
+                add(new ArrayList&lt;Integer&gt;(Arrays.asList(2, 4, 3)));
+            }
+        };
+
+
+
+        int[] dist = Solution.bellman_ford(V, edges, S);
+        for (int i = 0; i &lt; V; i++) {
+            System.out.print(dist[i] + " ");
+        }
+        System.out.println("");
+    }
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output: 0 5 3 3 1 2</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: </strong>O(V*E), where V = no. of vertices and E = no. of Edges.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: </strong>O(V) for the distance array which stores the minimized distances.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/kriti39/" rel="noreferrer noopener" target="_blank"><strong>KRITIDIPTA GHOSH</strong></a></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a>. <em>If you want to suggest any improvement/correction in this article please mail us at write4tuf@gmail.com</em></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

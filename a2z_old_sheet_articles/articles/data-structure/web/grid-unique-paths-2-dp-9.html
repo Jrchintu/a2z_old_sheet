@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Grid Unique Paths 2 (DP 9)</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Grid Unique Paths 2 (DP 9)</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p>In this article, we will solve the most asked coding interview problem: Grid Unique Paths 2.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Problem Link: </strong><a href="https://www.codingninjas.com/codestudio/problems/maze-obstacles_977241?source=youtube&amp;campaign=striver_dp_videos&amp;utm_source=youtube&amp;utm_medium=affiliate&amp;utm_campaign=striver_dp_videos"><strong>Maze Obstacles</strong></a></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Problem Description: </strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>We are given an “N*M” Maze. The maze contains some obstacles. A cell is ‘blockage’ in the maze if its value is -1. 0 represents non-blockage. There is no path possible through a blocked cell.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>We need to count the total number of unique paths from the top-left corner of the maze to the bottom-right corner. At every cell, we can move either down or towards the right.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<!-- This is Examples Drop-Down -->
+<div id="article_examples">
+<details class="article_example_details">
+<summary class="article_example_summary">
+<span><strong>
+Examples
+</strong>
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="atricle_example_content">
+<pre class="wp-block-preformatted"><!-- Insert New Examples Here -->
+<pre class="wp-block-preformatted"><strong>Example:</strong>
+
+<img height="351" src="assets/347c4530bacb876b9bb04ed9c92b0bdc" width="624"/></pre>
+</pre>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Practice Section-->
+<div class="practice">
+<span><strong>Practice: </strong></span>
+<div class="problem-buttons">
+<!-- Add Problem Link inside href -->
+<a href="https://www.codingninjas.com/studio/problems/unique-paths-ii_977241?utm_source=striver&amp;utm_medium=website&amp;utm_campaign=a_zcoursetuf" rel="noopener" target="_blank">
+<span>Solve Problem</span>
+<img alt="code-studio" src="assets/86dd2cadbd0e7ef71ad98d3b7f2f2efc.png"/>
+</a>
+</div>
+</div>
+<p class="new-disclaimer"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out
+yourself first. </em></p>
+<!-- /wp:html -->
+<!-- wp:html -->
+<div class="horizontal_navbar_dsa_article">
+<div class="grid_container_three">
+<a class="three-boxes box-a" href="#brute-force-approach">
+Memorization approach
+</a>
+<a class="three-boxes box-b" href="#better-approach">
+Tabulation approach
+</a>
+<a class="three-boxes box-c" href="#optimal-approach">
+Space Optimization
+</a>
+<a class="three-boxes box-d" href="#dsa_article_video_explanation">
+<svg fill="none" height="26" viewbox="0 0 20 14" width="26" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 10L13.19 7L8 4V10ZM19.56 2.17C19.69 2.64 19.78 3.27 19.84 4.07C19.91 4.87 19.94 5.56 19.94 6.16L20 7C20 9.19 19.84 10.8 19.56 11.83C19.31 12.73 18.73 13.31 17.83 13.56C17.36 13.69 16.5 13.78 15.18 13.84C13.88 13.91 12.69 13.94 11.59 13.94L10 14C5.81 14 3.2 13.84 2.17 13.56C1.27 13.31 0.69 12.73 0.44 11.83C0.31 11.36 0.22 10.73 0.16 9.93C0.0900001 9.13 0.0599999 8.44 0.0599999 7.84L0 7C0 4.81 0.16 3.2 0.44 2.17C0.69 1.27 1.27 0.69 2.17 0.44C2.64 0.31 3.5 0.22 4.82 0.16C6.12 0.0899998 7.31 0.0599999 8.41 0.0599999L10 0C14.19 0 16.8 0.16 17.83 0.44C18.73 0.69 19.31 1.27 19.56 2.17Z" fill="red"></path>
+</svg>
+</a>
+<div class="box-e tooltip">
+<svg fill="none" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.842 9.25L11.9577 10.17C11.2502 10.89 10.8081 11.5 10.8081 13H8.84297V12.5C8.84297 11.39 9.28511 10.39 9.99255 9.67L11.2109 8.41C11.5745 8.05 11.7906 7.55 11.7906 7C11.7906 6.46957 11.5836 5.96086 11.2151 5.58579C10.8465 5.21071 10.3467 5 9.82552 5C9.30434 5 8.80451 5.21071 8.43598 5.58579C8.06745 5.96086 7.86041 6.46957 7.86041 7H5.89531C5.89531 5.93913 6.30938 4.92172 7.04644 4.17157C7.7835 3.42143 8.78316 3 9.82552 3C10.8679 3 11.8675 3.42143 12.6046 4.17157C13.3417 4.92172 13.7557 5.93913 13.7557 7C13.7543 7.84324 13.4259 8.65183 12.842 9.25ZM10.8081 17H8.84297V15H10.8081M9.82552 0C8.53521 0 7.25754 0.258658 6.06545 0.761205C4.87337 1.26375 3.79021 2.00035 2.87783 2.92893C1.03519 4.8043 0 7.34784 0 10C0 12.6522 1.03519 15.1957 2.87783 17.0711C3.79021 17.9997 4.87337 18.7362 6.06545 19.2388C7.25754 19.7413 8.53521 20 9.82552 20C12.4314 20 14.9306 18.9464 16.7732 17.0711C18.6158 15.1957 19.651 12.6522 19.651 10C19.651 4.47 15.2296 0 9.82552 0Z" fill="black"></path>
+</svg>
+<div class="bottom">
+<p>Expand any one approach by clicking the given options in the bar. Clicking one approach on bar,
+closes all other expands. You can manually expand more than one approach at a time</p>
+<i></i>
+</div>
+</div>
+</div>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Approaches Drop-Down -->
+<div class="dsa_article_dropdown_approachs">
+<!-- Brute Force Approach Starts from here -->
+<div id="brute-force-approach">
+<details>
+<summary class="main-summary">
+<span>
+Memorization Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition of Brute Force Apporach Here -->
+<p>Let us look at this example:</p>
+<p><img height="274" src="assets/1db5054454470c866fefc50621c0c7e6" width="233"/></p>
+<p>A path through the cell[1][1] is not possible as it is blocked, therefore we need to count every other legit path which <strong>doesn’t include </strong>the cell[1][1].</p>
+<p><img height="376" src="assets/eea23c5a832287ced053ff5fe88892eb" width="669"/></p>
+<p><strong>Steps to form the recursive solution: </strong></p>
+<p>We will first form the recursive solution by the three points mentioned in <a href="https://takeuforward.org/data-structure/dynamic-programming-introduction/">Dynamic Programming Introduction</a>. </p>
+<p><strong>Step 1: </strong>Express the problem in terms of indexes.</p>
+<p>We are given two variables N and M, representing the dimensions of the maze. </p>
+<p>We can define the function with two parameters i and j, where i and j represent the row and column of the maze.</p>
+<p><img height="112" src="assets/d5f9e5538fc022e4dc4f8ed99d11237f" width="548"/></p>
+<p>We will form f(i,j) in such a way that it will handle the obstacles. </p>
+<p>We will be doing a top-down recursion, i.e we will move from the cell[M-1][N-1] and try to find our way to the cell[0][0]. Therefore at every index, we will try to move up and towards the left.</p>
+<p><strong>Base Case:</strong></p>
+<p>There will be three base cases:</p>
+<ul><li>When i&gt;0 and j&gt;0 and mat[i][j] = -1, it means that the current cell is an obstacle, so we can’t find a path from here. Therefore, we return 0.</li><li>When i=0 and j=0, that is we have reached the destination so we can count the current path that is going on, hence we return 1.</li><li>When i&lt;0 and j&lt;0, it means that we have crossed the boundary of the matrix and we couldn’t find a right path, hence we return 0.</li></ul>
+<p>The pseudocode till this step will be:</p>
+<p><img height="285" src="assets/ba9ab37719d62dc3ac541530fd6ac505" width="388"/></p>
+<p><strong>Step 2: </strong>Try out all possible choices at a given index.</p>
+<p>As we are writing a top-down recursion, at every index we have two choices, one to go up(↑) and the other to go left(←). To go upwards, we will reduce i by 1, and move towards left we will reduce j by 1.</p>
+<p><img height="371" src="assets/d1784bde3f00926ca6b2224aa18936c8" width="392"/></p>
+<p><strong>Step 3:  Take the maximum of all choices</strong></p>
+<p>As we have to <strong>count </strong>all the possible unique paths, we will return the <strong>sum</strong> of the choices(up and left) </p>
+<p>The final pseudocode after steps 1, 2, and 3:</p>
+<p><img height="420" src="assets/475575fbc46b033b789c85db649def0e" width="396"/></p>
+<p><strong>Steps to memoize a recursive solution:</strong></p>
+<p>If we draw the recursion tree, we will see that there are overlapping subproblems. In order to convert a recursive solution the following steps will be taken:</p>
+<ol><li>Create a dp array of size [n][m]</li><li>Whenever we want to find the answer of a particular row and column (say f(i,j)), we first check whether the answer is already calculated using the dp array(i.e dp[i][j]!= -1 ). If yes, simply return the value from the dp array.</li><li>If not, then we are finding the answer for the given values for the first time, we will use the recursive relation as usual but before returning from the function, we will set dp[i][j] to the solution we get.</li></ol>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+// Helper function to count the number of paths from (i, j) to (0, 0)
+int mazeObstaclesUtil(int i, int j, vector&lt;vector&lt;int&gt;&gt; &amp;maze, vector&lt;vector&lt;int&gt;&gt; &amp;dp) {
+    // Base cases
+    if (i &gt; 0 &amp;&amp; j &gt; 0 &amp;&amp; maze[i][j] == -1) return 0; // If there's an obstacle at (i, j), return 0
+    if (i == 0 &amp;&amp; j == 0) return 1; // If we reach the destination (0, 0), return 1
+    if (i &lt; 0 || j &lt; 0) return 0; // If we go out of bounds, return 0
+    if (dp[i][j] != -1) return dp[i][j]; // If the result is already computed, return it
+
+    // Recursive calls to explore paths from (i, j) to (0, 0)
+    int up = mazeObstaclesUtil(i - 1, j, maze, dp);
+    int left = mazeObstaclesUtil(i, j - 1, maze, dp);
+
+    // Store the result in the DP table and return it
+    return dp[i][j] = up + left;
+}
+
+// Main function to count paths with obstacles in a maze
+int mazeObstacles(int n, int m, vector&lt;vector&lt;int&gt;&gt; &amp;maze) {
+    vector&lt;vector&lt;int&gt;&gt; dp(n, vector&lt;int&gt;(m, -1)); // DP table to memoize results
+    return mazeObstaclesUtil(n - 1, m - 1, maze, dp); // Start from the bottom-right corner
+}
+
+int main() {
+    vector&lt;vector&lt;int&gt;&gt; maze{
+        {0, 0, 0},
+        {0, -1, 0},
+        {0, 0, 0}
+    };
+
+    int n = maze.size();
+    int m = maze[0].size();
+
+    cout &lt;&lt; "Number of paths with obstacles: " &lt;&lt; mazeObstacles(n, m, maze) &lt;&lt; endl;
+    return 0;
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.*;
+
+class TUF {
+    // Helper function to calculate the number of paths through the maze
+    static int mazeObstaclesUtil(int i, int j, int[][] maze, int[][] dp) {
+        // If there's an obstacle at this cell or out of bounds, return 0
+        if (i &gt;= 0 &amp;&amp; j &gt;= 0 &amp;&amp; maze[i][j] == -1)
+            return 0;
+        // If we've reached the start cell, there's one valid path
+        if (i == 0 &amp;&amp; j == 0)
+            return 1;
+        // If we're out of bounds, return 0
+        if (i &lt; 0 || j &lt; 0)
+            return 0;
+        // If we've already calculated this cell, return the stored result
+        if (dp[i][j] != -1)
+            return dp[i][j];
+
+        // Calculate the number of paths by moving up and left
+        int up = mazeObstaclesUtil(i - 1, j, maze, dp);
+        int left = mazeObstaclesUtil(i, j - 1, maze, dp);
+
+        // Store the result and return it
+        return dp[i][j] = up + left;
+    }
+
+    // Main function to calculate the number of paths through the maze
+    static int mazeObstacles(int n, int m, int[][] maze) {
+        int dp[][] = new int[n][m];
+        
+        // Initialize the dp array with -1
+        for (int row[] : dp)
+            Arrays.fill(row, -1);
+        
+        // Call the helper function starting from the bottom-right cell
+        return mazeObstaclesUtil(n - 1, m - 1, maze, dp);
+    }
+
+    public static void main(String args[]) {
+        // Define the maze
+        int[][] maze = {
+            {0, 0, 0},
+            {0, -1, 0},
+            {0, 0, 0}
+        };
+
+        int n = maze.length;
+        int m = maze[0].length;
+
+        // Calculate and print the number of paths through the maze
+        System.out.println(mazeObstacles(n, m, maze));
+    }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+def mazeObstaclesUtil(i, j, maze, dp):
+    # Base case: If we are out of bounds or at an obstacle, return 0.
+    if i &lt; 0 or j &lt; 0 or maze[i][j] == -1:
+        return 0
+
+    # Base case: If we reach the starting point, return 1 (we found a path).
+    if i == 0 and j == 0:
+        return 1
+
+    # If we've already computed the number of paths for this position, return it.
+    if dp[i][j] != -1:
+        return dp[i][j]
+
+    # Move up and left in the maze, and recursively calculate the number of paths.
+    up = mazeObstaclesUtil(i - 1, j, maze, dp)
+    left = mazeObstaclesUtil(i, j - 1, maze, dp)
+
+    # Store the result in the DP table and return it.
+    dp[i][j] = up + left
+    return dp[i][j]
+
+def mazeObstacles(n, m, maze):
+    # Create a DP table initialized with -1 values.
+    dp = [[-1 for j in range(m)] for i in range(n)]
+    
+    # Call the utility function to find the number of paths.
+    return mazeObstaclesUtil(n - 1, m - 1, maze, dp)
+
+def main():
+    # Example maze with 0s representing open paths and -1 representing obstacles.
+    maze = [[0, 0, 0], [0, -1, 0], [0, 0, 0]]
+    n = len(maze)
+    m = len(maze[0])
+
+    # Call the mazeObstacles function and print the result.
+    print(mazeObstacles(n, m, maze))
+
+if __name__ == '__main__':
+    main()
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+// Define a function to find the number of paths in a maze with obstacles
+function mazeObstacles(n, m, maze) {
+  // Create a 2D array to store intermediate results (memoization)
+  const dp = new Array(n).fill(null).map(() =&gt; new Array(m).fill(-1));
+
+  // Define a recursive utility function to explore the maze and count paths
+  function mazeObstaclesUtil(i, j) {
+    // If the current cell is an obstacle or out of bounds, return 0 paths
+    if (i &lt; 0 || j &lt; 0 || maze[i][j] === -1) {
+      return 0;
+    }
+
+    // If we've reached the top-left cell, return 1 path
+    if (i === 0 &amp;&amp; j === 0) {
+      return 1;
+    }
+
+    // If the result for this cell has already been calculated, return it
+    if (dp[i][j] !== -1) {
+      return dp[i][j];
+    }
+
+    // Recursively explore paths moving up and left
+    const up = mazeObstaclesUtil(i - 1, j);
+    const left = mazeObstaclesUtil(i, j - 1);
+
+    // Store the result for this cell in the memoization table and return it
+    dp[i][j] = up + left;
+    return dp[i][j];
+  }
+
+  // Start the recursive calculation from the bottom-right cell
+  return mazeObstaclesUtil(n - 1, m - 1);
+}
+
+// Define the maze as a 2D array
+const maze = [
+  [0, 0, 0],
+  [0, -1, 0],
+  [0, 0, 0],
+];
+
+// Get the dimensions of the maze
+const n = maze.length;
+const m = maze[0].length;
+
+// Call the mazeObstacles function and print the result
+console.log(mazeObstacles(n, m, maze));
+
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Brute Force Here -->
+</p><p><strong>Output:</strong> 2
+
+</p>
+<p></p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Brute Force Here -->
+<p><strong>Time Complexity: O(N*M)</strong></p>
+<p>Reason: At max, there will be N*M calls of recursion.</p>
+<p><strong>Space Complexity: O((M-1)+(N-1)) + O(N*M)</strong></p>
+<p>Reason: We are using a recursion stack space:O((M-1)+(N-1)), here (M-1)+(N-1) is the path length and an external DP Array of size ‘N*M’.</p>
+</p>
+</details>
+</div>
+</details>
+</div>
+<!-- Brute Force Approach Ends here -->
+<!-- Better Approach Starts from here -->
+<div id="better-approach">
+<details>
+<summary class="main-summary">
+<span>
+Tabulation Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition For Better Approach Here -->
+<p><strong>Steps to convert Recursive Solution to Tabulation one.</strong></p>
+<p>Tabulation is the bottom-up approach, which means we will go from the base case to the main problem.</p>
+<p>The steps to convert to the tabular solution are given below:</p>
+<ul><li>Declare a dp[] array of size [n][m].</li><li>First initialize the base condition values, i.e dp[0][0] = 1</li><li>Our answer should get stored in dp[n-1][m-1]. We want to move from (0,0) to (n-1,m-1). But we can’t move arbitrarily, we should move such that at a particular i and j, we have all the values required to compute dp[i][j].</li><li>If we see the memoized code, values required for dp[i][j] are: dp[i-1][j] and dp[i][j-1]. So we only use the previous row and column value.</li><li>We have already filled the top-left corner (i=0 and j=0), if we move in any of the two following ways(given below), at every cell we do have all the previous values required to compute its value.</li></ul>
+<p><img height="351" src="assets/2ad32f529fab29782118b5fba6bf58a3" width="624"/></p>
+<ul><li>We can use two nested loops to have this traversal</li><li>Whenever i&gt;0 , j&gt;0 and mat[i][j]==-1, we will simply mark dp[i][j] = 0, it means that this cell is a blocked one and no path is possible through it.</li><li>At every cell we calculate up and left as we had done in the recursive solution and then assign the cell’s value as (up+left)</li></ul>
+<p><strong>Note: </strong>For the first row and first column (except for the top-left cell), then up and left values will be zero respectively.</p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+// Helper function to count the number of paths from (0, 0) to (n-1, m-1) in the maze
+int mazeObstaclesUtil(int n, int m, vector&lt;vector&lt;int&gt;&gt; &amp;maze, vector&lt;vector&lt;int&gt;&gt; &amp;dp) {
+    for (int i = 0; i &lt; n; i++) {
+        for (int j = 0; j &lt; m; j++) {
+            // Base conditions
+            if (i &gt; 0 &amp;&amp; j &gt; 0 &amp;&amp; maze[i][j] == -1) {
+                dp[i][j] = 0; // If there's an obstacle at (i, j), no paths can pass through it
+                continue;
+            }
+            if (i == 0 &amp;&amp; j == 0) {
+                dp[i][j] = 1; // If we are at the starting point, there is one path to it
+                continue;
+            }
+
+            int up = 0;
+            int left = 0;
+
+            // Check if we can move up and left (if not at the edge of the maze)
+            if (i &gt; 0)
+                up = dp[i - 1][j]; // Number of paths from above
+            if (j &gt; 0)
+                left = dp[i][j - 1]; // Number of paths from the left
+
+            // Total number of paths to reach (i, j) is the sum of paths from above and left
+            dp[i][j] = up + left;
+        }
+    }
+
+    // The final result is stored in dp[n-1][m-1], which represents the destination
+    return dp[n - 1][m - 1];
+}
+
+// Main function to count paths with obstacles in a maze
+int mazeObstacles(int n, int m, vector&lt;vector&lt;int&gt;&gt; &amp;maze) {
+    vector&lt;vector&lt;int&gt;&gt; dp(n, vector&lt;int&gt;(m, -1)); // DP table to memoize results
+    return mazeObstaclesUtil(n, m, maze, dp); // Start from the top-left corner (0, 0)
+}
+
+int main() {
+    vector&lt;vector&lt;int&gt;&gt; maze{
+        {0, 0, 0},
+        {0, -1, 0},
+        {0, 0, 0}
+    };
+
+    int n = maze.size();
+    int m = maze[0].size();
+
+    cout &lt;&lt; "Number of paths with obstacles: " &lt;&lt; mazeObstacles(n, m, maze) &lt;&lt; endl;
+    return 0;
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.*;
+
+class TUF {
+    // Function to calculate the number of paths through the maze
+    static int mazeObstaclesUtil(int n, int m, int[][] maze, int[][] dp) {
+        for (int i = 0; i &lt; n; i++) {
+            for (int j = 0; j &lt; m; j++) {
+                // Base conditions
+                if (i &gt; 0 &amp;&amp; j &gt; 0 &amp;&amp; maze[i][j] == -1) {
+                    dp[i][j] = 0; // If there's an obstacle, no paths can go through here.
+                    continue;
+                }
+                if (i == 0 &amp;&amp; j == 0) {
+                    dp[i][j] = 1; // There's one valid path to the start cell.
+                    continue;
+                }
+
+                int up = 0;
+                int left = 0;
+
+                // Check if moving up is possible
+                if (i &gt; 0)
+                    up = dp[i - 1][j];
+                
+                // Check if moving left is possible
+                if (j &gt; 0)
+                    left = dp[i][j - 1];
+
+                // Calculate the number of paths by adding paths from above and from the left
+                dp[i][j] = up + left;
+            }
+        }
+
+        // The final result is stored in the bottom-right cell of the DP matrix
+        return dp[n - 1][m - 1];
+    }
+
+    // Main function to calculate the number of paths through the maze
+    static int mazeObstacles(int n, int m, int[][] maze) {
+        int dp[][] = new int[n][m];
+        
+        // Initialize the DP matrix with -1
+        for (int row[] : dp)
+            Arrays.fill(row, -1);
+        
+        // Call the helper function starting from the top-left cell
+        return mazeObstaclesUtil(n, m, maze, dp);
+    }
+
+    public static void main(String args[]) {
+        // Define the maze
+        int[][] maze = {
+            {0, 0, 0},
+            {0, -1, 0},
+            {0, 0, 0}
+        };
+
+        int n = maze.length;
+        int m = maze[0].length;
+
+        // Calculate and print the number of paths through the maze
+        System.out.println(mazeObstacles(n, m, maze));
+    }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+def mazeObstaclesUtil(n, m, maze, dp):
+    # Loop through each cell in the maze
+    for i in range(n):
+        for j in range(m):
+            # Base conditions:
+            # If we encounter an obstacle or we are out of bounds, set dp[i][j] to 0.
+            if i &gt; 0 and j &gt; 0 and maze[i][j] == -1:
+                dp[i][j] = 0
+                continue
+            # If we are at the starting point, set dp[i][j] to 1.
+            if i == 0 and j == 0:
+                dp[i][j] = 1
+                continue
+            
+            # Initialize variables to store the number of paths coming from up and left.
+            up = 0
+            left = 0
+            
+            # If we can move up (i &gt; 0), update 'up' with the value from the cell above.
+            if i &gt; 0:
+                up = dp[i - 1][j]
+            
+            # If we can move left (j &gt; 0), update 'left' with the value from the cell to the left.
+            if j &gt; 0:
+                left = dp[i][j - 1]
+            
+            # Calculate the total number of paths to reach this cell and store it in dp[i][j].
+            dp[i][j] = up + left
+    
+    # The result is stored in the bottom-right corner of the DP table.
+    return dp[n - 1][m - 1]
+
+def mazeObstacles(n, m, maze):
+    # Create a DP table initialized with -1 values.
+    dp = [[-1 for j in range(m)] for i in range(n)]
+    
+    # Call the utility function to find the number of paths.
+    return mazeObstaclesUtil(n, m, maze, dp)
+
+def main():
+    # Example maze with 0s representing open paths and -1 representing obstacles.
+    maze = [[0, 0, 0],
+            [0, -1, 0],
+            [0, 0, 0]]
+    n = len(maze)
+    m = len(maze[0])
+    
+    # Call the mazeObstacles function and print the result.
+    print(mazeObstacles(n, m, maze))
+
+if __name__ == "__main__":
+    main()
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+// Define a function to find the number of paths in a maze with obstacles
+function mazeObstacles(n, m, maze) {
+  // Create a 2D array to store intermediate results (dp table)
+  const dp = new Array(n).fill(null).map(() =&gt; new Array(m).fill(-1));
+
+  // Loop through each cell in the maze
+  for (let i = 0; i &lt; n; i++) {
+    for (let j = 0; j &lt; m; j++) {
+      // Base conditions
+      if (i &gt; 0 &amp;&amp; j &gt; 0 &amp;&amp; maze[i][j] === -1) {
+        dp[i][j] = 0;
+        continue;
+      }
+      if (i === 0 &amp;&amp; j === 0) {
+        dp[i][j] = 1;
+        continue;
+      }
+
+      // Initialize variables to store counts from above and left cells
+      let up = 0;
+      let left = 0;
+
+      // If we are not at the top row, get the count from the cell above
+      if (i &gt; 0) up = dp[i - 1][j];
+
+      // If we are not at the leftmost column, get the count from the cell to the left
+      if (j &gt; 0) left = dp[i][j - 1];
+
+      // Calculate the total count for the current cell and store it in dp
+      dp[i][j] = up + left;
+    }
+  }
+
+  // Return the count of paths to the bottom-right cell
+  return dp[n - 1][m - 1];
+}
+
+// Define the maze as a 2D array
+const maze = [
+  [0, 0, 0],
+  [0, -1, 0],
+  [0, 0, 0],
+];
+
+// Get the dimensions of the maze
+const n = maze.length;
+const m = maze[0].length;
+
+// Call the mazeObstacles function and print the result
+console.log(mazeObstacles(n, m, maze));
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Better Approach Here -->
+<strong>Output:</strong> 2
+
+
+</p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Better Approach Here -->
+<p><strong>Time Complexity: O(N*M)</strong></p>
+<p>Reason: There are two nested loops</p>
+<p><strong>Space Complexity: O(N*M)</strong></p>
+<p>Reason: We are using an external array of size ‘N*M’’.</p>
+</p>
+</details>
+</div>
+</details>
+</div>
+<!-- Better Approach Ends from here -->
+<!-- Optimal Approach Starts from here -->
+<div id="optimal-approach">
+<details>
+<summary class="main-summary">
+<span>
+Space Optimization Approach 
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm of Better Approach Here -->
+<p>If we closely look at the relationship,</p>
+<p><strong>dp[i][j] = dp[i-1][j] + dp[i][j-1])</strong></p>
+<p>We see that we only need the previous row and column, in order to calculate dp[i][j]. Therefore we can space optimize it.</p>
+<p>Initially, we can take a dummy row ( say prev) and initialize it as 0.</p>
+<p>Now the current row(say temp) <strong>only needs the </strong>previous row value and the current row’s value in order to calculate dp[i][j].</p>
+<p><img height="351" src="assets/4c37189e3db2509186a5f2e96550cf5d" width="624"/></p>
+<p>At the next step, the temp array becomes the prev of the next step and using its values we can still calculate the next row’s values.</p>
+<p><img height="351" src="assets/de515ec1c14cee36671f0b44a980201c" width="624"/></p>
+<p>At last prev[n-1] will give us the required answer.</p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+// Function to count the number of paths from the top-left corner (0, 0) to the bottom-right corner (n-1, m-1)
+int mazeObstacles(int n, int m, vector&lt;vector&lt;int&gt;&gt; &amp;maze) {
+    vector&lt;int&gt; prev(m, 0); // Initialize a vector to store the previous row's path counts
+
+    for (int i = 0; i &lt; n; i++) {
+        vector&lt;int&gt; temp(m, 0); // Initialize a temporary vector for the current row
+        for (int j = 0; j &lt; m; j++) {
+            // Base conditions
+            if (i &gt; 0 &amp;&amp; j &gt; 0 &amp;&amp; maze[i][j] == -1) {
+                temp[j] = 0; // If there's an obstacle at (i, j), no paths can pass through it
+                continue;
+            }
+            if (i == 0 &amp;&amp; j == 0) {
+                temp[j] = 1; // If we are at the starting point, there is one path to it
+                continue;
+            }
+
+            int up = 0;
+            int left = 0;
+
+            // Check if we can move up and left (if not at the edge of the maze)
+            if (i &gt; 0)
+                up = prev[j]; // Number of paths from above (previous row)
+            if (j &gt; 0)
+                left = temp[j - 1]; // Number of paths from the left (current row)
+
+            // Total number of paths to reach (i, j) is the sum of paths from above and left
+            temp[j] = up + left;
+        }
+        prev = temp; // Update the previous row with the current row
+    }
+
+    // The final result is stored in prev[m-1], which represents the destination in the last row
+    return prev[m - 1];
+}
+
+int main() {
+    vector&lt;vector&lt;int&gt;&gt; maze{
+        {0, 0, 0},
+        {0, -1, 0},
+        {0, 0, 0}
+    };
+
+    int n = maze.size();
+    int m = maze[0].size();
+
+    cout &lt;&lt; "Number of paths with obstacles: " &lt;&lt; mazeObstacles(n, m, maze) &lt;&lt; endl;
+    return 0;
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.*;
+
+class TUF {
+    // Function to calculate the number of paths through the maze
+    static int mazeObstacles(int n, int m, int[][] maze) {
+        // Initialize the previous row of the DP matrix
+        int prev[] = new int[n];
+        
+        for (int i = 0; i &lt; n; i++) {
+            // Create a temporary array for the current row
+            int temp[] = new int[m];
+            
+            for (int j = 0; j &lt; m; j++) {
+                // Base conditions
+                if (i &gt; 0 &amp;&amp; j &gt; 0 &amp;&amp; maze[i][j] == -1) {
+                    temp[j] = 0; // If there's an obstacle, no paths can go through here.
+                    continue;
+                }
+                if (i == 0 &amp;&amp; j == 0) {
+                    temp[j] = 1; // There's one valid path to the start cell.
+                    continue;
+                }
+
+                int up = 0;
+                int left = 0;
+
+                // Check if moving up is possible
+                if (i &gt; 0)
+                    up = prev[j];
+                
+                // Check if moving left is possible
+                if (j &gt; 0)
+                    left = temp[j - 1];
+
+                // Calculate the number of paths by adding paths from above and from the left
+                temp[j] = up + left;
+            }
+            
+            // Update the previous row with the values of the current row
+            prev = temp;
+        }
+
+        // The final result is stored in the last element of the previous row
+        return prev[n - 1];
+    }
+
+    public static void main(String args[]) {
+        // Define the maze
+        int[][] maze = {
+            {0, 0, 0},
+            {0, -1, 0},
+            {0, 0, 0}
+        };
+
+        int n = maze.length;
+        int m = maze[0].length;
+
+        // Calculate and print the number of paths through the maze
+        System.out.println(mazeObstacles(n, m, maze));
+    }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+def mazeObstacles(n, m, maze):
+    # Initialize the 'prev' list to keep track of the number of paths in the previous row.
+    prev = [0] * m
+    
+    # Loop through each row of the maze.
+    for i in range(n):
+        # Initialize a temporary list to store the number of paths for the current row.
+        temp = [0] * m
+        
+        # Loop through each cell in the current row.
+        for j in range(m):
+            # Base conditions:
+            # If we encounter an obstacle or we are out of bounds, set 'temp[j]' to 0.
+            if i &gt; 0 and j &gt; 0 and maze[i][j] == -1:
+                temp[j] = 0
+                continue
+            # If we are at the starting point, set 'temp[j]' to 1.
+            if i == 0 and j == 0:
+                temp[j] = 1
+                continue
+            
+            # Initialize variables to store the number of paths coming from up and left.
+            up = 0
+            left = 0
+            
+            # If we can move up (i &gt; 0), update 'up' with the value from the previous row.
+            if i &gt; 0:
+                up = prev[j]
+            
+            # If we can move left (j &gt; 0), update 'left' with the value from the current row.
+            if j &gt; 0:
+                left = temp[j - 1]
+            
+            # Calculate the total number of paths to reach this cell and store it in 'temp[j]'.
+            temp[j] = up + left
+        
+        # Update 'prev' with the 'temp' list for the next iteration.
+        prev = temp
+    
+    # The result is stored in the last element of the 'prev' list (bottom-right corner).
+    return prev[m - 1]
+
+def main():
+    # Example maze with 0s representing open paths and -1 representing obstacles.
+    maze = [[0, 0, 0],
+            [0, -1, 0],
+            [0, 0, 0]]
+    n = len(maze)
+    m = len(maze[0])
+    
+    # Call the mazeObstacles function and print the result.
+    print(mazeObstacles(n, m, maze))
+
+if __name__ == "__main__":
+    main()
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+// Define a function to find the number of paths in a maze with obstacles
+function mazeObstacles(n, m, maze) {
+  // Create an array 'prev' to store the counts for the previous row
+  let prev = new Array(m).fill(0);
+
+  // Loop through each row in the maze
+  for (let i = 0; i &lt; n; i++) {
+    // Create an array 'temp' to store the counts for the current row
+    let temp = new Array(m).fill(0);
+
+    // Loop through each cell in the current row
+    for (let j = 0; j &lt; m; j++) {
+      // Base conditions
+      if (i &gt; 0 &amp;&amp; j &gt; 0 &amp;&amp; maze[i][j] === -1) {
+        temp[j] = 0;
+        continue;
+      }
+      if (i === 0 &amp;&amp; j === 0) {
+        temp[j] = 1;
+        continue;
+      }
+
+      // Initialize variables to store counts from above and left cells
+      let up = 0;
+      let left = 0;
+
+      // If we are not at the top row, get the count from the cell above ('prev')
+      if (i &gt; 0) up = prev[j];
+
+      // If we are not at the leftmost column, get the count from the cell to the left ('temp')
+      if (j &gt; 0) left = temp[j - 1];
+
+      // Calculate the total count for the current cell and store it in 'temp'
+      temp[j] = up + left;
+    }
+    
+    // Update 'prev' with 'temp' for the next iteration
+    prev = temp;
+  }
+
+  // Return the count of paths to the bottom-right cell (last element in 'prev' array)
+  return prev[m - 1];
+}
+
+// Define the maze as a 2D array
+const maze = [
+  [0, 0, 0],
+  [0, -1, 0],
+  [0, 0, 0],
+];
+
+// Get the dimensions of the maze
+const n = maze.length;
+const m = maze[0].length;
+
+// Call the mazeObstacles function and print the result
+console.log(mazeObstacles(n, m, maze));
+
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Optimal Apporach Here -->
+<strong>Output:</strong>2
+
+
+</p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Optimal Approach-->
+<p><strong>Time Complexity: O(M*N)</strong></p>
+<p>Reason: There are two nested loops</p>
+<p><strong>Space Complexity: O(N)</strong></p>
+<p>Reason: We are using an external array of size ‘N’ to store only one row.</p>
+</p>
+</details>
+</div>
+</details>
+</div>
+<!-- Optimal Approach Starts from here -->
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Video Explination Drop-Down -->
+<div class="dsa_article_youtube_video" id="dsa_article_video_explanation">
+<details>
+<summary class="main-summary">
+<span>
+Video Explanation
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="yt-video-wrapper">
+<!-- Insert iframe embed Link of Youtube Video-->
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" class="lazy-loaded" data-lazy-type="iframe" data-src="https://www.youtube.com/embed/TmhpgXScLyY?si=YQwdGOpEDcpbyJZE" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/TmhpgXScLyY?feature=oembed" title="Unique Paths 2" width="810"></iframe><noscript>
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/TmhpgXScLyY?si=YQwdGOpEDcpbyJZE" title="Unique Paths 2" width="810"></iframe></noscript>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script>
+
+const codeSections = document.querySelectorAll('.code-section');
+
+// Get last selected language from localStorage or set default value
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+// Update last selected language for all sections and store in localStorage
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+// Handle copy button click event
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+// Set initial state of the tabs
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<script>
+const codeSections = document.querySelectorAll('.code-section');
+
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<link href="assets/4237ffca7ce6aadb438c457e0a675b12.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+<script src="index.js"></script>
+<script>hljs.highlightAll();</script>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script src="https://takeuforward.org/UXApproachDropDowns/3ApproachJSScript.js"></script>
+<!-- /wp:html -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/anshuman-sharma-a1b245194/" rel="noreferrer noopener" target="_blank">Anshuman Sharma</a></strong> and <a href="https://www.linkedin.com/in/abhipsita-das-5b7069212/?originalSubdomain=in" rel="noopener" target="_blank" title="">Abhipsita Das</a></em> <em>for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+    "dislikes": 10,
+    "video": "",
+    "publishedOn": "Sun Mar 24 2024 22:11:01 GMT+0530 (India Standard Time)",
+    "slug": "linear-search-in-c",
+    "aid": "1950",
+    "tuf_plus": "",
+    "title": "Linear Search in C",
+    "topics": [
+        {
+            "topic-id": "arrays",
+            "topic-title": "Arrays"
+        },
+        {
+            "topic-id": "data-structure",
+            "topic-title": "Data Structures"
+        }
+    ],
+    "category_tag": "data-structure",
+    "likes": 256,
+    "preview": "Problem Statement: Given an array, and an element num the task is to find if num is present in the given array or not. If present print the index of the element or print -1. Examples: Example 1: In...",
+    "content": "<!-- wp:paragraph -->\n<p><strong>Problem Statement:</strong> Given an array, and an element num the task is to find if num is present in the given array or not. If present print the index of the element or print -1.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p><strong>Examples:</strong></p>\n<!-- /wp:paragraph -->\n\n<!-- wp:preformatted -->\n<pre class=\"wp-block-preformatted\"><strong>Example 1:</strong>\n<strong>Input:</strong> arr[]= 1 2 3 4 5, num = 3\n<strong>Output:</strong> 2\n<strong>Explanation:</strong> 3 is present in the 2nd index\n\n<strong>Example 2:</strong>\n<strong>Input:</strong> arr[]= 5 4 3 2 1, num = 5\n<strong>Output:</strong> 0\n<strong>Explanation:</strong> 5 is present in the 0th index</pre>\n<!-- /wp:preformatted -->\n\n<!-- wp:heading {\"level\":3} -->\n<h3><strong>Solution:</strong></h3>\n<!-- /wp:heading -->\n\n<!-- wp:paragraph {\"textColor\":\"accent\"} -->\n<p class=\"has-accent-color has-text-color\"><strong><em>Disclaimer</em></strong>:&nbsp;<em>Don\u2019t jump directly to the solution, try it out yourself first.</em></p>\n<!-- /wp:paragraph -->\n\n<!-- wp:heading {\"level\":3} -->\n<h3><strong>Approach:</strong></h3>\n<!-- /wp:heading -->\n\n<!-- wp:list -->\n<ul><li>Given an array</li><li>We will traverse the whole array and see if the element is present in the array or not</li><li>If found we will print the index of the element</li><li>Otherwise, we will print -1.</li></ul>\n<!-- /wp:list -->\n\n<!-- wp:paragraph -->\n<p>[tabby title=\"C Program\"]</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:code -->\n<pre class=\"wp-block-code\"><code lang=\"c\" class=\"language-c\">#include&lt;stdio.h&gt;\n\nint search(int arr[],int n,int num)\n{\n    int i;\n    for(i=0;i&lt;n;i++)\n    {\n        if(arr[i]==num)\n        return i;\n    }\n    return -1;\n}\nint main()\n{\n    int arr[]={1,2,3,4,5};\n    int num = 4;\n    int n = sizeof(arr)/sizeof(arr[0]);\n    int val = search(arr,n,num);\n    printf(\"%d\",val);\n}</code></pre>\n<!-- /wp:code -->\n\n<!-- wp:paragraph -->\n<p><strong>Output:</strong> 3</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p><strong>Time Complexity:</strong> O(n), where n is the length of the array.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p><strong>Space Complexity:</strong> O(1)</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n\n    </div>\n    </div>\n    </div>\n    \n<!-- /wp:paragraph -->\n\n<!-- wp:quote -->\n<blockquote class=\"wp-block-quote\"><p><em>Special thanks to&nbsp;<strong><a href=\"https://www.linkedin.com/in/rushikeshadhav/\" target=\"_blank\" rel=\"noreferrer noopener\"><strong>Subhrajit Das</strong></a></strong>&nbsp;for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam,&nbsp;</em><a href=\"https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/\">please check out this article</a></p></blockquote>\n<!-- /wp:quote -->"
+}

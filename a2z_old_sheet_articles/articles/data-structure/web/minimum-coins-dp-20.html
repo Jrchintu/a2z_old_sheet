@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Minimum Coins (DP - 20)</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Minimum Coins (DP - 20)</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement: </strong> <strong>Minimum Coins</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Problem Link: </strong><a href="https://www.codingninjas.com/codestudio/problems/minimum-elements_3843091?leftPanelTab=0" rel="noreferrer noopener nofollow" target="_blank"><strong>Minimum Coins</strong></a></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>We are given a target sum of ‘X’ and ‘N’ distinct numbers denoting the coin denominations. We need to tell the minimum number of coins required to reach the target sum. We can pick a coin denomination for any number of times we want.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<!-- This is Examples Drop-Down -->
+<div id="article_examples">
+<details class="article_example_details">
+<summary class="article_example_summary">
+<span><strong>
+Examples
+</strong>
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="atricle_example_content">
+<pre class="wp-block-preformatted"><!-- Insert New Examples Here -->
+<pre class="wp-block-preformatted"><strong>Example:</strong>
+<img height="320" src="assets/73d5fa79e1e4f1d6492745d44a7647a1" width="401"/>
+</pre>
+</pre>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Practice Section-->
+<div class="practice">
+<span><strong>Practice: </strong></span>
+<div class="problem-buttons">
+<!-- Add Problem Link inside href -->
+<a href="https://www.codingninjas.com/studio/problems/minimum-elements_3843091?utm_source=striver&amp;utm_medium=website&amp;utm_campaign=a_zcoursetuf" rel="noopener" target="_blank">
+<span>Solve Problem</span>
+<img alt="code-studio" src="assets/86dd2cadbd0e7ef71ad98d3b7f2f2efc.png"/>
+</a>
+</div>
+</div>
+<p class="new-disclaimer"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out
+yourself first. </em></p>
+<!-- /wp:html -->
+<!-- wp:html -->
+<div class="horizontal_navbar_dsa_article">
+<div class="grid_container_three">
+<a class="three-boxes box-a" href="#brute-force-approach">
+Memorization approach
+</a>
+<a class="three-boxes box-b" href="#better-approach">
+Tabulation approach
+</a>
+<a class="three-boxes box-c" href="#optimal-approach">
+Space Optimization
+</a>
+<a class="three-boxes box-d" href="#dsa_article_video_explanation">
+<svg fill="none" height="26" viewbox="0 0 20 14" width="26" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 10L13.19 7L8 4V10ZM19.56 2.17C19.69 2.64 19.78 3.27 19.84 4.07C19.91 4.87 19.94 5.56 19.94 6.16L20 7C20 9.19 19.84 10.8 19.56 11.83C19.31 12.73 18.73 13.31 17.83 13.56C17.36 13.69 16.5 13.78 15.18 13.84C13.88 13.91 12.69 13.94 11.59 13.94L10 14C5.81 14 3.2 13.84 2.17 13.56C1.27 13.31 0.69 12.73 0.44 11.83C0.31 11.36 0.22 10.73 0.16 9.93C0.0900001 9.13 0.0599999 8.44 0.0599999 7.84L0 7C0 4.81 0.16 3.2 0.44 2.17C0.69 1.27 1.27 0.69 2.17 0.44C2.64 0.31 3.5 0.22 4.82 0.16C6.12 0.0899998 7.31 0.0599999 8.41 0.0599999L10 0C14.19 0 16.8 0.16 17.83 0.44C18.73 0.69 19.31 1.27 19.56 2.17Z" fill="red"></path>
+</svg>
+</a>
+<div class="box-e tooltip">
+<svg fill="none" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.842 9.25L11.9577 10.17C11.2502 10.89 10.8081 11.5 10.8081 13H8.84297V12.5C8.84297 11.39 9.28511 10.39 9.99255 9.67L11.2109 8.41C11.5745 8.05 11.7906 7.55 11.7906 7C11.7906 6.46957 11.5836 5.96086 11.2151 5.58579C10.8465 5.21071 10.3467 5 9.82552 5C9.30434 5 8.80451 5.21071 8.43598 5.58579C8.06745 5.96086 7.86041 6.46957 7.86041 7H5.89531C5.89531 5.93913 6.30938 4.92172 7.04644 4.17157C7.7835 3.42143 8.78316 3 9.82552 3C10.8679 3 11.8675 3.42143 12.6046 4.17157C13.3417 4.92172 13.7557 5.93913 13.7557 7C13.7543 7.84324 13.4259 8.65183 12.842 9.25ZM10.8081 17H8.84297V15H10.8081M9.82552 0C8.53521 0 7.25754 0.258658 6.06545 0.761205C4.87337 1.26375 3.79021 2.00035 2.87783 2.92893C1.03519 4.8043 0 7.34784 0 10C0 12.6522 1.03519 15.1957 2.87783 17.0711C3.79021 17.9997 4.87337 18.7362 6.06545 19.2388C7.25754 19.7413 8.53521 20 9.82552 20C12.4314 20 14.9306 18.9464 16.7732 17.0711C18.6158 15.1957 19.651 12.6522 19.651 10C19.651 4.47 15.2296 0 9.82552 0Z" fill="black"></path>
+</svg>
+<div class="bottom">
+<p>Expand any one approach by clicking the given options in the bar. Clicking one approach on bar,
+closes all other expands. You can manually expand more than one approach at a time</p>
+<i></i>
+</div>
+</div>
+</div>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Approaches Drop-Down -->
+<div class="dsa_article_dropdown_approachs">
+<!-- Brute Force Approach Starts from here -->
+<div id="brute-force-approach">
+<details>
+<summary class="main-summary">
+<span>
+Memorization Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition of Brute Force Apporach Here -->
+<p><strong>Why a Greedy Solution doesn’t work?</strong></p>
+<p>The first approach that comes to our mind is greedy. A greedy solution will fail in this problem because there is no <strong>‘uniformity’ </strong>in data. While selecting a local better choice we may choose an item that will in the long term give less value.</p>
+<p>Let us understand this with help of an example:</p>
+<p><img height="222" src="assets/a9956832e4a01742ecae251895a10324" width="428"/></p>
+<p>A Greedy solution will be to take the highest denomination coin first, so we will take an item on index 0, with a value of 9. Now the remaining target sum will be 2. Therefore we can only consider coins with a value of 1. We will take 2 coins of value 1 to meet the target. So a greedy<strong> solution</strong> gives us the answer <strong>3 {9,1,1}</strong>.</p>
+<p>Now we can clearly see that a<strong> non-greedy solution </strong>of taking <strong>2</strong> coins valued <strong>6 and 5</strong> will give us a better option. So we can say that the greedy solution doesn’t work for this problem. </p>
+<p>As the greedy approach doesn’t work, we will try to generate all possible combinations using <strong>recursion</strong> and select the combination which gives us the <strong>minimum</strong> number of coins.</p>
+<p><strong>Steps to form the recursive solution: </strong></p>
+<p>We will first form the recursive solution by the three points mentioned in <a href="https://takeuforward.org/data-structure/dynamic-programming-introduction/" rel="noreferrer noopener" target="_blank">Dynamic Programming Introduction</a>. </p>
+<p><strong>Step 1: </strong>Express the problem in terms of indexes.</p>
+<p>We are given ‘n’ distinct numbers. Their denomination is represented by the ‘arr’ array. So clearly one parameter will be ‘ind’, i.e index up to which the array items are being considered.</p>
+<p>There is one more parameter “T”. We need to know the given target that we want to achieve.</p>
+<p>So, we can say that initially, we need to find f(n-1, T) where T is the initial target given to us. f(n-1, T) means we are finding the minimum number of coins required to form the target sum by considering coins from index 0 to n-1.</p>
+<p><img height="126" src="assets/a31bce241be12b6db4680012e598d437" width="584"/></p>
+<p><strong>Base Cases:</strong></p>
+<p>If ind==0, it means we are at the first item, so in that case, the following cases can arise:</p>
+<ul><li><strong>arr[0] = 4</strong> and <strong>T = 12</strong></li></ul>
+<p>In such a case where the target is divisible by the coin element, we will return <strong>T%arr[0].</strong></p>
+<ul><li><strong>arr[0] =4 and T=1 , arr[0]=3 T=10</strong></li></ul>
+<p> In all other cases, we will not be able to form a solution, so we will return a big number like <strong>1e9</strong></p>
+<p><img height="334" src="assets/594560d2e6284bff7d514a02007af54d" width="373"/></p>
+<p><strong>Step 2: </strong>Try out all possible choices at a given index.</p>
+<p>We need to generate all the subsequences. We will use the pick/non-pick technique as discussed in this video “<a href="https://www.youtube.com/watch?v=AxNNVECce8c">Recursion on Subsequences</a>”. There will be a slight change for this question which is discussed below.</p>
+<p>We have two choices:</p>
+<ul><li><strong>Exclude the current element in the subsequence: </strong>We first try to find a subsequence without considering the current index coin. If we exclude the current coin, the target sum will not be affected and the number of coins added to the solution will be <strong>0</strong>. So we will call the recursive function <strong>f(ind-1,T)</strong></li><li><strong>Include the current element in the subsequence:</strong> We will try to find a subsequence by considering the current icoin. As we have included the coin, the target sum will be updated to T-arr[ind] and we have considered <strong>1 </strong>coin to our solution.<br/></li></ul>
+<p>Now here is the catch, as there is an unlimited supply of coins, we want to again form a solution with the same coin value. So we <strong>will not</strong> recursively call for f(ind-1, T-arr[ind]) rather we will stay at that index only and call for f(ind<strong>, T-arr[ind])</strong> to find the answer.<br/><strong>Note</strong>: We will consider the current coin only when its denomination value (arr[ind]) is less than or equal to the target T.</p>
+<p><img height="544" src="assets/be2b136f7a7da32e2eab5b779da5e37d" width="462"/></p>
+<p><strong>Step 3:  Return the minimum of take and notTake</strong></p>
+<p>As we have to return the minimum number of coins, we will return the minimum of take and notTake as our answer.</p>
+<p>The final pseudocode after steps 1, 2, and 3:</p>
+<p><img height="560" src="assets/1b8763c27444ae97439224291eecd4b4" width="436"/></p>
+<p><strong>Steps to memoize a recursive solution:</strong></p>
+<p>If we draw the recursion tree, we will see that there are overlapping subproblems. In order to convert a recursive solution the following steps will be taken:</p>
+<ol><li>Create a dp array of size [n][T+1]. The size of the input array is ‘N’, so the index will always lie between ‘0’ and ‘n-1’. The target Sum can take any value between ‘0’ and ‘T’. Therefore we take the dp array as dp[n][T+1]</li><li>We initialize the dp array to -1.</li><li>Whenever we want to find the answer of particular parameters (say f(ind,T)), we first check whether the answer is already calculated using the dp array(i.e dp[ind][T]!= -1 ). If yes, simply return the value from the dp array.</li><li>If not, then we are finding the answer for the given value for the first time, we will use the recursive relation as usual but before returning from the function, we will set dp[ind][target] to the solution we get.</li></ol>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;bits/stdc++.h&gt; // Include necessary libraries
+
+using namespace std;
+
+// Function to calculate the minimum number of elements to form the target sum
+int minimumElementsUtil(vector&lt;int&gt;&amp; arr, int ind, int T, vector&lt;vector&lt;int&gt;&gt;&amp; dp){
+
+    // Base case: If we're at the first element
+    if(ind == 0){
+        // Check if the target sum is divisible by the first element
+        if(T % arr[0] == 0)
+            return T / arr[0]; // If yes, return the quotient as the answer
+        else
+            return 1e9; // Otherwise, return a very large value to indicate it's not possible
+    }
+    
+    // If the result for this index and target sum is already calculated, return it
+    if(dp[ind][T] != -1)
+        return dp[ind][T];
+        
+    // Calculate the minimum elements needed without taking the current element
+    int notTaken = 0 + minimumElementsUtil(arr, ind - 1, T, dp);
+    
+    // Calculate the minimum elements needed by taking the current element
+    int taken = 1e9; // Initialize 'taken' to a very large value
+    if(arr[ind] &lt;= T)
+        taken = 1 + minimumElementsUtil(arr, ind, T - arr[ind], dp);
+        
+    // Store the minimum of 'notTaken' and 'taken' in the DP array and return it
+    return dp[ind][T] = min(notTaken, taken);
+}
+
+// Function to find the minimum number of elements needed to form the target sum
+int minimumElements(vector&lt;int&gt;&amp; arr, int T){
+    
+    int n = arr.size();
+    
+    // Create a DP (Dynamic Programming) table with n rows and T+1 columns and initialize it with -1
+    vector&lt;vector&lt;int&gt;&gt; dp(n, vector&lt;int&gt;(T + 1, -1));
+    
+    // Call the utility function to calculate the answer
+    int ans =  minimumElementsUtil(arr, n - 1, T, dp);
+    
+    // If 'ans' is still very large, it means it's not possible to form the target sum
+    if(ans &gt;= 1e9)
+        return -1;
+    return ans; // Return the minimum number of elements needed
+}
+
+int main() {
+
+    vector&lt;int&gt; arr = {1, 2, 3};
+    int T = 7;
+                                 
+    cout &lt;&lt; "The minimum number of coins required to form the target sum is " &lt;&lt; minimumElements(arr, T);
+
+    return 0; // Return 0 to indicate successful program execution
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.*;
+
+class TUF {
+    // Recursive function to find the minimum number of elements to achieve the target sum
+    static int minimumElementsUtil(int[] arr, int ind, int T, int[][] dp) {
+        // Base case: If the current index is 0
+        if (ind == 0) {
+            // If T is divisible by the first element of the array, return the quotient
+            if (T % arr[0] == 0)
+                return T / arr[0];
+            else
+                // If not, return a large value to indicate it's not possible
+                return (int) Math.pow(10, 9);
+        }
+
+        // If the result for this subproblem has already been calculated, return it
+        if (dp[ind][T] != -1)
+            return dp[ind][T];
+
+        // Calculate the minimum number of elements needed without taking the current element
+        int notTaken = 0 + minimumElementsUtil(arr, ind - 1, T, dp);
+
+        // Initialize the minimum number of elements needed taking the current element
+        int taken = (int) Math.pow(10, 9);
+
+        // If the current element is less than or equal to T, calculate the minimum taking it
+        if (arr[ind] &lt;= T)
+            taken = 1 + minimumElementsUtil(arr, ind, T - arr[ind], dp);
+
+        // Store the minimum result in the dp array and return it
+        return dp[ind][T] = Math.min(notTaken, taken);
+    }
+
+    // Function to find the minimum number of elements to achieve the target sum
+    static int minimumElements(int[] arr, int T) {
+        int n = arr.length;
+
+        // Create a 2D array to store results of subproblems
+        int[][] dp = new int[n][T + 1];
+
+        // Initialize the dp array with -1 to indicate that subproblems are not solved yet
+        for (int row[] : dp)
+            Arrays.fill(row, -1);
+
+        // Calculate the minimum number of elements to achieve the target sum
+        int ans = minimumElementsUtil(arr, n - 1, T, dp);
+
+        // If it's not possible to achieve the target sum, return -1
+        if (ans &gt;= (int) Math.pow(10, 9))
+            return -1;
+        return ans;
+    }
+
+    public static void main(String args[]) {
+        int arr[] = { 1, 2, 3 };
+        int T = 7;
+
+        // Call the minimumElements function and print the result
+        System.out.println("The minimum number of coins required to form the target sum is " + minimumElements(arr, T));
+    }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+def minimumElementsUtil(arr, ind, T, dp):
+    # Base case: If we have reached the first element in the array.
+    if ind == 0:
+        # If the target T is divisible by the first element, return the quotient as the minimum number of coins.
+        if T % arr[0] == 0:
+            return T // arr[0]
+        else:
+            # If not, it's not possible to achieve the target sum, so return a very large value.
+            return int(1e9)
+
+    # If the result for this state is already calculated, return it.
+    if dp[ind][T] != -1:
+        return dp[ind][T]
+
+    # Initialize variables for cases when we don't take the current element.
+    notTaken = 0 + minimumElementsUtil(arr, ind - 1, T, dp)
+
+    # Initialize a variable for the case when we take the current element.
+    taken = int(1e9)
+
+    # Check if the current element can be used to reduce the target sum.
+    if arr[ind] &lt;= T:
+        taken = 1 + minimumElementsUtil(arr, ind, T - arr[ind], dp)
+
+    # Store the minimum of the two cases in the DP table.
+    dp[ind][T] = min(notTaken, taken)
+    return dp[ind][T]
+
+def minimumElements(arr, T):
+    n = len(arr)
+    # Initialize a DP table with -1 values.
+    dp = [[-1 for j in range(T + 1)] for i in range(n)]
+    # Calculate the minimum number of coins required using the helper function.
+    ans = minimumElementsUtil(arr, n - 1, T, dp)
+
+    # If the result is still equal to a very large value, it means it's not possible to achieve the target sum.
+    if ans &gt;= int(1e9):
+        return -1
+    return ans
+
+def main():
+    arr = [1, 2, 3]
+    T = 7
+    print("The minimum number of coins required to form the target sum is", minimumElements(arr, T))
+
+if __name__ == '__main__':
+    main()
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+function minimumElements(arr, T) {
+    const n = arr.length;
+    
+    // Create a 2D array to store dynamic programming results, initialized with -1
+    const dp = Array.from({ length: n }, () =&gt; Array(T + 1).fill(-1));
+    
+    // Helper function for dynamic programming
+    function minimumElementsUtil(ind, T) {
+        // Base case: If the index is 0, check if T is divisible by arr[0]
+        if (ind === 0) {
+            if (T % arr[0] === 0) return T / arr[0];
+            else return Infinity; // Use Infinity to represent an impossible case
+        }
+        
+        // If the result for this combination of 'ind' and 'T' has already been calculated, return it
+        if (dp[ind][T] !== -1)
+            return dp[ind][T];
+        
+        // Initialize variables to store results
+        let notTaken = 0 + minimumElementsUtil(ind - 1, T);
+        let taken = Infinity;
+        
+        // If the current element is less than or equal to 'T', consider taking it
+        if (arr[ind] &lt;= T)
+            taken = 1 + minimumElementsUtil(ind, T - arr[ind]);
+        
+        // Store the minimum result and return it
+        return dp[ind][T] = Math.min(notTaken, taken);
+    }
+    
+    // Call the helper function to calculate the result
+    const ans = minimumElementsUtil(n - 1, T);
+    
+    // If it's impossible to reach the target, return -1
+    if (ans === Infinity) return -1;
+    
+    return ans;
+}
+
+// Main function
+function main() {
+    const arr = [1, 2, 3];
+    const T = 7;
+    
+    // Call the minimumElements function and print the result
+    console.log("The minimum number of elements required to form the target sum is " + minimumElements(arr, T));
+}
+
+// Call the main function to start the program
+main();
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Brute Force Here -->
+</p><p><strong>Output:</strong> The minimum number of coins required to form the target sum is 3
+
+
+</p>
+<p></p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Brute Force Here -->
+</p><p><strong>Time Complexity: O(N*T)</strong></p>
+<p>Reason: There are N*T states therefore at max ‘N*T’ new problems will be solved.</p>
+<p><strong>Space Complexity: O(N*T) + O(N)</strong></p>
+<p>Reason: We are using a recursion stack space(O(N)) and a 2D array ( O(N*T)).</p>
+<p></p>
+</details>
+</div>
+</details>
+</div>
+<!-- Brute Force Approach Ends here -->
+<!-- Better Approach Starts from here -->
+<div id="better-approach">
+<details>
+<summary class="main-summary">
+<span>
+Tabulation Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition For Better Approach Here -->
+<p><strong>Steps to convert Recursive Solution to Tabulation one.</strong></p>
+<p>To convert the memoization approach to a tabulation one, create a dp array with the same size as done in memoization. We can initialize it as 0.</p>
+<p>First, we need to initialize the base conditions of the recursive solution.</p>
+<ul><li>At ind==0, we are considering the first element, if T%arr[0] ==0, we initialize it to T/arr[0] else we initialize it to 1e9.</li><li>Next, we are done for the first row, so our ‘ind’ variable will move from 1 to n-1, whereas our ‘target’ variable will move from 0 to ‘T’. We will set the nested loops to traverse the dp array.</li><li>Inside the nested loops we will apply the recursive logic to find the answer of each cell.</li><li>When the nested loop execution has ended, we will return dp[n-1][T] as our answer.</li></ul>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+// Function to find the minimum number of elements needed to form the target sum
+int minimumElements(vector&lt;int&gt;&amp; arr, int T) {
+    int n = arr.size();
+    
+    // Create a 2D DP (Dynamic Programming) table with n rows and T+1 columns
+    vector&lt;vector&lt;int&gt;&gt; dp(n, vector&lt;int&gt;(T + 1, 0));
+    
+    // Initialize the first row of the DP table
+    for (int i = 0; i &lt;= T; i++) {
+        if (i % arr[0] == 0)
+            dp[0][i] = i / arr[0];
+        else
+            dp[0][i] = 1e9; // Set it to a very large value if not possible
+    }
+    
+    // Fill the DP table using a bottom-up approach
+    for (int ind = 1; ind &lt; n; ind++) {
+        for (int target = 0; target &lt;= T; target++) {
+            // Calculate the minimum elements needed without taking the current element
+            int notTake = dp[ind - 1][target];
+            
+            // Calculate the minimum elements needed by taking the current element
+            int take = 1e9; // Initialize 'take' to a very large value
+            if (arr[ind] &lt;= target)
+                take = 1 + dp[ind][target - arr[ind]];
+                
+            // Store the minimum of 'notTake' and 'take' in the DP table
+            dp[ind][target] = min(notTake, take);
+        }
+    }
+    
+    // The answer is in the bottom-right cell of the DP table
+    int ans = dp[n - 1][T];
+    
+    // If 'ans' is still very large, it means it's not possible to form the target sum
+    if (ans &gt;= 1e9)
+        return -1;
+    
+    return ans; // Return the minimum number of elements needed
+}
+
+int main() {
+    vector&lt;int&gt; arr = {1, 2, 3};
+    int T = 7;
+    
+    // Call the function to find the minimum number of elements needed
+    int result = minimumElements(arr, T);
+    
+    // Output the result
+    cout &lt;&lt; "The minimum number of coins required to form the target sum is " &lt;&lt; result &lt;&lt; endl;
+    
+    return 0; // Return 0 to indicate successful program execution
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.*;
+
+class TUF {
+    // Function to find the minimum number of elements to achieve the target sum
+    static int minimumElements(int[] arr, int T) {
+        int n = arr.length;
+
+        // Create a 2D array to store results of subproblems
+        int dp[][] = new int[n][T + 1];
+
+        // Initialize the dp array for the first element of the array
+        for (int i = 0; i &lt;= T; i++) {
+            if (i % arr[0] == 0)
+                dp[0][i] = i / arr[0];
+            else
+                dp[0][i] = (int) Math.pow(10, 9);
+        }
+
+        // Fill the dp array using dynamic programming
+        for (int ind = 1; ind &lt; n; ind++) {
+            for (int target = 0; target &lt;= T; target++) {
+                int notTake = 0 + dp[ind - 1][target];
+                int take = (int) Math.pow(10, 9);
+
+                // If the current element is less than or equal to the target, calculate 'take'
+                if (arr[ind] &lt;= target)
+                    take = 1 + dp[ind][target - arr[ind]];
+
+                // Store the minimum result in the dp array
+                dp[ind][target] = Math.min(notTake, take);
+            }
+        }
+
+        // Get the minimum number of elements needed for the target sum
+        int ans = dp[n - 1][T];
+
+        // If it's not possible to achieve the target sum, return -1
+        if (ans &gt;= (int) Math.pow(10, 9))
+            return -1;
+        return ans;
+    }
+
+    public static void main(String args[]) {
+        int arr[] = { 1, 2, 3 };
+        int T = 7;
+
+        // Call the minimumElements function and print the result
+        System.out.println("The minimum number of coins required to form the target sum is " + minimumElements(arr, T));
+    }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+def minimumElements(arr, T):
+    n = len(arr)
+    # Initialize a DP table with 0 values for bottom-up dynamic programming.
+    dp = [[0 for _ in range(T + 1)] for _ in range(n)]
+
+    # Fill in the DP table for the first element in the array (base case).
+    for i in range(T + 1):
+        if i % arr[0] == 0:
+            dp[0][i] = i // arr[0]
+        else:
+            # Set an initial large value to indicate that it's not possible to achieve the target sum.
+            dp[0][i] = int(1e9)
+
+    # Iterate over the array elements and target values to fill in the DP table.
+    for ind in range(1, n):
+        for target in range(T + 1):
+            # Calculate the minimum number of elements needed to achieve the current target.
+            notTake = dp[ind - 1][target]  # Option: Don't take the current element.
+            take = int(1e9)  # Initialize as a large value.
+            if arr[ind] &lt;= target:
+                # Option: Take the current element, reduce the target, and add 1 to the count.
+                take = 1 + dp[ind][target - arr[ind]]
+            # Store the minimum of the two options in the DP table.
+            dp[ind][target] = min(notTake, take)
+
+    # The result is stored in the last cell of the DP table.
+    ans = dp[n - 1][T]
+    # If the result is still equal to a very large value, it means it's not possible to achieve the target sum.
+    if ans &gt;= int(1e9):
+        return -1
+    return ans
+
+def main():
+    arr = [1, 2, 3]
+    T = 7
+    print("The minimum number of coins required to form the target sum is", minimumElements(arr, T))
+
+if __name__ == "__main__":
+    main()
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+function minimumElements(arr, T) {
+    const n = arr.length;
+    
+    // Create a 2D array to store dynamic programming results, initialized with 0
+    const dp = Array.from({ length: n }, () =&gt; Array(T + 1).fill(0));
+    
+    // Initialize the first row of the dp table
+    for (let i = 0; i &lt;= T; i++) {
+        if (i % arr[0] === 0)  
+            dp[0][i] = i / arr[0];
+        else
+            dp[0][i] = Infinity; // Use Infinity to represent an impossible case
+    }
+    
+    // Populate the dp table using a nested loop
+    for (let ind = 1; ind &lt; n; ind++) {
+        for (let target = 0; target &lt;= T; target++) {
+            
+            const notTake = 0 + dp[ind - 1][target];
+            let take = Infinity;
+            
+            // If the current element is less than or equal to 'target', consider taking it
+            if (arr[ind] &lt;= target)
+                take = 1 + dp[ind][target - arr[ind]];
+                
+             dp[ind][target] = Math.min(notTake, take);
+        }
+    }
+    
+    const ans = dp[n - 1][T];
+    
+    // If it's impossible to reach the target, return -1
+    if (ans === Infinity) return -1;
+    
+    return ans;
+}
+
+// Main function
+function main() {
+    const arr = [1, 2, 3];
+    const T = 7;
+    
+    // Call the minimumElements function and print the result
+    console.log("The minimum number of elements required to form the target sum is " + minimumElements(arr, T));
+}
+
+// Call the main function to start the program
+main();
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Better Approach Here -->
+<strong>Output:</strong> The minimum number of coins required to form the target sum is 3
+
+</p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Better Approach Here -->
+</p><p><strong>Time Complexity: O(N*T)</strong></p>
+<p>Reason: There are two nested loops</p>
+<p><strong>Space Complexity: O(N*T)</strong></p>
+<p>Reason: We are using an external array of size ‘N*T’. Stack Space is eliminated.</p>
+<p></p>
+</details>
+</div>
+</details>
+</div>
+<!-- Better Approach Ends from here -->
+<!-- Optimal Approach Starts from here -->
+<div id="optimal-approach">
+<details>
+<summary class="main-summary">
+<span>
+Space Optimization Approach 
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm of Better Approach Here -->
+<p>If we closely look the relation,</p>
+<p><strong>dp[ind][target] =  dp[ind-1][target] + dp[ind-1][target-arr[ind]]</strong></p>
+<p>We see that to calculate a value of a cell of the dp array, we need only the previous row values (say prev). So, we don’t need to store an entire array. Hence we can space optimize it.</p>
+<p><strong>Note: </strong>We first need to initialize the first row as we had done in the tabulation approach.</p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+// Function to find the minimum number of elements needed to form the target sum
+int minimumElements(vector&lt;int&gt;&amp; arr, int T) {
+    int n = arr.size();
+    
+    // Create two vectors to store the previous and current DP states
+    vector&lt;int&gt; prev(T + 1, 0);
+    vector&lt;int&gt; cur(T + 1, 0);
+    
+    // Initialize the first row of the DP table
+    for (int i = 0; i &lt;= T; i++) {
+        if (i % arr[0] == 0)
+            prev[i] = i / arr[0];
+        else
+            prev[i] = 1e9; // Set it to a very large value if not possible
+    }
+    
+    // Fill the DP table using a bottom-up approach
+    for (int ind = 1; ind &lt; n; ind++) {
+        for (int target = 0; target &lt;= T; target++) {
+            // Calculate the minimum elements needed without taking the current element
+            int notTake = prev[target];
+            
+            // Calculate the minimum elements needed by taking the current element
+            int take = 1e9; // Initialize 'take' to a very large value
+            if (arr[ind] &lt;= target)
+                take = 1 + cur[target - arr[ind]];
+                
+            // Store the minimum of 'notTake' and 'take' in the current DP state
+            cur[target] = min(notTake, take);
+        }
+        // Update the previous DP state with the current state for the next iteration
+        prev = cur;
+    }
+    
+    // The answer is in the last row of the DP table
+    int ans = prev[T];
+    
+    // If 'ans' is still very large, it means it's not possible to form the target sum
+    if (ans &gt;= 1e9)
+        return -1;
+    
+    return ans; // Return the minimum number of elements needed
+}
+
+int main() {
+    vector&lt;int&gt; arr = {1, 2, 3};
+    int T = 7;
+    
+    // Call the function to find the minimum number of elements needed
+    int result = minimumElements(arr, T);
+    
+    // Output the result
+    cout &lt;&lt; "The minimum number of coins required to form the target sum is " &lt;&lt; result &lt;&lt; endl;
+    
+    return 0; // Return 0 to indicate successful program execution
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.*;
+
+class TUF {
+    // Function to find the minimum number of elements to achieve the target sum
+    static int minimumElements(int[] arr, int T) {
+        int n = arr.length;
+
+        // Create two arrays to store results of subproblems: prev and cur
+        int prev[] = new int[T + 1];
+        int cur[] = new int[T + 1];
+
+        // Initialize the prev array for the first element of the array
+        for (int i = 0; i &lt;= T; i++) {
+            if (i % arr[0] == 0)
+                prev[i] = i / arr[0];
+            else
+                prev[i] = (int) Math.pow(10, 9);
+        }
+
+        // Fill the cur array using dynamic programming
+        for (int ind = 1; ind &lt; n; ind++) {
+            for (int target = 0; target &lt;= T; target++) {
+                int notTake = 0 + prev[target];
+                int take = (int) Math.pow(10, 9);
+
+                // If the current element is less than or equal to the target, calculate 'take'
+                if (arr[ind] &lt;= target)
+                    take = 1 + cur[target - arr[ind]];
+
+                // Store the minimum result in the cur array
+                cur[target] = Math.min(notTake, take);
+            }
+
+            // Update prev with cur for the next iteration
+            prev = cur.clone();
+        }
+
+        // Get the minimum number of elements needed for the target sum
+        int ans = prev[T];
+
+        // If it's not possible to achieve the target sum, return -1
+        if (ans &gt;= (int) Math.pow(10, 9))
+            return -1;
+        return ans;
+    }
+
+    public static void main(String args[]) {
+        int arr[] = { 1, 2, 3 };
+        int T = 7;
+
+        // Call the minimumElements function and print the result
+        System.out.println("The minimum number of coins required to form the target sum is " + minimumElements(arr, T));
+    }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+def minimumElements(arr, T):
+    n = len(arr)
+    
+    # Initialize two lists: 'prev' and 'cur' for dynamic programming.
+    prev = [0] * (T + 1)  # To store results for the previous element.
+    cur = [0] * (T + 1)   # To store results for the current element.
+
+    # Fill in the DP table for the first element in the array (base case).
+    for i in range(0, 1 + T):
+        if i % arr[0] == 0:
+            prev[i] = i // arr[0]
+        else:
+            # Set an initial large value to indicate that it's not possible to achieve the target sum.
+            prev[i] = int(1e9)
+
+    # Iterate over the array elements and target values to fill in the DP table.
+    for ind in range(1, n):
+        for target in range(T + 1):
+            # Calculate the minimum number of elements needed to achieve the current target.
+            not_take = prev[target]  # Option: Don't take the current element.
+            take = int(1e9)          # Initialize as a large value.
+            
+            if arr[ind] &lt;= target:
+                # Option: Take the current element, reduce the target, and add 1 to the count.
+                take = 1 + cur[target - arr[ind]]
+                
+            cur[target] = min(not_take, take)  # Store the minimum of the two options in the 'cur' list.
+
+        prev = cur  # Update the 'prev' list with the values from the 'cur' list for the next iteration.
+
+    # The result is stored in the 'prev' list for the target T.
+    ans = prev[T]
+    
+    # If the result is still equal to a very large value, it means it's not possible to achieve the target sum.
+    if ans &gt;= int(1e9):
+        return -1
+    return ans
+
+def main():
+    arr = [1, 2, 3]
+    T = 7
+
+    print("The minimum number of coins required to form the target sum is", minimumElements(arr, T))
+
+if __name__ == "__main__":
+    main()
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+function minimumElements(arr, T) {
+    const n = arr.length;
+
+    // Initialize two arrays: 'prev' and 'cur' to store DP values
+    let prev = new Array(T + 1).fill(0);
+    let cur = new Array(T + 1).fill(0);
+
+    // Initialize the first row of the 'prev' array
+    for (let i = 0; i &lt;= T; i++) {
+        if (i % arr[0] === 0)
+            prev[i] = i / arr[0];
+        else
+            prev[i] = Infinity; // Use Infinity to represent an impossible case
+    }
+
+    // Populate the 'cur' array using a nested loop
+    for (let ind = 1; ind &lt; n; ind++) {
+        for (let target = 0; target &lt;= T; target++) {
+
+            const notTake = 0 + prev[target];
+            let take = Infinity;
+
+            // If the current element is less than or equal to 'target', consider taking it
+            if (arr[ind] &lt;= target)
+                take = 1 + cur[target - arr[ind]];
+
+            cur[target] = Math.min(notTake, take);
+        }
+
+        // Update 'prev' to be the same as 'cur' for the next iteration
+        prev = [...cur];
+    }
+
+    const ans = prev[T];
+
+    // If it's impossible to reach the target, return -1
+    if (ans === Infinity) return -1;
+
+    return ans;
+}
+
+// Main function
+function main() {
+    const arr = [1, 2, 3];
+    const T = 7;
+
+    // Call the minimumElements function and print the result
+    console.log("The minimum number of elements required to form the target sum is " + minimumElements(arr, T));
+}
+
+// Call the main function to start the program
+main();
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Optimal Apporach Here -->
+<strong>Output:</strong>The minimum number of coins required to form the target sum is 3
+
+
+</p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Optimal Approach-->
+</p><p><strong>Time Complexity: O(N*T)</strong></p>
+<p>Reason: There are two nested loops.</p>
+<p><strong>Space Complexity: O(T)</strong></p>
+<p>Reason: We are using two external arrays of size ‘T+1’.</p>
+<p></p>
+</details>
+</div>
+</details>
+</div>
+<!-- Optimal Approach Starts from here -->
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Video Explination Drop-Down -->
+<div class="dsa_article_youtube_video" id="dsa_article_video_explanation">
+<details>
+<summary class="main-summary">
+<span>
+Video Explanation
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="yt-video-wrapper">
+<!-- Insert iframe embed Link of Youtube Video-->
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" class="lazy-loaded" data-lazy-type="iframe" data-src="https://www.youtube.com/embed/myPeWb3Y68A?si=1Kbx3dl3jKeEz-bM" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/myPeWb3Y68A?feature=oembed" title="Minimum Number of Coins" width="810"></iframe><noscript>
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/myPeWb3Y68A?si=1Kbx3dl3jKeEz-bM" title="Minimum Number of Coins" width="810"></iframe></noscript>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script>
+
+const codeSections = document.querySelectorAll('.code-section');
+
+// Get last selected language from localStorage or set default value
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+// Update last selected language for all sections and store in localStorage
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+// Handle copy button click event
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+// Set initial state of the tabs
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<script>
+const codeSections = document.querySelectorAll('.code-section');
+
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<link href="assets/4237ffca7ce6aadb438c457e0a675b12.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+<script src="index.js"></script>
+<script>hljs.highlightAll();</script>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script src="https://takeuforward.org/UXApproachDropDowns/3ApproachJSScript.js"></script>
+<!-- /wp:html -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/anshuman-sharma-a1b245194/" rel="noreferrer noopener" target="_blank">Anshuman Sharma</a></strong> <em>and <a href="https://www.linkedin.com/in/abhipsita-das-5b7069212/?originalSubdomain=in" rel="noreferrer noopener" target="_blank"><strong>Abhipsita Das</strong></a></em> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a></p></blockquote>
+<!-- /wp:quote -->
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

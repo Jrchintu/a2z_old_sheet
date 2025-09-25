@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ceil in a Binary Search Tree</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Ceil in a Binary Search Tree</h1>
+</header>
+<article>
+<p><strong>Problem Statement: </strong> Given a Binary Search Tree and a key, return the ceiling of the given key in the Binary Search Tree.
+<ol><li>Ceiling of a value refers to the value of the smallest node in the Binary Search Tree that is greater than or equal to the given key.</li><li>If the ceiling node does not exist, return nullptr.</li></ol></p>
+<div id="article_examples">
+<details class="article_example_details">
+<summary class="article_example_summary">
+<span><strong>
+                    Examples
+                </strong>
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="atricle_example_content">
+<pre class="wp-block-preformatted">
+                <span><strong>Example 1:</strong></span>
+				<span><strong>Input:</strong>Binary Search Tree: 10 5 13 3 6 11 14 2 4 -1 9, Key = 8
+				</span>
+				<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/9a8d88a72c43739705055c4d2381310c" width="439"/></figure>
+				<span><strong>Output:</strong>9</span>			
+				<span><strong>Explanation: </strong>In the given BST, the smallest value greater or equal to 8 is 9. </span>
+				
+				<span><strong>Example 2:</strong></span>
+				<span><strong>Input:</strong>Binary Search Tree: 8 5 12 4 7 10 14 -1 -1 6 -1 -1 -1 13, Key = 8
+				</span>
+				<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/014081db2f47b5af45f628c3984fe84b" width="439"/></figure>
+				<span><strong>Output: </strong>12</span>
+				
+				<span><strong>Explanation: </strong> In the given BST, the smallest value greater or equal to 11 is 12. </span>
+					
+            </pre>
+</div>
+</details>
+</div>
+<!-- This is Practice Section-->
+<div class="practice">
+<span><strong>Practice: </strong></span>
+<div class="problem-buttons">
+<!-- Add Problem Link inside href -->
+<a href="https://www.codingninjas.com/studio/problems/ceil-from-bst_920464?utm_source=striver&amp;utm_medium=website&amp;utm_campaign=a_zcoursetuf" rel="noopener" target="_blank">
+<span>Solve Problem</span>
+<img alt="code-studio" src="assets/20f60e7969e701b07a63accd93ffe638"/>
+</a>
+</div>
+<!--<div class="problem-buttons">
+         Add Problem Link inside href 
+        <a href="" target="_blank" rel="noopener">
+            <span>Solve Problem</span>
+            <img src="https://cdn.iconscout.com/icon/free/png-256/free-leetcode-3521542-2944960.png?f=webp"
+                alt="leetcode">
+        </a>
+    </div>-->
+</div>
+<p class="new-disclaimer"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out
+        yourself first. </em></p>
+<div id="brute-force-approach">
+<details>
+<summary class="main-summary">
+<span>
+                Optimal Approach 
+            </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+                        Algorithm / Intuition
+                    </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition of Brute Force Apporach Here -->
+<p>The strategy to find the `ceil` value is to keep track of the smallest node value encountered that is greater than or equal to the key. Traverse the tree recursively and move through it until it reaches the end or locates the key.
+                    During the traversal, at every node, if the key matches the node’s values, it directly assigns the node’s value as the ceiling and concludes the search.
+                    If the key is greater than the current node’s value, the algorithm navigates to the right subtree to potentially find a larger value and if the key is smaller the algorithm updates the ceil value with the current node’s values and explores the left subtree for potentially smaller values.</p>
+<h3>Algorithm: </h3>
+<p><strong>Step 1:</strong>Initialise a variable `ceil` to -1 to store the ceiling value initially.</p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/354b3719d8debf5417cf25b1da4e1111" width="439"/></figure>
+<p><strong>Step 2: </strong>Traverse the Binary Search Tree by starting from the root and continue until reaching the end of the tree or finding the key. At every node:
+                    <ol><li>If the key value is equal to the node value, assign it as the ceiling value and return.</li><li>If the key value is greater than the current node’s value, move to the right subtree.</li></ol></p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/991f77ce535d1b538524c9be2101bb98" width="439"/></figure>
+<p>If the key is smaller than the current node’s value, update the `ceil` with the current node’s value, and move to the left subtree.</p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/cb312aca0705995619a0420f406340fe" width="439"/></figure>
+<p><strong>Step 3: </strong>
+                    Return the computed `ceil` value if the key is not found in the tree. This `ceil` value would represent the smallest node value greater than the key, or -1 if no such value exists in the BST.</p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+                        Code
+                    </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code">
+                            <code class="language-cpp" lang="cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;climits&gt; 
+using namespace std;
+
+// Definition of TreeNode structure
+// for a binary tree node
+struct TreeNode {
+    // Value of the node
+    int val;
+    
+    // Pointer to the left child node
+    TreeNode* left;
+    
+    // Pointer to the right child node
+    TreeNode* right;
+
+    // Constructor to initialize the node with a
+    // value and set left and right pointers to null
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    // Function to find the ceiling of
+    // a key in a Binary Search Tree (BST)
+    int findCeil(TreeNode* root, int key){
+        // Initialize the variable
+        // to store the ceiling value
+        int ceil = -1; 
+        
+        // Traverse the BST until reaching
+        // the end or finding the key
+        while(root){
+             // If the key is found, assign it
+             // as the ceiling and return
+            if(root-&gt;val == key){
+                ceil = root-&gt;val;
+                return ceil;
+            } 
+            
+             // If the key is greater,
+             // move to the right subtree
+            if(key &gt; root-&gt;val){
+                root = root-&gt;right;
+            }
+            else{ 
+                // If the key is smaller, update ceil
+                // and move to the left subtree
+                ceil = root-&gt;val;
+                root = root-&gt;left;
+            }
+        }
+         // Return the computed ceiling value
+        return ceil;
+    }
+};
+
+
+// Function to perform an in-order traversal
+// of a binary tree and print its nodes
+void printInOrder(TreeNode* root) {
+    // Check if the current node
+    // is null (base case for recursion)
+    if (root == nullptr) {
+        // If null, return and
+        // terminate the function
+        return;
+    }
+
+    // Recursively call printInOrder
+    // for the left subtree
+    printInOrder(root-&gt;left);
+
+    // Print the value of the current node
+    cout &lt;&lt; root-&gt;val &lt;&lt; " ";
+
+    // Recursively call printInOrder
+    // for the right subtree
+    printInOrder(root-&gt;right);
+}
+
+int main() {
+    // Creating a BST
+    TreeNode* root = new TreeNode(10);
+    root-&gt;left = new TreeNode(5);
+    root-&gt;right = new TreeNode(13);
+    root-&gt;left-&gt;left = new TreeNode(3);
+    root-&gt;left-&gt;left-&gt;left = new TreeNode(2);
+    root-&gt;left-&gt;left-&gt;right = new TreeNode(4);
+    root-&gt;left-&gt;right = new TreeNode(6);
+    root-&gt;left-&gt;right-&gt;right = new TreeNode(9);
+    root-&gt;right-&gt;left = new TreeNode(11);
+    root-&gt;right-&gt;right = new TreeNode(14);
+    
+    cout &lt;&lt; "Binary Search Tree: "&lt;&lt; endl;
+    printInOrder(root);
+    cout &lt;&lt; endl;
+
+    Solution solution;
+    
+    // Searching for a value in the BST
+    int target = 8;
+    int ciel = solution.findCeil(root, target);
+    
+    if(ciel != -1){
+        cout &lt;&lt; "Ceiling of " &lt;&lt; target &lt;&lt; " is: " &lt;&lt; ciel &lt;&lt; endl;
+    }
+    else{
+        cout &lt;&lt; "No ceiling found!";
+    }
+    
+    return 0;
+}
+                            </code>
+                        </pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code">
+                            <code class="language-java" lang="java">
+// Importing necessary packages
+import java.util.*;
+
+// Definition of TreeNode structure for a binary tree node
+class TreeNode {
+    // Value of the node
+    int val;
+
+    // Pointer to the left child node
+    TreeNode left;
+
+    // Pointer to the right child node
+    TreeNode right;
+
+    // Constructor to initialize the node with a
+    // value and set left and right pointers to null
+    TreeNode(int x) {
+        val = x;
+        left = null;
+        right = null;
+    }
+}
+
+class Solution {
+    // Function to find the ceiling of
+    // a key in a Binary Search Tree (BST)
+    public int findCeil(TreeNode root, int key) {
+        // Initialize the variable to store the ceiling value
+        int ceil = -1;
+
+        // Traverse the BST until reaching
+        // the end or finding the key
+        while (root != null) {
+            // If the key is found, assign it
+            // as the ceiling and return
+            if (root.val == key) {
+                ceil = root.val;
+                return ceil;
+            }
+
+            // If the key is greater,
+            // move to the right subtree
+            if (key &gt; root.val) {
+                root = root.right;
+            } else {
+                // If the key is smaller, update ceil
+                // and move to the left subtree
+                ceil = root.val;
+                root = root.left;
+            }
+        }
+        // Return the computed ceiling value
+        return ceil;
+    }
+}
+
+// Class containing the main function
+public class Main {
+    // Function to perform an in-order traversal
+    // of a binary tree and print its nodes
+    public static void printInOrder(TreeNode root) {
+        // Check if the current node
+        // is null (base case for recursion)
+        if (root == null) {
+            // If null, return and
+            // terminate the function
+            return;
+        }
+
+        // Recursively call printInOrder
+        // for the left subtree
+        printInOrder(root.left);
+
+        // Print the value of the current node
+        System.out.print(root.val + " ");
+
+        // Recursively call printInOrder
+        // for the right subtree
+        printInOrder(root.right);
+    }
+
+    // Main method
+    public static void main(String[] args) {
+        // Creating a BST
+        TreeNode root = new TreeNode(10);
+        root.left = new TreeNode(5);
+        root.right = new TreeNode(13);
+        root.left.left = new TreeNode(3);
+        root.left.left.left = new TreeNode(2);
+        root.left.left.right = new TreeNode(4);
+        root.left.right = new TreeNode(6);
+        root.left.right.right = new TreeNode(9);
+        root.right.left = new TreeNode(11);
+        root.right.right = new TreeNode(14);
+
+        System.out.println("Binary Search Tree: ");
+        printInOrder(root);
+        System.out.println();
+
+        Solution solution = new Solution();
+
+        // Searching for a value in the BST
+        int target = 8;
+        int ceil = solution.findCeil(root, target);
+
+        if (ceil != -1) {
+            System.out.println("Ceiling of " + target + " is: " + ceil);
+        } else {
+            System.out.println("No ceiling found!");
+        }
+    }
+}
+                            </code>
+                        </pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code">
+                            <code class="language-python" lang="python">
+# Definition of TreeNode structure
+# for a binary tree node
+class TreeNode:
+    # Constructor to initialize the node with a
+    # value and set left and right pointers to null
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+class Solution:
+    # Function to find the ceiling of
+    # a key in a Binary Search Tree (BST)
+    def findCeil(self, root, key):
+        # Initialize the variable
+        # to store the ceiling value
+        ceil = -1
+        
+        # Traverse the BST until reaching
+        # the end or finding the key
+        while root:
+            # If the key is found, assign it
+            # as the ceiling and return
+            if root.val == key:
+                ceil = root.val
+                return ceil
+            
+            # If the key is greater,
+            # move to the right subtree
+            if key &gt; root.val:
+                root = root.right
+            else:
+                # If the key is smaller, update ceil
+                # and move to the left subtree
+                ceil = root.val
+                root = root.left
+        
+        # Return the computed ceiling value
+        return ceil
+
+# Function to perform an in-order traversal
+# of a binary tree and print its nodes
+def printInOrder(root):
+    # Check if the current node
+    # is null (base case for recursion)
+    if not root:
+        # If null, return and
+        # terminate the function
+        return
+    
+    # Recursively call printInOrder
+    # for the left subtree
+    printInOrder(root.left)
+    
+    # Print the value of the current node
+    print(root.val, end=" ")
+    
+    # Recursively call printInOrder
+    # for the right subtree
+    printInOrder(root.right)
+
+# Creating a BST
+root = TreeNode(10)
+root.left = TreeNode(5)
+root.right = TreeNode(13)
+root.left.left = TreeNode(3)
+root.left.left.left = TreeNode(2)
+root.left.left.right = TreeNode(4)
+root.left.right = TreeNode(6)
+root.left.right.right = TreeNode(9)
+root.right.left = TreeNode(11)
+root.right.right = TreeNode(14)
+
+print("Binary Search Tree:")
+printInOrder(root)
+print()
+
+solution = Solution()
+
+# Searching for a value in the BST
+target = 8
+ciel = solution.findCeil(root, target)
+
+if ciel != -1:
+    print(f"Ceiling of {target} is: {ciel}")
+else:
+    print("No ceiling found!")
+                           </code>
+                        </pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code">
+                            <code class="language-javascript" lang="javascript">
+// Definition of TreeNode structure
+// for a binary tree node
+class TreeNode {
+    // Constructor to initialize the node with a
+    // value and set left and right pointers to null
+    constructor(x) {
+        this.val = x;
+        this.left = null;
+        this.right = null;
+    }
+}
+
+class Solution {
+    // Function to find the ceiling of
+    // a key in a Binary Search Tree (BST)
+    findCeil(root, key) {
+        // Initialize the variable
+        // to store the ceiling value
+        let ceil = -1;
+        
+        // Traverse the BST until reaching
+        // the end or finding the key
+        while(root){
+            // If the key is found, assign it
+            // as the ceiling and return
+            if(root.val === key){
+                ceil = root.val;
+                return ceil;
+            }
+            
+            // If the key is greater,
+            // move to the right subtree
+            if(key &gt; root.val){
+                root = root.right;
+            } else {
+                // If the key is smaller, update ceil
+                // and move to the left subtree
+                ceil = root.val;
+                root = root.left;
+            }
+        }
+        // Return the computed ceiling value
+        return ceil;
+    }
+}
+
+// Function to perform an in-order traversal
+// of a binary tree and print its nodes
+function printInOrder(root) {
+    // Check if the current node
+    // is null (base case for recursion)
+    if (root === null) {
+        // If null, return and
+        // terminate the function
+        return;
+    }
+
+    // Recursively call printInOrder
+    // for the left subtree
+    printInOrder(root.left);
+
+    // Print the value of the current node
+    console.log(root.val + " ");
+
+    // Recursively call printInOrder
+    // for the right subtree
+    printInOrder(root.right);
+}
+
+// Creating a BST
+let root = new TreeNode(10);
+root.left = new TreeNode(5);
+root.right = new TreeNode(13);
+root.left.left = new TreeNode(3);
+root.left.left.left = new TreeNode(2);
+root.left.left.right = new TreeNode(4);
+root.left.right = new TreeNode(6);
+root.left.right.right = new TreeNode(9);
+root.right.left = new TreeNode(11);
+root.right.right = new TreeNode(14);
+
+console.log("Binary Search Tree: ");
+printInOrder(root);
+
+let solution = new Solution();
+
+// Searching for a value in the BST
+let target = 8;
+let ciel = solution.findCeil(root, target);
+
+if(ciel !== -1){
+    console.log("Ceiling of " + target + " is: " + ciel);
+} else {
+    console.log("No ceiling found!");
+}
+                            </code>
+                        </pre>
+</div>
+<p>
+<strong>Output</strong> 
+                      	Binary Search Tree: 2 3 4 5 6 9 10 11 13 14, Ceiling of 8 is: 9
+                    </p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+                        Complexity Analysis
+                    </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity  Here -->
+<p><strong>Time Complexity: O(log2N)</strong>
+                     where N is the number of nodes in the Binary Search Tree. In the best case scenario, where the tree is balanced, the time complexity is the height of the tree ie. log2N.
+                     In the worst-case scenario, where the tree is degenerate (linear), the time complexity becomes O(n), as it would require traversing all nodes along the path from the root to the leaf.</p>
+<p><strong>Space Complexity: O(1)</strong>   
+					since the algorithm does not use any additional space or data structures.</p>
+</p>
+</details>
+</div>
+</details>
+</div>
+<!-- This is Video Explination Drop-Down -->
+<div class="dsa_article_youtube_video" id="dsa_article_video_explanation">
+<details>
+<summary class="main-summary">
+<span>
+                Video Explanation
+            </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="yt-video-wrapper">
+<!-- Insert iframe embed Link of Youtube Video-->
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" frameborder="0" height="315" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/KSsk8AhdOZA?si=f_oJRBtcUKBdzEEo" title="YouTube video player" width="560"></iframe>
+</div>
+</details>
+</div>
+<blockquote class="wp-block-quote">
+    Special thanks to <strong><a href="https://www.linkedin.com/in/gauri-tomar-005048268">Gauri Tomar</a></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam,<strong><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/"> please check out this article</a></strong>
+</blockquote>
+<script>
+
+    const codeSections = document.querySelectorAll('.code-section');
+
+    // Get last selected language from localStorage or set default value
+    let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+    codeSections.forEach((section, sectionIndex) => {
+        const codeTabs = section.querySelectorAll('.code-tab');
+        const codeBlocks = section.querySelectorAll('.code-block');
+        const copyBtn = section.querySelector('.copy-btn');
+
+        codeTabs.forEach((tab) => {
+            tab.addEventListener('click', () => {
+                codeTabs.forEach((t) => {
+                    t.classList.remove('dsa_article_code_active');
+                });
+                tab.classList.add('dsa_article_code_active');
+
+                const lang = tab.dataset.lang;
+                const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+                codeBlocks.forEach((block) => {
+                    if (block === activeBlock) {
+                        block.classList.add('dsa_article_code_active');
+                    } else {
+                        block.classList.remove('dsa_article_code_active');
+                    }
+                });
+
+                // Update last selected language for all sections and store in localStorage
+                lastSelectedLanguage = lang;
+                localStorage.setItem('lastSelectedLanguage', lang);
+                codeSections.forEach((otherSection, otherIndex) => {
+                    if (otherIndex !== sectionIndex) {
+                        const otherTabs = otherSection.querySelectorAll('.code-tab');
+                        otherTabs.forEach((otherTab) => {
+                            if (otherTab.dataset.lang === lang) {
+                                otherTab.classList.add('dsa_article_code_active');
+                            } else {
+                                otherTab.classList.remove('dsa_article_code_active');
+                            }
+                        });
+                        const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+                        const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+                        otherCodeBlocks.forEach((block) => {
+                            if (block === otherActiveBlock) {
+                                block.classList.add('dsa_article_code_active');
+                            } else {
+                                block.classList.remove('dsa_article_code_active');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+        // Handle copy button click event
+        copyBtn.addEventListener('click', () => {
+            const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+            navigator.clipboard.writeText(activeBlock.innerText);
+            copyBtn.classList.add('dsa_article_code_active');
+            setTimeout(() => {
+                copyBtn.classList.remove('dsa_article_code_active');
+            }, 1000);
+        });
+    });
+
+    // Set initial state of the tabs
+    codeSections.forEach((section) => {
+        const codeTabs = section.querySelectorAll('.code-tab');
+        const codeBlocks = section.querySelectorAll('.code-block');
+
+        codeTabs.forEach((tab) => {
+            if (tab.dataset.lang === lastSelectedLanguage) {
+                tab.classList.add('dsa_article_code_active');
+            } else {
+                tab.classList.remove('dsa_article_code_active');
+            }
+        });
+
+        codeBlocks.forEach((block) => {
+            if (block.dataset.lang === lastSelectedLanguage) {
+                block.classList.add('dsa_article_code_active');
+            } else {
+                block.classList.remove('dsa_article_code_active');
+            }
+        });
+    });
+</script>
+<link href="assets/4237ffca7ce6aadb438c457e0a675b12.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+<script src="index.js"></script>
+<script>hljs.highlightAll();</script>
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

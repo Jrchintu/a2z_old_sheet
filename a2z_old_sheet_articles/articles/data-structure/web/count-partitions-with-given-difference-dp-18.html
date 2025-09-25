@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Count Partitions with Given Difference (DP - 18)</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Count Partitions with Given Difference (DP - 18)</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement: </strong> <strong>Count Partitions with Given Difference</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>This article will be divided into two parts: </p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>First, we will discuss an extra edge case of the problem discussed in <a href="https://takeuforward.org/data-structure/count-subsets-with-sum-k-dp-17/" rel="noreferrer noopener" target="_blank">Count Subsets with Sum K</a>, and then,</li><li> we will discuss the problem for this article: <a href="https://www.codingninjas.com/codestudio/problems/partitions-with-given-difference_3751628?source=youtube&amp;campaign=striver_dp_videos&amp;utm_source=youtube&amp;utm_medium=affiliate&amp;utm_campaign=striver_dp_videos" rel="noreferrer noopener nofollow" target="_blank">Partitions with Given Difference</a>.</li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>Part 1: </strong>Extra edge case for the problem <a href="https://www.codingninjas.com/codestudio/problems/number-of-subsets_3952532?source=youtube&amp;campaign=striver_dp_videos&amp;utm_source=youtube&amp;utm_medium=affiliate&amp;utm_campaign=striver_dp_videos">Count Subsets with Sum K</a></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>In the problem <a href="https://www.codingninjas.com/codestudio/problems/number-of-subsets_3952532?source=youtube&amp;campaign=striver_dp_videos&amp;utm_source=youtube&amp;utm_medium=affiliate&amp;utm_campaign=striver_dp_videos" rel="noreferrer noopener nofollow" target="_blank">Count Subsets with Sum K</a>, the problem constraints stated that an array element is greater than 0, so the code we have written there works perfectly for the given constraints.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>If the constraints mentioned that an array element can also be equal to 0 and the target sum can also be 0, then that code will fail. To understand it we will take an example:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Let the target <strong>arr = [0,0,1]</strong> and the<strong> target = 1</strong>.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The previous code will give us the <strong>answer 1</strong> as it first takes the element arr[2] and then finds the answer by picking it. Then from the base condition, we will return 0 ( as the target will become 0 by picking 1). But for this question, the answer will be <strong>4</strong> with the following subsets({0,1},{0,1},{0,0,1} and {1}).</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Therefore we need to modify the base conditions in order to handle the changes. These are the base conditions of that problem.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><img height="235" src="assets/da9bd9dd9e11ebf5e6d26fd1616f06ea" width="370"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>First of all, we will remove target==0 because now when target ==0, there can be many 0s present in the array which needs to be counted in the answer. </li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><img height="230" src="assets/0c8d459bf8183ff426d5bff624b1eb58" width="361"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>Now, the following cases can arise when we are at index 0, if the target sum is 0 and the first index is also 0, like in case [0,1], we can form the subset in two ways, either by considering the first element or leaving it, so we can return 2. </li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><img height="221" src="assets/dfceb43704327270967326652dcbcbff" width="624"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>Else at index 0, if target == 0, and the first element is not 0, it means we will not pick the first element so we just return 1 way. </li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><img height="227" src="assets/ae14c8d4a6601df77a8672edc977f859" width="656"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>Or if at index 0, when the first element is not 0, and the target is equal to the first element , then we will include it in the subset and we will return 1 way. </li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><img height="233" src="assets/0b9f0c62f2af055c728f645fc4036a60" width="659"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>Else in all other cases, we simply return 0. </li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p> [tabby title="C++ Code"] </p>
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int findWaysUtil(int ind, int target, vector&lt;int&gt;&amp; arr, vector&lt;vector&lt;int&gt;&gt; &amp;dp){
+
+    if(ind == 0){
+            if(target==0 &amp;&amp; arr[0]==0)
+                return 2;
+            if(target==0 || target == arr[0])
+                return 1;
+            return 0;
+    }
+    
+    if(dp[ind][target]!=-1)
+        return dp[ind][target];
+        
+    int notTaken = findWaysUtil(ind-1,target,arr,dp);
+    
+    int taken = 0;
+    if(arr[ind]&lt;=target)
+        taken = findWaysUtil(ind-1,target-arr[ind],arr,dp);
+        
+    return dp[ind][target]= notTaken + taken;
+}
+
+int findWays(vector&lt;int&gt; &amp;num, int k){
+    int n = num.size();
+    vector&lt;vector&lt;int&gt;&gt; dp(n,vector&lt;int&gt;(k+1,-1));
+    return findWaysUtil(n-1,k,num,dp);
+}
+
+int main() {
+
+  vector&lt;int&gt; arr = {0,0,1};
+  int k=1;
+                                 
+  cout&lt;&lt;"The number of subsets found are " &lt;&lt;findWays(arr,k);
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong> </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The number of subsets found are 4</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</article></div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+
+class TUF{
+static int findWaysUtil(int ind, int target,int[] arr, int[][] dp){
+
+    if(ind == 0){
+            if(target==0 &amp;&amp; arr[0]==0)
+                return 2;
+            if(target==0 || target == arr[0])
+                return 1;
+            return 0;
+    }
+    
+    if(dp[ind][target]!=-1)
+        return dp[ind][target];
+        
+    int notTaken = findWaysUtil(ind-1,target,arr,dp);
+    
+    int taken = 0;
+    if(arr[ind]&lt;=target)
+        taken = findWaysUtil(ind-1,target-arr[ind],arr,dp);
+        
+    return dp[ind][target]= notTaken + taken;
+}
+
+static int findWays(int[] num, int k){
+    int n = num.length;
+    int dp[][]= new int[n][k+1];
+    
+    for(int row[]: dp)
+    Arrays.fill(row,-1);
+    
+    return findWaysUtil(n-1,k,num,dp);
+}
+
+public static void main(String args[]) {
+
+  int arr[] = {0,0,1};
+  int k=1;
+                                 
+  System.out.println("The number of subsets found are "+findWays(arr,k));
+}
+}</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong> </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The number of subsets found are 4</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="python">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-python" lang="python">def findWaysUtil(ind, target, arr, dp):
+    if ind == 0:
+        if target == 0 and arr[0] == 0:
+            return 2
+        if target == 0 or target == arr[0]:
+            return 1
+        return 0
+
+    if dp[ind][target] != -1:
+        return dp[ind][target]
+
+    notTaken = findWaysUtil(ind-1, target, arr, dp)
+    taken = 0
+    if arr[ind] &lt;= target:
+        taken = findWaysUtil(ind-1, target-arr[ind], arr, dp)
+
+    dp[ind][target] = notTaken + taken
+    return dp[ind][target]
+
+def findWays(num, k):
+    n = len(num)
+    dp = [[-1 for i in range(k+1)] for j in range(n)]
+    return findWaysUtil(n-1, k, num, dp)
+
+def main():
+    arr = [0, 0, 1]
+    k = 1
+    print("The number of subsets found are", findWays(arr, k))
+if __name__ == '__main__':
+  main()
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong> </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The number of subsets found are 4</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+
+
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Part 2: </strong>Count Partitions with Given Difference</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Problem Link: </strong><a href="https://www.codingninjas.com/codestudio/problems/partitions-with-given-difference_3751628?source=youtube&amp;campaign=striver_dp_videos&amp;utm_source=youtube&amp;utm_medium=affiliate&amp;utm_campaign=striver_dp_videos">Partitions with Given Difference</a></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Problem Description:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>We are given an array ‘ARR’ with N positive integers and an integer D. We need to count the number of ways we can partition the given array into two subsets, S1 and S2 such that S1 - S2 = D and S1 is always greater than or equal to S2.</p>
+<!-- /wp:paragraph -->
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted"><strong>Example:</strong>
+
+<img height="392" src="assets/ef8de186fa5e80fb8acde59193ebb653" width="624"/></pre>
+<!-- /wp:preformatted -->
+<!-- wp:paragraph {"textColor":"accent"} -->
+<p class="has-accent-color has-text-color"><strong><em>Disclaimer</em></strong>: <em>Don't jump directly to the solution, try it out yourself first.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Pre-req: <a href="https://takeuforward.org/data-structure/count-subsets-with-sum-k-dp-17/">Count Subsets with Sum K</a></p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Solution :</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>This question is a slight modification of the problem discussed in <a href="https://takeuforward.org/data-structure/count-subsets-with-sum-k-dp-17/">Count Subsets with Sum K</a>.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>We have the following two conditions given to us.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>S1 + S2 = D</strong>   – (i)</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>S1 &gt;= S2</strong>     – (ii)</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p> If we calculate the total sum of elements of the array (say totSum), we can say that,</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>S1 = totSum - S2</strong>      – (iii)</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Now solving for equations (i) and (iii), we can say that </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>S2 = (totSum - D)/2 </strong>   – (iv)</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Therefore the question “Count Partitions with a difference D” is modified to “Count Number of subsets with sum (totSum - D)/2 ”. This is exactly what we had discussed in the article  <a href="https://takeuforward.org/data-structure/count-subsets-with-sum-k-dp-17/">Count Subsets with Sum K</a>.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Edge Cases:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The following edge cases need to be handled:</p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>As the array elements are positive integers including zero, we don’t want to find the case when S2 is negative or we can say that totSum is lesser than D, therefore if totSum&lt;D, we simply return 0.</li><li>S2 can’t be a fraction, as all elements are integers, therefore if totSum - D is odd, we can return 0.</li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p>From here on we will discuss the approach to “Count Subsets with Sum K” with the required modifications. Moreover, as the array elements can also contain 0, we will handle it as discussed in part-1 of this article.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Steps to form the recursive solution: </strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>We will first form the recursive solution by the three points mentioned in <a href="https://takeuforward.org/data-structure/dynamic-programming-introduction/">Dynamic Programming Introduction</a>. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Step 1: </strong>Express the problem in terms of indexes.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The array will have an index but there is one more parameter “target”. We are given the initial problem to find whether there exists in the whole array a subsequence whose sum is equal to the target.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>So, we can say that initially, we need to find(n-1, target) which means that we are counting the number of subsequences in the array from index 0 to n-1, whose sum is equal to the target. Similarly, we can generalize it for any index ind as follows:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><img height="77" src="assets/6a316a001fc95f72bc8812a0df149cbe" width="624"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Base Cases:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>If target == 0, it means that we have already found the subsequence from the previous steps, so we can return 1.</li><li>If ind==0, it means we are at the first element, so we need to return arr[ind]==target. If the element is equal to the target we return 1 else we return 0.</li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><img height="284" src="assets/efe9b67bfa0ff32809eaaebd69aad22e" width="396"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Step 2: </strong>Try out all possible choices at a given index.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>We need to generate all the subsequences. We will use the pick/non-pick technique as discussed in this video “<a href="https://www.youtube.com/watch?v=AxNNVECce8c">Recursion on Subsequences</a>”.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>We have two choices:</p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li><strong>Exclude the current element in the subsequence: </strong>We first try to find a subsequence without considering the current index element. For this, we will make a recursive call to f(ind-1, target).</li><li>Include the current element in the subsequence: We will try to find a subsequence by considering the current index as an element as part of the subsequence. As we have included arr[ind], the updated target which we need to find in the rest of the array will be a target - arr[ind]. Therefore, we will call f(ind-1,target-arr[ind]).</li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>Note: </strong>We will consider the current element in the subsequence only when the current element is less than or equal to the target.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><img height="392" src="assets/1164964b35ed67624301b0cdd014f4d4" width="422"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Step 3:  Return the sum of taken and notTaken</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>As we have to return the total count of subsets with the target sum, we will return the sum of taken and notTaken from our recursive call.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The final pseudocode after steps 1, 2, and 3:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><img height="459" src="assets/aeeb893651758815a7ae7a156b7ab067" width="452"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Steps to memoize a recursive solution:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>If we draw the recursion tree, we will see that there are overlapping subproblems. In order to convert a recursive solution the following steps will be taken:</p>
+<!-- /wp:paragraph -->
+<!-- wp:list {"ordered":true} -->
+<ol><li>Create a dp array of size [n][k+1]. The size of the input array is ‘n’, so the index will always lie between ‘0’ and ‘n-1’. The target can take any value between ‘0’ and ‘k’. Therefore we take the dp array as dp[n][k+1]</li><li>We initialize the dp array to -1.</li><li>Whenever we want to find the answer of particular parameters (say f(ind,target)), we first check whether the answer is already calculated using the dp array(i.e dp[ind][target]!= -1 ). If yes, simply return the value from the dp array.</li><li>If not, then we are finding the answer for the given value for the first time, we will use the recursive relation as usual but before returning from the function, we will set dp[ind][target] to the solution we get.</li></ol>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int mod =(int)1e9+7;
+
+int countPartitionsUtil(int ind, int target, vector&lt;int&gt;&amp; arr, vector&lt;vector
+&lt;int&gt;&gt; &amp;dp){
+
+     if(ind == 0){
+        if(target==0 &amp;&amp; arr[0]==0)
+            return 2;
+        if(target==0 || target == arr[0])
+            return 1;
+        return 0;
+    }
+    
+    if(dp[ind][target]!=-1)
+        return dp[ind][target];
+        
+    int notTaken = countPartitionsUtil(ind-1,target,arr,dp);
+    
+    int taken = 0;
+    if(arr[ind]&lt;=target)
+        taken = countPartitionsUtil(ind-1,target-arr[ind],arr,dp);
+        
+    return dp[ind][target]= (notTaken + taken)%mod;
+}
+
+int countPartitions(int d, vector&lt;int&gt;&amp; arr){
+    int n = arr.size();
+    int totSum = 0;
+    for(int i=0; i&lt;arr.size();i++){
+        totSum += arr[i];
+    }
+    
+    //Checking for edge cases
+    if(totSum-d&lt;0) return 0;
+    if((totSum-d)%2==1) return 0;
+    
+    int s2 = (totSum-d)/2;
+    
+    vector&lt;vector&lt;int&gt;&gt; dp(n,vector&lt;int&gt;(s2+1,-1));
+    return countPartitionsUtil(n-1,s2,arr,dp);
+}
+
+int main() {
+
+  vector&lt;int&gt; arr = {5,2,6,4};
+  int d=3;
+                                 
+  cout&lt;&lt;"The number of subsets found are " &lt;&lt;countPartitions(d,arr);
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The number of subsets found are 1</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N*K)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: There are N*K states therefore at max ‘N*K’ new problems will be solved.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(N*K) + O(N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: We are using a recursion stack space(O(N)) and a 2D array ( O(N*K)).</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+
+
+class TUF{
+    
+static int mod =(int)(Math.pow(10,9)+7);
+static int countPartitionsUtil(int ind, int target,int[] arr, int[][] dp){
+
+     if(ind == 0){
+        if(target==0 &amp;&amp; arr[0]==0)
+            return 2;
+        if(target==0 || target == arr[0])
+            return 1;
+        return 0;
+    }
+    
+    if(dp[ind][target]!=-1)
+        return dp[ind][target];
+        
+    int notTaken = countPartitionsUtil(ind-1,target,arr,dp);
+    
+    int taken = 0;
+    if(arr[ind]&lt;=target)
+        taken = countPartitionsUtil(ind-1,target-arr[ind],arr,dp);
+        
+    return dp[ind][target]= (notTaken + taken)%mod;
+}
+
+static int countPartitions(int d,int[] arr){
+    int n = arr.length;
+    int totSum = 0;
+    for(int i=0; i&lt;arr.length;i++){
+        totSum += arr[i];
+    }
+    
+    //Checking for edge cases
+    if(totSum-d&lt;0) return 0;
+    if((totSum-d)%2==1) return 0;
+    
+    int s2 = (totSum-d)/2;
+    
+    int dp[][] = new int[n][s2+1];
+    
+    for(int row[]: dp)
+    Arrays.fill(row,-1);
+    
+    return countPartitionsUtil(n-1,s2,arr,dp);
+}
+
+public static void main(String args[]) {
+
+  int arr[] = {5,2,6,4};
+  int d=3;
+                                 
+  System.out.println("The number of subsets found are "+countPartitions(d,arr));
+}
+}</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The number of subsets found are 1</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N*K)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: There are N*K states therefore at max ‘N*K’ new problems will be solved.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(N*K) + O(N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: We are using a recursion stack space(O(N)) and a 2D array ( O(N*K)).</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="python">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-python" lang="python">mod = int(1e9 + 7)
+
+def countPartitionsUtil(ind, target, arr, dp):
+    if ind == 0:
+        if target == 0 and arr[0] == 0:
+            return 2
+        if target == 0 or target == arr[0]:
+            return 1
+        return 0
+    
+    if dp[ind][target] != -1:
+        return dp[ind][target]
+        
+    notTaken = countPartitionsUtil(ind-1, target, arr, dp)
+    
+    taken = 0
+    if arr[ind] &lt;= target:
+        taken = countPartitionsUtil(ind-1, target-arr[ind], arr, dp)
+        
+    dp[ind][target] = (notTaken + taken) % mod
+    return dp[ind][target]
+
+def countPartitions(d, arr):
+    n = len(arr)
+    totSum = sum(arr)
+    
+    # Checking for edge cases
+    if totSum - d &lt; 0:
+        return 0
+    if (totSum - d) % 2 == 1:
+        return 0
+    
+    s2 = (totSum - d) // 2
+    
+    dp = [[-1 for j in range(s2 + 1)] for i in range(n)]
+    return countPartitionsUtil(n-1, s2, arr, dp)
+
+def main():
+    arr = [5, 2, 6, 4]
+    d = 3
+
+    print("The number of subsets found are", countPartitions(d, arr))
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The number of subsets found are 1</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N*K)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: There are N*K states therefore at max ‘N*K’ new problems will be solved.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(N*K) + O(N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: We are using a recursion stack space(O(N)) and a 2D array ( O(N*K)).</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Steps to convert Recursive Solution to Tabulation one.</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>To convert the memoization approach to a tabulation one, create a dp array with the same size as done in memoization. We can initialize it as 0.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><img height="351" src="assets/99c094b2d52638c7c2afec428dada738" width="624"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>First, we need to initialize the base conditions of the recursive solution.</p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>If target == 0, ind can take any value from 0 to n-1, therefore we need to set the value of the first column as 1. </li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><img height="351" src="assets/9b98540bfdf504643dada86751216be5" width="624"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>The first-row dp[0][] indicates that only the first element of the array is considered, therefore for the target value equal to arr[0], only the cell with that target will be true, so explicitly set dp[0][arr[0]] =1, (dp[0][arr[0]] means that we are considering the first element of the array with the target equal to the first element itself). Please note that it can happen that arr[0]&gt;target, so we first check it: if(arr[0]&lt;=target) then set dp[0][arr[0]] = 1. </li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><img height="351" src="assets/37e92325a7b939d01b54b16941a2d0df" width="624"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>After that, we will set our nested for loops to traverse the dp array and following the logic discussed in the recursive approach, we will set the value of each cell. Instead of recursive calls, we will use the dp array itself.</li><li>At last, we will return dp[n-1][k] as our answer.</li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int mod =(int)1e9+7;
+
+int findWays(vector&lt;int&gt; &amp;num, int tar){
+     int n = num.size();
+
+    vector&lt;vector&lt;int&gt;&gt; dp(n,vector&lt;int&gt;(tar+1,0));
+    
+    if(num[0] == 0) dp[0][0] =2;  // 2 cases -pick and not pick
+    else dp[0][0] = 1;  // 1 case - not pick
+    
+    if(num[0]!=0 &amp;&amp; num[0]&lt;=tar) dp[0][num[0]] = 1;  // 1 case -pick
+    
+    for(int ind = 1; ind&lt;n; ind++){
+        for(int target= 0; target&lt;=tar; target++){
+            
+            int notTaken = dp[ind-1][target];
+    
+            int taken = 0;
+                if(num[ind]&lt;=target)
+                    taken = dp[ind-1][target-num[ind]];
+        
+            dp[ind][target]= (notTaken + taken)%mod;
+        }
+    }
+    return dp[n-1][tar];
+}
+
+int countPartitions(int n, int d, vector&lt;int&gt;&amp; arr){
+    int totSum = 0;
+    for(int i=0; i&lt;n;i++){
+        totSum += arr[i];
+    }
+    
+    //Checking for edge cases
+    if(totSum-d &lt;0 || (totSum-d)%2 ) return 0;
+    
+    return findWays(arr,(totSum-d)/2);
+}
+  
+
+int main() {
+
+  vector&lt;int&gt; arr = {5,2,6,4};
+  int n = arr.size();
+  int d=3;
+                                 
+  cout&lt;&lt;"The number of subsets found are " &lt;&lt;countPartitions(n,d,arr);
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The number of subsets found are 1</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N*K)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: There are two nested loops</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(N*K)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: We are using an external array of size ‘N*K’. Stack Space is eliminated.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+
+class TUF{
+static int mod =(int)(Math.pow(10,9)+7);
+
+static int findWays(int[] num, int tar){
+     int n = num.length;
+
+    int dp[][] = new int[n][tar+1];
+    
+    if(num[0] == 0) dp[0][0] =2;  // 2 cases -pick and not pick
+    else dp[0][0] = 1;  // 1 case - not pick
+    
+    if(num[0]!=0 &amp;&amp; num[0]&lt;=tar) dp[0][num[0]] = 1;  // 1 case -pick
+    
+    for(int ind = 1; ind&lt;n; ind++){
+        for(int target= 0; target&lt;=tar; target++){
+            
+            int notTaken = dp[ind-1][target];
+    
+            int taken = 0;
+                if(num[ind]&lt;=target)
+                    taken = dp[ind-1][target-num[ind]];
+        
+            dp[ind][target]= (notTaken + taken)%mod;
+        }
+    }
+    return dp[n-1][tar];
+}
+
+static int countPartitions(int n, int d,int[] arr){
+    int totSum = 0;
+    for(int i=0; i&lt;n;i++){
+        totSum += arr[i];
+    }
+    
+    //Checking for edge cases
+    if(totSum-d &lt;0 || (totSum-d)%2==1 ) return 0;
+    
+    return findWays(arr,(totSum-d)/2);
+}
+  
+
+public static void main(String args[]) {
+
+  int arr[] = {5,2,6,4};
+  int n = arr.length;
+  int d=3;
+                                 
+  System.out.println("The number of subsets found are "+countPartitions(n,d,arr));
+}
+}</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The number of subsets found are 1</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N*K)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: There are two nested loops</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(N*K)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: We are using an external array of size ‘N*K’. Stack Space is eliminated.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="python">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-python" lang="python">mod=int(1e9+7)
+def findWays(num, tar):
+    n = len(num)
+    dp = [[0] * (tar + 1) for _ in range(n)]
+    
+    if num[0] == 0:
+        dp[0][0] = 2 # 2 cases - pick and not pick
+    else:
+        dp[0][0] = 1 # 1 case - not pick
+    
+    if num[0] != 0 and num[0] &lt;= tar:
+        dp[0][num[0]] = 1 # 1 case - pick
+    
+    for ind in range(1, n):
+        for target in range(tar + 1):
+            notTaken = dp[ind - 1][target]
+            taken = 0
+            if num[ind] &lt;= target:
+                taken = dp[ind - 1][target - num[ind]]
+        
+            dp[ind][target] = (notTaken + taken) % mod
+    return dp[n - 1][tar]
+
+def countPartitions(n, d, arr):
+    totSum = sum(arr)
+    
+    # Checking for edge cases
+    if (totSum - d) &lt; 0 or (totSum - d) % 2:
+        return 0
+    
+    return findWays(arr, (totSum - d) // 2)
+
+def main():
+  arr = [5, 2, 6, 4]
+  n = len(arr)
+  d = 3
+  print("The number of subsets found are", countPartitions(n, d, arr))
+if __name__ == "__main__":
+  main()
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Part 3: Space Optimization</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>If we closely look at the relationship,</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>dp[ind][target] =  dp[ind-1][target] + dp[ind-1][target-arr[ind]]</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>We see that to calculate a value of a cell of the dp array, we need only the previous row values (say prev). So, we don’t need to store an entire array. Hence we can space optimize it.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Note: </strong>Whenever we create a new row ( say cur), we need to explicitly set its first element is true according to our base condition.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+int mod =(int)1e9+7;
+
+int findWays(vector&lt;int&gt; &amp;num, int tar){
+     int n = num.size();
+
+    vector&lt;int&gt; prev(tar+1,0);
+    
+    if(num[0] == 0) prev[0] =2;  // 2 cases -pick and not pick
+    else prev[0] = 1;  // 1 case - not pick
+    
+    if(num[0]!=0 &amp;&amp; num[0]&lt;=tar) prev[num[0]] = 1;  // 1 case -pick
+    
+    for(int ind = 1; ind&lt;n; ind++){
+        vector&lt;int&gt; cur(tar+1,0);
+        for(int target= 0; target&lt;=tar; target++){
+            int notTaken = prev[target];
+    
+            int taken = 0;
+                if(num[ind]&lt;=target)
+                    taken = prev[target-num[ind]];
+        
+            cur[target]= (notTaken + taken)%mod;
+        }
+        prev = cur;
+    }
+    return prev[tar];
+}
+
+int countPartitions(int n, int d, vector&lt;int&gt;&amp; arr){
+    int totSum = 0;
+    for(int i=0; i&lt;n;i++){
+        totSum += arr[i];
+    }
+    
+    //Checking for edge cases
+    if(totSum-d &lt;0 || (totSum-d)%2 ) return 0;
+    
+    return findWays(arr,(totSum-d)/2);
+}
+  
+
+int main() {
+
+  vector&lt;int&gt; arr = {5,2,6,4};
+  int n = arr.size();
+  int d=3;
+                                 
+  cout&lt;&lt;"The number of subsets found are " &lt;&lt;countPartitions(n,d,arr);
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The number of subsets found are 1</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N*K)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: There are three nested loops</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(K)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: We are using an external array of size ‘K+1’ to store only one row.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+
+
+class TUF{
+
+static int mod =(int)(Math.pow(10,9)+7);
+
+static int findWays(int[] num, int tar){
+     int n = num.length;
+
+    int prev[] = new int[tar+1];
+    
+    if(num[0] == 0) prev[0] =2;  // 2 cases -pick and not pick
+    else prev[0] = 1;  // 1 case - not pick
+    
+    if(num[0]!=0 &amp;&amp; num[0]&lt;=tar) prev[num[0]] = 1;  // 1 case -pick
+    
+    for(int ind = 1; ind&lt;n; ind++){
+        int cur[]=new int[tar+1];
+        for(int target= 0; target&lt;=tar; target++){
+            int notTaken = prev[target];
+    
+            int taken = 0;
+                if(num[ind]&lt;=target)
+                    taken = prev[target-num[ind]];
+        
+            cur[target]= (notTaken + taken)%mod;
+        }
+        prev = cur;
+    }
+    return prev[tar];
+}
+
+static int countPartitions(int n, int d,int[] arr){
+    int totSum = 0;
+    for(int i=0; i&lt;n;i++){
+        totSum += arr[i];
+    }
+    
+    //Checking for edge cases
+    if(totSum-d &lt;0 || (totSum-d)%2 ==1) return 0;
+    
+    return findWays(arr,(totSum-d)/2);
+}
+  
+
+public static void main(String args[]) {
+
+  int arr[] = {5,2,6,4};
+  int n = arr.length;
+  int d=3;
+                                 
+  System.out.println("The number of subsets found are " +countPartitions(n,d,arr));
+}
+}</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The number of subsets found are 1</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N*K)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: There are three nested loops</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(K)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: We are using an external array of size ‘K+1’ to store only one row.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="python">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-python" lang="python">mod =int(1e9+7)
+
+def findWays(num, tar):
+    n = len(num)
+
+    prev = [0] * (tar + 1)
+    
+    if num[0] == 0:
+        prev[0] = 2  # 2 cases - pick and not pick
+    else:
+        prev[0] = 1  # 1 case - not pick
+    
+    if num[0] != 0 and num[0] &lt;= tar:
+        prev[num[0]] = 1  # 1 case - pick
+    
+    for ind in range(1, n):
+        cur = [0] * (tar + 1)
+        for target in range(tar + 1):
+            notTaken = prev[target]
+    
+            taken = 0
+            if num[ind] &lt;= target:
+                taken = prev[target - num[ind]]
+        
+            cur[target] = (notTaken + taken) % mod
+        prev = cur
+    return prev[tar]
+
+def countPartitions(n, d, arr):
+    totSum = 0
+    for i in range(n):
+        totSum += arr[i]
+    
+    # Checking for edge cases
+    if totSum - d &lt; 0 or (totSum - d) % 2:
+        return 0
+    
+    return findWays(arr, (totSum - d) // 2)
+  
+
+def main():
+    arr = [5, 2, 6, 4]
+    n = len(arr)
+    d = 3
+
+    print("The number of subsets found are", countPartitions(n, d, arr))
+if __name__ == '__main__':
+  main()
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The number of subsets found are 1</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N*K)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: There are three nested loops</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(K)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: We are using an external array of size ‘K+1’ to store only one row.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/anshuman-sharma-a1b245194/" rel="noreferrer noopener" target="_blank">Anshuman Sharma</a></strong> and <a href="https://www.linkedin.com/in/abhipsita-das-5b7069212/?originalSubdomain=in" rel="noopener" target="_blank" title=""><strong>Abhipsita Das</strong></a> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a></p></blockquote>
+<!-- /wp:quote -->
+
+
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

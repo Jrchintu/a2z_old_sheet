@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>N meetings in one room</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>N meetings in one room</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement:</strong> There is <strong>one </strong>meeting room in a firm. You are given two arrays, start and end each of size N.For an index ‘i’, start[i] denotes the starting time of the ith meeting while end[i]  will denote the ending time of the ith meeting. Find the maximum number of meetings that can be accommodated if only one meeting can happen in the room at a  particular time. Print the order in which these meetings will be performed.</p>
+<!-- /wp:paragraph -->
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted"><strong>Example:</strong>
+
+<strong>Input:</strong>  N = 6,  start[] = {1,3,0,5,8,5}, end[] =  {2,4,5,7,9,9}
+
+<strong>Output:</strong> 1 2 4 5
+
+<strong>Explanation:</strong> See the figure for a better understanding. 
+
+<img height="142" src="assets/3e238357f0771114f48174774c43832a" width="615"/></pre>
+<!-- /wp:preformatted -->
+<!-- wp:heading {"level":1} -->
+<h1>Solution:</h1>
+<!-- /wp:heading -->
+<!-- wp:paragraph {"textColor":"vivid-red"} -->
+<p class="has-vivid-red-color has-text-color"><strong><em>Disclaimer</em></strong>: <em>Don't jump directly to the solution, try it out yourself first.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Initial Thought Process:-</strong><br/>Say if you have two meetings, one which gets over early and another which gets over late. Which one should we choose?  If our meeting lasts longer the room stays occupied and we lose our time. On the other hand, if we choose a meeting that finishes early we can accommodate more meetings. Hence we should <strong>choose meetings that end early</strong> and utilize the remaining time for more meetings.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Approach</strong>: </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>To proceed we need a vector of three quantities: the starting time, ending time, meeting number. Sort this data structure in ascending order of end time. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>We need a variable to store the answer. Initially, the answer is 1 because the first meeting can always be performed. Make another variable, say limit that keeps track of the ending time of the meeting that was last performed. Initially set limit as the end time of the first meeting.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Start iterating from the second meeting. At every position we have two possibilities:-</p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>If the start time of a meeting is  strictly greater than <strong><em>limit</em></strong> we can perform the meeting. Update the answer.Our new <strong><em>limit </em></strong>is the ending time of the current meeting  since it was last performed.Also update <strong><em>limit.  </em></strong></li><li> If the start time is less than or equal to <strong><em>limit </em></strong> ,skip and move ahead. </li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p>Let's have a dry run by taking the following example.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>N = 6,  start[] = {1,3,0,5,8,5}, end[] =  {2,4,5,7,9,9}</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Initially set answer =[1],limit = 2.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><em><strong>For Position 2 - </strong></em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Start time of meeting no. 2 = 3 &gt; limit. Update answer and limit.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Answer = [1, 2], limit = 4.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><em><strong>For Position 3 -</strong></em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Start time of meeting no. 3 = 0 &lt; limit.Nothing is changed.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><em><strong>For Position 4 -</strong></em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Start time of meeting no. 4 = 5 &gt; limit. Update answer and limit.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Answer = [1,2,4], limit = 7.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><em><strong>For Position 5 -</strong></em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Start time of meeting no. 5 = 8 &gt; limit.Update answer and limit.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Answer = [1,2,4,5], limit = 9.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><em><strong>For Position 6 -</strong></em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Start time of meeting no. 6 = 8 &lt; limit.Nothing is changed.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Final answer  =  [1,2,4,5]</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:heading -->
+<h2><strong>Code:</strong></h2>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+struct meeting {
+   int start;
+   int end;
+   int pos;
+};
+
+class Solution {
+   public:
+      bool static comparator(struct meeting m1, meeting m2) {
+         if (m1.end &lt; m2.end) return true;
+         else if (m1.end &gt; m2.end) return false;
+         else if (m1.pos &lt; m2.pos) return true;
+         return false;
+      }
+   void maxMeetings(int s[], int e[], int n) {
+      struct meeting meet[n];
+      for (int i = 0; i &lt; n; i++) {
+         meet[i].start = s[i], meet[i].end = e[i], meet[i].pos = i + 1;
+      }
+
+      sort(meet, meet + n, comparator);
+
+      vector &lt; int &gt; answer;
+
+      int limit = meet[0].end;
+      answer.push_back(meet[0].pos);
+
+      for (int i = 1; i &lt; n; i++) {
+         if (meet[i].start &gt; limit) {
+            limit = meet[i].end;
+            answer.push_back(meet[i].pos);
+         }
+      }
+      cout&lt;&lt;"The order in which the meetings will be performed is "&lt;&lt;endl;
+      for (int i = 0; i &lt; answer.size(); i++) {
+         cout &lt;&lt; answer[i] &lt;&lt; " ";
+      }
+
+   }
+
+};
+int main() {
+   Solution obj;
+   int n = 6;
+   int start[] = {1,3,0,5,8,5};
+   int end[] = {2,4,5,7,9,9};
+   obj.maxMeetings(start, end, n);
+   return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The order in which the meetings will be performed is<br/>1 2 4 5</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(n) </strong>to iterate through every position and insert them in a data structure<strong>. O(n log n)  </strong>to sort the data structure in ascending order of end time<strong>. O(n)  </strong>to iterate through the positions and check which meeting can be performed.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Overall : O(n) +O(n log n) + O(n) ~O(n log n)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(n)  </strong>since we used an additional data structure for storing the start time, end time, and meeting no.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+class meeting {
+    int start;
+    int end;
+    int pos;
+     
+    meeting(int start, int end, int pos)
+    {
+        this.start = start;
+        this.end = end;
+        this.pos = pos;
+    }
+}
+class meetingComparator implements Comparator&lt;meeting&gt;
+{
+    @Override
+    public int compare(meeting o1, meeting o2) 
+    {
+        if (o1.end &lt; o2.end)
+            return -1;
+        else if (o1.end &gt; o2.end)
+            return 1;
+        else if(o1.pos &lt; o2.pos)
+            return -1;
+        return 1; 
+    }
+}
+public class Meeting {
+    static void maxMeetings(int start[], int end[], int n) {
+        ArrayList&lt;meeting&gt; meet = new ArrayList&lt;&gt;();
+        
+        for(int i = 0; i &lt; start.length; i++)
+            meet.add(new meeting(start[i], end[i], i+1));
+        
+        meetingComparator mc = new meetingComparator(); 
+        Collections.sort(meet, mc); 
+        ArrayList&lt;Integer&gt; answer = new ArrayList&lt;&gt;();
+        answer.add(meet.get(0).pos);
+        int limit = meet.get(0).end; 
+        
+        for(int i = 1;i&lt;start.length;i++) {
+            if(meet.get(i).start &gt; limit) {
+                limit = meet.get(i).end; 
+                answer.add(meet.get(i).pos);
+            }
+        }
+        System.out.println("The order in which the meetings will be performed is ");
+        for(int i = 0;i&lt;answer.size(); i++) {
+            System.out.print(answer.get(i) + " ");
+        }
+    }
+    public static void main(String args[])
+    {
+        int n = 6;
+        int start[] = {1,3,0,5,8,5};
+        int end[] = {2,4,5,7,9,9};
+        maxMeetings(start,end,n);
+        
+    }
+}</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The order in which the meetings will be performed is<br/>1 2 4 5</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(n) </strong>to iterate through every position and insert them in a data structure<strong>. O(n log n)  </strong>to sort the data structure in ascending order of end time<strong>. O(n)  </strong>to iterate through the positions and check which meeting can be performed.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Overall : O(n) +O(n log n) + O(n) ~O(n log n)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(n)  </strong>since we used an additional data structure for storing the start time, end time, and meeting no.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="python">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-python" lang="python">from typing import List
+
+
+
+
+class meeting:
+    def __init__(self, start, end, pos):
+        self.start = start
+        self.end = end
+        self.pos = pos
+
+
+
+
+class Solution:
+
+
+    def maxMeetings(self, s: List[int], e: List[int], n: int) -&gt; None:
+        meet = [meeting(s[i], e[i], i + 1) for i in range(n)]
+        sorted(meet, key=lambda x: (x.end, x.pos))
+        answer = []
+        limit = meet[0].end
+        answer.append(meet[0].pos)
+        for i in range(1, n):
+            if meet[i].start &gt; limit:
+                limit = meet[i].end
+                answer.append(meet[i].pos)
+        print("The order in which the meetings will be performed is ")
+        for i in answer:
+            print(i, end=" ")
+
+
+
+
+if __name__ == "__main__":
+    obj = Solution()
+    n = 6
+    start = [1, 3, 0, 5, 8, 5]
+    end = [2, 4, 5, 7, 9, 9]
+    obj.maxMeetings(start, end, n)</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The order in which the meetings will be performed is<br/>1 2 4 5</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(n) </strong>to iterate through every position and insert them in a data structure<strong>. O(n log n)  </strong>to sort the data structure in ascending order of end time<strong>. O(n)  </strong>to iterate through the positions and check which meeting can be performed.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Overall : O(n) +O(n log n) + O(n) ~O(n log n)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(n)  </strong>since we used an additional data structure for storing the start time, end time, and meeting no.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/somparna-c-a724a5121/" rel="noreferrer noopener" target="_blank"><strong>Somparna Chakrabarti</strong></a> <em><em><strong>and <em><a href="https://www.linkedin.com/in/imsudip/" rel="noreferrer noopener" target="_blank">Sudip Ghosh</a></em></strong></em></em></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

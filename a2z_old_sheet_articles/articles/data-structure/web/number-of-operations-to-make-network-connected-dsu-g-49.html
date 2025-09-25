@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Number of Operations to Make Network Connected - DSU: G-49.</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Number of Operations to Make Network Connected - DSU: G-49.</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement:</strong> You are given a graph with n vertices and m edges. You can remove one edge from anywhere and add that edge between any two vertices in one operation. Find the minimum number of operations that will be required to make the graph connected. If it is not possible to make the graph connected, return -1.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Pre-requisite: </strong><a href="https://takeuforward.org/data-structure/disjoint-set-union-by-rank-union-by-size-path-compression-g-46/">Disjoint Set data structure</a></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Example 1</strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<pre>
+<b>Input Format:</b> N = 4, M = 3, Edge[] =[ [0,  1], [ 0, 2], [1, 2]]
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7085" src="assets/6d6dfe85bfb6eb8ab1866e851a1742c2.png"/></figure>
+<b>Result:</b> 1
+<b>Explanation:</b> We need a minimum of 1 operation to make the two components connected. We can remove the edge (1,2) and add the edge between node 2 and node 3 like the following:
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7086" src="assets/4d90b56f6a05b549ae57aa327c33b2df.png"/></figure>
+</pre>
+<!-- /wp:html -->
+<!-- wp:paragraph -->
+<p><strong>Example 2</strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<pre>
+<b>Input Format:</b> N = 9, M = 8, Edge[] = [[0,1],[0,2],[0,3],[1,2],[2,3],[4,5],[5,6],[7,8]]
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7087" src="assets/3b581b93eb72680593a357dc5c9165ba.png"/></figure>
+<b>Result:</b> 2
+<b>Explanation:</b> We need a minimum of 2 operations to make the two components connected. We can remove the edge (0,2) and add the edge between node 3 and node 4 and we can remove the edge (0,3) and add it between nodes 6 and 8 like the following:
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7088" src="assets/b6218e04171a578f4117205f90912ce0.png"/></figure>
+</pre>
+<!-- /wp:html -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Solution</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph {"textColor":"accent"} -->
+<p class="has-accent-color has-text-color"><strong><em>Disclaimer</em></strong>: <em>Don't jump directly to the solution, try it out yourself first. </em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><a href="https://practice.geeksforgeeks.org/problems/connecting-the-graph/1?utm_source=youtube&amp;utm_medium=collab_striver_ytdescription&amp;utm_campaign=connecting-the-graph"><em>Problem Link</em></a><em>.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Solution:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Before discussing the solution, let’s understand the question. In the question, it is clearly stated that our objective is to make the given graph connected. Now, we can do this by just connecting the different components of a given graph with some edges like the following:</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7089,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7089" src="assets/9ae0de7fef55567f206e9290d3c565eb.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>But according to the question, we cannot add random edges from outside rather we can remove any given edge and add that to a new position to fulfill the purpose. So, one of the correct ways to connect the above graph will be the following:</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7090,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7090" src="assets/381445098403da1988f50596cd960511.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>There may be several other possible ways to make the graph connected. In this graph, We have removed the edge (0,2) and added it between node 3 and node 4 and we have also removed the edge (0,3) and added it between nodes 6 and 8 to make the components connected.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Note: </strong><em>In order to add any edge to the desired position, we must take it out from somewhere inside the graph. We cannot add any edge randomly from outside. </em><strong><em>So, the intuition is to remove the required minimum number of edges and plant them somewhere in the graph so that the graph becomes connected. </em></strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3><strong><em>Observation 1: How can we connect components to make the graph connected?</em></strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>In order to connect two different components of a graph we need to connect any node of the first component to any node of the second component. For example, if we have a graph like the following we can connect them in several ways like connecting nodes 2 and 3 or connecting nodes 2 and 4, and so on.</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7091,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7091" src="assets/5ca9891313cb73c857b77fbb55aea2e1.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Observation 2:</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>From the method of connecting the components, discussed above, <strong><em>we can conclude that we need a minimum of nc-1 edges to make the graph connected if the graph contains nc number of different components.</em></strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7092,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7092" src="assets/184ee4be2af3ea8d0c69b2e69180a702.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>For example, the above graph has two different components and so to make it connected we need a minimum of 1 edge. <strong><em>Similarly, if a graph contains a single component we need 0 edges to make it connected. </em></strong>We need to remove the edges in such a way that the components remain connected even after removing those edges. We can assume these types of edges as <strong><em>extra-edges</em></strong>.</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7093,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7093" src="assets/5d8cbdfb626b5bcfd8f187a3d1fe8b41.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p><em>Until now, we have found that we need a minimum of nc-1 edges (nc = no. of components of the graph) to make the graph connected. And according to the question, to add these nc-1 edges, the graph must contain a minimum of nc-1 extra edges.</em><strong><em> </em></strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong><em>So, we can conclude that if a graph contains nc-1 extra-edges, we can make the graph connected with just nc-1 operations(where nc = no. of components of the graph).</em></strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Approach</strong>: </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>In order to solve this question we will first find out the number of extra-edges and then we will find out the number of components of the graph. We will be using the <a href="https://takeuforward.org/data-structure/disjoint-set-union-by-rank-union-by-size-path-compression-g-46/">Disjoint Set data structure</a><strong> </strong>to do so.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The algorithm steps are the following:</p>
+<!-- /wp:paragraph -->
+<!-- wp:list {"ordered":true} -->
+<ol><li>First we need to extract all the edge information (<strong><em>If not already given</em></strong>) in the form of the pair (u, v) where u = starting node and v = ending node. We should store all the edge information in an array.</li><li>Then we will iterate through the array selecting every pair and checking the following:<ol><li><strong>If the ultimate parent of u and v(checked using the findPar() method of the Disjoint set) becomes the same</strong>,  we should increase the count of extra-edges by 1.<br/>Because the same ultimate parent means the nodes are already connected and so we can consider the current edge as an extra edge.</li><li>But if the ultimate parents are different, then we should apply the union(either unionBySize() or unionByRank()) method on those two nodes.</li></ol></li><li>Thus we will get the count of the extra edges. Now it’s time to count the number of components. In order to do so, we will just count the number of the nodes that are the ultimate parent of themselves.</li><li>We will iterate over all the nodes and for each node, we will check the following:<ol><li>If the node is the ultimate parent of itself, we will increase the count of components by 1.</li><li>Otherwise, we will continue to the next node.</li></ol></li></ol>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><em>This checking will be done using the parent array inside the Disjoint set.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:list {"ordered":true,"start":5} -->
+<ol start="5"><li>Finally, we will check the count of extra edges and the number of components. If the count of extra-edges is greater or the same, we will return the answer that is (number of components - 1), and otherwise, we will return -1.</li></ol>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>Note</strong>: <em>If you wish to see the dry run of the above approach, you can watch the video attached to this article.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+//User function Template for C++
+class DisjointSet {
+public:
+    vector&lt;int&gt; rank, parent, size;
+    DisjointSet(int n) {
+        rank.resize(n + 1, 0);
+        parent.resize(n + 1);
+        size.resize(n + 1);
+        for (int i = 0; i &lt;= n; i++) {
+            parent[i] = i;
+            size[i] = 1;
+        }
+    }
+
+    int findUPar(int node) {
+        if (node == parent[node])
+            return node;
+        return parent[node] = findUPar(parent[node]);
+    }
+
+    void unionByRank(int u, int v) {
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+        if (ulp_u == ulp_v) return;
+        if (rank[ulp_u] &lt; rank[ulp_v]) {
+            parent[ulp_u] = ulp_v;
+        }
+        else if (rank[ulp_v] &lt; rank[ulp_u]) {
+            parent[ulp_v] = ulp_u;
+        }
+        else {
+            parent[ulp_v] = ulp_u;
+            rank[ulp_u]++;
+        }
+    }
+
+    void unionBySize(int u, int v) {
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+        if (ulp_u == ulp_v) return;
+        if (size[ulp_u] &lt; size[ulp_v]) {
+            parent[ulp_u] = ulp_v;
+            size[ulp_v] += size[ulp_u];
+        }
+        else {
+            parent[ulp_v] = ulp_u;
+            size[ulp_u] += size[ulp_v];
+        }
+    }
+};
+class Solution {
+public:
+    int Solve(int n, vector&lt;vector&lt;int&gt;&gt;&amp; edge) {
+        DisjointSet ds(n);
+        int cntExtras = 0;
+        for (auto it : edge) {
+            int u = it[0];
+            int v = it[1];
+            if (ds.findUPar(u) == ds.findUPar(v)) {
+                cntExtras++;
+            }
+            else {
+                ds.unionBySize(u, v);
+            }
+        }
+        int cntC = 0;
+        for (int i = 0; i &lt; n; i++) {
+            if (ds.parent[i] == i) cntC++;
+        }
+        int ans = cntC - 1;
+        if (cntExtras &gt;= ans) return ans;
+        return -1;
+    }
+};
+
+int main() {
+
+    int V = 9;
+    vector&lt;vector&lt;int&gt;&gt; edge = {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {2, 3}, {4, 5}, {5, 6}, {7, 8}};
+
+    Solution obj;
+    int ans = obj.Solve(V, edge);
+    cout &lt;&lt; "The number of operations needed: " &lt;&lt; ans &lt;&lt; endl;
+    return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output: The number of operations needed: 2 (for example 2)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: </strong>O(E*4α)+O(N*4α) where E = no. of edges and N = no. of nodes. The first term is to calculate the number of extra edges and the second term is to count the number of components. 4α is for the disjoint set operation we have used and this term is so small that it can be considered constant.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: </strong>O(2N) where N = no. of nodes. 2N for the two arrays(parent and size) of size N we have used inside the disjoint set.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.io.*;
+import java.util.*;
+
+
+
+
+class DisjointSet {
+    List&lt;Integer&gt; rank = new ArrayList&lt;&gt;();
+    List&lt;Integer&gt; parent = new ArrayList&lt;&gt;();
+    List&lt;Integer&gt; size = new ArrayList&lt;&gt;();
+    public DisjointSet(int n) {
+        for (int i = 0; i &lt;= n; i++) {
+            rank.add(0);
+            parent.add(i);
+            size.add(1);
+        }
+    }
+
+    public int findUPar(int node) {
+        if (node == parent.get(node)) {
+            return node;
+        }
+        int ulp = findUPar(parent.get(node));
+        parent.set(node, ulp);
+        return parent.get(node);
+    }
+
+    public void unionByRank(int u, int v) {
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+        if (ulp_u == ulp_v) return;
+        if (rank.get(ulp_u) &lt; rank.get(ulp_v)) {
+            parent.set(ulp_u, ulp_v);
+        } else if (rank.get(ulp_v) &lt; rank.get(ulp_u)) {
+            parent.set(ulp_v, ulp_u);
+        } else {
+            parent.set(ulp_v, ulp_u);
+            int rankU = rank.get(ulp_u);
+            rank.set(ulp_u, rankU + 1);
+        }
+    }
+
+    public void unionBySize(int u, int v) {
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+        if (ulp_u == ulp_v) return;
+        if (size.get(ulp_u) &lt; size.get(ulp_v)) {
+            parent.set(ulp_u, ulp_v);
+            size.set(ulp_v, size.get(ulp_v) + size.get(ulp_u));
+        } else {
+            parent.set(ulp_v, ulp_u);
+            size.set(ulp_u, size.get(ulp_u) + size.get(ulp_v));
+        }
+    }
+}
+class Solution {
+
+    public int Solve(int n, int[][] edge) {
+        DisjointSet ds = new DisjointSet(n);
+        int cntExtras = 0;
+        int m = edge.length;
+        for (int i = 0; i &lt; m ; i++) {
+            int u = edge[i][0];
+            int v = edge[i][1];
+            if (ds.findUPar(u) == ds.findUPar(v)) {
+                cntExtras++;
+            } else {
+                ds.unionBySize(u, v);
+            }
+        }
+        int cntC = 0;
+        for (int i = 0; i &lt; n; i++) {
+            if (ds.parent.get(i) == i) cntC++;
+        }
+        int ans = cntC - 1;
+        if (cntExtras &gt;= ans) return ans;
+        return -1;
+    }
+}
+
+
+class Main {
+    public static void main (String[] args) {
+        int V = 9;
+        int[][] edge = {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {2, 3}, {4, 5}, {5, 6}, {7, 8}};
+
+        Solution obj = new Solution();
+        int ans = obj.Solve(V, edge);
+        System.out.println("The number of operations needed: " + ans);
+
+    }
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output: The number of operations needed: 2 (for example 2)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: </strong>O(E*4α)+O(N*4α) where E = no. of edges and N = no. of nodes. The first term is to calculate the number of extra edges and the second term is to count the number of components. 4α is for the disjoint set operation we have used and this term is so small that it can be considered constant.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: </strong>O(2N) where N = no. of nodes. 2N for the two arrays(parent and size) of size N we have used inside the disjoint set.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/kriti39/" rel="noreferrer noopener" target="_blank"><strong>KRITIDIPTA GHOSH</strong></a></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a>. <em>If you want to suggest any improvement/correction in this article please mail us at write4tuf@gmail.com</em></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

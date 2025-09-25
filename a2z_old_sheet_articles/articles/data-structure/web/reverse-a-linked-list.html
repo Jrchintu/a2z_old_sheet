@@ -1,0 +1,1976 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Reverse a Linked List</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Reverse a Linked List</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement:</strong> <strong>Problem Statement: </strong>Given the <strong>head</strong> of a singly linked list, write a program to reverse the linked list, and return the <strong>head</strong> pointer to the <strong>reversed</strong> <strong>list</strong>. </p>
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<!-- This is Examples Drop-Down -->
+<div id="article_examples">
+<details class="article_example_details">
+<summary class="article_example_summary">
+<span><strong>
+Examples
+</strong>
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="atricle_example_content">
+<pre class="wp-block-preformatted"><!-- Insert New Examples Here -->
+<p><strong>Example 1:</strong></p>
+<p><strong>Input Format</strong>:</p>
+<p>LL: 1   3   2   4 </p>
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-13014" height="167" src="assets/54200e22fdf1468defe8e380dd31c3ce.jpg" width="768"/></figure>
+<p><strong>Output</strong>: 3</p>
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-13015" height="173" src="assets/325ea7a156ed1b5682fa4c502e3fc288.jpg" width="768"/></figure>
+<p><strong>Explanation</strong>: After reversing the linked list, the new head will point to the tail of the old linked list.</p>
+<p><strong>Example 2:</strong></p>
+<p><strong>Input Format:</strong></p>
+<p>LL: 4</p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-13029" height="170" src="assets/fd6b99b042aacfc00809d997d4e58217.png" width="766"/></figure>
+<p><strong>Output: </strong>4</p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-13030" height="170" src="assets/fd6b99b042aacfc00809d997d4e58217.png" width="766"/></figure>
+<p><strong>Explanation</strong>: In this example, the linked list contains only one node hence reversing this linked list will result in the same list as the original.</p>
+</pre>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Practice Section-->
+<div class="practice">
+<span><strong>Practice: </strong></span>
+<div class="problem-buttons">
+<!-- Add Problem Link inside href -->
+<a href="https://tinyurl.com/2ajt9262" rel="noopener" target="_blank">
+<span>Solve Problem</span>
+<img alt="code-studio" src="assets/86dd2cadbd0e7ef71ad98d3b7f2f2efc.png"/>
+</a>
+</div>
+</div>
+<p class="new-disclaimer"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out
+yourself first. </em></p>
+<!-- /wp:html -->
+<!-- wp:html -->
+<div class="horizontal_navbar_dsa_article">
+<div class="grid_container_three">
+<a class="three-boxes box-a" href="#brute-force-approach">
+Brute Force approach
+</a>
+<a class="three-boxes box-b" href="#better-approach">
+Optimal Solution 1
+</a>
+<a class="three-boxes box-c" href="#optimal-approach">
+Optimal Solution 2
+</a>
+<a class="three-boxes box-d" href="#dsa_article_video_explanation">
+<svg fill="none" height="26" viewbox="0 0 20 14" width="26" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 10L13.19 7L8 4V10ZM19.56 2.17C19.69 2.64 19.78 3.27 19.84 4.07C19.91 4.87 19.94 5.56 19.94 6.16L20 7C20 9.19 19.84 10.8 19.56 11.83C19.31 12.73 18.73 13.31 17.83 13.56C17.36 13.69 16.5 13.78 15.18 13.84C13.88 13.91 12.69 13.94 11.59 13.94L10 14C5.81 14 3.2 13.84 2.17 13.56C1.27 13.31 0.69 12.73 0.44 11.83C0.31 11.36 0.22 10.73 0.16 9.93C0.0900001 9.13 0.0599999 8.44 0.0599999 7.84L0 7C0 4.81 0.16 3.2 0.44 2.17C0.69 1.27 1.27 0.69 2.17 0.44C2.64 0.31 3.5 0.22 4.82 0.16C6.12 0.0899998 7.31 0.0599999 8.41 0.0599999L10 0C14.19 0 16.8 0.16 17.83 0.44C18.73 0.69 19.31 1.27 19.56 2.17Z" fill="red"></path>
+</svg>
+</a>
+<div class="box-e tooltip">
+<svg fill="none" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.842 9.25L11.9577 10.17C11.2502 10.89 10.8081 11.5 10.8081 13H8.84297V12.5C8.84297 11.39 9.28511 10.39 9.99255 9.67L11.2109 8.41C11.5745 8.05 11.7906 7.55 11.7906 7C11.7906 6.46957 11.5836 5.96086 11.2151 5.58579C10.8465 5.21071 10.3467 5 9.82552 5C9.30434 5 8.80451 5.21071 8.43598 5.58579C8.06745 5.96086 7.86041 6.46957 7.86041 7H5.89531C5.89531 5.93913 6.30938 4.92172 7.04644 4.17157C7.7835 3.42143 8.78316 3 9.82552 3C10.8679 3 11.8675 3.42143 12.6046 4.17157C13.3417 4.92172 13.7557 5.93913 13.7557 7C13.7543 7.84324 13.4259 8.65183 12.842 9.25ZM10.8081 17H8.84297V15H10.8081M9.82552 0C8.53521 0 7.25754 0.258658 6.06545 0.761205C4.87337 1.26375 3.79021 2.00035 2.87783 2.92893C1.03519 4.8043 0 7.34784 0 10C0 12.6522 1.03519 15.1957 2.87783 17.0711C3.79021 17.9997 4.87337 18.7362 6.06545 19.2388C7.25754 19.7413 8.53521 20 9.82552 20C12.4314 20 14.9306 18.9464 16.7732 17.0711C18.6158 15.1957 19.651 12.6522 19.651 10C19.651 4.47 15.2296 0 9.82552 0Z" fill="black"></path>
+</svg>
+<div class="bottom">
+<p>Expand any one approach by clicking the given options in the bar. Clicking one approach on bar,
+closes all other expands. You can manually expand more than one approach at a time</p>
+<i></i>
+</div>
+</div>
+</div>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Approaches Drop-Down -->
+<div class="dsa_article_dropdown_approachs">
+<!-- Brute Force Approach Starts from here -->
+<div id="brute-force-approach">
+<details>
+<summary class="main-summary">
+<span>
+Brute Force Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition of Brute Force Apporach Here -->
+<h3><strong>Approach 1 : Brute Force </strong></h3>
+<p>A straightforward approach to reversing a singly linked list requires an <strong>additional</strong> <strong>data</strong> <strong>structure</strong> to temporarily store the values. We can use a <strong>stack</strong> for this. By pushing each node onto the stack as we move through the list, we effectively <strong>reverse</strong> <strong>the</strong> <strong>order</strong> of the nodes. Once all the nodes are stored in the <strong>stack</strong>, we rebuild the reversed linked list by <strong>popping nodes</strong> from the stack and <strong>assigning</strong> them to the nodes. The result is a new linked list with the elements in the <strong>opposite</strong> <strong>order</strong> of the original list.</p>
+<h3><strong>Algorithm:</strong></h3>
+<p><strong>Step 1:</strong> Create an empty stack. This stack will be used to temporarily store the nodes from the original linked list as we traverse it.</p>
+<p><strong>Step 2: </strong>Traverse the linked list using a temporary variable <strong>`temp`</strong> till it reaches null. At each node, push the value at the current node onto the stack. </p>
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-13016" height="695" src="assets/e61268ac3cae1da9860adbe3baf89b1c.jpg" width="768"/></figure>
+<p><strong>Step 3: </strong>Set variable <strong>`temp`</strong> back to the head of the linked list. While the stack is not empty, set the <strong>value</strong> at the <strong>temp</strong> node to the value at the<strong> top</strong> of the stack. <strong>Pop</strong> the stack and move <strong>temp</strong> to the <strong>next</strong> <strong>node</strong> till it reaches null.</p>
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-13017" height="695" src="assets/7e3287f145c961294c4213d4b6f1db03.jpg" width="768"/></figure>
+<p><strong>Step 4: </strong>Return the <strong>head</strong> as the new head of the <strong>reversed</strong> linked list.</p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;iostream&gt;
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+// Node class represents a
+// node in a linked list
+class Node {
+public:
+    // Data stored in the node
+    int data;   
+    
+    // Pointer to the next node in the list
+    Node* next;      
+
+    // Constructor with both data and
+    // next node as parameters
+    Node(int data1, Node* next1) {
+        data = data1;
+        next = next1;
+    }
+
+    // Constructor with only data as a
+    // parameter, sets next to nullptr
+    Node(int data1) {
+        data = data1;
+        next = nullptr;
+    }
+};
+
+// Function to reverse the
+// linked list using a stack
+Node* reverseLinkedList(Node* head) {
+    // Create a temporary pointer
+    // to traverse the linked list
+    Node* temp = head;  
+    
+    // Create a stack to temporarily
+    // store the data values
+    stack&lt;int&gt; st;     
+
+    // Step 1: Push the values of the
+    // linked list onto the stack
+    while (temp != nullptr) {
+        // Push the current node's
+        // data onto the stack
+        st.push(temp-&gt;data); 
+        
+        // Move to the next node
+        // in the linked list
+        temp = temp-&gt;next;    
+    }
+    
+    // Reset the temporary pointer to
+    // the head of the linked list
+    temp = head; 
+    
+    // Step 2: Pop values from the stack
+    // and update the linked list
+    while (temp != nullptr) {
+        // Set the current node's data to
+        // the value at the top of the stack
+        temp-&gt;data = st.top();  
+        
+        // Pop the top element from the stack
+        st.pop();              
+        
+        // Move to the next node
+        // in the linked list
+        temp = temp-&gt;next;     
+    }
+    
+    // Return the new head of
+    // the reversed linked list
+    return head;  
+}
+
+// Function to print the linked list
+void printLinkedList(Node* head) {
+    Node* temp = head;
+    while (temp != nullptr) {
+        cout &lt;&lt; temp-&gt;data &lt;&lt; " ";
+        temp = temp-&gt;next;
+    }
+    cout &lt;&lt; endl;
+}
+
+int main() {
+    // Create a linked list with
+    // values 1, 3, 2, and 4
+    Node* head = new Node(1);
+    head-&gt;next = new Node(3);
+    head-&gt;next-&gt;next = new Node(2);
+    head-&gt;next-&gt;next-&gt;next = new Node(4);
+
+    // Print the original linked list
+    cout &lt;&lt; "Original Linked List: ";
+    printLinkedList(head);
+
+    // Reverse the linked list
+    head = reverseLinkedList(head);
+
+    // Print the reversed linked list
+    cout &lt;&lt; "Reversed Linked List: ";
+    printLinkedList(head);
+
+    return 0;
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.Stack;
+
+// Node class represents a
+// node in a linked list
+class Node {
+    // Data stored in the node
+    int data;      
+    // Pointer to the next
+    // node in the list
+    Node next;     
+
+    // Constructor with both data
+    // and next node as parameters
+    Node(int data, Node next) {
+        this.data = data;
+        this.next = next;
+    }
+
+    // Constructor with only data as
+    // a parameter, sets next to null
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+public class ReverseLinkedListUsingStack {
+
+    // Function to reverse the
+    // linked list using a stack
+    public static Node reverseLinkedList(Node head) {
+        // Create a temporary pointer to
+        // traverse the linked list
+        Node temp = head;       
+        
+        // Create a stack to temporarily
+        //store the data values
+        Stack&lt;Integer&gt; stack = new Stack&lt;&gt;();  
+
+        // Step 1: Push the values of the
+        // linked list onto the stack
+        while (temp != null) {
+             // Push the current node's
+             // data onto the stack
+            stack.push(temp.data); 
+             // Move to the next node
+             // in the linked list
+            temp = temp.next;      
+        }
+         // Reset the temporary pointer
+         // to the head of the linked list
+        temp = head;  
+
+        // Step 2: Pop values from the stack
+        // and update the linked list
+        while (temp != null) {
+            // Set the current node's data
+            // to the value at the top of the stack
+            temp.data = stack.pop();  
+            // Move to the next node
+            // in the linked list
+            temp = temp.next;         
+        }
+        // Return the new head of
+        // the reversed linked list
+        return head;  
+    }
+
+    // Function to print the linked list
+    public static void printLinkedList(Node head) {
+        Node temp = head;
+        while (temp != null) {
+            System.out.print(temp.data + " ");
+            temp = temp.next;
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        // Create a linked list with values 1, 3, 2, and 4
+        Node head = new Node(1);
+        head.next = new Node(3);
+        head.next.next = new Node(2);
+        head.next.next.next = new Node(4);
+
+        // Print the original linked list
+        System.out.print("Original Linked List: ");
+        printLinkedList(head);
+
+        // Reverse the linked list
+        head = reverseLinkedList(head);
+
+        // Print the reversed linked list
+        System.out.print("Reversed Linked List: ");
+        printLinkedList(head);
+    }
+}
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+
+class Node:
+    def __init__(self, data, next_node=None):
+        self.data = data
+        self.next = next_node
+
+# Function to reverse the
+# linked list using a stack
+def reverse_linked_list(head):
+    # Create a temporary pointer
+    # to traverse the linked list
+    temp = head  
+    
+    # Create a stack to temporarily
+    # store the data values
+    stack = []   
+
+    # Step 1: Push the values of the
+    # linked list onto the stack
+    while temp is not None:
+        # Push the current node's
+        # data onto the stack
+        stack.append(temp.data) 
+        # Move to the next node
+        # in the linked list
+        temp = temp.next        
+
+    # Reset the temporary pointer
+    # to the head of the linked list
+    temp = head  
+
+    # Step 2: Pop values from the stack
+    # and update the linked list
+    while temp is not None:
+        
+        # Set the current node's data to
+        # the value at the top of the stack
+        temp.data = stack.pop()  
+        
+         # Move to the next node in
+         # the linked list
+        temp = temp.next        
+
+    # Return the new head of
+    # the reversed linked list
+    return head  
+
+# Function to print the linked list
+def print_linked_list(head):
+    temp = head
+    while temp is not None:
+        print(temp.data, end=" ")
+        temp = temp.next
+    print()
+
+# Create a linked list with
+# values 1, 3, 2, and 4
+head = Node(1)
+head.next = Node(3)
+head.next.next = Node(2)
+head.next.next.next = Node(4)
+
+# Print the original linked list
+print("Original Linked List:", end=" ")
+print_linked_list(head)
+
+# Reverse the linked list
+head = reverse_linked_list(head)
+
+# Print the reversed linked list
+print("Reversed Linked List:", end=" ")
+print_linked_list(head)
+
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+class Node:
+    def __init__(self, data, next_node=None):
+        self.data = data
+        self.next = next_node
+
+# Function to reverse the
+# linked list using a stack
+def reverse_linked_list(head):
+    # Create a temporary pointer
+    # to traverse the linked list
+    temp = head  
+    
+    # Create a stack to temporarily
+    # store the data values
+    stack = []   
+
+    # Step 1: Push the values of the
+    # linked list onto the stack
+    while temp is not None:
+        # Push the current node's
+        # data onto the stack
+        stack.append(temp.data) 
+        # Move to the next node
+        # in the linked list
+        temp = temp.next        
+
+    # Reset the temporary pointer
+    # to the head of the linked list
+    temp = head  
+
+    # Step 2: Pop values from the stack
+    # and update the linked list
+    while temp is not None:
+        
+        # Set the current node's data to
+        # the value at the top of the stack
+        temp.data = stack.pop()  
+        
+         # Move to the next node in
+         # the linked list
+        temp = temp.next        
+
+    # Return the new head of
+    # the reversed linked list
+    return head  
+
+# Function to print the linked list
+def print_linked_list(head):
+    temp = head
+    while temp is not None:
+        print(temp.data, end=" ")
+        temp = temp.next
+    print()
+
+# Create a linked list with
+# values 1, 3, 2, and 4
+head = Node(1)
+head.next = Node(3)
+head.next.next = Node(2)
+head.next.next.next = Node(4)
+
+# Print the original linked list
+print("Original Linked List:", end=" ")
+print_linked_list(head)
+
+# Reverse the linked list
+head = reverse_linked_list(head)
+
+# Print the reversed linked list
+print("Reversed Linked List:", end=" ")
+print_linked_list(head)
+
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Brute Force Here -->
+<strong>Output:</strong> Original Linked List: 1 3 2 4 Reversed Linked List: 4 2 3 1 
+</p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Brute Force Here -->
+</p><p><strong>Time Complexity: O(2N)</strong> This is because we <strong>traverse</strong> the linked list <strong>twice</strong>: once to push the values onto the stack, and once to pop the values and update the linked list. Both traversals take O(N) time, hence time complexity  O(2N) ~ O(N).</p>
+<p><strong>Space Complexity: O(N) </strong>We use a <strong>stack</strong> to store the values of the linked list, and in the worst case, the stack will have all <strong>N</strong> <strong>values, </strong> ie. storing the complete linked list. </p>
+<p></p>
+</details>
+</div>
+</details>
+</div>
+<!-- Brute Force Approach Ends here -->
+<!-- Better Approach Starts from here -->
+<div id="better-approach">
+<details>
+<summary class="main-summary">
+<span>
+Optimal Approach 1
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition For Better Approach Here -->
+<p><strong>Approach 2: Reverse Links in place (Iterative)</strong></p>
+<p>The previous approach uses O(N) addition space which can be avoided by interchanging the connecting links of the nodes of the linked list in place.</p>
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-13018" height="281" src="assets/09d4d0a9453dc4e2feb246aee952afe8.png" width="768"/></figure>
+<p>The main idea is to <strong>flip</strong> the order of connections in the linked list, which changes the <strong>direction</strong> of the <strong>arrows</strong>. When this happens, the <strong>last</strong> <strong>element</strong> becomes the <strong>new</strong> <strong>first</strong> <strong>element</strong> of the list. This <strong>in-place reversal</strong> allows us to efficiently transform the original list <strong>without using extra space.</strong></p>
+<p><strong>Algorithm:</strong></p>
+<p><strong>Step 1: </strong>Initialise a ‘<strong>temp’ </strong>pointer at the head of the linked list. This pointer will be used to traverse the linked list. And initialize the pointer <strong>‘prev’</strong> to <strong>‘NULL’ </strong>to keep track of the previous node. This will be used to reverse the direction of the <strong>‘next’</strong> pointers.</p>
+<figure class="wp-block-image size-large"><img alt="" class="wp-image-13019" src="assets/d6351f823237c4875c8d5d2f94fe37b2.png"/></figure>
+<p><strong>Step 2: Traverse</strong> the entire linked list by moving through each node using the <strong>'temp'</strong> pointer until it reaches the end (marked as <strong>'NULL'</strong>).</p>
+<p>At each iteration within the traversal,</p>
+<ol><li>Save the reference to the next node that <strong>'temp'</strong> is pointing to in a variable called <strong>'front'</strong>. This helps retain the link to the subsequent node before altering the <strong>'next'</strong> pointer.</li></ol>
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-13020" height="242" src="assets/9b87ea44fc59009021382f326fe441f1.png" width="768"/></figure>
+<ol start="2"><li>Reverse the direction of the <strong>‘next’ </strong>pointer of the current node (pointed to by <strong>‘temp’</strong>) to point to the <strong>‘prev’</strong> node. This effectively reversed the direction of the linked list, making the current node point to the previous node. </li></ol>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-13028" height="232" src="assets/68cd489f7ecdb8bf1cfb762e6b0d1fe1.png" width="748"/></figure>
+<ol start="3"><li>Move the <strong>‘prev’</strong> pointer to the current node. This sets up the <strong>‘prev’</strong> pointer for the next iteration of the loop.</li><li>Move the <strong>‘temp’</strong> pointer to the <strong>‘front’</strong> node. This advances the traversal to the next node in the original order.</li></ol>
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-13021" height="242" src="assets/6e3a8d4dfd3f0e631ba17087685497fc.png" width="768"/></figure>
+<p>In summary:</p>
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-13022" height="768" src="assets/b8d28bc8129f9f2c2258066018a46533.jpg" width="673"/></figure>
+<p><strong>Step 3: </strong>Keep traversing through the linked list using the <strong>'temp'</strong> pointer until it reaches the <strong>end</strong>, thereby reversing the entire list. Once the <strong>'temp'</strong> pointer reaches the end, return the <strong>new</strong> <strong>head</strong> of the reversed linked list, which is now indicated by the <strong>'prev'</strong> pointer. This <strong>'prev'</strong> pointer becomes the first node in the newly reversed list.</p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+
+#include &lt;iostream&gt;
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+// Node class represents a
+// node in a linked list
+class Node {
+public:
+    // Data stored in the node
+    int data;   
+    
+    // Pointer to the next node in the list
+    Node* next;      
+
+    // Constructor with both data and
+    // next node as parameters
+    Node(int data1, Node* next1) {
+        data = data1;
+        next = next1;
+    }
+
+    // Constructor with only data as a
+    // parameter, sets next to nullptr
+    Node(int data1) {
+        data = data1;
+        next = nullptr;
+    }
+};
+
+// Function to reverse a linked list
+// using the 3-pointer approach
+Node* reverseLinkedList(Node *head)
+{
+   // Initialize'temp' at
+   // head of linked list
+   Node* temp = head;  
+   
+   // Initialize pointer 'prev' to NULL,
+   // representing the previous node
+   Node* prev = NULL;  
+   
+   // Traverse the list, continue till
+   // 'temp' reaches the end (NULL)
+   while(temp != NULL){  
+       // Store the next node in
+       // 'front' to preserve the reference
+       Node* front = temp-&gt;next;  
+       
+       // Reverse the direction of the
+       // current node's 'next' pointer
+       // to point to 'prev'
+       temp-&gt;next = prev;  
+       
+        // Move 'prev' to the current
+        // node for the next iteration
+       prev = temp;  
+       
+        // Move 'temp' to the 'front' node
+        // advancing the traversal
+       temp = front; 
+   }
+   
+   // Return the new head of
+   // the reversed linked list
+   return prev;  
+}
+
+// Function to print the linked list
+void printLinkedList(Node* head) {
+    Node* temp = head;
+    while (temp != nullptr) {
+        cout &lt;&lt; temp-&gt;data &lt;&lt; " ";
+        temp = temp-&gt;next;
+    }
+    cout &lt;&lt; endl;
+}
+
+int main() {
+    // Create a linked list with
+    // values 1, 3, 2, and 4
+    Node* head = new Node(1);
+    head-&gt;next = new Node(3);
+    head-&gt;next-&gt;next = new Node(2);
+    head-&gt;next-&gt;next-&gt;next = new Node(4);
+
+    // Print the original linked list
+    cout &lt;&lt; "Original Linked List: ";
+    printLinkedList(head);
+
+    // Reverse the linked list
+    head = reverseLinkedList(head);
+
+    // Print the reversed linked list
+    cout &lt;&lt; "Reversed Linked List: ";
+    printLinkedList(head);
+
+    return 0;
+}
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+
+import java.util.Stack;
+
+// Node class represents a
+// node in a linked list
+class Node {
+    // Data stored in the node
+    int data;      
+    // Pointer to the next
+    // node in the list
+    Node next;     
+
+    // Constructor with both data
+    // and next node as parameters
+    Node(int data, Node next) {
+        this.data = data;
+        this.next = next;
+    }
+
+    // Constructor with only data as
+    // a parameter, sets next to null
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+// Function to reverse a linked list
+// using the 3-pointer approach
+public class ReverseLinkedListUsingStack(Node head) {
+
+   // Initialize'temp' at
+   // head of linked list
+   Node temp = head;  
+   
+   // Initialize pointer 'prev' to NULL,
+   // representing the previous node
+   Node prev = null;  
+   
+   // Traverse the list, continue till
+   // 'temp' reaches the end (NULL)
+   while(temp != null){  
+       // Store the next node in
+       // 'front' to preserve the reference
+       Node front = temp.next;  
+       
+       // Reverse the direction of the
+       // current node's 'next' pointer
+       // to point to 'prev'
+       temp.next = prev;  
+       
+        // Move 'prev' to the current
+        // node for the next iteration
+       prev = temp;  
+       
+        // Move 'temp' to the 'front' node
+        // advancing the traversal
+       temp = front; 
+   }
+   
+   // Return the new head of
+   // the reversed linked list
+   return prev;  
+
+    }
+
+    // Function to print the linked list
+    public static void printLinkedList(Node head) {
+        Node temp = head;
+        while (temp != null) {
+            System.out.print(temp.data + " ");
+            temp = temp.next;
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        // Create a linked list with values 1, 3, 2, and 4
+        Node head = new Node(1);
+        head.next = new Node(3);
+        head.next.next = new Node(2);
+        head.next.next.next = new Node(4);
+
+        // Print the original linked list
+        System.out.print("Original Linked List: ");
+        printLinkedList(head);
+
+        // Reverse the linked list
+        head = reverseLinkedList(head);
+
+        // Print the reversed linked list
+        System.out.print("Reversed Linked List: ");
+        printLinkedList(head);
+    }
+}
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+
+class Node:
+    def __init__(self, data, next_node=None):
+        self.data = data
+        self.next = next_node
+
+# Function to reverse linked list
+# using 3 pointer approach
+def reverseLinkedList(head):
+    
+    # Initialize 'temp' at the
+    # head of the linked list
+    temp = head
+    
+    # Initialize 'prev' to None,
+    # representing the previous node 
+    prev = None
+    
+    while temp is not None:
+        # Store the next node in 'front'
+        # to preserve the reference
+        front = temp.next
+        # Reverse the direction of the current
+        # node's 'next' pointer to point to 'prev'
+        temp.next = prev
+        # Move 'prev' to the current 
+        # node, for the next iteration
+        prev = temp
+        # Move 'temp' to 'front' node
+        # advancing traversal
+        temp = front
+
+    # Return the new head
+    # of the reversed linked list
+    return prev
+    
+# Function to print the linked list
+def print_linked_list(head):
+    temp = head
+    while temp is not None:
+        print(temp.data, end=" ")
+        temp = temp.next
+    print()
+
+# Create a linked list with
+# values 1, 3, 2, and 4
+head = Node(1)
+head.next = Node(3)
+head.next.next = Node(2)
+head.next.next.next = Node(4)
+
+# Print the original linked list
+print("Original Linked List:", end=" ")
+print_linked_list(head)
+
+# Reverse the linked list
+head = reverse_linked_list(head)
+
+# Print the reversed linked list
+print("Reversed Linked List:", end=" ")
+print_linked_list(head)
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+
+class Node {
+  constructor(data, next = null) {
+    this.data = data;
+    this.next = next;
+  }
+}
+
+// Function to reverse a linked list
+// using the 3-pointer approach
+function reverseLinkedList(head) {
+    
+    // Initialize pointer 'temp' at
+    // head of the linked list
+    let temp = head;  
+    
+    // Initialize a pointer 'prev' to null
+    // representing the previous node
+    // (initially none)
+    let prev = null;  
+
+    // Traversing the list, continue until
+    // 'temp' reaches the end (null)
+    while (temp !== null) {  
+        // Store the next node in
+        // 'front' to preserve the reference
+        let front = temp.next;  
+        
+        // Reverse direction of current node's
+        // 'next' pointer to point to 'prev'
+        temp.next = prev;  
+        
+        // Move 'prev' to the current node,
+        // preparing it for the next iteration
+        prev = temp;
+        
+        // Move 'temp' to the 'front' node
+        // (the next node), advancing traversal
+        temp = front;  
+    }
+
+    // Return the new head of
+    // the reversed linked list
+    return prev;  
+}
+
+// Function to print the linked list
+function printLinkedList(head) {
+  let temp = head;
+  while (temp !== null) {
+    process.stdout.write(temp.data + ' ');
+    temp = temp.next;
+  }
+  console.log();
+}
+
+// Create a linked list with
+// values 1, 3, 2, and 4
+const head = new Node(1);
+head.next = new Node(3);
+head.next.next = new Node(2);
+head.next.next.next = new Node(4);
+
+// Print the original linked list
+process.stdout.write('Original Linked List: ');
+printLinkedList(head);
+
+// Reverse the linked list
+reverseLinkedList(head);
+
+// Print the reversed linked list
+process.stdout.write('Reversed Linked List: ');
+printLinkedList(head);
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Better Approach Here -->
+<strong>Output:</strong> Original Linked List: 1 3 2 4 Reversed Linked List: 4 2 3 1
+</p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Better Approach Here -->
+</p><p><strong>Time Complexity: O(N) </strong>The code <strong>traverses</strong> the <strong>entire</strong> <strong>linked</strong> <strong>list</strong> once, where 'n' is the number of nodes in the list. This traversal has a <strong>linear</strong> <strong>time</strong> <strong>complexity</strong>, O(n).</p>
+<p><strong>Space Complexity: O(1)</strong> The code uses only a <strong>constant</strong> <strong>amount</strong> of <strong>additional</strong> <strong>space</strong>, regardless of the linked list's length. This is achieved by using three pointers (<strong>prev, temp</strong> and <strong>front</strong>) to reverse the list without any significant extra memory usage, resulting in <strong>constant</strong> <strong>space</strong> complexity, O(1).</p>
+<p></p>
+</details>
+</div>
+</details>
+</div>
+<!-- Better Approach Ends from here -->
+<!-- Optimal Approach Starts from here -->
+<div id="optimal-approach">
+<details>
+<summary class="main-summary">
+<span>
+Optimal Approach II
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm of Optimal Approach Here -->
+<h3><strong>Approach 3: Recursive </strong></h3>
+<p>Before moving on to this approach, make sure your concepts on the basics of Recursion are crystal clear. Refer to <a href="https://takeuforward.org/recursion/introduction-to-recursion-understand-recursion-by-printing-something-n-times/">Introduction to Recursion</a><strong> </strong>to brush up.</p>
+<p>Recursion gives the ability to<strong> break</strong> <strong>down</strong> a problem statement into <strong>small</strong> <strong>problems</strong> that can be solved <strong>incrementally</strong>. It keeps solving these smaller problems until it reaches the smallest possible solution, often referred to as the base case, from where it can start combining the results of those smaller solutions to ultimately solve the original, larger problem.</p>
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-13023" height="483" src="assets/44f5b8f130cd96eeaaf443492c5bcd0b.png" width="768"/></figure>
+<p>In this case, tackling the <strong>larger</strong> <strong>problem</strong> involves reversing a linked list with N = 4 nodes. <strong>Recursion</strong> allows us to break this task down into <strong>progressively</strong> <strong>smaller</strong> <strong>subproblems</strong>, starting with the case of 3 nodes, then the last 2 nodes, and ultimately reaching the base case where only 1 node remains. In the <strong>base</strong> <strong>case</strong>, reversing the linked list is straightforward, as a list with just one node is already in its reversed form, and we can simply return it as is.</p>
+<p><strong>Algorithm</strong>:</p>
+<p><strong>Base Case</strong>:<br/>Check if the linked list is empty or contains only one node. Return the head as it's already reversed in these cases.</p>
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-13024" height="302" src="assets/edffd1555108b9783e44c68928cc6f99.png" width="768"/></figure>
+<p><strong>Recursive Function:</strong><strong><br/></strong>The core of the algorithm lies in implementing a recursive function responsible for reversing the linked list. This function operates based on the following principle:</p>
+<p>If the base case conditions are not met, the function <strong>invokes</strong> <strong>itself</strong> <strong>recursively</strong>. This <strong>recursion</strong> continues until it reaches the base case, gradually reversing the linked list starting from the <strong>second</strong> <strong>node </strong>(node after it) onward.</p>
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-13025" height="491" src="assets/8900bbc3840b918a4cc9db7e3359db6b.png" width="768"/></figure>
+<p><strong>Return<br/><br/></strong>Following the recursion, the function <strong>returns</strong> the <strong>new</strong> <strong>head</strong> of the reversed linked list. This head marks the <strong>last</strong> <strong>node</strong> of the original list before reversal, now the <strong>first</strong> <strong>node</strong> in the <strong>reversed</strong> <strong>sequence</strong>.</p>
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-13026" height="383" src="assets/55cac702134f31c44631be1102e8013c.png" width="768"/></figure>
+<p><strong>Steps:</strong></p>
+<p><strong>Step 1: Establish Base Case Conditions: </strong>Check if the linked list is either empty or contains only one node. If so, the list is already reversed; hence, return the head as is.</p>
+<p><strong>Step 2: Recursively Reverse the List: </strong>Begin the recursive step by reversing the linked list, starting from the second node. Utilise a recursive call to the reverse linked list function, passing the next node as an argument.</p>
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-13027" height="316" src="assets/080f8362b07d0b5ab2f86b05b8d7bb50.png" width="768"/></figure>
+<p><strong>Step 3: Preserve Access to Remaining Nodes: </strong>To maintain access to the rest of the linked list while reversing the order, store a reference to the node following the current 'head' node. This step ensures continuity in the link sequence during reversal.</p>
+<p><strong>Step 4: Reverse Link Direction: </strong>Adjust the 'front' node to point to the current 'head' node in the reversed order. This action effectively reverses the link between the 'head' node and the 'front' node.</p>
+<p><strong>Step 5: Prevent Cyclic References: </strong>Break the link from the current 'head' node to the 'front' node to prevent any cyclic formations. Set 'head-&gt;next' to 'NULL' to ensure the reversed segment of the list does not create a loop.</p>
+<p><strong>Step 6: Return the New Head: </strong>Finally, return the 'newHead,' which signifies the new head of the reversed linked list. This 'newHead' was initially the last node in the list before the reversal commenced.</p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;iostream&gt;
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+// Node class represents a
+// node in a linked list
+class Node {
+public:
+    // Data stored in the node
+    int data;   
+    
+    // Pointer to the next node in the list
+    Node* next;      
+
+    // Constructor with both data and
+    // next node as parameters
+    Node(int data1, Node* next1) {
+        data = data1;
+        next = next1;
+    }
+
+    // Constructor with only data as a
+    // parameter, sets next to nullptr
+    Node(int data1) {
+        data = data1;
+        next = nullptr;
+    }
+};
+
+// Function to reverse a singly
+// linked list using a recursion
+
+Node* reverseLinkedList(Node* head) {
+    // Base case:
+    // If the linked list is empty or has only one node,
+    // return the head as it is already reversed.
+    if (head == NULL || head-&gt;next == NULL) {
+        return head;
+    }
+    
+    // Recursive step:
+    // Reverse the linked list starting 
+    // from the second node (head-&gt;next).
+    Node* newHead = reverseLinkedList(head-&gt;next);
+    
+    // Save a reference to the node following
+    // the current 'head' node.
+    Node* front = head-&gt;next;
+    
+    // Make the 'front' node point to the current
+    // 'head' node in the reversed order.
+    front-&gt;next = head;
+    
+    // Break the link from the current 'head' node
+    // to the 'front' node to avoid cycles.
+    head-&gt;next = NULL;
+    
+    // Return the 'newHead,' which is the new
+    // head of the reversed linked list.
+    return newHead;
+}
+
+
+// Function to print the linked list
+void printLinkedList(Node* head) {
+    Node* temp = head;
+    while (temp != nullptr) {
+        cout &lt;&lt; temp-&gt;data &lt;&lt; " ";
+        temp = temp-&gt;next;
+    }
+    cout &lt;&lt; endl;
+}
+
+int main() {
+    // Create a linked list with
+    // values 1, 3, 2, and 4
+    Node* head = new Node(1);
+    head-&gt;next = new Node(3);
+    head-&gt;next-&gt;next = new Node(2);
+    head-&gt;next-&gt;next-&gt;next = new Node(4);
+
+    // Print the original linked list
+    cout &lt;&lt; "Original Linked List: ";
+    printLinkedList(head);
+
+    // Reverse the linked list
+    head = reverseLinkedList(head);
+
+    // Print the reversed linked list
+    cout &lt;&lt; "Reversed Linked List: ";
+    printLinkedList(head);
+
+    return 0;
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+
+import java.util.Stack;
+
+// Node class represents a
+// node in a linked list
+class Node {
+    // Data stored in the node
+    int data;      
+    // Pointer to the next
+    // node in the list
+    Node next;     
+
+    // Constructor with both data
+    // and next node as parameters
+    Node(int data, Node next) {
+        this.data = data;
+        this.next = next;
+    }
+
+    // Constructor with only data as
+    // a parameter, sets next to null
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+public class ReverseLinkedListUsingStack {
+
+
+    // Function to reverse a singly
+    // linked list using a recursion
+    public static Node reverseLinkedList(Node head) {
+        // Base case:
+        // If the linked list is empty or has only one node,
+        // return the head as it is already reversed.
+        if (head == null || head.next == null) {
+            return head;
+        }
+        
+        // Recursive step:
+        // Reverse the linked list starting
+        // from the second node (head.next).
+        Node newHead = reverseLinkedList(head.next);
+        
+        // Save a reference to the node following
+        // the current 'head' node.
+        Node front = head.next;
+        
+        // Make the 'front' node point to the current
+        // 'head' node in the reversed order.
+        front.next = head;
+        
+        // Break the link from the current 'head' node
+        // to the 'front' node to avoid cycles.
+        head.next = null;
+        
+        // Return the 'newHead,' which is the new
+        // head of the reversed linked list.
+        return newHead;
+    }
+
+
+    // Function to print the linked list
+    public static void printLinkedList(Node head) {
+        Node temp = head;
+        while (temp != null) {
+            System.out.print(temp.data + " ");
+            temp = temp.next;
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        // Create a linked list with values 1, 3, 2, and 4
+        Node head = new Node(1);
+        head.next = new Node(3);
+        head.next.next = new Node(2);
+        head.next.next.next = new Node(4);
+
+        // Print the original linked list
+        System.out.print("Original Linked List: ");
+        printLinkedList(head);
+
+        // Reverse the linked list
+        head = reverseLinkedList(head);
+
+        // Print the reversed linked list
+        System.out.print("Reversed Linked List: ");
+        printLinkedList(head);
+    }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+
+class Node:
+    def __init__(self, data, next_node=None):
+        self.data = data
+        self.next = next_node
+
+# Function to reverse a singly
+# linked list using a recursion
+def reverse_linked_list(head):
+    # Base case:
+    # If the linked list is empty or has only one node,
+    # return the head as it is already reversed.
+    if head is None or head.next is None:
+        return head
+    
+    # Recursive step:
+    # Reverse the linked list starting from the second node (head.next).
+    new_head = reverse_linked_list(head.next)
+    
+    # Save a reference to the node following
+    # the current 'head' node.
+    front = head.next
+    
+    # Make the 'front' node point to the current
+    # 'head' node in the reversed order.
+    front.next = head
+    
+    # Break the link from the current 'head' node
+    # to the 'front' node to avoid cycles.
+    head.next = None
+    
+    # Return the 'new_head,' which is the new
+    # head of the reversed linked list.
+    return new_head
+
+
+# Function to print the linked list
+def print_linked_list(head):
+    temp = head
+    while temp is not None:
+        print(temp.data, end=" ")
+        temp = temp.next
+    print()
+
+# Create a linked list with
+# values 1, 3, 2, and 4
+head = Node(1)
+head.next = Node(3)
+head.next.next = Node(2)
+head.next.next.next = Node(4)
+
+# Print the original linked list
+print("Original Linked List:", end=" ")
+print_linked_list(head)
+
+# Reverse the linked list
+head = reverse_linked_list(head)
+
+# Print the reversed linked list
+print("Reversed Linked List:", end=" ")
+print_linked_list(head)
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+
+class Node {
+  constructor(data, next = null) {
+    this.data = data;
+    this.next = next;
+  }
+}
+
+// Function to reverse a singly
+// linked list using a recursion
+function reverseLinkedList(head) {
+    // Base case:
+    // If the linked list is empty or has only one node,
+    // return the head as it is already reversed.
+    if (head === null || head.next === null) {
+        return head;
+    }
+    
+    // Recursive step:
+    // Reverse the linked list starting
+    // from the second node (head.next).
+    var newHead = reverseLinkedList(head.next);
+    
+    // Save a reference to the node following
+    // the current 'head' node.
+    var front = head.next;
+    
+    // Make the 'front' node point to the current
+    // 'head' node in the reversed order.
+    front.next = head;
+    
+    // Break the link from the current 'head' node
+    // to the 'front' node to avoid cycles.
+    head.next = null;
+    
+    // Return the 'newHead,' which is the new
+    // head of the reversed linked list.
+    return newHead;
+}
+
+
+// Function to print the linked list
+function printLinkedList(head) {
+  let temp = head;
+  while (temp !== null) {
+    process.stdout.write(temp.data + ' ');
+    temp = temp.next;
+  }
+  console.log();
+}
+
+// Create a linked list with
+// values 1, 3, 2, and 4
+const head = new Node(1);
+head.next = new Node(3);
+head.next.next = new Node(2);
+head.next.next.next = new Node(4);
+
+// Print the original linked list
+process.stdout.write('Original Linked List: ');
+printLinkedList(head);
+
+// Reverse the linked list
+reverseLinkedList(head);
+
+// Print the reversed linked list
+process.stdout.write('Reversed Linked List: ');
+printLinkedList(head);
+
+</code>
+</pre>
+<p>
+<!-- Insert Output of Optimal Apporach Here -->
+<strong>Output:</strong> Original Linked List: 1 3 2 4 Reversed Linked List: 4 2 3 1
+</p>
+</div>
+</div></details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Optimal Approach-->
+</p><p><strong>Time Complexity: O(N)</strong> This is because we <strong>traverse</strong> the linked list <strong>twice</strong>: once to push the values onto the stack, and once to pop the values and update the linked list. Both traversals take O(N) time.</p>
+<p><strong>Space Complexity : O(1) </strong>No additional space is used explicitly for <strong>data</strong> <strong>structures</strong> or <strong>allocations</strong> during the linked list reversal process. However, it's important to note that there is an implicit use of <strong>stack</strong> <strong>space</strong> due to <strong>recursion</strong>. This recursive stack space <strong>stores</strong> <strong>function</strong> <strong>calls</strong> and <strong>associated</strong> <strong>variables</strong> during the recursive traversal and reversal of the linked list. Despite this, no extra memory beyond the program's existing execution space is allocated, hence maintaining a space complexity of <strong>O(1)</strong>.</p>
+<p></p>
+</details>
+</div>
+</details>
+</div>
+<!-- Optimal Approach Starts from here -->
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Video Explination Drop-Down -->
+<div class="dsa_article_youtube_video" id="dsa_article_video_explanation">
+<details>
+<summary class="main-summary">
+<span>
+Video Explanation
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="yt-video-wrapper">
+<!-- Insert iframe embed Link of Youtube Video-->
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" class="lazy-loaded" data-lazy-type="iframe" data-src="https://www.youtube.com/embed/D2vI2DNJGd8?si=vWLN5TnyYBWKskL3" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/D2vI2DNJGd8?feature=oembed" title="Reverse a Linked List" width="810"></iframe><noscript>
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/D2vI2DNJGd8?si=vWLN5TnyYBWKskL3" title="Reverse a Linked List " width="810"></iframe></noscript>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script>
+
+const codeSections = document.querySelectorAll('.code-section');
+
+// Get last selected language from localStorage or set default value
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+// Update last selected language for all sections and store in localStorage
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+// Handle copy button click event
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+// Set initial state of the tabs
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<script>
+const codeSections = document.querySelectorAll('.code-section');
+
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<link href="assets/4237ffca7ce6aadb438c457e0a675b12.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+<script src="index.js"></script>
+<script>hljs.highlightAll();</script>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script src="https://takeuforward.org/UXApproachDropDowns/3ApproachJSScript.js"></script>
+<!-- /wp:html -->
+<!-- wp:paragraph -->
+<p>In case you are learning DSA, you should definitely check out our free <a href="https://takeuforward.org/strivers-a2z-dsa-course/strivers-a2z-dsa-course-sheet-2/" rel="noreferrer noopener" target="_blank">A2Z DSA Course</a> with videos and blogs.</p>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to </em><strong><a href="https://www.linkedin.com/in/gauri-tomar-005048268" rel="noreferrer noopener" target="_blank">Gauri Tomar</a></strong><em> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/" rel="noreferrer noopener" target="_blank">please check out this article</a></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

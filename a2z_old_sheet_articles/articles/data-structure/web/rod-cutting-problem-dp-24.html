@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Rod Cutting Problem | (DP - 24)</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Rod Cutting Problem | (DP - 24)</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement: </strong> Rod Cutting Problem</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Problem Link: </strong><a href="https://www.codingninjas.com/codestudio/problems/rod-cutting-problem_800284?source=youtube&amp;campaign=striver_dp_videos&amp;utm_source=youtube&amp;utm_medium=affiliate&amp;utm_campaign=striver_dp_videos" rel="noreferrer noopener nofollow" target="_blank"><strong>Rod Cutting Problem</strong></a></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>We are given a rod of size ‘N’. It can be cut into pieces. Each length of a piece has a particular price given by the price array. Our task is to find the maximum revenue that can be generated by selling the rod after cutting( if required) into pieces.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<!-- This is Examples Drop-Down -->
+<div id="article_examples">
+<details class="article_example_details">
+<summary class="article_example_summary">
+<span><strong>
+Examples
+</strong>
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="atricle_example_content">
+<pre class="wp-block-preformatted"><!-- Insert New Examples Here -->
+<pre class="wp-block-preformatted"><strong>Example:</strong>
+
+<img height="364" src="assets/9d6222a65704f2fcd8a1d05de646d8fb" width="573"/></pre>
+</pre>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Practice Section-->
+<div class="practice">
+<span><strong>Practice: </strong></span>
+<div class="problem-buttons">
+<!-- Add Problem Link inside href -->
+<a href="https://www.codingninjas.com/studio/problems/rod-cutting-problem_800284?utm_source=striver&amp;utm_medium=website&amp;utm_campaign=a_zcoursetuf" rel="noopener" target="_blank">
+<span>Solve Problem</span>
+<img alt="code-studio" src="assets/86dd2cadbd0e7ef71ad98d3b7f2f2efc.png"/>
+</a>
+</div>
+</div>
+<p class="new-disclaimer"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out
+yourself first. </em></p>
+<!-- /wp:html -->
+<!-- wp:html -->
+<div class="horizontal_navbar_dsa_article">
+<div class="grid_container_three">
+<a class="three-boxes box-a" href="#brute-force-approach">
+Memoization approach
+</a>
+<a class="three-boxes box-b" href="#better-approach">
+Tabulation approach
+</a>
+<a class="three-boxes box-c" href="#optimal-approach">
+Space Optimization
+</a>
+<a class="three-boxes box-d" href="#dsa_article_video_explanation">
+<svg fill="none" height="26" viewbox="0 0 20 14" width="26" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 10L13.19 7L8 4V10ZM19.56 2.17C19.69 2.64 19.78 3.27 19.84 4.07C19.91 4.87 19.94 5.56 19.94 6.16L20 7C20 9.19 19.84 10.8 19.56 11.83C19.31 12.73 18.73 13.31 17.83 13.56C17.36 13.69 16.5 13.78 15.18 13.84C13.88 13.91 12.69 13.94 11.59 13.94L10 14C5.81 14 3.2 13.84 2.17 13.56C1.27 13.31 0.69 12.73 0.44 11.83C0.31 11.36 0.22 10.73 0.16 9.93C0.0900001 9.13 0.0599999 8.44 0.0599999 7.84L0 7C0 4.81 0.16 3.2 0.44 2.17C0.69 1.27 1.27 0.69 2.17 0.44C2.64 0.31 3.5 0.22 4.82 0.16C6.12 0.0899998 7.31 0.0599999 8.41 0.0599999L10 0C14.19 0 16.8 0.16 17.83 0.44C18.73 0.69 19.31 1.27 19.56 2.17Z" fill="red"></path>
+</svg>
+</a>
+<div class="box-e tooltip">
+<svg fill="none" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.842 9.25L11.9577 10.17C11.2502 10.89 10.8081 11.5 10.8081 13H8.84297V12.5C8.84297 11.39 9.28511 10.39 9.99255 9.67L11.2109 8.41C11.5745 8.05 11.7906 7.55 11.7906 7C11.7906 6.46957 11.5836 5.96086 11.2151 5.58579C10.8465 5.21071 10.3467 5 9.82552 5C9.30434 5 8.80451 5.21071 8.43598 5.58579C8.06745 5.96086 7.86041 6.46957 7.86041 7H5.89531C5.89531 5.93913 6.30938 4.92172 7.04644 4.17157C7.7835 3.42143 8.78316 3 9.82552 3C10.8679 3 11.8675 3.42143 12.6046 4.17157C13.3417 4.92172 13.7557 5.93913 13.7557 7C13.7543 7.84324 13.4259 8.65183 12.842 9.25ZM10.8081 17H8.84297V15H10.8081M9.82552 0C8.53521 0 7.25754 0.258658 6.06545 0.761205C4.87337 1.26375 3.79021 2.00035 2.87783 2.92893C1.03519 4.8043 0 7.34784 0 10C0 12.6522 1.03519 15.1957 2.87783 17.0711C3.79021 17.9997 4.87337 18.7362 6.06545 19.2388C7.25754 19.7413 8.53521 20 9.82552 20C12.4314 20 14.9306 18.9464 16.7732 17.0711C18.6158 15.1957 19.651 12.6522 19.651 10C19.651 4.47 15.2296 0 9.82552 0Z" fill="black"></path>
+</svg>
+<div class="bottom">
+<p>Expand any one approach by clicking the given options in the bar. Clicking one approach on bar,
+closes all other expands. You can manually expand more than one approach at a time</p>
+<i></i>
+</div>
+</div>
+</div>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Approaches Drop-Down -->
+<div class="dsa_article_dropdown_approachs">
+<!-- Brute Force Approach Starts from here -->
+<div id="brute-force-approach">
+<details>
+<summary class="main-summary">
+<span>
+Memoization Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition of Brute Force Apporach Here -->
+<h3><strong>Why a Greedy Solution doesn’t work?</strong></h3>
+<p>The first approach that comes to our mind is greedy. A greedy solution will fail in this problem because there is no ‘uniformity’ in data. While selecting a local better choice we may choose an item that will in long term give less value.</p>
+<p>As the greedy approach doesn’t work, we will try to generate all possible combinations using <strong>recursion</strong> and select the combination which gives us the <strong>maximum </strong>value in the given constraints.</p>
+<p><strong>Steps to form the recursive solution: </strong></p>
+<p>We will first form the recursive solution by the three points mentioned in <a href="https://takeuforward.org/data-structure/dynamic-programming-introduction/">Dynamic Programming Introduction</a>. </p>
+<p><strong>Step 1: </strong>Express the problem in terms of indexes.</p>
+<p>We are given ‘n’ items. Their weight is represented by the ‘wt’ array and value by the ‘val’ array. So clearly one parameter will be ‘ind’, i.e index upto which the array items are being considered.</p>
+<p>There is one more parameter “W”. We need the capacity of the knapsack to decide whether we can pick an array item or not in the knapsack.</p>
+<p>So, we can say that initially, we need to find f(n-1, W) where W is the overall capacity given to us. f(n-1, W) means we are finding the maximum value of items that the thief can steal from items with index 0 to n-1 capacity W of the knapsack.</p>
+<p><img height="120" src="assets/36ab0f2f309cee781b8b5bdeb8c39b6f" width="624"/></p>
+<h3><strong>Base Cases:</strong></h3>
+<ul><li>If ind==0, it means we are at the first item. Now, in an unbounded knapsack we can pick an item any number of times we want. As there is only one item left, we will pick for <strong>W/wt[0] </strong>times because we ultimately want to maximize the value of items while respecting the constraint of weight of the knapsack. The value added will be the product of the number of items picked and value of the individual item. Therefore we return (<strong>W/wt[0]) * val[0].</strong></li></ul>
+<p><img height="288" src="assets/67d97da64865ba55bd7fc3bc9905adbc" width="337"/></p>
+<p><strong>Step 2: </strong>Try out all possible choices at a given index.</p>
+<p>We need to generate all the subsequences. We will use the pick/non-pick technique as discussed in this video “<a href="https://www.youtube.com/watch?v=AxNNVECce8c">Recursion on Subsequences</a>”.</p>
+<p>We have two choices:</p>
+<ul><li><strong>Exclude the current element in the subsequence: </strong>We first try to find a subsequence without considering the current index item. If we exclude the current item, the capacity of the bag will not be affected and the value added will be 0 for the current item. So we will call the recursive function f(ind-1,W)</li><li><strong>Include the current element in the subsequence:</strong> We will try to find a subsequence by considering the current item to the knapsack. As we have included the item, the capacity of the knapsack will be updated to W-wt[ind] and the current item’s value (val[ind]) will also be added to the further recursive call answer.</li></ul>
+<p>Now here is the catch, as there is an unlimited supply of coins, we want to again form a solution with the same item value. So we <strong>will not </strong>recursively call for f(ind-1, W-wt[ind]) rather we will stay at that index only and call for<strong> f(ind, W-wt[ind])</strong> to find the answer.<br/><strong>Note: </strong>We will consider the current item in the subsequence only when the current element’s weight is less than or equal to the capacity ‘W’ of the knapsack, if it isn’t we will not be considering it.</p>
+<p><img height="430" src="assets/1b4979ad5a78adb81623d970d73e0094" width="413"/></p>
+<p><strong>Step 3:  Return the maximum of take and notTake</strong></p>
+<p>As we have to return the maximum amount of value, we will return the max of take and notTake as our answer.</p>
+<p>The final pseudocode after steps 1, 2, and 3:</p>
+<p><img height="480" src="assets/cf5645a823e67676506dda2118f96edd" width="461"/></p>
+<p><strong>Steps to memoize a recursive solution:</strong></p>
+<p>If we draw the recursion tree, we will see that there are overlapping subproblems. In order to convert a recursive solution the following steps will be taken:</p>
+<ol><li>Create a dp array of size [n][W+1]. The size of the input array is ‘N’, so the index will always lie between ‘0’ and ‘n-1’. The capacity can take any value between ‘0’ and ‘W’. Therefore we take the dp array as dp[n][W+1]</li><li>We initialize the dp array to -1.</li><li>Whenever we want to find the answer of particular parameters (say f(ind,target)), we first check whether the answer is already calculated using the dp array(i.e dp[ind][target]!= -1 ). If yes, simply return the value from the dp array.</li><li>If not, then we are finding the answer for the given value for the first time, we will use the recursive relation as usual but before returning from the function, we will set dp[ind][target] to the solution we get.</li></ol>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+// Function to solve the unbounded knapsack problem
+int knapsackUtil(vector&lt;int&gt;&amp; wt, vector&lt;int&gt;&amp; val, int ind, int W, vector&lt;vector&lt;int&gt;&gt;&amp; dp) {
+    // Base case: if we're at the first item
+    if (ind == 0) {
+        // Calculate and return the maximum value for the given weight limit
+        return (W / wt[0]) * val[0];
+    }
+    
+    // If the result for this index and weight limit is already calculated, return it
+    if (dp[ind][W] != -1)
+        return dp[ind][W];
+        
+    // Calculate the maximum value without taking the current item
+    int notTaken = 0 + knapsackUtil(wt, val, ind - 1, W, dp);
+    
+    // Calculate the maximum value by taking the current item
+    int taken = INT_MIN;
+    if (wt[ind] &lt;= W)
+        taken = val[ind] + knapsackUtil(wt, val, ind, W - wt[ind], dp);
+        
+    // Store the maximum value in the DP table and return it
+    return dp[ind][W] = max(notTaken, taken);
+}
+
+// Function to solve the unbounded knapsack problem
+int unboundedKnapsack(int n, int W, vector&lt;int&gt;&amp; val, vector&lt;int&gt;&amp; wt) {
+    vector&lt;vector&lt;int&gt;&gt; dp(n, vector&lt;int&gt;(W + 1, -1)); // Create a DP table
+    
+    // Call the utility function to calculate the maximum value
+    return knapsackUtil(wt, val, n - 1, W, dp);
+}
+
+int main() {
+    vector&lt;int&gt; wt = {2, 4, 6}; // Weight of items
+    vector&lt;int&gt; val = {5, 11, 13}; // Value of items
+    int W = 10; // Weight capacity of the knapsack
+    int n = wt.size(); // Number of items
+    
+    // Call the function to calculate and output the maximum value the thief can steal
+    cout &lt;&lt; "The Maximum value of items the thief can steal is " &lt;&lt; unboundedKnapsack(n, W, val, wt) &lt;&lt; endl;
+
+    return 0; // Return 0 to indicate successful program execution
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.*;
+
+class TUF {
+    // Recursive function to solve the unbounded knapsack problem
+    static int knapsackUtil(int[] wt, int[] val, int ind, int W, int[][] dp) {
+        // Base case: If there are no more items to consider
+        if (ind == 0) {
+            // Calculate and return the maximum value possible
+            return ((int) (W / wt[0])) * val[0];
+        }
+
+        // If the result for this subproblem has already been calculated, return it
+        if (dp[ind][W] != -1)
+            return dp[ind][W];
+
+        // Calculate the maximum value when the current item is not taken
+        int notTaken = 0 + knapsackUtil(wt, val, ind - 1, W, dp);
+
+        // Initialize the maximum value when the current item is taken as the minimum integer value
+        int taken = Integer.MIN_VALUE;
+
+        // If the weight of the current item is less than or equal to the available capacity (W),
+        // calculate the maximum value when the current item is taken
+        if (wt[ind] &lt;= W)
+            taken = val[ind] + knapsackUtil(wt, val, ind, W - wt[ind], dp);
+
+        // Store the result in the dp array and return it
+        return dp[ind][W] = Math.max(notTaken, taken);
+    }
+
+    // Function to find the maximum value of items that the thief can steal
+    static int unboundedKnapsack(int n, int W, int[] val, int[] wt) {
+        // Create a 2D array to store results of subproblems
+        int[][] dp = new int[n][W + 1];
+
+        // Initialize the dp array with -1 to indicate that subproblems are not solved yet
+        for (int row[] : dp)
+            Arrays.fill(row, -1);
+
+        // Call the knapsackUtil function to solve the problem
+        return knapsackUtil(wt, val, n - 1, W, dp);
+    }
+
+    public static void main(String args[]) {
+        int wt[] = { 2, 4, 6 };
+        int val[] = { 5, 11, 13 };
+        int W = 10;
+
+        int n = wt.length;
+
+        // Call the unboundedKnapsack function and print the result
+        System.out.println("The Maximum value of items, the thief can steal is " + unboundedKnapsack(n, W, val, wt));
+    }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+import sys
+
+# Recursive function to solve the unbounded knapsack problem
+def knapsackUtil(wt, val, ind, W, dp):
+    # Base case: If there are no more items to consider (index is 0)
+    if ind == 0:
+        return (W // wt[0]) * val[0]
+
+    # If the result for this state is already calculated, return it
+    if dp[ind][W] != -1:
+        return dp[ind][W]
+
+    # Calculate the maximum value when the current item is not taken
+    notTaken = knapsackUtil(wt, val, ind - 1, W, dp)
+
+    # Initialize a variable to store the maximum value when the current item is taken
+    taken = -sys.maxsize
+    if wt[ind] &lt;= W:
+        taken = val[ind] + knapsackUtil(wt, val, ind, W - wt[ind], dp)
+
+    # Store the maximum of "notTaken" and "taken" in the DP table
+    dp[ind][W] = max(notTaken, taken)
+    return dp[ind][W]
+
+# Function to find the maximum value that can be obtained in unbounded knapsack
+def unboundedKnapsack(n, W, val, wt):
+    # Create a DP table initialized with -1
+    dp = [[-1 for _ in range(W + 1)] for _ in range(n)]
+    return knapsackUtil(wt, val, n - 1, W, dp)
+
+def main():
+    wt = [2, 4, 6]
+    val = [5, 11, 13]
+    W = 10
+    n = len(wt)
+
+    print("The Maximum value of items the thief can steal is", unboundedKnapsack(n, W, val, wt))
+
+if __name__ == "__main__":
+    main()
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+function unboundedKnapsack(n, W, val, wt) {
+    // Create a 2D array 'dp' to store dynamic programming results, initialized with -1
+    const dp = Array.from({ length: n }, () =&gt; Array(W + 1).fill(-1));
+
+    // Define a recursive utility function to calculate the maximum value
+    function knapsackUtil(ind, W) {
+        // Base case: If we have reached the first item in the array
+        if (ind === 0) {
+            // Calculate the maximum value for this item
+            return Math.floor(W / wt[0]) * val[0];
+        }
+
+        // If the result for this combination of 'ind' and 'W' has already been calculated, return it
+        if (dp[ind][W] !== -1)
+            return dp[ind][W];
+
+        // Initialize variables to store results
+        let notTaken = 0 + knapsackUtil(ind - 1, W);
+
+        let taken = -Infinity;
+        if (wt[ind] &lt;= W)
+            taken = val[ind] + knapsackUtil(ind, W - wt[ind]);
+
+        // Store and return the result
+        return dp[ind][W] = Math.max(notTaken, taken);
+    }
+
+    // Call the recursive utility function to calculate the maximum value
+    return knapsackUtil(n - 1, W);
+}
+
+// Main function
+function main() {
+    const wt = [2, 4, 6];
+    const val = [5, 11, 13];
+    const W = 10;
+    const n = wt.length;
+
+    // Call the unboundedKnapsack function and print the result
+    console.log("The Maximum value of items the thief can steal is " + unboundedKnapsack(n, W, val, wt));
+}
+
+// Call the main function to start the program
+main();
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Brute Force Here -->
+</p><p><strong>Output:</strong> The Maximum value of items, thief can steal is 27
+
+
+</p>
+<p></p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Brute Force Here -->
+</p><p><strong>Time Complexity: O(N*W)</strong></p>
+<p>Reason: There are N*W states therefore at max ‘N*W’ new problems will be solved.</p>
+<p><strong>Space Complexity: O(N*W) + O(N)</strong></p>
+<p>Reason: We are using a recursion stack space(O(N)) and a 2D array ( O(N*W)).</p>
+<p></p>
+</details>
+</div>
+</details>
+</div>
+<!-- Brute Force Approach Ends here -->
+<!-- Better Approach Starts from here -->
+<div id="better-approach">
+<details>
+<summary class="main-summary">
+<span>
+Tabulation Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition For Better Approach Here -->
+<p>To convert the memoization approach to a tabulation one, create a dp array with the same size as done in memoization. We can initialize it as 0.</p>
+<p>First, we need to initialize the base conditions of the recursive solution.</p>
+<ul><li>At ind==0, we are considering the first element, so we will assign its value as <strong>(i/wt[0]) * val[0]</strong>, where i will iterate from 0 to W.</li><li>Next, we are done for the first row, so our ‘ind’ variable will move from 1 to n-1, whereas our ‘cap’ variable will move from 0 to ‘W’. We will set the nested loops to traverse the dp array.</li><li>Inside the nested loops we will apply the recursive logic to find the answer of the cell.</li><li>When the nested loop execution has ended, we will return dp[n-1][W] as our answer.</li></ul>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+// Function to solve the unbounded knapsack problem
+int unboundedKnapsack(int n, int W, vector&lt;int&gt;&amp; val, vector&lt;int&gt;&amp; wt) {
+    vector&lt;vector&lt;int&gt;&gt; dp(n, vector&lt;int&gt;(W + 1, 0)); // Create a DP table
+
+    // Base Condition
+    for (int i = wt[0]; i &lt;= W; i++) {
+        dp[0][i] = (i / wt[0]) * val[0]; // Calculate the maximum value for the first item
+    }
+
+    for (int ind = 1; ind &lt; n; ind++) {
+        for (int cap = 0; cap &lt;= W; cap++) {
+            int notTaken = 0 + dp[ind - 1][cap]; // Maximum value without taking the current item
+
+            int taken = INT_MIN;
+            if (wt[ind] &lt;= cap)
+                taken = val[ind] + dp[ind][cap - wt[ind]]; // Maximum value by taking the current item
+
+            dp[ind][cap] = max(notTaken, taken); // Store the maximum value in the DP table
+        }
+    }
+
+    return dp[n - 1][W]; // Return the maximum value considering all items and the knapsack capacity
+}
+
+int main() {
+    vector&lt;int&gt; wt = {2, 4, 6}; // Weight of items
+    vector&lt;int&gt; val = {5, 11, 13}; // Value of items
+    int W = 10; // Weight capacity of the knapsack
+    int n = wt.size(); // Number of items
+
+    // Call the function to calculate and output the maximum value the thief can steal
+    cout &lt;&lt; "The Maximum value of items the thief can steal is " &lt;&lt; unboundedKnapsack(n, W, val, wt) &lt;&lt; endl;
+
+    return 0; // Return 0 to indicate successful program execution
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.*;
+
+class TUF {
+    // Function to solve the unbounded knapsack problem
+    static int unboundedKnapsack(int n, int W, int[] val, int[] wt) {
+        // Create a 2D array to store results of subproblems
+        int[][] dp = new int[n][W + 1];
+
+        // Base condition: Initialize the dp array for the first item
+        for (int i = wt[0]; i &lt;= W; i++) {
+            dp[0][i] = ((int) i / wt[0]) * val[0];
+        }
+
+        // Fill the dp array using dynamic programming
+        for (int ind = 1; ind &lt; n; ind++) {
+            for (int cap = 0; cap &lt;= W; cap++) {
+                // Calculate the maximum value when the current item is not taken
+                int notTaken = 0 + dp[ind - 1][cap];
+
+                // Initialize the maximum value when the current item is taken as the minimum integer value
+                int taken = Integer.MIN_VALUE;
+
+                // If the weight of the current item is less than or equal to the current capacity (cap),
+                // calculate the maximum value when the current item is taken
+                if (wt[ind] &lt;= cap)
+                    taken = val[ind] + dp[ind][cap - wt[ind]];
+
+                // Store the result in the dp array
+                dp[ind][cap] = Math.max(notTaken, taken);
+            }
+        }
+
+        return dp[n - 1][W]; // Return the maximum value that can be obtained
+    }
+
+    public static void main(String args[]) {
+        int wt[] = { 2, 4, 6 };
+        int val[] = { 5, 11, 13 };
+        int W = 10;
+        int n = wt.length;
+
+        // Call the unboundedKnapsack function and print the result
+        System.out.println("The Maximum value of items the thief can steal is " + unboundedKnapsack(n, W, val, wt));
+    }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+import sys
+
+# Function to solve the unbounded knapsack problem using dynamic programming
+def unboundedKnapsack(n, W, val, wt):
+    # Create a DP table to store the maximum value for different capacities
+    dp = [[0 for j in range(W + 1)] for i in range(n)]
+
+    # Initialize the base condition for the first item
+    for i in range(wt[0], W + 1, wt[0]):
+        dp[0][i] = ((i // wt[0]) * val[0])
+
+    # Fill in the DP table for the remaining items and capacities
+    for ind in range(1, n):
+        for cap in range(W + 1):
+            # Calculate the maximum value when the current item is not taken
+            notTaken = 0 + dp[ind - 1][cap]
+
+            # Initialize a variable to store the maximum value when the current item is taken
+            taken = -sys.maxsize
+            if wt[ind] &lt;= cap:
+                taken = val[ind] + dp[ind][cap - wt[ind]]
+
+            # Store the maximum of "notTaken" and "taken" in the DP table
+            dp[ind][cap] = max(notTaken, taken)
+
+    # The maximum value for the entire knapsack is at dp[n-1][W]
+    return dp[n - 1][W]
+
+def main():
+    wt = [2, 4, 6]
+    val = [5, 11, 13]
+    W = 10
+    n = len(wt)
+
+    print("The Maximum value of items the thief can steal is", unboundedKnapsack(n, W, val, wt))
+
+if __name__ == "__main__":
+    main()
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+function unboundedKnapsack(n, W, val, wt) {
+    // Create a 2D array 'dp' to store dynamic programming results, initialized with 0
+    const dp = Array.from({ length: n }, () =&gt; Array(W + 1).fill(0));
+
+    // Initializing the base condition for the first item in the array
+    for (let i = wt[0]; i &lt;= W; i++) {
+        dp[0][i] = Math.floor(i / wt[0]) * val[0];
+    }
+
+    // Populating the dp array using nested loops
+    for (let ind = 1; ind &lt; n; ind++) {
+        for (let cap = 0; cap &lt;= W; cap++) {
+            const notTaken = dp[ind - 1][cap];
+
+            let taken = -Infinity;
+            if (wt[ind] &lt;= cap)
+                taken = val[ind] + dp[ind][cap - wt[ind]];
+
+            dp[ind][cap] = Math.max(notTaken, taken);
+        }
+    }
+
+    // The result is stored in the bottom-right cell of the dp array
+    return dp[n - 1][W];
+}
+
+// Main function
+function main() {
+    const wt = [2, 4, 6];
+    const val = [5, 11, 13];
+    const W = 10;
+    const n = wt.length;
+
+    // Call the unboundedKnapsack function and print the result
+    console.log("The Maximum value of items the thief can steal is " + unboundedKnapsack(n, W, val, wt));
+}
+
+// Call the main function to start the program
+main();
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Better Approach Here -->
+<strong>Output:</strong> The Maximum value of items, thief can steal is 27
+
+</p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Better Approach Here -->
+</p><p><strong>Time Complexity: O(N*W)</strong></p>
+<p>Reason: There are two nested loops</p>
+<p><strong>Space Complexity: O(N*W)</strong></p>
+<p>Reason: We are using an external array of size ‘N*W’. Stack Space is eliminated.</p>
+<p></p>
+</details>
+</div>
+</details>
+</div>
+<!-- Better Approach Ends from here -->
+<!-- Optimal Approach Starts from here -->
+<div id="optimal-approach">
+<details>
+<summary class="main-summary">
+<span>
+Space Optimization Approach 
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm of Better Approach Here -->
+<p>If we closely look the relation,</p>
+<p><strong>dp[ind][cap] =  max(dp[ind-1][cap] ,dp[ind][cap-wt[ind]]</strong></p>
+<p>We see that to calculate a value of a cell of the dp array, we need only the previous row values (say prev). So, we don’t need to store an entire array. Hence we can space optimize it.</p>
+<p>We will be space optimizing this solution using <strong>only one row.</strong></p>
+<p><strong>Intuition:</strong></p>
+<p>If we clearly see the values required:  dp[ind-1][cap] and dp[ind-1][cap - wt[ind]], we can say that if we are at a column cap, we will only require the values shown in the blue box(of the same column) from the previous row and other values will be from the cur row itself. So why do we need to store an entire array for it?</p>
+<p><img height="308" src="assets/4fab4327fade9b11228f362ed0146ae1" width="600"/></p>
+<p>If we need only one value from the prev row, there is no need to store an entire row. We can work a bit smarter.</p>
+<p>We can use the cur row itself to store the required value in the following way:</p>
+<ul><li>We somehow make sure that the previous value( say preValue) is available to us in some manner ( we will discuss later how we got the value).</li><li>Now, let us say that we want to find the value of cell cur[3], by going through the relation we find that we need a preValue and one value from the cur row.</li><li>We see that to calculate the cur[3] element, we need only a single variable (preValue). The catch is that we can initially place this preValue at the position cur[3] (before finding its updated value) and later while calculating for the current row’s cell cur[3], the value present there automatically serves as the preValue and we can use it to find the required cur[3] value. ( If there is any confusion please see the code).</li><li>After calculating the cur[3] value we store it at the cur[3] position so this cur[3] will automatically serve as preValue for the next row. In this way, we space-optimize the tabulation approach by just using one row.</li></ul>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+// Function to solve the unbounded knapsack problem
+int unboundedKnapsack(int n, int W, vector&lt;int&gt;&amp; val, vector&lt;int&gt;&amp; wt) {
+    vector&lt;int&gt; cur(W + 1, 0); // Create a vector to store the current DP state
+
+    // Base Condition
+    for (int i = wt[0]; i &lt;= W; i++) {
+        cur[i] = (i / wt[0]) * val[0]; // Calculate the maximum value for the first item
+    }
+
+    for (int ind = 1; ind &lt; n; ind++) {
+        for (int cap = 0; cap &lt;= W; cap++) {
+            int notTaken = cur[cap]; // Maximum value without taking the current item
+
+            int taken = INT_MIN;
+            if (wt[ind] &lt;= cap)
+                taken = val[ind] + cur[cap - wt[ind]]; // Maximum value by taking the current item
+
+            cur[cap] = max(notTaken, taken); // Store the maximum value in the current DP state
+        }
+    }
+
+    return cur[W]; // Return the maximum value considering all items and the knapsack capacity
+}
+
+int main() {
+    vector&lt;int&gt; wt = {2, 4, 6}; // Weight of items
+    vector&lt;int&gt; val = {5, 11, 13}; // Value of items
+    int W = 10; // Weight capacity of the knapsack
+    int n = wt.size(); // Number of items
+
+    // Call the function to calculate and output the maximum value the thief can steal
+    cout &lt;&lt; "The Maximum value of items the thief can steal is " &lt;&lt; unboundedKnapsack(n, W, val, wt) &lt;&lt; endl;
+
+    return 0; // Return 0 to indicate successful program execution
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.*;
+
+class TUF {
+    // Function to solve the unbounded knapsack problem
+    static int unboundedKnapsack(int n, int W, int[] val, int[] wt) {
+        // Create an array to store the maximum value for each capacity from 0 to W
+        int cur[] = new int[W + 1];
+
+        // Base condition: Initialize the cur array for the first item
+        for (int i = wt[0]; i &lt;= W; i++) {
+            cur[i] = ((int) i / wt[0]) * val[0];
+        }
+
+        // Fill the cur array using dynamic programming
+        for (int ind = 1; ind &lt; n; ind++) {
+            for (int cap = 0; cap &lt;= W; cap++) {
+                // Calculate the maximum value when the current item is not taken
+                int notTaken = cur[cap];
+
+                // Initialize the maximum value when the current item is taken as the minimum integer value
+                int taken = Integer.MIN_VALUE;
+
+                // If the weight of the current item is less than or equal to the current capacity (cap),
+                // calculate the maximum value when the current item is taken
+                if (wt[ind] &lt;= cap)
+                    taken = val[ind] + cur[cap - wt[ind]];
+
+                // Store the result in the cur array
+                cur[cap] = Math.max(notTaken, taken);
+            }
+        }
+
+        return cur[W]; // Return the maximum value that can be obtained with the given capacity W
+    }
+
+    public static void main(String args[]) {
+        int wt[] = { 2, 4, 6 };
+        int val[] = { 5, 11, 13 };
+        int W = 10;
+        int n = wt.length;
+
+        // Call the unboundedKnapsack function and print the result
+        System.out.println("The Maximum value of items the thief can steal is " + unboundedKnapsack(n, W, val, wt));
+    }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+import sys
+
+# Function to solve the unbounded knapsack problem using dynamic programming
+def unboundedKnapsack(n, W, val, wt):
+    # Create a list 'cur' to store the maximum value for different capacities
+    cur = [0] * (W + 1)
+
+    # Initialize the base condition for the first item
+    for i in range(wt[0], W + 1):
+        cur[i] = (i // wt[0]) * val[0]
+
+    # Fill in the 'cur' list for the remaining items and capacities
+    for ind in range(1, n):
+        for cap in range(W + 1):
+            # Calculate the maximum value when the current item is not taken
+            notTaken = cur[cap]
+
+            # Initialize a variable to store the maximum value when the current item is taken
+            taken = -sys.maxsize
+            if wt[ind] &lt;= cap:
+                taken = val[ind] + cur[cap - wt[ind]]
+
+            # Store the maximum of "notTaken" and "taken" in the 'cur' list
+            cur[cap] = max(notTaken, taken)
+
+    # The maximum value for the entire knapsack is at 'cur[W]'
+    return cur[W]
+
+def main():
+    wt = [2, 4, 6]
+    val = [5, 11, 13]
+    W = 10
+    n = len(wt)
+
+    print("The Maximum value of items the thief can steal is", unboundedKnapsack(n, W, val, wt))
+
+if __name__ == "__main__":
+    main()
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+function unboundedKnapsack(n, W, val, wt) {
+    // Initialize an array 'cur' to store dynamic programming results, initialized with 0
+    const cur = new Array(W + 1).fill(0);
+
+    // Initializing the base condition for the first item in the array
+    for (let i = wt[0]; i &lt;= W; i++) {
+        cur[i] = Math.floor(i / wt[0]) * val[0];
+    }
+
+    // Populating the 'cur' array using nested loops
+    for (let ind = 1; ind &lt; n; ind++) {
+        for (let cap = 0; cap &lt;= W; cap++) {
+            const notTaken = cur[cap];
+
+            let taken = -Infinity;
+            if (wt[ind] &lt;= cap)
+                taken = val[ind] + cur[cap - wt[ind]];
+
+            cur[cap] = Math.max(notTaken, taken);
+        }
+    }
+
+    // The result is stored in the last element of the 'cur' array
+    return cur[W];
+}
+
+// Main function
+function main() {
+    const wt = [2, 4, 6];
+    const val = [5, 11, 13];
+    const W = 10;
+    const n = wt.length;
+
+    // Call the unboundedKnapsack function and print the result
+    console.log("The Maximum value of items the thief can steal is " + unboundedKnapsack(n, W, val, wt));
+}
+
+// Call the main function to start the program
+main();
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Optimal Apporach Here -->
+<strong>Output:</strong>The Maximum value of items, thief can steal is 27
+
+
+</p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Optimal Approach-->
+</p><p><strong>Time Complexity: O(N*W)</strong></p>
+<p>Reason: There are two nested loops.</p>
+<p><strong>Space Complexity: O(W)</strong></p>
+<p>Reason: We are using an external array of size ‘W+1’ to store only one row.</p>
+<p></p>
+</details>
+</div>
+</details>
+</div>
+<!-- Optimal Approach Starts from here -->
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Video Explination Drop-Down -->
+<div class="dsa_article_youtube_video" id="dsa_article_video_explanation">
+<details>
+<summary class="main-summary">
+<span>
+Video Explanation
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="yt-video-wrapper">
+<!-- Insert iframe embed Link of Youtube Video-->
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" class="lazy-loaded" data-lazy-type="iframe" data-src="https://www.youtube.com/embed/mO8XpGoJwuo?si=fMuwwBF3yLfRJTju" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/mO8XpGoJwuo?feature=oembed" title="Rod Cutting Problem" width="810"></iframe><noscript>
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/mO8XpGoJwuo?si=fMuwwBF3yLfRJTju" title="Rod Cutting Problem" width="810"></iframe></noscript>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script>
+
+const codeSections = document.querySelectorAll('.code-section');
+
+// Get last selected language from localStorage or set default value
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+// Update last selected language for all sections and store in localStorage
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+// Handle copy button click event
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+// Set initial state of the tabs
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<script>
+const codeSections = document.querySelectorAll('.code-section');
+
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<link href="assets/4237ffca7ce6aadb438c457e0a675b12.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+<script src="index.js"></script>
+<script>hljs.highlightAll();</script>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script src="https://takeuforward.org/UXApproachDropDowns/3ApproachJSScript.js"></script>
+<!-- /wp:html -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/anshuman-sharma-a1b245194/" rel="noreferrer noopener" target="_blank">Anshuman Sharma</a></strong> <em>and <a href="https://www.linkedin.com/in/abhipsita-das-5b7069212/?originalSubdomain=in" rel="noreferrer noopener" target="_blank"><strong>Abhipsita Das</strong></a></em></em> <em>for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

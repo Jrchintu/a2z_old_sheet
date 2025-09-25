@@ -1,0 +1,1805 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Program to generate Pascal's Triangle</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Program to generate Pascal's Triangle</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement:</strong> This problem has 3 variations. They are stated below:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Variation 1: </strong>Given row number r and column number c. Print the element at position (r, c) in Pascal’s triangle.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Variation 2: </strong>Given the row number n. Print the n-th row of Pascal’s triangle.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Variation 3: </strong>Given the number of rows n. Print the first n rows of Pascal’s triangle.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>In <strong>Pascal’s triangle</strong>, each number is the sum of the two numbers directly above it as shown in the figure below:</p>
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<figure class="wp-block-image"><img alt="" height="600" src="assets/fc379ed45e016b3faf5dc5508394c80e" width="500"/></figure>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Examples Drop-Down -->
+<div id="article_examples">
+<details class="article_example_details">
+<summary class="article_example_summary">
+<span><strong>
+Examples
+</strong>
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="atricle_example_content">
+<pre class="wp-block-preformatted"><strong>Example 1:</strong>
+<strong>Input Format:</strong> N = 5, r = 5, c = 3
+<strong>Result:</strong> 6 (for variation 1)
+1 4 6 4 1 (for variation 2)
+
+1 
+1 1 
+1 2 1 
+1 3 3 1 
+1 4 6 4 1    (for variation 3)
+
+<strong>Explanation:</strong> There are 5 rows in the output matrix. Each row is formed using the logic of Pascal’s triangle.
+
+Example 2:
+<strong>Input Format:</strong> N = 1, r = 1, c = 1
+<strong>Result:</strong> 1 (for variation 1)
+    1 (for variation 2)
+    1  (for variation 3)
+<strong>Explanation:</strong> The output matrix has only 1 row.</pre>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Practice Section-->
+<div class="practice">
+<span><strong>Practice: </strong></span>
+<div class="problem-buttons">
+<!-- Add Problem Link inside href -->
+<a href="https://www.codingninjas.com/codestudio/problems/print-pascal-s-triangle_6917910?utm_source=youtube&amp;utm_medium=affiliate&amp;utm_campaign=striver_Arrayproblems" rel="noopener" target="_blank">
+<span>Solve Problem</span>
+<img alt="code-studio" src="assets/86dd2cadbd0e7ef71ad98d3b7f2f2efc.png"/>
+</a>
+</div>
+<div class="problem-buttons">
+<!-- Add Problem Link inside href -->
+<a href="https://leetcode.com/problems/pascals-triangle/" rel="noopener" target="_blank">
+<span>Solve Problem</span>
+<img alt="leetcode" src="assets/0adbf250d6f7f9015ad65f4aa09238a4.png"/>
+</a>
+</div>
+</div>
+<p class="new-disclaimer"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out
+yourself first. </em></p>
+<!-- /wp:html -->
+<!-- wp:html -->
+<div class="horizontal_navbar_dsa_article">
+<div class="grid_container_three">
+<a class="three-boxes box-a" href="#brute-force-approach">
+Variation 1
+</a>
+<a class="three-boxes box-b" href="#better-approach">
+Variation 2
+</a>
+<a class="three-boxes box-c" href="#optimal-approach">
+Variation 3
+</a>
+<a class="three-boxes box-d" href="#dsa_article_video_explanation">
+<svg fill="none" height="26" viewbox="0 0 20 14" width="26" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 10L13.19 7L8 4V10ZM19.56 2.17C19.69 2.64 19.78 3.27 19.84 4.07C19.91 4.87 19.94 5.56 19.94 6.16L20 7C20 9.19 19.84 10.8 19.56 11.83C19.31 12.73 18.73 13.31 17.83 13.56C17.36 13.69 16.5 13.78 15.18 13.84C13.88 13.91 12.69 13.94 11.59 13.94L10 14C5.81 14 3.2 13.84 2.17 13.56C1.27 13.31 0.69 12.73 0.44 11.83C0.31 11.36 0.22 10.73 0.16 9.93C0.0900001 9.13 0.0599999 8.44 0.0599999 7.84L0 7C0 4.81 0.16 3.2 0.44 2.17C0.69 1.27 1.27 0.69 2.17 0.44C2.64 0.31 3.5 0.22 4.82 0.16C6.12 0.0899998 7.31 0.0599999 8.41 0.0599999L10 0C14.19 0 16.8 0.16 17.83 0.44C18.73 0.69 19.31 1.27 19.56 2.17Z" fill="red"></path>
+</svg>
+</a>
+<div class="box-e tooltip">
+<svg fill="none" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.842 9.25L11.9577 10.17C11.2502 10.89 10.8081 11.5 10.8081 13H8.84297V12.5C8.84297 11.39 9.28511 10.39 9.99255 9.67L11.2109 8.41C11.5745 8.05 11.7906 7.55 11.7906 7C11.7906 6.46957 11.5836 5.96086 11.2151 5.58579C10.8465 5.21071 10.3467 5 9.82552 5C9.30434 5 8.80451 5.21071 8.43598 5.58579C8.06745 5.96086 7.86041 6.46957 7.86041 7H5.89531C5.89531 5.93913 6.30938 4.92172 7.04644 4.17157C7.7835 3.42143 8.78316 3 9.82552 3C10.8679 3 11.8675 3.42143 12.6046 4.17157C13.3417 4.92172 13.7557 5.93913 13.7557 7C13.7543 7.84324 13.4259 8.65183 12.842 9.25ZM10.8081 17H8.84297V15H10.8081M9.82552 0C8.53521 0 7.25754 0.258658 6.06545 0.761205C4.87337 1.26375 3.79021 2.00035 2.87783 2.92893C1.03519 4.8043 0 7.34784 0 10C0 12.6522 1.03519 15.1957 2.87783 17.0711C3.79021 17.9997 4.87337 18.7362 6.06545 19.2388C7.25754 19.7413 8.53521 20 9.82552 20C12.4314 20 14.9306 18.9464 16.7732 17.0711C18.6158 15.1957 19.651 12.6522 19.651 10C19.651 4.47 15.2296 0 9.82552 0Z" fill="black"></path>
+</svg>
+<div class="bottom">
+<p>Expand any one approach by clicking the given options in the bar. Clicking one approach on bar,
+closes all other expands. You can manually expand more than one approach at a time</p>
+<i></i>
+</div>
+</div>
+</div>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Approaches Drop-Down -->
+<div class="dsa_article_dropdown_approachs">
+<!-- Brute Force Approach Starts from here -->
+<div id="brute-force-approach">
+<details>
+<summary class="main-summary">
+<span>
+                    Variation 1
+                </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<div style="padding: 10px;">
+<p>In this case, we are given the row number r and the column number c, and we need to find out the element at position (r,c). </p>
+</div>
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+                            Naive Approach
+                        </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<p>In this case, we are given the row number r and the column number c, and we need to find out
+                            the element at position (r,c). </p>
+<p><strong><em>One of the Naive approaches</em></strong> is to generate the entire Pascal
+                            triangle and then find the element at position (r,c). We will discuss in variation 3 how to
+                            generate Pascal’s triangle.</p>
+<p>We have an easier formula to find out the element i.e. <sup>r-1</sup>C<sub>c-1</sub>. Let’s
+                            try to analyze the formula to find the value of the combination assuming r-1 as n and c-1 as
+                            r:</p>
+<pre class="wp-block-preformatted">nCr = n! / (r! * (n-r)!)</pre>
+<p><strong>Calculating the value of nCr:</strong></p>
+<p><strong>Naive Approach: </strong></p>
+<p>We can separately calculate n!, r!, (n-r)! and using their values we can calculate nCr. This
+                            is an extremely naive way to calculate. The time complexity will be O(n)+O(r)+O(n-r).</p>
+</div>
+</details>
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+                            Optimal Approach
+                        </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+                                    Algorithm / Intuition
+                                </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<pre class="wp-block-preformatted">We can optimize this calculation by the following observation. 
+Assume, given r = 7, c = 4. 
+Now, n = r-1 = 7-1 = 6 and r = c-1 = 4-1 = 3
+Let’s calculate 6C3 = 6! / (3! *(6-3)!) = (6*5*4*3*2*1) / ((3*2*1)*(3*2*1))
+This will boil down to (6*5*4) / (3*2*1)
+So, nCr = (n*(n-1)*(n-2)*.....*(n-r+1)) / (r*(r-1)*(r-2)*....1)
+                                </pre>
+<p>Now, we will use this optimized formula to calculate the value of nCr. But while implementing
+                                    this into code we will take the denominator in the forward direction like: </p>
+<pre class="wp-block-preformatted">(n / 1)*((n-1) / 2)*.....*((n-r+1) / r).</pre>
+<p>The code will be like the following:</p>
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-8415" src="assets/5d7fe2822fd582b8505d95580d97d78d.png"/></figure>
+<h3><strong>Approach:</strong></h3>
+<p>The steps are as follows:</p>
+<ol>
+<li>First, we will consider r-1 as n and c-1 as r.</li>
+<li>After that, we will simply calculate the value of the combination using a loop. 
+                                    </li>
+<li>The loop will run from 0 to r. And in each iteration, we will multiply (n-i) with the
+                                        result and divide the result by (i+1).</li>
+<li>Finally, the calculated value of the combination will be our answer.</li>
+</ol>
+<p><strong>Note: </strong><em>For a better understanding of intuition, please watch the video at
+                                        the bottom of the page.</em></p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+                                    Code
+                                </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">Javascript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int nCr(int n, int r) {
+    long long res = 1;
+
+    // calculating nCr:
+    for (int i = 0; i &lt; r; i++) {
+        res = res * (n - i);
+        res = res / (i + 1);
+    }
+    return res;
+}
+
+int pascalTriangle(int r, int c) {
+    int element = nCr(r - 1, c - 1);
+    return element;
+}
+
+int main()
+{
+    int r = 5; // row number
+    int c = 3; // col number
+    int element = pascalTriangle(r, c);
+    cout &lt;&lt; "The element at position (r,c) is: "
+            &lt;&lt; element &lt;&lt; "n";
+    return 0;
+}
+        </code>
+        </pre>
+<p><strong>Output: </strong>The element at position (r,c) is: 6</p>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.*;
+
+public class tUf {
+    public static long nCr(int n, int r) {
+        long res = 1;
+
+        // calculating nCr:
+        for (int i = 0; i &lt; r; i++) {
+            res = res * (n - i);
+            res = res / (i + 1);
+        }
+        return res;
+    }
+
+    public static int pascalTriangle(int r, int c) {
+        int element = (int) nCr(r - 1, c - 1);
+        return element;
+    }
+
+    public static void main(String[] args) {
+        int r = 5; // row number
+        int c = 3; // col number
+        int element = pascalTriangle(r, c);
+        System.out.println("The element at position (r,c) is: " + element);
+    }
+}  
+        </code>
+        </pre>
+<p><strong>Output: </strong>The element at position (r,c) is: 6</p>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+import math
+
+def nCr(n, r):
+    res = 1
+
+    # calculating nCr:
+    for i in range(r):
+        res = res * (n - i)
+        res = res // (i + 1)
+
+    return res
+
+def pascalTriangle(r, c):
+    element = nCr(r - 1, c - 1)
+    return element
+
+if __name__ == '__main__':
+    r = 5 # row number
+    c = 3 # col number
+    element = pascalTriangle(r, c)
+    print(f"The element at position (r,c) is: {element}")
+    
+        </code>
+        </pre>
+<p><strong>Output: </strong>The element at position (r,c) is: 6</p>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+function nCr(n, r) {
+    let res = 1;
+
+    // calculating nCr:
+    for (let i = 0; i &lt; r; i++) {
+        res = res * (n - i);
+        res = res / (i + 1);
+    }
+    return res;
+    }
+
+    function pascalTriangle(r, c) {
+    const element = nCr(r - 1, c - 1);
+    return element;
+}
+
+const r = 5; // row number
+const c = 3; // col number
+const element = pascalTriangle(r, c);
+console.log(`The element at position (${r},${c}) is: ${element}`);
+  
+        </code>
+        </pre>
+<p><strong>Output: </strong>The element at position (r,c) is: 6</p>
+</div>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+                                    Complexity Analysis
+                                </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p><strong>Time Complexity: </strong>O(c), where c = given column number.<br/><strong>Reason: </strong>We are running a loop for r times, where r is c-1.</p>
+<p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.</p>
+<p></p>
+</details>
+</div>
+</details>
+</div>
+</details>
+</div>
+<div id="better-approach">
+<details>
+<summary class="main-summary">
+<span>
+                    Variation 2
+                </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<div style="padding: 10px;">
+<p><strong>Given the row number n. Print the n-th row of Pascal’s triangle.</strong></p>
+<p>Our first observation regarding Pascal’s triangle should be that the n-th row of the triangle has exactly n elements. With this observation, we will proceed to solve this problem.</p>
+</div>
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+                            Naive Approach
+                        </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<p>In this approach, for every column from 1 to n, we will calculate the element (n, c)(<em>where n is the given row number and c is the column number that will vary from 1 to n</em>) using the previous method. Thus, we will print the row.  </p>
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+                                    Algorithm / Intuition
+                                </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<p>In this approach, for every column from 1 to n, we will calculate the element (n, c)(<em>where n is the given row number and c is the column number that will vary from 1 to n</em>) using the previous method. Thus, we will print the row.  </p>
+<h3><strong>Approach:</strong></h3>
+<p>The steps are as follows:</p>
+<ol><li>We will use a loop(say c) to iterate over each column i.e. from 1 to n. And for each column, we will do the following steps:<ol><li>First, we will consider n-1 as n and c-1 as r.</li><li>After that, we will simply calculate the value of the combination using a loop. </li><li>The loop will run from 0 to r. And in each iteration, we will multiply (n-i) with the result and divide the result by (i+1).</li><li>Finally, we will print the element.</li></ol></li><li>Finally, the entire row will be printed.</li></ol>
+<p><strong>Note: </strong><em>For a better understanding of intuition, please watch the video at the bottom of the page.</em></p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+                                    Code
+                                </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">Javascript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int nCr(int n, int r) {
+    long long res = 1;
+
+    // calculating nCr:
+    for (int i = 0; i &lt; r; i++) {
+        res = res * (n - i);
+        res = res / (i + 1);
+    }
+    return res;
+}
+
+void pascalTriangle(int n) {
+    // printing the entire row n:
+    for (int c = 1; c &lt;= n; c++) {
+        cout &lt;&lt; nCr(n - 1, c - 1) &lt;&lt; " ";
+    }
+    cout &lt;&lt; "n";
+}
+
+int main()
+{
+    int n = 5;
+    pascalTriangle(n);
+    return 0;
+}
+</code></pre>
+<p><strong>Output: </strong>1 4 6 4 1</p>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.*;
+
+public class Main {
+
+    public static long nCr(int n, int r) {
+        long res = 1;
+
+        // calculating nCr:
+        for (int i = 0; i &lt; r; i++) {
+            res = res * (n - i);
+            res = res / (i + 1);
+        }
+        return res;
+    }
+
+    public static void pascalTriangle(int n) {
+        // printing the entire row n:
+        for (int c = 1; c &lt;= n; c++) {
+            System.out.print(nCr(n - 1, c - 1) + " ");
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        int n = 5;
+        pascalTriangle(n);
+    }
+}
+    </code></pre>
+<p><strong>Output: </strong>1 4 6 4 1</p>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+import math
+
+def nCr(n, r):
+    res = 1
+    # calculating nCr:
+    for i in range(r):
+        res = res * (n - i)
+        res = res // (i + 1)
+    return res
+
+def pascalTriangle(n):
+    # printing the entire row n:
+    for c in range(1, n+1):
+        print(nCr(n-1, c-1), end=" ")
+    print()
+
+if __name__ == "__main__":
+    n = 5
+    pascalTriangle(n)
+    </code></pre>
+<p><strong>Output: </strong>1 4 6 4 1</p>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+function nCr(n, r) {
+    let res = 1;
+  
+    // calculating nCr:
+    for (let i = 0; i &lt; r; i++) {
+      res = res * (n - i);
+      res = res / (i + 1);
+    }
+    return res;
+}
+  
+  function pascalTriangle(n) {
+    // printing the entire row n:
+    for (let c = 1; c &lt;= n; c++) {
+      console.log(nCr(n - 1, c - 1) + " ");
+    }
+    console.log("n");
+}
+  
+const n = 5;
+pascalTriangle(n);
+</code></pre>
+<p><strong>Output: </strong>1 4 6 4 1</p>
+</div>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+                                    Complexity Analysis
+                                </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p><strong>Time Complexity: </strong>O(n*r), where n is the given row number, and r is the column index which can vary from 0 to n-1.<br/><strong>Reason: </strong>We are calculating the element for each column. Now, there are total n columns, and for each column, the calculation of the element takes O(r) time where r is the column index.</p>
+<p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.</p>
+</details>
+</div>
+</details>
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+                            Optimal Approach
+                        </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+                                    Algorithm / Intuition
+                                </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<p>We will try to build intuition for this approach using the following observations.</p>
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-8416" src="assets/088392894dc6842870c721916282e954.png"/></figure>
+<p>Here, we can observe that the numbers marked in red are added to the previous number to build the current number. In each step, the numerator is multiplied by the previous consecutive element, and the denominator is multiplied by the next consecutive element.</p>
+<p>We will replicate this in our algorithm. First, we will mark the indices of the column starting from 0. Then we will simply multiply the numerator by (n-index) and the denominator by the index itself.</p>
+<p>From column no. 1 the formula will be the following:</p>
+<pre class="wp-block-preformatted">Current element = prevElement * (rowNumber - colIndex) / colIndex</pre>
+<h3><strong>Approach:</strong></h3>
+<p>The steps are as follows:</p>
+<ol><li>First, we will print the 1st element i.e. 1 manually.</li><li>After that, we will use a loop(<em>say i</em>) that runs from 1 to n-1. It will print the rest of the elements.</li><li>Inside the loop, we will use the above-said formula to print the element. We will multiply the previous answer by (n-i) and then divide it by i itself.</li><li>Thus, the entire row will be printed.</li></ol>
+<p><strong>Note: </strong><em>If we want to store the row elements, we just need to store each element instead of printing it.</em></p>
+<p><strong>Note: </strong><em>For a better understanding of intuition, please watch the video at the bottom of the page.</em></p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+                                    Code
+                                </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">Javascript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">\
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+void pascalTriangle(int n) {
+    long long ans = 1;
+    cout &lt;&lt; ans &lt;&lt; " "; // printing 1st element
+
+    //Printing the rest of the part:
+    for (int i = 1; i &lt; n; i++) {
+        ans = ans * (n - i);
+        ans = ans / i;
+        cout &lt;&lt; ans &lt;&lt; " ";
+    }
+    cout &lt;&lt; endl;
+}
+
+int main()
+{
+    int n = 5;
+    pascalTriangle(n);
+    return 0;
+}
+</code></pre>
+<p><strong>Output: </strong>1 4 6 4 1</p>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.*;
+
+public class tUf {
+
+    static void pascalTriangle(int n) {
+        long ans = 1;
+        System.out.print(ans + " "); // printing 1st element
+
+        // Printing the rest of the part:
+        for (int i = 1; i &lt; n; i++) {
+            ans = ans * (n - i);
+            ans = ans / i;
+            System.out.print(ans + " ");
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        int n = 5;
+        pascalTriangle(n);
+    }
+}
+</code></pre>
+<p><strong>Output: </strong>1 4 6 4 1</p>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+def pascalTriangle(n):
+    ans = 1
+    print(ans, end=" ") # printing 1st element
+
+    #Printing the rest of the part:
+    for i in range(1, n):
+        ans = ans * (n - i)
+        ans = ans // i
+        print(ans, end=" ")
+    print()
+
+if __name__ == "__main__":
+    n = 5
+    pascalTriangle(n)
+</code></pre>
+<p><strong>Output: </strong>1 4 6 4 1</p>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+function pascalTriangle(n) {
+    let ans = 1;
+    console.log(ans + " "); // printing 1st element
+  
+    //Printing the rest of the part:
+    for (let i = 1; i &lt; n; i++) {
+      ans = ans * (n - i);
+      ans = ans / i;
+      console.log(ans + " ");
+    }
+    console.log("n");
+}
+  
+const n = 5;
+pascalTriangle(n);
+        </code>
+        </pre>
+<p><strong>Output: </strong>1 4 6 4 1</p>
+</div>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+                                    Complexity Analysis
+                                </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p><strong>Time Complexity: </strong>O(N) where N = given row number. Here we are using only a single loop.</p>
+<p><strong>Space Complexity: </strong>O(1) as we not using any extra space.</p>
+</details>
+</div>
+</details>
+</div>
+</details>
+</div>
+<div id="optimal-approach">
+<details>
+<summary class="main-summary">
+<span>
+                    Variation 3
+                </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+                            Naive Approach
+                        </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+                                    Algorithm / Intuition
+                                </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<p>The naive approach is basically a combination of variation 1 and variation 2. Here, for every row from 1 to n, we will try to generate all the row elements by simply using the naive approach of variation 2. So, we will use the same code as variation 2(naive approach), inside a loop (i.e. row runs from 1 to n).</p>
+<h3><strong>Approach:</strong></h3>
+<p>The steps are as follows:</p>
+<ol><li>First, we will run a loop(say row) from 1 to n.</li><li>We will use a loop(say col) to iterate over each column i.e. from 1 to n. And inside the nested loops, we will do the following steps:<ol><li>First, we will consider row-1 as n and col-1 as r.</li><li>After that, we will simply calculate the value of the combination using a loop. </li><li>The loop will run from 0 to r. And in each iteration, we will multiply (n-i) with the result and divide the result by (i+1).</li><li>Finally, we will add the element to a temporary list.</li></ol></li><li>After calculating all the elements for all columns of a row, we will add the temporary list to our final answer list.</li><li>Finally, we will return the answer list.</li></ol>
+<p><strong>Note: </strong><em>For a better understanding of intuition, please watch the video at the bottom of the page.</em></p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+                                    Code
+                                </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">Javascript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int nCr(int n, int r) {
+    long long res = 1;
+
+    // calculating nCr:
+    for (int i = 0; i &lt; r; i++) {
+        res = res * (n - i);
+        res = res / (i + 1);
+    }
+    return (int)(res);
+}
+
+vector&lt;vector&lt;int&gt;&gt; pascalTriangle(int n) {
+    vector&lt;vector&lt;int&gt;&gt; ans;
+
+    //Store the entire pascal's triangle:
+    for (int row = 1; row &lt;= n; row++) {
+        vector&lt;int&gt; tempLst; // temporary list
+        for (int col = 1; col &lt;= row; col++) {
+            tempLst.push_back(nCr(row - 1, col - 1));
+        }
+        ans.push_back(tempLst);
+    }
+    return ans;
+}
+
+int main()
+{
+    int n = 5;
+    vector&lt;vector&lt;int&gt;&gt; ans = pascalTriangle(n);
+    for (auto it : ans) {
+        for (auto ele : it) {
+            cout &lt;&lt; ele &lt;&lt; " ";
+        }
+        cout &lt;&lt; "n";
+    }
+    return 0;
+}
+</code></pre>
+<p>
+Output: <br/>
+1 <br/>
+1 1 <br/>
+1 2 1 <br/>
+1 3 3 1 <br/>
+1 4 6 4 1 <br/>
+</p>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.*;
+
+public class tUf {
+    public static int nCr(int n, int r) {
+        long res = 1;
+        // calculating nCr:
+        for (int i = 0; i &lt; r; i++) {
+            res = res * (n - i);
+            res = res / (i + 1);
+        }
+        return (int) res;
+    }
+
+    public static List&lt;List&lt;Integer&gt;&gt; pascalTriangle(int n) {
+        List&lt;List&lt;Integer&gt;&gt; ans = new ArrayList&lt;&gt;();
+
+        // Store the entire Pascal's triangle:
+        for (int row = 1; row &lt;= n; row++) {
+            List&lt;Integer&gt; tempLst = new ArrayList&lt;&gt;(); // temporary list
+            for (int col = 1; col &lt;= row; col++) {
+                tempLst.add(nCr(row - 1, col - 1));
+            }
+            ans.add(tempLst);
+        }
+        return ans;
+    }
+
+    public static void main(String[] args) {
+        int n = 5;
+        List&lt;List&lt;Integer&gt;&gt; ans = pascalTriangle(n);
+        for (List&lt;Integer&gt; it : ans) {
+            for (int ele : it) {
+                System.out.print(ele + " ");
+            }
+            System.out.println();
+        }
+    }
+}
+</code></pre>
+<p>
+Output: <br/>
+1 <br/>
+1 1 <br/>
+1 2 1 <br/>
+1 3 3 1 <br/>
+1 4 6 4 1 <br/>
+</p>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+from typing import *
+
+def nCr(n, r):
+    res = 1
+
+    # calculating nCr:
+    for i in range(r):
+        res = res * (n - i)
+        res = res // (i + 1)
+    return int(res)
+
+def pascalTriangle(n : int) -&gt; List[List[int]]:
+    ans = []
+
+    #Store the entire pascal's triangle:
+    for row in range(1, n+1):
+        tempLst = [] # temporary list
+        for col in range(1, row+1):
+            tempLst.append(nCr(row - 1, col - 1))
+        ans.append(tempLst)
+    return ans
+
+if __name__ == '__main__':
+    n = 5
+    ans = pascalTriangle(n)
+    for it in ans:
+        for ele in it:
+            print(ele, end=" ")
+        print()
+</code></pre>
+<p>
+Output: <br/>
+1 <br/>
+1 1 <br/>
+1 2 1 <br/>
+1 3 3 1 <br/>
+1 4 6 4 1 <br/>
+</p>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+function nCr(n, r) {
+    let res = 1;
+  
+    // calculating nCr:
+    for (let i = 0; i &lt; r; i++) {
+      res = res * (n - i);
+      res = res / (i + 1);
+    }
+    return parseInt(res);
+}
+  
+function pascalTriangle(n) {
+    const ans = [];
+  
+    //Store the entire pascal's triangle:
+    for (let row = 1; row &lt;= n; row++) {
+      const tempLst = []; // temporary list
+      for (let col = 1; col &lt;= row; col++) {
+        tempLst.push(nCr(row - 1, col - 1));
+      }
+      ans.push(tempLst);
+    }
+    return ans;
+}
+  
+const n = 5;
+const ans = pascalTriangle(n);
+for (let i = 0; i &lt; ans.length; i++) {
+    console.log(ans[i].join(" ") + "n");
+}
+</code></pre>
+<p>
+Output: <br/>
+1 <br/>
+1 1 <br/>
+1 2 1 <br/>
+1 3 3 1 <br/>
+1 4 6 4 1 <br/>
+</p>
+</div>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+                                    Complexity Analysis
+                                </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p><strong>Time Complexity: </strong>O(n*n*r) ~ O(n<sup>3</sup>), where n = number of rows, and r = column index.<br/><strong>Reason: </strong>The row loop will run for approximately n times. And generating a row using the naive approach of variation 2 takes O(n*r) time complexity.</p>
+<p><strong>Space Complexity: </strong>In this case, we are only using space to store the answer. That is why space complexity can be still considered as O(1).</p>
+</details>
+</div>
+</details>
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+                            Optimal Approach
+                        </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+                                    Algorithm / Intuition
+                                </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<p>Now, in the optimal approach of variation 2, we have learned how to generate a row in O(n) time complexity. So, in order to optimize the overall time complexity, we will be using that approach for every row. Thus the total time complexity will reduce.</p>
+<h3><strong>Approach:</strong></h3>
+<p>The steps are as follows:</p>
+<ol><li>First, we will run a loop(say row) from 1 to n.</li><li>Inside the loop, we will call a <strong>generateRow()</strong> function and add the returned list to our final answer. Inside the function we will do the following:<ol><li>First, we will store the 1st element i.e. 1 manually.</li><li>After that, we will use a loop(<em>say col</em>) that runs from 1 to n-1. It will store the rest of the elements.</li><li>Inside the loop, we will use the specified formula to print the element. We will multiply the previous answer by (row-col) and then divide it by col itself.</li><li>Thus, the entire row will be stored and returned.</li></ol></li><li>Finally, we will return the answer list.</li></ol>
+<p><strong>Note: </strong><em>For a better understanding of intuition, please watch the video at the bottom of the page.</em></p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+                                    Code
+                                </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">Javascript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+vector&lt;int&gt; generateRow(int row) {
+    long long ans = 1;
+    vector&lt;int&gt; ansRow;
+    ansRow.push_back(1); //inserting the 1st element
+
+    //calculate the rest of the elements:
+    for (int col = 1; col &lt; row; col++) {
+        ans = ans * (row - col);
+        ans = ans / col;
+        ansRow.push_back(ans);
+    }
+    return ansRow;
+}
+
+vector&lt;vector&lt;int&gt;&gt; pascalTriangle(int n) {
+    vector&lt;vector&lt;int&gt;&gt; ans;
+
+    //store the entire pascal's triangle:
+    for (int row = 1; row &lt;= n; row++) {
+        ans.push_back(generateRow(row));
+    }
+    return ans;
+}
+
+int main()
+{
+    int n = 5;
+    vector&lt;vector&lt;int&gt;&gt; ans = pascalTriangle(n);
+    for (auto it : ans) {
+        for (auto ele : it) {
+            cout &lt;&lt; ele &lt;&lt; " ";
+        }
+        cout &lt;&lt; "n";
+    }
+    return 0;
+}
+</code></pre>
+<p>
+Output: <br/>
+1 <br/>
+1 1 <br/>
+1 2 1 <br/>
+1 3 3 1 <br/>
+1 4 6 4 1 <br/>
+</p>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.*;
+
+public class tUf {
+    public static List&lt;Integer&gt; generateRow(int row) {
+        long ans = 1;
+        List&lt;Integer&gt; ansRow = new ArrayList&lt;&gt;();
+        ansRow.add(1); //inserting the 1st element
+
+        //calculate the rest of the elements:
+        for (int col = 1; col &lt; row; col++) {
+            ans = ans * (row - col);
+            ans = ans / col;
+            ansRow.add((int)ans);
+        }
+        return ansRow;
+    }
+
+    public static List&lt;List&lt;Integer&gt;&gt; pascalTriangle(int n) {
+        List&lt;List&lt;Integer&gt;&gt; ans = new ArrayList&lt;&gt;();
+
+        //store the entire pascal's triangle:
+        for (int row = 1; row &lt;= n; row++) {
+            ans.add(generateRow(row));
+        }
+        return ans;
+    }
+
+    public static void main(String[] args) {
+        int n = 5;
+        List&lt;List&lt;Integer&gt;&gt; ans = pascalTriangle(n);
+        for (List&lt;Integer&gt; it : ans) {
+            for (int ele : it) {
+                System.out.print(ele + " ");
+            }
+            System.out.println();
+        }
+    }
+}
+</code></pre>
+<p>
+Output: <br/>
+1 <br/>
+1 1 <br/>
+1 2 1 <br/>
+1 3 3 1 <br/>
+1 4 6 4 1 <br/>
+</p>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+from typing import *
+
+def generateRow(row):
+    ans = 1
+    ansRow = [1] #inserting the 1st element
+    
+    #calculate the rest of the elements:
+    for col in range(1, row):
+        ans *= (row - col)
+        ans //= col
+        ansRow.append(ans)
+    return ansRow
+
+def pascalTriangle(n : int) -&gt; List[List[int]]:
+    ans = []
+    
+    #store the entire pascal's triangle:
+    for row in range(1, n+1):
+        ans.append(generateRow(row))
+    return ans
+
+if __name__ == '__main__':
+    n = 5
+    ans = pascalTriangle(n)
+    for it in ans:
+        for ele in it:
+            print(ele, end=" ")
+        print()
+</code></pre>
+<p>
+Output: <br/>
+1 <br/>
+1 1 <br/>
+1 2 1 <br/>
+1 3 3 1 <br/>
+1 4 6 4 1 <br/>
+</p>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+function generateRow(row) {
+    let ans = 1;
+    let ansRow = [1]; // inserting the 1st element
+  
+    // calculate the rest of the elements:
+    for (let col = 1; col &lt; row; col++) {
+      ans = ans * (row - col);
+      ans = ans / col;
+      ansRow.push(ans);
+    }
+    return ansRow;
+}
+  
+function pascalTriangle(n) {
+    let ans = [];
+
+    // store the entire pascal's triangle:
+    for (let row = 1; row &lt;= n; row++) {
+        ans.push(generateRow(row));
+    }
+    return ans;
+}
+  
+let n = 5;
+let ans = pascalTriangle(n);
+for (let i = 0; i &lt; ans.length; i++) {
+    console.log(ans[i].join(" "));
+}
+</code></pre>
+<p>
+Output: <br/>
+1 <br/>
+1 1 <br/>
+1 2 1 <br/>
+1 3 3 1 <br/>
+1 4 6 4 1 <br/>
+</p>
+</div>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+                                    Complexity Analysis
+                                </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p><strong>Time Complexity: </strong>O(n<sup>2</sup>), where n = number of rows(given).<br/><strong>Reason: </strong>We are generating a row for each single row. The number of rows is n. And generating an entire row takes O(n) time complexity.</p>
+<p><strong>Space Complexity: </strong>In this case, we are only using space to store the answer. That is why space complexity can still be considered as O(1).</p>
+</details>
+</div>
+</details>
+</div>
+</details>
+</div>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Video Explination Drop-Down -->
+<div class="dsa_article_youtube_video" id="dsa_article_video_explanation">
+<details>
+<summary class="main-summary">
+<span>
+Video Explanation
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="yt-video-wrapper">
+<!-- Insert iframe embed Link of Youtube Video-->
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" frameborder="0" height="456" src="https://www.youtube.com/embed/bR7mQgwQ_o8" title="YouTube video player" width="810"></iframe>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script src="https://takeuforward.org/UXApproachDropDowns/3ApproachJSScript.js"></script>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script>
+
+const codeSections = document.querySelectorAll('.code-section');
+
+// Get last selected language from localStorage or set default value
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+// Update last selected language for all sections and store in localStorage
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+// Handle copy button click event
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+// Set initial state of the tabs
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<script>
+const codeSections = document.querySelectorAll('.code-section');
+
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<link href="assets/4237ffca7ce6aadb438c457e0a675b12.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+<script src="index.js"></script>
+<script>hljs.highlightAll();</script>
+<!-- /wp:html -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <meta charset="utf-8"/><strong><a data-id="https://www.linkedin.com/in/anjani-kumar-singh-77337516a/" data-type="URL" href="https://www.linkedin.com/in/anjani-kumar-singh-77337516a/" rel="noreferrer noopener" target="_blank">Anjani Kumar Singh</a></strong></em> and <strong><a href="https://www.linkedin.com/in/kriti39/" rel="noopener" target="_blank" title="">KRITIDIPTA GHOSH</a></strong> <em>for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/contribute/help-us-grow-takeuforward/">please check out this article</a><em>.</em></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Reverse Words in a String</title>
+<style>
+        /* A clean, modern, and responsive base style for the articles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #fdfdfd;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main container for the article content */
+        .container {
+            margin: 20px;
+            /* Replaced '20px auto' to add margin on all sides */
+            padding: 20px 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e7e7e7;
+        }
+
+        /* Main article title */
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5em;
+            text-align: center;
+        }
+
+        /* Make images responsive and centered */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            /* To allow auto margins to work */
+            margin: 1em auto;
+            /* Adds some vertical spacing and centers horizontally */
+        }
+
+        /* Center figures which often wrap images */
+        figure {
+            text-align: center;
+            margin: 1.5em 0;
+        }
+
+        /* Center and style YouTube video wrapper for responsiveness */
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%;
+            /* 16:9 Aspect Ratio */
+            margin: 1.5em auto;
+            /* Center block element */
+            border-radius: 8px;
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Basic code block styling */
+        pre {
+            background-color: #2d2d2d;
+            /* A common dark background for code */
+            color: #f8f8f2;
+            padding: 1.2em;
+            border-radius: 5px;
+            overflow-x: auto;
+            /* Allow horizontal scrolling for long code lines */
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-size: 0.9em;
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+        }
+
+        /* Improve styling for links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* --- Code Section Tabs Styling --- */
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #e7e7e7;
+            margin-bottom: 1em;
+            align-items: center;
+        }
+
+        .code-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #555;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .code-tab:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .copy-btn path {
+            fill: #aaa;
+            transition: fill 0.2s;
+        }
+
+        .copy-btn:hover path {
+            fill: #333;
+        }
+
+        .copy-btn.dsa_article_code_active path {
+            fill: #3498db;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* --- End Code Section Tabs Styling --- */
+
+        /* --- Accordion/Dropdown Styling --- */
+        details {
+            margin-bottom: 1em;
+            border: 1px solid #e7e7e7;
+            border-radius: 6px;
+            overflow: hidden;
+            /* Keeps content within rounded corners */
+            padding: 0;
+            /* Reset any default padding */
+        }
+
+        summary {
+            list-style: none;
+            /* Hide the default marker */
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+            /* Hide default marker for Chrome/Safari */
+        }
+
+        summary:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Content inside the dropdowns */
+        .common-drops,
+        .atricle_example_content {
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #e7e7e7;
+        }
+
+        /* Additional padding for details content that doesn't have specific classes */
+        details> :not(summary) {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .dsa_article_youtube_video .yt-video-wrapper {
+            padding-top: 56.25%;
+            margin: 0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Nested dropdown summaries */
+        .secondary-summary {
+            background-color: #fafafa;
+            padding: 12px 20px;
+            font-weight: normal;
+        }
+
+        .secondary-summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* --- End Accordion/Dropdown Styling --- */
+
+        /* Hide specific UI elements based on user request */
+        .problem-buttons img,
+        .arrow-svg,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article {
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .code-tabs {
+                flex-wrap: wrap;
+                /* Allow tabs to wrap on small screens */
+            }
+
+            /* Reduce padding on mobile for details sections */
+            details> :not(summary) {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .common-drops,
+            .atricle_example_content {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Reverse Words in a String</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement:</strong> Given a string s, reverse the words of the string.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Examples:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted"><strong>Example 1:</strong>
+<strong>Input:</strong> s=”this is an amazing program”
+<strong>Output:</strong> “program amazing an is this”
+
+<strong>Example 2:</strong>
+<strong>Input:</strong> s=”This is decent”
+<strong>Output:</strong> “decent is This”</pre>
+<!-- /wp:preformatted -->
+<!-- wp:paragraph -->
+<p><strong>Solution:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph {"textColor":"accent"} -->
+<p class="has-accent-color has-text-color"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out yourself first.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":4} -->
+<h4><strong>Solution 1(Brute Force)</strong></h4>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p><strong>Intuition:</strong> We just need to print the words in reverse order. Can we somehow store them in reverse order of the occurrence and then simply add it to our answer?</p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":4} -->
+<h4>Approach</h4>
+<!-- /wp:heading -->
+<!-- wp:list -->
+<ul><li>Use a stack to push all the words in a stack</li><li>Now, all the words of the string are present in the stack, but in reverse order</li><li>Pop elements of the stack one by one and add them to our answer variable. Remember to add a space between the words as well. </li><li>Here’s a quick demonstration of the same</li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><img height="351" src="https://lh3.googleusercontent.com/Oh3fkumb5OccmxbeegTpT-X1eEtN8DswQxCYL2VyRtfr0-JNr20Dqy7wMl77q7fwFU4hF0BJgmEFDw2ltt7y00VM5W6-mMMd9y-LX0dP2JSguVgX_0ttxJeVecd5PikiksiKsBIt" width="624"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+int main()
+{
+    string s="TUF is great for interview preparation";
+    cout&lt;&lt;"Before reversing words: "&lt;&lt;endl;
+    cout&lt;&lt;s&lt;&lt;endl;
+    s+=" ";
+    stack&lt;string&gt; st;
+    int i;
+    string str="";
+    for(i=0;i&lt;s.length();i++)
+    {
+        if(s[i]==' ')
+        {
+            st.push(str);
+            str="";
+        }
+        else str+=s[i];
+    }
+    string ans="";
+    while(st.size()!=1)
+    {
+        ans+=st.top()+" ";
+        st.pop();
+    }
+    ans+=st.top();// The last word should'nt have a space after it
+    cout&lt;&lt;"After reversing words: "&lt;&lt;endl;
+    cout&lt;&lt;ans;
+    return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Before reversing words:<br/>TUF is great for interview preparation<br/>After reversing words:<br/>preparation interview for great is TUF</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N), Traversing the entire string</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(N), Stack and ans variable</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+class Test
+{
+public static void main(String[] args)
+{
+	String s = "TUF is great for interview preparation";
+	System.out.println("After reversing words: ");
+	System.out.println(s);
+	s += " ";
+	Stack&lt;String&gt; st = new Stack&lt;String&gt;();
+	int i;
+	String str = "";
+	for (i = 0;i &lt; s.length();i++)
+	{
+		if (s.charAt(i) == ' ')
+		{
+			st.push(str);
+			str = "";
+		}
+		else
+		{
+			str += s.charAt(i);
+		}
+	}
+	String ans = "";
+	while (st.size() != 1)
+	{
+		ans += st.peek() + " ";
+		st.pop();
+	}
+	ans += st.peek(); // The last word should'nt have a space after it
+	System.out.println("After reversing words: ");
+	System.out.print(ans);
+}
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Before reversing words:<br/>TUF is great for interview preparation<br/>After reversing words:<br/>preparation interview for great is TUF</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N), Traversing the entire string</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(N), Stack and ans variable</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:heading -->
+<h2><strong>Solution 2(Optimized Solution)</strong></h2>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p><strong>Intuition: </strong>Notice, that we are using a stack in order to perform our task. Can we somehow not use it and reverse the words as we move through the string? Could we store a word in reverse order when we are adding it to our answer variable?</p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":4} -->
+<h4><strong>Approach:</strong></h4>
+<!-- /wp:heading -->
+<!-- wp:list -->
+<ul><li>We start traversing the string from the end until we hit a space. It indicates that we have gone past a word and now we need to store it.</li><li>We check if our answer variable is empty or not</li><li>If it’s empty, it indicates that this is the last word we need to print, and hence, there shouldn’t be any space after this word.</li><li>If it’s empty we add it to our result with a space after it. Here’s a quick demonstration of the same</li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><img height="351" src="https://lh6.googleusercontent.com/c4i-QE5hcEFsOVrcvimOKrhw804LElIG5YHsC1W70OHrJ5kmw8PHNhCDjwm-jMhkJAo82AGNjXXYbAElxE-fSlMEA1vik64PQA3rHf2v3hj0A1odk0_ZtvdhP-BjOMiWLdOZ-MFd" width="624"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+string result(string s)
+{
+    int left = 0;
+    int right = s.length()-1;
+    
+    string temp="";
+    string ans="";
+    
+    //Iterate the string and keep on adding to form a word
+    //If empty space is encountered then add the current word to the result
+    while (left &lt;= right) {
+        char ch= s[left];
+        if (ch != ' ') {
+            temp += ch;
+        } else if (ch == ' ') {
+            if (ans!="") ans = temp + " " + ans;
+            else ans = temp;
+            temp = "";
+        }
+        left++;
+    }
+    
+    //If not empty string then add to the result(Last word is added)
+    if (temp!="") {
+        if (ans!="") ans = temp + " " + ans;
+        else ans = temp;
+    }
+    
+    return ans;    
+}
+int main()
+{
+    string st="TUF is great for interview preparation";
+    cout&lt;&lt;"Before reversing words: "&lt;&lt;endl;
+    cout&lt;&lt;st&lt;&lt;endl;
+    cout&lt;&lt;"After reversing words: "&lt;&lt;endl;
+    cout&lt;&lt;result(st);
+    return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Before reversing words:<br/>TUF is great for interview preparation<br/>After reversing words:<br/>preparation interview for great is TUF</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N), N~length of string</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(1), Constant Space</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.io.*;
+class Test
+{
+static private String result(String s)
+{
+	int left = 0;
+	int right = s.length() - 1;
+
+	String temp = "";
+	String ans = "";
+
+	//Iterate the string and keep on adding to form a word
+	//If empty space is encountered then add the current word to the result
+	while (left &lt;= right)
+	{
+		char ch = s.charAt(left);
+		if (ch != ' ')
+		{
+			temp += ch;
+		}
+		else if (ch == ' ')
+		{
+			if (!ans.equals(""))
+			{
+				ans = temp + " " + ans;
+			}
+			else
+			{
+				ans = temp;
+			}
+			temp = "";
+		}
+		left++;
+	}
+
+	//If not empty string then add to the result(Last word is added)
+	if (!temp.equals(""))
+	{
+		if (!ans.equals(""))
+		{
+			ans = temp + " " + ans;
+		}
+		else
+		{
+			ans = temp;
+		}
+	}
+
+	return ans;
+}
+public static void main(String[] args)
+{
+	String st = "TUF is great for interview preparation";
+	System.out.println("Before reversing words: ");
+    System.out.println(st);
+    System.out.println("After reversing words: ");
+	System.out.print(result(st));
+}
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Before reversing words:<br/>TUF is great for interview preparation<br/>After reversing words:<br/>preparation interview for great is TUF</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N), N~length of string</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(1), Constant Space</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/naman-daga-04071/" rel="noreferrer noopener" target="_blank">Naman Daga</a></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>
