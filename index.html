@@ -458,13 +458,13 @@
                                             <thead>
                                                 <tr>
                                                     <th>Topic</th>
-                                                    <th title="Blog">BLOG</th>
-                                                    <th title="Alternate Article">ALT</th>
-                                                    <th title="YouTube">YT</th>
-                                                    <th title="LeetCode">LC</th>
+                                                    <th title="LeetCode">Leetcode</th>
                                                     <th title="GeeksForGeeks">GFG</th>
                                                     <th title="CodingNinjas">CN</th>
                                                     <th title="TakeUForward+">TUF</th>
+                                                    <th title="Blog">Blog</th>
+                                                    <th title="Alternate Article">Blog</th>
+                                                    <th title="YouTube">YouTube</th>
                                                     <th>Done</th>
                                                 </tr>
                                             </thead>
@@ -490,13 +490,13 @@
                                                     <td class="topic-cell" title="${tags}">
                                                         <div class="topic-title">${topic.question_title}</div>
                                                     </td>
-                                                    ${createLinkCell(topic.post_link, 'BLOG')}
-                                                    ${createLinkCell(alternateLink, 'ALT')}
-                                                    ${createLinkCell(topic.yt_link, 'YT')}
                                                     ${createLinkCell(topic.lc_link, 'LC')}
                                                     ${createLinkCell(topic.gfg_link, 'GFG')}
                                                     ${createLinkCell(topic.cs_link, 'CN')}
                                                     ${createLinkCell(topic.plus_link, 'TUF')}
+                                                    ${createLinkCell(topic.post_link, 'BLOG')}
+                                                    ${createLinkCell(alternateLink, 'ALT')}
+                                                    ${createLinkCell(topic.yt_link, 'YT')}
                                                     <td class="status-cell">
                                                         <input type="checkbox" class="status-checkbox" data-id="${topic.id}" ${checkedAttr}>
                                                     </td>
