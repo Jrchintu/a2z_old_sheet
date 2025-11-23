@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -734,10 +741,10 @@ main();
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity: O(N)</strong> where N is the input number as we iterate from 1 to N performing constant-time operation for each iteration.</p>
-<p><strong>Space Complexity : O(1)</strong> as the space used by the algorithm does not increase with the size of the input.</p>
-</p>
+<p><strong>Space Complexity : O(1)</strong> as the space used by the algorithm does not increase with the size of the input.
+
+                    </p>
 </details>
 </div>
 </details>
@@ -1056,12 +1063,13 @@ if(isPrime) {
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity: O(sqrt(N))</strong>where N is the input number. The loop iterates up to the square root of n performing constant time operations at each step.</p>
 <p><strong>Space Complexity : O(1)</strong> as the space complexity remains constant and independent of the input size. Only a fixed amount of memory is required to store the integer variables.
 
-</p>
-</p>
+
+
+
+                    </p>
 </details>
 </div>
 </details>

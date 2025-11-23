@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -702,9 +709,9 @@ Complexity Analysis
 <p>
 <!-- Insert Time and Space Complexity of Brute Force Here -->
 <p><strong>Time Complexity: </strong>O(N), N = size of the given array.<strong><br/></strong><strong>Reason: </strong>We have to iterate through the entire array to check if the target is present in the array.</p>
-<p><strong>Space Complexity: </strong>O(1)<strong><br/></strong><strong>Reason: </strong>We have not used any extra data structures, this makes space complexity, even in the worst case as O(1).</p>
+<p><strong>Space Complexity: </strong>O(1)<strong><br/></strong><strong>Reason: </strong>We have not used any extra data structures, this makes space complexity, even in the worst case as O(1).
 </p>
-</details>
+</p></details>
 </div>
 </details>
 </div>
@@ -1007,9 +1014,9 @@ Complexity Analysis
 <p>
 <!-- Insert Time and Space Complexity of Optimal Approach-->
 <p><strong>Time Complexity: </strong>O(logN), N = size of the given array.<strong><br/>Reason: </strong>We are basically using binary search to find the minimum.</p>
-<p><strong>Space Complexity: </strong>O(1)<strong><br/>Reason: </strong>We have not used any extra data structures, this makes space complexity, even in the worst case as O(1).</p>
+<p><strong>Space Complexity: </strong>O(1)<strong><br/>Reason: </strong>We have not used any extra data structures, this makes space complexity, even in the worst case as O(1).
 </p>
-</details>
+</p></details>
 </div>
 </details>
 </div>

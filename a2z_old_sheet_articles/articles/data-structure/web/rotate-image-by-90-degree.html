@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -591,10 +598,8 @@ int main() {
 }
 </code>
 </pre>
-<p>
-</p><p><strong>Output:</strong></p>
+<p><strong>Output:</strong></p>
 <p>Rotated Image<br/>7 4 1<br/>8 5 2<br/>9 6 3</p>
-<p></p>
 </div>
 <div class="code-block" data-lang="java">
 <pre class="wp-block-code"><code class="language-java" lang="java">
@@ -626,10 +631,8 @@ class TUF {
 }
 </code>
 </pre>
-<p>
-</p><p><strong>Output:</strong></p>
+<p><strong>Output:</strong></p>
 <p>Rotated Image<br/>7 4 1<br/>8 5 2<br/>9 6 3</p>
-<p></p>
 </div>
 <div class="code-block" data-lang="python">
 <pre class="wp-block-code"><code class="language-python" lang="python">
@@ -655,10 +658,8 @@ if __name__ == "__main__":
         print()
 </code>
 </pre>
-<p>
-</p><p><strong>Output:</strong></p>
+<p><strong>Output:</strong></p>
 <p>Rotated Image<br/>7 4 1<br/>8 5 2<br/>9 6 3</p>
-<p></p>
 </div>
 </div>
 </details>
@@ -672,10 +673,8 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
-</p><p><strong>Time Complexity:</strong> O(N*N) to linearly iterate and put it into some other matrix.</p>
+<p><strong>Time Complexity:</strong> O(N*N) to linearly iterate and put it into some other matrix.</p>
 <p><strong>Space Complexity:</strong> O(N*N) to copy it into some other matrix.</p>
-<p></p>
 </details>
 </div>
 </details>
@@ -765,10 +764,8 @@ int main() {
 }
 </code>
 </pre>
-<p>
-</p><p><strong>Output:</strong></p>
+<p><strong>Output:</strong></p>
 <p>Rotated Image<br/>7 4 1<br/>8 5 2<br/>9 6 3</p>
-<p></p>
 </div>
 <div class="code-block" data-lang="java">
 <pre class="wp-block-code"><code class="language-java" lang="java">
@@ -808,10 +805,8 @@ class TUF {
 }
 </code>
 </pre>
-<p>
-</p><p><strong>Output:</strong></p>
+<p><strong>Output:</strong></p>
 <p>Rotated Image<br/>7 4 1<br/>8 5 2<br/>9 6 3</p>
-<p></p>
 </div>
 <div class="code-block" data-lang="python">
 <pre class="wp-block-code"><code class="language-python" lang="python">
@@ -839,10 +834,8 @@ if __name__ == "__main__":
         print()
 </code>
 </pre>
-<p>
-</p><p><strong>Output:</strong></p>
+<p><strong>Output:</strong></p>
 <p>Rotated Image<br/>7 4 1<br/>8 5 2<br/>9 6 3</p>
-<p></p>
 </div>
 </div>
 </details>
@@ -856,10 +849,8 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
-</p><p><strong>Time Complexity:</strong> O(N*N) + O(N*N).One O(N*N) is for transposing the matrix and the other is for reversing the matrix.</p>
+<p><strong>Time Complexity:</strong> O(N*N) + O(N*N).One O(N*N) is for transposing the matrix and the other is for reversing the matrix.</p>
 <p><strong>Space Complexity: </strong>O(1).</p>
-<p></p>
 </details>
 </div>
 </details>
@@ -1072,7 +1063,6 @@ block.classList.remove('dsa_article_code_active');
 <blockquote class="wp-block-quote"><p><em>Special thanks to <strong><strong><a href="https://www.linkedin.com/in/pranav-padawe-9486241ba/" rel="noreferrer noopener" target="_blank"><strong>Pranav Padawe</strong></a></strong></strong> <em>and <a href="https://www.linkedin.com/in/imsudip/" rel="noopener" target="_blank" title=""><strong>Sudip Ghosh</strong></a></em> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a></p></blockquote>
 <!-- /wp:quote -->
 <!-- wp:paragraph -->
-<p></p>
 <!-- /wp:paragraph -->
 </article>
 </div>

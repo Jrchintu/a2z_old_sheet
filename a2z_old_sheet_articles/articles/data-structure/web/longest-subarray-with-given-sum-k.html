@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -706,28 +713,9 @@ console.log("The length of the longest subarray is:", len);
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Brute Force Here -->
-Output: The length of the longest subarray is: 3
-</p>
-</div>
-</details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Brute Force Here -->
-</p><p><strong>Time Complexity: </strong>O(N<sup>3</sup>) approx., where N = size of the array.<br/><strong>Reason: </strong>We are using three nested loops, each running approximately N times.</p>
+<p><strong>Time Complexity: </strong>O(N<sup>3</sup>) approx., where N = size of the array.<br/><strong>Reason: </strong>We are using three nested loops, each running approximately N times.</p>
 <p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.</p>
-<p></p>
-</details>
+</div></details>
 </div>
 </details>
 </div>
@@ -918,28 +906,9 @@ console.log("The length of the longest subarray is:", len);
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Better Approach Here -->
-Output: The length of the longest subarray is: 3
-</p>
-</div>
-</details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Better Approach Here -->
-</p><p><strong>Time Complexity: </strong>O(N<sup>2</sup>) approx., where N = size of the array.<br/><strong>Reason: </strong>We are using two nested loops, each running approximately N times.</p>
+<p><strong>Time Complexity: </strong>O(N<sup>2</sup>) approx., where N = size of the array.<br/><strong>Reason: </strong>We are using two nested loops, each running approximately N times.</p>
 <p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.</p>
-<p></p>
-</details>
+</div></details>
 </div>
 </details>
 </div>
@@ -1203,28 +1172,9 @@ console.log("The length of the longest subarray is:", len);
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Optimal Apporach - 1 Here -->
-Output: The length of the longest subarray is: 3
-</p>
-</div>
-</details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Optimal Approach -1 -->
-</p><p><strong>Time Complexity: </strong>O(N) or O(N*logN) depending on which map data structure we are using, where N = size of the array.<br/><strong>Reason: </strong>For example, if we are using an unordered_map data structure in C++ the time complexity will be O(N)(<em>though in the worst case, unordered_map takes O(N) to find an element and the time complexity becomes O(N<sup>2</sup>)</em>) but if we are using a map data structure, the time complexity will be O(N*logN). The least complexity will be O(N) as we are using a loop to traverse the array.</p>
+<p><strong>Time Complexity: </strong>O(N) or O(N*logN) depending on which map data structure we are using, where N = size of the array.<br/><strong>Reason: </strong>For example, if we are using an unordered_map data structure in C++ the time complexity will be O(N)(<em>though in the worst case, unordered_map takes O(N) to find an element and the time complexity becomes O(N<sup>2</sup>)</em>) but if we are using a map data structure, the time complexity will be O(N*logN). The least complexity will be O(N) as we are using a loop to traverse the array.</p>
 <p><strong>Space Complexity: </strong>O(N) as we are using a map data structure.</p>
-<p></p>
-</details>
+</div></details>
 </div>
 </details>
 </div>
@@ -1456,29 +1406,10 @@ console.log("The length of the longest subarray is:", len);
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Optimal Apporach - 2 Here -->
-Output: The length of the longest subarray is: 3
-</p>
-</div>
-</details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Optimal Approach - 2 -->
-</p><p><strong>Time Complexity: </strong>O(2*N), where N = size of the given array.<br/><strong>Reason: </strong>The outer while loop i.e. the right pointer can move up to index n-1(<em>the last index</em>). Now, the inner while loop i.e. the left pointer can move up to the right pointer at most. So, every time the inner loop does not run for n times rather it can run for n times in total. So, the time complexity will be O(2*N) instead of O(N<sup>2</sup>).</p>
+<p><strong>Time Complexity: </strong>O(2*N), where N = size of the given array.<br/><strong>Reason: </strong>The outer while loop i.e. the right pointer can move up to index n-1(<em>the last index</em>). Now, the inner while loop i.e. the left pointer can move up to the right pointer at most. So, every time the inner loop does not run for n times rather it can run for n times in total. So, the time complexity will be O(2*N) instead of O(N<sup>2</sup>).</p>
 <p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.</p>
 <p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.</p>
-<p></p>
-</details>
+</div></details>
 </div>
 </details>
 </div>
@@ -1692,7 +1623,6 @@ block.classList.remove('dsa_article_code_active');
 <blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/prathap02/" rel="noreferrer noopener" target="_blank">Prathap P</a></strong> and <strong><a href="https://www.linkedin.com/in/kriti39/" rel="noopener" target="_blank" title="">KRITIDIPTA GHOSH</a></strong></em> <em>for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a></p></blockquote>
 <!-- /wp:quote -->
 <!-- wp:paragraph -->
-<p></p>
 <!-- /wp:paragraph -->
 </article>
 </div>

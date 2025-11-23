@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -938,28 +945,9 @@ print_linked_list(head)
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Brute Force Here -->
-<strong>Output:</strong> Original Linked List: 1 3 2 4 Reversed Linked List: 4 2 3 1 
-</p>
-</div>
-</details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Brute Force Here -->
-</p><p><strong>Time Complexity: O(2N)</strong> This is because we <strong>traverse</strong> the linked list <strong>twice</strong>: once to push the values onto the stack, and once to pop the values and update the linked list. Both traversals take O(N) time, hence time complexity  O(2N) ~ O(N).</p>
+<p><strong>Time Complexity: O(2N)</strong> This is because we <strong>traverse</strong> the linked list <strong>twice</strong>: once to push the values onto the stack, and once to pop the values and update the linked list. Both traversals take O(N) time, hence time complexity  O(2N) ~ O(N).</p>
 <p><strong>Space Complexity: O(N) </strong>We use a <strong>stack</strong> to store the values of the linked list, and in the worst case, the stack will have all <strong>N</strong> <strong>values, </strong> ie. storing the complete linked list. </p>
-<p></p>
-</details>
+</div></details>
 </div>
 </details>
 </div>
@@ -1381,28 +1369,9 @@ printLinkedList(head);
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Better Approach Here -->
-<strong>Output:</strong> Original Linked List: 1 3 2 4 Reversed Linked List: 4 2 3 1
-</p>
-</div>
-</details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Better Approach Here -->
-</p><p><strong>Time Complexity: O(N) </strong>The code <strong>traverses</strong> the <strong>entire</strong> <strong>linked</strong> <strong>list</strong> once, where 'n' is the number of nodes in the list. This traversal has a <strong>linear</strong> <strong>time</strong> <strong>complexity</strong>, O(n).</p>
+<p><strong>Time Complexity: O(N) </strong>The code <strong>traverses</strong> the <strong>entire</strong> <strong>linked</strong> <strong>list</strong> once, where 'n' is the number of nodes in the list. This traversal has a <strong>linear</strong> <strong>time</strong> <strong>complexity</strong>, O(n).</p>
 <p><strong>Space Complexity: O(1)</strong> The code uses only a <strong>constant</strong> <strong>amount</strong> of <strong>additional</strong> <strong>space</strong>, regardless of the linked list's length. This is achieved by using three pointers (<strong>prev, temp</strong> and <strong>front</strong>) to reverse the list without any significant extra memory usage, resulting in <strong>constant</strong> <strong>space</strong> complexity, O(1).</p>
-<p></p>
-</details>
+</div></details>
 </div>
 </details>
 </div>
@@ -1813,28 +1782,9 @@ printLinkedList(head);
 
 </code>
 </pre>
-<p>
-<!-- Insert Output of Optimal Apporach Here -->
-<strong>Output:</strong> Original Linked List: 1 3 2 4 Reversed Linked List: 4 2 3 1
-</p>
-</div>
-</div></details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Optimal Approach-->
-</p><p><strong>Time Complexity: O(N)</strong> This is because we <strong>traverse</strong> the linked list <strong>twice</strong>: once to push the values onto the stack, and once to pop the values and update the linked list. Both traversals take O(N) time.</p>
+<p><strong>Time Complexity: O(N)</strong> This is because we <strong>traverse</strong> the linked list <strong>twice</strong>: once to push the values onto the stack, and once to pop the values and update the linked list. Both traversals take O(N) time.</p>
 <p><strong>Space Complexity : O(1) </strong>No additional space is used explicitly for <strong>data</strong> <strong>structures</strong> or <strong>allocations</strong> during the linked list reversal process. However, it's important to note that there is an implicit use of <strong>stack</strong> <strong>space</strong> due to <strong>recursion</strong>. This recursive stack space <strong>stores</strong> <strong>function</strong> <strong>calls</strong> and <strong>associated</strong> <strong>variables</strong> during the recursive traversal and reversal of the linked list. Despite this, no extra memory beyond the program's existing execution space is allocated, hence maintaining a space complexity of <strong>O(1)</strong>.</p>
-<p></p>
-</details>
+</div></div></details>
 </div>
 </details>
 </div>

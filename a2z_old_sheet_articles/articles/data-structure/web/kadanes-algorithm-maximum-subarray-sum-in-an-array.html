@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -733,9 +740,8 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity: </strong>O(N<sup>3</sup>), where N = size of the array.<br/><strong>Reason: </strong>We are using three nested loops, each running approximately N times.</p>
-<p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.</p>
+<p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.
 </p>
 </details>
 </div>
@@ -952,9 +958,8 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity: </strong>O(N<sup>2</sup>), where N = size of the array.<br/><strong>Reason: </strong>We are using two nested loops, each running approximately N times.</p>
-<p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.</p>
+<p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.
 </p>
 </details>
 </div>
@@ -1187,9 +1192,8 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity: </strong>O(N), where N = size of the array.<br/><strong>Reason: </strong>We are using a single loop running N times.</p>
-<p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.</p>
+<p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.
 </p>
 </details>
 </div>
@@ -1475,9 +1479,8 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity: </strong>O(N), where N = size of the array.<br/><strong>Reason: </strong>We are using a single loop running N times.</p>
-<p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.</p>
+<p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.
 </p>
 </details>
 </div>

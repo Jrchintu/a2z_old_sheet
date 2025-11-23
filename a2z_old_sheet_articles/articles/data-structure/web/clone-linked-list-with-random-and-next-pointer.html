@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -1002,10 +1009,10 @@ main();
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity: O(2N)</strong> where N is the number of nodes in the linked list. The linked list is traversed twice, once for creating copies of each node and for the second time to set the next and random pointers for each copied node. The time to access the nodes in the map is O(1) due to hashing.</p>
-<p><strong>Space Complexity : O(N)+O(N)</strong>where N is the number of nodes in the linked list as all nodes are stored in the map to maintain mappings and the copied linked lists takes O(N) space as well.</p>
-</p>
+<p><strong>Space Complexity : O(N)+O(N)</strong>where N is the number of nodes in the linked list as all nodes are stored in the map to maintain mappings and the copied linked lists takes O(N) space as well.
+
+                    </p>
 </details>
 </div>
 </details>
@@ -1707,10 +1714,11 @@ main();
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity: O(3N)</strong>where N is the number of nodes in the linked list. The algorithm makes three traversals of the linked list, once to create copies and insert them between original nodes, then to set the random pointers of the copied nodes to their appropriate copied nodes and then to separate the copied and original nodes.</p>
-<p><strong>Space Complexity : O(N)</strong> where N is the number of nodes in the linked list as the only extra additional space allocated it to create the copied list without creating any other additional data structures.</p>
-</p>
+<p><strong>Space Complexity : O(N)</strong> where N is the number of nodes in the linked list as the only extra additional space allocated it to create the copied list without creating any other additional data structures.
+
+
+                    </p>
 </details>
 </div>
 </details>

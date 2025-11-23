@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -415,6 +418,10 @@
             .code-tab {
                 flex-shrink: 0;
             }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
         }
     </style>
 </head>
@@ -428,7 +435,6 @@
 <p><strong>Problem Statement:</strong> Given the head of a<strong> linked list </strong>of integers,<strong> </strong>delete the <strong>middle node</strong> of the linked list and return the modified head. However, if the linked list has an <strong>even</strong> number of nodes, delete the <strong>second</strong> middle node.</p>
 <!-- /wp:paragraph -->
 <!-- wp:paragraph -->
-<p></p>
 <!-- /wp:paragraph -->
 <!-- wp:html -->
 <!-- This is Examples Drop-Down -->
@@ -1013,31 +1019,9 @@ printLL(head);
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Brute Force Here -->
-<strong>Output:</strong> 
-Original Linked List: 1 2 3 4 5 
-Updated Linked List: 1 2 4 5 
-
-</p>
-</div>
-</details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Brute Force Here -->
-</p><p><strong>Time Complexity: O(N + N/2) </strong>The loop traverses the <strong>entire</strong> <strong>linked</strong> <strong>list</strong> once to count the total number of nodes then the loop iterates halfway through the linked list to reach the <strong>middle</strong> <strong>node</strong>. Hence, the time complexity is <strong>O(N + N/2) ~ O(N)</strong>.</p>
+<p><strong>Time Complexity: O(N + N/2) </strong>The loop traverses the <strong>entire</strong> <strong>linked</strong> <strong>list</strong> once to count the total number of nodes then the loop iterates halfway through the linked list to reach the <strong>middle</strong> <strong>node</strong>. Hence, the time complexity is <strong>O(N + N/2) ~ O(N)</strong>.</p>
 <p><strong>Space Complexity : O(1) </strong>The algorithm uses a <strong>constant</strong> <strong>amount</strong> of <strong>extra</strong> <strong>space</strong> regardless of the size of the input (linked list). It doesn't use any <strong>additional</strong> <strong>data</strong> <strong>structures</strong> in proportion to the input size. Thus, the space complexity is<strong> O(1) (constant space)</strong>. </p>
-<p></p>
-</details>
+</div></details>
 </div>
 </details>
 </div>
@@ -1409,31 +1393,9 @@ printLL(head);
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Optimal Apporach Here -->
-<strong>Output:</strong> 
-Original Linked List: 1 2 3 4 5
-Updated Linked List: 1 2 4 5
-
-</p>
-</div>
-</details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Optimal Approach-->
-</p><p><strong>Time Complexity: O(N/2) </strong>The algorithm <strong>traverses</strong> the linked list using the Tortoise and Hare approach. The code increments both <strong>'slow'</strong> and <strong>'fast'</strong> <strong>pointers</strong> at different rates, effectively covering about <strong>half</strong> the <strong>list</strong> before reaching the <strong>midpoint</strong>, hence the time complexity of the algorithm is <strong>O(N/2) ~ O(N)</strong>.</p>
+<p><strong>Time Complexity: O(N/2) </strong>The algorithm <strong>traverses</strong> the linked list using the Tortoise and Hare approach. The code increments both <strong>'slow'</strong> and <strong>'fast'</strong> <strong>pointers</strong> at different rates, effectively covering about <strong>half</strong> the <strong>list</strong> before reaching the <strong>midpoint</strong>, hence the time complexity of the algorithm is <strong>O(N/2) ~ O(N)</strong>.</p>
 <p><strong>Space Complexity: O(1) </strong>The algorithm uses a <strong>constant</strong> <strong>amount</strong> of <strong>extra</strong> <strong>space</strong> regardless of the size of the input (linked list). It doesn't use any <strong>additional</strong> <strong>data</strong> <strong>structures</strong> in proportion to the input size. Thus, the space complexity is<strong> O(1) (constant space)</strong>. </p>
-<p></p>
-</details>
+</div></details>
 </div>
 </details>
 </div>

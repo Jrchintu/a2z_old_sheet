@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -415,6 +418,10 @@
             .code-tab {
                 flex-shrink: 0;
             }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
         }
     </style>
 </head>
@@ -428,7 +435,6 @@
 <p><strong>Problem Statement: </strong>Given an array, we have to find the largest element in the array.</p>
 <!-- /wp:paragraph -->
 <!-- wp:paragraph -->
-<p></p>
 <!-- /wp:paragraph -->
 <!-- wp:html -->
 <!-- This is Examples Drop-Down -->
@@ -580,10 +586,8 @@ int main() {
 }
 </code>
 </pre>
-<p>
-</p><p><strong>Output:</strong> </p>
+<p><strong>Output:</strong> </p>
 <p>The Largest element in the array is: 5<br/>The Largest element in the array is: 10</p>
-<p></p>
 </div>
 <div class="code-block" data-lang="java">
 <pre class="wp-block-code"><code class="language-java" lang="java">
@@ -605,10 +609,8 @@ public class tuf {
 }
 </code>
 </pre>
-<p>
-</p><p><strong>Output:</strong> </p>
+<p><strong>Output:</strong> </p>
 <p>The Largest element in the array is: 5<br/>The Largest element in the array is: 10</p>
-<p></p>
 </div>
 <div class="code-block" data-lang="python">
 <pre class="wp-block-code"><code class="language-python" lang="python">
@@ -623,10 +625,8 @@ if __name__ == "__main__":
     print("The Largest element in the array is:", sortArr(arr2))
 </code>
 </pre>
-<p>
-</p><p><strong>Output:</strong> </p>
+<p><strong>Output:</strong> </p>
 <p>The Largest element in the array is: 5<br/>The Largest element in the array is: 10</p>
-<p></p>
 </div>
 <div class="code-block" data-lang="javascript">
 <pre class="wp-block-code"><code class="language-javascript" lang="javascript">
@@ -645,10 +645,8 @@ console.log("The Largest element in the array is: " + sortArr(arr2));
 
 </code>
 </pre>
-<p>
-</p><p><strong>Output:</strong> </p>
+<p><strong>Output:</strong> </p>
 <p>The Largest element in the array is: 5<br/>The Largest element in the array is: 10</p>
-<p></p>
 </div>
 </div>
 </details>
@@ -662,10 +660,8 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
-</p><p><strong>Time Complexity:</strong> O(N*log(N))</p>
+<p><strong>Time Complexity:</strong> O(N*log(N))</p>
 <p><strong>Space Complexity: </strong>O(n)</p>
-<p></p>
 </details>
 </div>
 </details>
@@ -754,10 +750,8 @@ int main() {
 
 </code>
 </pre>
-<p>
-</p><p><strong>Output:</strong></p>
+<p><strong>Output:</strong></p>
 <p>The largest element in the array is: 5<br/>The largest element in the array is: 10</p>
-<p></p>
 </div>
 <div class="code-block" data-lang="java">
 <pre class="wp-block-code"><code class="language-java" lang="java">
@@ -786,10 +780,8 @@ public class tuf {
 }
 </code>
 </pre>
-<p>
-</p><p><strong>Output:</strong></p>
+<p><strong>Output:</strong></p>
 <p>The largest element in the array is: 5<br/>The largest element in the array is: 10</p>
-<p></p>
 </div>
 <div class="code-block" data-lang="python">
 <pre class="wp-block-code"><code class="language-python" lang="python">
@@ -818,10 +810,8 @@ if __name__ == "__main__":
     print("The largest element in the array is:", max)
 </code>
 </pre>
-<p>
-</p><p><strong>Output:</strong></p>
+<p><strong>Output:</strong></p>
 <p>The largest element in the array is: 5<br/>The largest element in the array is: 10</p>
-<p></p>
 </div>
 <div class="code-block" data-lang="javascript">
 <pre class="wp-block-code"><code class="language-javascript" lang="javascript">
@@ -844,10 +834,8 @@ max = findLargestElement(arr2);
 console.log("The largest element in the array is: " + max);
 </code>
 </pre>
-<p>
-</p><p><strong>Output:</strong></p>
+<p><strong>Output:</strong></p>
 <p>The largest element in the array is: 5<br/>The largest element in the array is: 10</p>
-<p></p>
 </div>
 </div>
 </details>
@@ -861,10 +849,8 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
-</p><p><strong>Time Complexity:</strong> O(N)</p>
+<p><strong>Time Complexity:</strong> O(N)</p>
 <p><strong>Space Complexity:</strong> O(1)</p>
-<p></p>
 </details>
 </div>
 </details>
@@ -1078,7 +1064,6 @@ block.classList.remove('dsa_article_code_active');
 <blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/prashant-sahu-2691a719a" rel="noreferrer noopener" target="_blank">Prashant Sahu</a></strong> <em><em>and <a href="https://www.linkedin.com/in/imsudip/" rel="noreferrer noopener" target="_blank"><strong>Sudip Ghosh</strong></a></em></em></em> <em>for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a></p></blockquote>
 <!-- /wp:quote -->
 <!-- wp:paragraph -->
-<p></p>
 <!-- /wp:paragraph -->
 </article>
 </div>

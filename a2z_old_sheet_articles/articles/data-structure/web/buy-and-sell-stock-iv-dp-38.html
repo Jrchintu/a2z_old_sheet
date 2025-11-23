@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -434,16 +441,13 @@
 <ol><li>We can buy and sell the stock any number of times.</li><li>In order to sell the stock, we need to first buy it on the same or any previous day.</li><li>We can’t buy a stock again after buying it once. In other words, we first buy a stock and then sell it. After selling we can buy and sell again. But we can’t sell before buying and can’t buy before selling any previously bought stock.</li><li>We can do at-most <strong>K</strong> transactions.</li></ol>
 <!-- /wp:list -->
 <!-- wp:paragraph -->
-<p></p>
 <!-- /wp:paragraph -->
 <!-- wp:paragraph -->
-<p></p>
 <!-- /wp:paragraph -->
 <!-- wp:paragraph -->
 <p><img height="339" src="assets/f673641a33b59033ad63dbf0ce54cc9f" width="624"/></p>
 <!-- /wp:paragraph -->
 <!-- wp:paragraph -->
-<p></p>
 <!-- /wp:paragraph -->
 <!-- wp:html -->
 <!-- This is Examples Drop-Down -->
@@ -815,30 +819,11 @@ main();
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Brute Force Here -->
-The maximum profit that can be generated is 6
-</p>
-</div>
-</details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Brute Force Here -->
-</p><p><strong>Time Complexity: O(N*2*3) </strong></p>
+<p><strong>Time Complexity: O(N*2*3) </strong></p>
 <p>Reason: There are N*2*K states therefore at max ‘N*2*K’ new problems will be solved.</p>
 <p><strong>Space Complexity: O(N*2*K) + O(N)</strong></p>
 <p>Reason: We are using a recursion stack space(O(N)) and a 3D array ( O(N*2*K)).</p>
-<p></p>
-</details>
+</div></details>
 </div>
 </details>
 </div>
@@ -1080,30 +1065,11 @@ main();
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Better Approach Here -->
-The maximum profit that can be generated is 6
-</p>
-</div>
-</details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Better Approach Here -->
-</p><p><strong>Time Complexity: O(N*2*k) </strong></p>
+<p><strong>Time Complexity: O(N*2*k) </strong></p>
 <p>Reason: There are three nested loops that account for O(N*2*K) complexity.</p>
 <p><strong>Space Complexity: O(N*2*k)</strong></p>
 <p>Reason: We are using an external array of size ‘N*2*K’. Stack Space is eliminated.</p>
-<p></p>
-</details>
+</div></details>
 </div>
 </details>
 </div>
@@ -1337,30 +1303,11 @@ main();
 
 </code>
 </pre>
-<p>
-<!-- Insert Output of Optimal Apporach Here -->
-The maximum profit that can be generated is 6
-</p>
-</div>
-</div></details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Optimal Approach-->
-</p><p><strong>Time Complexity: O(N*2*K)</strong></p>
+<p><strong>Time Complexity: O(N*2*K)</strong></p>
 <p>Reason: There are three nested loops that account for O(N*2*K) complexity</p>
 <p><strong>Space Complexity: O(K)</strong></p>
 <p>Reason: We are using two external arrays of size ‘2*K’.</p>
-<p></p>
-</details>
+</div></div></details>
 </div>
 </details>
 </div>

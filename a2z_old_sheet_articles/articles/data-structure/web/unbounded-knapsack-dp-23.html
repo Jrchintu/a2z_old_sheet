@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -415,6 +418,10 @@
             .code-tab {
                 flex-shrink: 0;
             }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
         }
     </style>
 </head>
@@ -431,7 +438,6 @@
 <p>A thief wants to rob a store. He is carrying a bag of capacity W. The store has ‘n’ items of infinite supply. Its weight is given by the ‘wt’ array and its value by the ‘val’ array. He can either include an item in its knapsack or exclude it but can’t partially have it as a fraction. We need to find the maximum value of items that the thief can steal. He can take a single item any number of times he wants and put it in his knapsack.</p>
 <!-- /wp:paragraph -->
 <!-- wp:paragraph -->
-<p></p>
 <!-- /wp:paragraph -->
 <!-- wp:html -->
 <!-- This is Examples Drop-Down -->
@@ -783,13 +789,10 @@ main();
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Brute Force Here -->
-</p><p><strong>Output:</strong> The Maximum value of items, thief can steal is 27
+<p><strong>Output:</strong> The Maximum value of items, thief can steal is 27
 
 
 </p>
-<p></p>
 </div>
 </details>
 <details class="secondary-details">
@@ -807,9 +810,9 @@ Complexity Analysis
 <p><strong>Time Complexity: O(N*W)</strong></p>
 <p>Reason: There are N*W states therefore at max ‘N*W’ new problems will be solved.</p>
 <p><strong>Space Complexity: O(N*W) + O(N)</strong></p>
-<p>Reason: We are using a recursion stack space(O(N)) and a 2D array ( O(N*W)).</p>
+<p>Reason: We are using a recursion stack space(O(N)) and a 2D array ( O(N*W)).
 </p>
-</details>
+</p></details>
 </div>
 </details>
 </div>
@@ -1068,9 +1071,9 @@ Complexity Analysis
 <p><strong>Time Complexity: O(N*W)</strong></p>
 <p>Reason: There are two nested loops</p>
 <p><strong>Space Complexity: O(N*W)</strong></p>
-<p>Reason: We are using an external array of size ‘N*W’. Stack Space is eliminated.</p>
+<p>Reason: We are using an external array of size ‘N*W’. Stack Space is eliminated.
 </p>
-</details>
+</p></details>
 </div>
 </details>
 </div>
@@ -1336,9 +1339,9 @@ Complexity Analysis
 <p><strong>Time Complexity: O(N*W)</strong></p>
 <p>Reason: There are two nested loops.</p>
 <p><strong>Space Complexity: O(W)</strong></p>
-<p>Reason: We are using an external array of size ‘W+1’ to store only one row.</p>
+<p>Reason: We are using an external array of size ‘W+1’ to store only one row.
 </p>
-</details>
+</p></details>
 </div>
 </details>
 </div>

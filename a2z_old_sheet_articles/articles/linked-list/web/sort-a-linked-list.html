@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -921,11 +928,11 @@ printLinkedList(head);
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity: O(N) + O(N log N) + O(N)</strong>where N is the number of nodes in the linked list.
                         <ol><li>O(N) to traverse the linked list and store its data values in an additional array.</li><li>O(N log N) to sort the array containing the node values.</li><li>O(N) to traverse the sorted array and convert it into a new linked list.</li></ol></p>
-<p><strong>Space Complexity : O(N)</strong>where N is the number of nodes in the linked list as we have to store the values of all nodes in the linked list in an additional array to sort them.</p>
-</p>
+<p><strong>Space Complexity : O(N)</strong>where N is the number of nodes in the linked list as we have to store the values of all nodes in the linked list in an additional array to sort them.
+
+                    </p>
 </details>
 </div>
 </details>
@@ -1555,11 +1562,12 @@ printLinkedList(head);
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity: O(N log N)</strong>where N is the number of nodes in the linked list. Finding the middle node of the linked list requires traversing it linearly taking O(N) time complexity and to reach the individual nodes of the list, it has to be split log N times (continuously halve the list until we have individual elements).</p>
 <p><strong>Space Complexity : O(1)</strong> as no additional data structures or space is allocated for storage during the merging process. However, space proportional to O(log N) stack space is required for the recursive calls. THe maximum recursion depth of log N height is occupied on the call stack.
-</p>
-</p>
+
+
+
+                    </p>
 </details>
 </div>
 </details>

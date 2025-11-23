@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -545,12 +552,8 @@ yourself first. <strong><a href="https://www.codingninjas.com/studio/problems/k-
         </code>
         </pre>
 <p>
-<!-- Insert Output of Brute Force Here -->
-</p>
-<p>
                         Output: The k-th element of two sorted arrays is: 6
                     </p>
-<p></p>
 </div>
 <div class="code-block" data-lang="java">
 <pre class="wp-block-code"><code class="language-java" lang="java">
@@ -665,9 +668,9 @@ yourself first. <strong><a href="https://www.codingninjas.com/studio/problems/k-
                 arrays.<br/><strong>Reason: </strong> We traverse through both arrays linearly.</p>
 <p><strong>Space Complexity: </strong> O(m+n), where m and n are the sizes of the given arrays. <br/>
 <p><strong>Reason: </strong>We are using an extra array of size (m+n) to solve this problem.
+            
             </p>
-</p>
-</details>
+</p></details>
 </div>
 </details>
 </div>
@@ -1337,15 +1340,12 @@ console.log("The k-th element of two sorted arrays is: " + kthElement(a, b, a.le
 </path>
 </svg>
 </summary>
-<p>
-</p>
 <p><strong>Time Complexity: </strong>O(log(min(m, n))), where m and n are the sizes of two given
                 arrays.<br/><strong>Reason: </strong>We are applying binary search on the range [max(0, k-n2),
                 min(k, n1)]. The range length &lt;= min(m, n).</p>
 <p><strong>Space Complexity: </strong>O(1), as we are not using any extra space to solve
                         this problem.</p>
 <!-- Insert Time and Space Complexity of Optimal Approach-->
-<p></p>
 </details>
 </div>
 </details>

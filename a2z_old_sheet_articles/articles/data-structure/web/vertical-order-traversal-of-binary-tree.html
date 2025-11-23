@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -1075,9 +1082,9 @@ printResult(verticalTraversal);
 <p><strong>Time Complexity: O(N * log2N * log2N * log2N)</strong> where N represents the number of nodes in the Binary Tree.
                     <ol><li>Postorder Traversal performed using BFS as a time complexity of O(N) as we are visiting each and every node once.</li><li>Multiset Operations to insert overlapping nodes at a specific vertical and horizontal level also takes O(log2N) complexity.</li><li>Map operations involve insertion and retrieval of nodes with their vertical and level as their keys. Since there are two nested maps, the total time complexity becomes O(log2N)*O(log2N).</li></ol></p>
 <p><strong>Space Complexity:  O(N + N/2)</strong>  where N represents the number of nodes in the Binary Tree.
-					<ol><li>The map for storing nodes based on their vertical and level information occupies an additional space complexity of O(N) as it stores all N nodes of the Binary Tree.</li><li>The queue for breadth first traversal occupies a space proportional to the maximum level of the tree which can be O(N/2) in the worst case of a balanced tree.</li></ol> </p>
+					<ol><li>The map for storing nodes based on their vertical and level information occupies an additional space complexity of O(N) as it stores all N nodes of the Binary Tree.</li><li>The queue for breadth first traversal occupies a space proportional to the maximum level of the tree which can be O(N/2) in the worst case of a balanced tree.</li></ol>
 </p>
-</details>
+</p></details>
 </div>
 </details>
 </div>

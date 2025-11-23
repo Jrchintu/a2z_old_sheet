@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -893,9 +900,9 @@ if (res) {
 <!-- Insert Time and Space Complexity  Here -->
 <p><strong>Time Complexity: O(N)</strong> where N is the number of nodes in the Binary Tree. This complexity arises from visiting each node exactly once during the traversal and the function compares the nodes in a symmetric manner.</p>
 <p><strong>Space Complexity:  O(1)</strong>  as no additional data structures or memory is allocated.
-					<ol><li>O(H): Recursive Stack Space is used to calculate the height of the tree at each node which is proportional to the height of the tree. </li><li>The recursive nature of the getHeight function, which incurs space on the call stack for each recursive call until it reaches the leaf nodes or the height of the tree.</li></ol> </p>
+					<ol><li>O(H): Recursive Stack Space is used to calculate the height of the tree at each node which is proportional to the height of the tree. </li><li>The recursive nature of the getHeight function, which incurs space on the call stack for each recursive call until it reaches the leaf nodes or the height of the tree.</li></ol>
 </p>
-</details>
+</p></details>
 </div>
 </details>
 </div>

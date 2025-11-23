@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -415,6 +418,10 @@
             .code-tab {
                 flex-shrink: 0;
             }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
         }
     </style>
 </head>
@@ -431,7 +438,6 @@
 <p>The union of two arrays can be defined as the common and distinct elements in the two arrays.<strong>NOTE:</strong> Elements in the union should be in ascending order.</p>
 <!-- /wp:paragraph -->
 <!-- wp:paragraph -->
-<p></p>
 <!-- /wp:paragraph -->
 <!-- wp:html -->
 <!-- This is Examples Drop-Down -->
@@ -610,10 +616,11 @@ int main() {
 
 </code>
 </pre>
-<p>
 <p><strong>Output:</strong></p>
 <p>Union of arr1 and arr2 is </p>
-<p>1 2 3 4 5 6 7 8 9 10 11 12.</p>
+<p>1 2 3 4 5 6 7 8 9 10 11 12.
+
+
 </p>
 </div>
 <div class="code-block" data-lang="java">
@@ -646,10 +653,11 @@ public static void main(String args[]) {
 }
 </code>
 </pre>
-<p>
 <p><strong>Output:</strong></p>
 <p>Union of arr1 and arr2 is </p>
-<p>1 2 3 4 5 6 7 8 9 10 11 12.</p>
+<p>1 2 3 4 5 6 7 8 9 10 11 12.
+
+
 </p>
 </div>
 <div class="code-block" data-lang="python">
@@ -679,10 +687,12 @@ for num in union:
     print(num, end=" ")
 </code>
 </pre>
-<p>
 <p><strong>Output:</strong></p>
 <p>Union of arr1 and arr2 is </p>
-<p>1 2 3 4 5 6 7 8 9 10 11 12.</p>
+<p>1 2 3 4 5 6 7 8 9 10 11 12.
+
+
+
 </p>
 </div>
 <div class="code-block" data-lang="javascript">
@@ -716,10 +726,10 @@ console.log(union.join(" "));
 
 </code>
 </pre>
-<p>
 <p><strong>Output:</strong></p>
 <p>Union of arr1 and arr2 is </p>
-<p>1 2 3 4 5 6 7 8 9 10 11 12.</p>
+<p>1 2 3 4 5 6 7 8 9 10 11 12.
+
 </p>
 </div>
 </div>
@@ -734,11 +744,10 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Compleixty : O( (m+n)log(m+n) </strong>) . Inserting a key in map takes logN times, where N is no of elements in map. At max map can store m+n elements <strong>{when there are no common elements and elements in arr,arr2 are distntict}</strong>. So Inserting m+n th element takes log(m+n) time. Upon approximation across insertion of all elements in worst it would take O((m+n)log(m+n) time.</p>
 <p>Using <strong>HashMap </strong>also takes the same time, On average insertion in unordered_map takes O(1) time but sorting the union vector takes O((m+n)log(m+n))  time. Because at max union vector can have m+n elements.</p>
 <p><strong>Space Complexity : O(m+n)</strong> {If Space of Union ArrayList is considered} </p>
-<p><strong>O(1)</strong> {If Space of union ArrayList is not considered}</p>
+<p><strong>O(1)</strong> {If Space of union ArrayList is not considered}
 </p>
 </details>
 </div>
@@ -839,10 +848,11 @@ int main()
 }
 </code>
 </pre>
-<p>
 <p><strong>Output:</strong></p>
 <p>Union of arr1 and arr2 is </p>
-<p>1 2 3 4 5 6 7 8 9 10 11 12. </p>
+<p>1 2 3 4 5 6 7 8 9 10 11 12. 
+
+
 </p>
 </div>
 <div class="code-block" data-lang="java">
@@ -873,10 +883,10 @@ public static void main(String args[]) {
 }
 </code>
 </pre>
-<p>
 <p><strong>Output:</strong></p>
 <p>Union of arr1 and arr2 is </p>
-<p>1 2 3 4 5 6 7 8 9 10 11 12. </p>
+<p>1 2 3 4 5 6 7 8 9 10 11 12. 
+
 </p>
 </div>
 <div class="code-block" data-lang="python">
@@ -907,10 +917,10 @@ print(*union)
 
 </code>
 </pre>
-<p>
 <p><strong>Output:</strong></p>
 <p>Union of arr1 and arr2 is </p>
-<p>1 2 3 4 5 6 7 8 9 10 11 12. </p>
+<p>1 2 3 4 5 6 7 8 9 10 11 12. 
+
 </p>
 </div>
 <div class="code-block" data-lang="javascript">
@@ -944,10 +954,11 @@ console.log("Union of arr1 and arr2 is:");
 console.log(...union);
 </code>
 </pre>
-<p>
 <p><strong>Output:</strong></p>
 <p>Union of arr1 and arr2 is </p>
-<p>1 2 3 4 5 6 7 8 9 10 11 12. </p>
+<p>1 2 3 4 5 6 7 8 9 10 11 12. 
+
+
 </p>
 </div>
 </div>
@@ -962,11 +973,10 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Compleixty : O( (m+n)log(m+n) </strong>) . Inserting an element in a set takes logN time, where N is no of elements in the set. At max set can store m+n elements <strong>{when there are no common elements and elements in arr,arr2 are distntict}.</strong> So Inserting m+n th element takes log(m+n) time. Upon approximation across inserting all elements in worst, it would take O((m+n)log(m+n) time.</p>
 <p>Using <strong>HashSet</strong> also takes the same time, On average insertion in unordered_set takes O(1) time but sorting the union vector takes O((m+n)log(m+n))  time. Because at max union vector can have m+n elements.</p>
 <p><strong>Space Complexity : O(m+n)</strong> {If Space of Union ArrayList is considered} </p>
-<p><strong>O(1)</strong> {If Space of union ArrayList is not considered}</p>
+<p><strong>O(1)</strong> {If Space of union ArrayList is not considered}
 </p>
 </details>
 </div>
@@ -1085,9 +1095,9 @@ int main()
 <!-- Insert Output of Optimal Apporach Here -->
 <p><strong>Output:</strong></p>
 <p>Union of arr1 and arr2 is </p>
-<p>1 2 3 4 5 6 7 8 9 10 11 12. </p>
+<p>1 2 3 4 5 6 7 8 9 10 11 12. 
 </p>
-</div>
+</p></div>
 <div class="code-block" data-lang="java">
 <pre class="wp-block-code"><code class="language-java" lang="java">
 
@@ -1142,9 +1152,9 @@ public static void main(String args[]) {
 <!-- Insert Output of Optimal Apporach Here -->
 <p><strong>Output:</strong></p>
 <p>Union of arr1 and arr2 is </p>
-<p>1 2 3 4 5 6 7 8 9 10 11 12. </p>
+<p>1 2 3 4 5 6 7 8 9 10 11 12. 
 </p>
-</div>
+</p></div>
 <div class="code-block" data-lang="python">
 <pre class="wp-block-code"><code class="language-python" lang="python">
 
@@ -1189,9 +1199,9 @@ print(*union)
 <!-- Insert Output of Optimal Apporach Here -->
 <p><strong>Output:</strong></p>
 <p>Union of arr1 and arr2 is </p>
-<p>1 2 3 4 5 6 7 8 9 10 11 12. </p>
+<p>1 2 3 4 5 6 7 8 9 10 11 12. 
 </p>
-</div>
+</p></div>
 <div class="code-block" data-lang="javascript">
 <pre class="wp-block-code"><code class="language-javascript" lang="javascript">
 
@@ -1241,9 +1251,9 @@ console.log(union.join(" "));
 <!-- Insert Output of Better Approach Here -->
 <p><strong>Output:</strong></p>
 <p>Union of arr1 and arr2 is </p>
-<p>1 2 3 4 5 6 7 8 9 10 11 12. </p>
+<p>1 2 3 4 5 6 7 8 9 10 11 12. 
 </p>
-</div>
+</p></div>
 </div>
 </details>
 <details class="secondary-details">
@@ -1260,9 +1270,9 @@ Complexity Analysis
 <!-- Insert Time and Space Complexity of Optimal Approach-->
 <p><strong>Time Complexity</strong>: O(m+n), Because at max i runs for n times and j runs for m times. When there are no common elements in arr1 and arr2 and all elements in arr1, arr2 are distinct. </p>
 <p><strong>Space Complexity : O(m+n)</strong> {If Space of Union ArrayList is considered} </p>
-<p><strong>O(1)</strong> {If Space of union ArrayList is not considered}</p>
+<p><strong>O(1)</strong> {If Space of union ArrayList is not considered}
 </p>
-</details>
+</p></details>
 </div>
 </details>
 </div>

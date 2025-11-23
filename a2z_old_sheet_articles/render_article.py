@@ -2,6 +2,7 @@ import json
 import sys
 import os
 import subprocess
+import re
 from pathlib import Path
 
 def read_template(template_path='template.html'):
@@ -23,6 +24,19 @@ def create_html_from_json(json_filepath, html_filepath, template_content):
 
         title = data.get('title', 'Article')
         content = data.get('content', '<p>No content found.</p>')
+
+        # Clean up empty paragraphs and paragraphs containing only comments/whitespace
+        # Pattern: <p> followed by any sequence of whitespace OR comments, followed by </p>
+        # We use \s instead of \s* inside the group to avoid catastrophic backtracking
+        content = re.sub(r'<p>(?:\s|<!--.*?-->)*</p>', '', content, flags=re.DOTALL)
+        # Also remove paragraphs containing only break tags
+        content = re.sub(r'<p>\s*<br\s*/?>\s*</p>', '', content, flags=re.IGNORECASE)
+
+        # Fix nested paragraphs which cause layout issues (extra spacing)
+        # Replace <p>...<p> with <p> (effectively removing the outer start tag)
+        content = re.sub(r'<p>(\s*<p>)', r'\1', content, flags=re.IGNORECASE)
+        # Replace </p>...</p> with </p> (removing the outer end tag)
+        content = re.sub(r'</p>(\s*</p>)', r'\1', content, flags=re.IGNORECASE)
 
         # Replace placeholders in the template with actual data
         output_html = template_content.replace('{TITLE}', title)

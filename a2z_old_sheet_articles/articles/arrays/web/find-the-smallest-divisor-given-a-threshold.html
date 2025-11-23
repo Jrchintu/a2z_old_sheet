@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -453,13 +460,12 @@ The sum is 9(1 + 1 + 2 + 2 + 3)  if we choose 2 as a divisor. Upon dividing all 
 <strong>Result:</strong> 2
 <strong>Explanation:</strong> If we choose 1, we get 17 as the sum. If we choose 2, we get 9(4+2+1+2) &lt;= 10 as the answer. So, 2 is the answer.
 
-<p>
-</p><p><strong>Point to remember:</strong></p>
+<p><strong>Point to remember:</strong></p>
 <ul><li>While dividing the array elements with a chosen number, we will always take the ceiling value. And then we will consider their summation. For example, 3 / 2 = 2.</li></ul>
 <p><strong>Observation: </strong></p>
 <ul><li><strong>Minimum possible divisor: </strong>We can easily consider 1 as the minimum divisor as it is the smallest positive integer.</li><li><strong>Maximum possible divisor: </strong>If we observe, we can conclude the maximum element in the array i.e. max(arr[]) is the maximum possible divisor. Any number &gt; max(arr[]), will give the exact same result as max(arr[]) does. This divisor will generate the minimum possible result i.e. n(<em>1 for each element</em>), where n = size of the array.</li></ul>
 <p>With these observations, <strong><em>we can surely say that our answer will lie in the range </em></strong><strong><em><br/></em></strong><strong><em>[1, max(arr[])]</em></strong>.</p>
-<p></p>
+
 </pre>
 </pre>
 </div>
@@ -693,30 +699,9 @@ console.log("The minimum divisor is:", ans);
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Brute Force Here -->
-<strong>Output:</strong>The minimum divisor is: 3
-
-
-</p>
-</div>
-</details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Brute Force Here -->
-</p><p><strong>Time Complexity: </strong>O(max(arr[])*N), where max(arr[]) = maximum element in the array, N = size of the array.<br/><strong>Reason: </strong>We are using nested loops. The outer loop runs from 1 to max(arr[]) and the inner loop runs for N times.</p>
+<p><strong>Time Complexity: </strong>O(max(arr[])*N), where max(arr[]) = maximum element in the array, N = size of the array.<br/><strong>Reason: </strong>We are using nested loops. The outer loop runs from 1 to max(arr[]) and the inner loop runs for N times.</p>
 <p><strong>Space Complexity: </strong>O(1) as we are not using any extra space to solve this problem.</p>
-<p></p>
-</details>
+</div></details>
 </div>
 </details>
 </div>
@@ -951,29 +936,9 @@ console.log("The minimum divisor is:", ans);
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Optimal Apporach Here -->
-<strong>Output:</strong>The minimum divisor is: 3
-
-</p>
-</div>
-</details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Optimal Approach-->
-</p><p><strong>Time Complexity: </strong>O(log(max(arr[]))*N), where max(arr[]) = maximum element in the array, N = size of the array.<br/><strong>Reason: </strong>We are applying binary search on our answers that are in the range of [1, max(arr[])]. For every possible divisor ‘mid’, we call the sumByD() function. Inside that function, we are traversing the entire array, which results in O(N).</p>
+<p><strong>Time Complexity: </strong>O(log(max(arr[]))*N), where max(arr[]) = maximum element in the array, N = size of the array.<br/><strong>Reason: </strong>We are applying binary search on our answers that are in the range of [1, max(arr[])]. For every possible divisor ‘mid’, we call the sumByD() function. Inside that function, we are traversing the entire array, which results in O(N).</p>
 <p><strong>Space Complexity: </strong>O(1) as we are not using any extra space to solve this problem.</p>
-<p></p>
-</details>
+</div></details>
 </div>
 </details>
 </div>
@@ -1187,10 +1152,8 @@ block.classList.remove('dsa_article_code_active');
 <blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/kriti39/" rel="noreferrer noopener" target="_blank">KRITIDIPTA GHOSH</a></strong></em> <em>for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a></p></blockquote>
 <!-- /wp:quote -->
 <!-- wp:paragraph -->
-<p></p>
 <!-- /wp:paragraph -->
 <!-- wp:paragraph -->
-<p></p>
 <!-- /wp:paragraph -->
 </article>
 </div>

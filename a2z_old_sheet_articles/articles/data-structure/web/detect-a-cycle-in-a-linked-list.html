@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -881,31 +888,10 @@ if (detectLoop(head)) {
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Brute Force Here -->
-<strong>Output:</strong> 
-Loop detected in the linked list.
-
-</p>
-</div>
-</details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Brute Force Here -->
-</p><p><strong>Time Complexity: O(N * 2 * log(N) )</strong>The algorithm traverses the linked list <strong>once</strong>, performing hashmap <strong>insertions</strong> and <strong>searches</strong> in the while loop for each node. The insertion and search operations in the unordered_map have a worst-case time complexity of <strong>O(log(N))</strong>. As the loop iterates through N nodes, the total time complexity is determined by the product of the traversal <strong>(O(N))</strong> and the average-case complexity of the <strong>hashmap operations (insert and search)</strong>, resulting in <strong>O(N * 2 * log(N)). </strong></p>
+<p><strong>Time Complexity: O(N * 2 * log(N) )</strong>The algorithm traverses the linked list <strong>once</strong>, performing hashmap <strong>insertions</strong> and <strong>searches</strong> in the while loop for each node. The insertion and search operations in the unordered_map have a worst-case time complexity of <strong>O(log(N))</strong>. As the loop iterates through N nodes, the total time complexity is determined by the product of the traversal <strong>(O(N))</strong> and the average-case complexity of the <strong>hashmap operations (insert and search)</strong>, resulting in <strong>O(N * 2 * log(N)). </strong></p>
 <p>Hashmaps and their time complexities are discussed in more detail <a href="https://takeuforward.org/hashing/hashing-maps-time-complexity-collisions-division-rule-of-hashing-strivers-a2z-dsa-course/" rel="noopener" target="_blank" title="">here</a>. </p>
 <p><strong>Space Complexity: O(N) </strong>The code uses a <strong>hashmap</strong>/<strong>dictionary</strong> to store encountered nodes, which can take up to O(N) additional space, where 'n' is the number of nodes in the list. Hence, the <strong>spacecomplexity</strong> is O(N) due to the use of the map to track nodes.</p>
-<p></p>
-</details>
+</div></details>
 </div>
 </details>
 </div>
@@ -1292,31 +1278,10 @@ if (detectCycle(head)) {
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Optimal Apporach Here -->
-<strong>Output:</strong> 
-Loop detected in the linked list.
-
-</p>
-</div>
-</details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Optimal Approach-->
-</p><p><strong>Time Complexity: O(N)</strong>, where N is the number of nodes in the linked list. This is because in the <strong>worst-case scenario</strong>, the <strong>fast</strong> pointer, which <strong>moves</strong> <strong>quicker</strong>, will either reach the end of the list (in case of no loop) or meet the <strong>slow</strong> pointer (in case of a loop) in a <strong>linear time</strong> relative to the length of the list.</p>
+<p><strong>Time Complexity: O(N)</strong>, where N is the number of nodes in the linked list. This is because in the <strong>worst-case scenario</strong>, the <strong>fast</strong> pointer, which <strong>moves</strong> <strong>quicker</strong>, will either reach the end of the list (in case of no loop) or meet the <strong>slow</strong> pointer (in case of a loop) in a <strong>linear time</strong> relative to the length of the list.</p>
 <p>The key insight into why this is <strong>O(N)</strong> and <strong>not something slower</strong> is that each step of the algorithm reduces the distance between the fast and slow pointers (when they are in the loop) by one. Therefore, the <strong>maximum</strong> <strong>number</strong> of <strong>steps</strong> needed for them to meet is <strong>proportional</strong> to the number of nodes in the list.</p>
 <p><br/><strong>Space Complexity : O(1)</strong> The code uses only a <strong>constantamount</strong> of <strong>additionalspace</strong>, regardless of the linked list's length. This is achieved by using two pointers (<strong>slow</strong> and <strong>fast</strong>) to detect the loop without any significant extra memory usage, resulting in <strong>constantspace</strong> complexity, O(1).</p>
-<p></p>
-</details>
+</div></details>
 </div>
 </details>
 </div>

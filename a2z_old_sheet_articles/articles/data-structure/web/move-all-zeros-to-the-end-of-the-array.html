@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -415,6 +418,10 @@
             .code-tab {
                 flex-shrink: 0;
             }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
         }
     </style>
 </head>
@@ -431,7 +438,6 @@
 <p><strong>Problem Statement:</strong> You are given an array of integers, your task is to move all the zeros in the array to the end of the array and move non-negative integers to the front by maintaining their order.</p>
 <!-- /wp:paragraph -->
 <!-- wp:paragraph -->
-<p></p>
 <!-- /wp:paragraph -->
 <!-- wp:html -->
 <!-- This is Examples Drop-Down -->
@@ -735,9 +741,10 @@ console.log(ans.join(' '));
 </div>
 <p>
 <!-- Insert Output of Brute Force Here -->
-<p><strong>Output:</strong> 1 2 3 2 4 5 1 0 0 0</p>
+<p><strong>Output:</strong> 1 2 3 2 4 5 1 0 0 0 
+
 </p>
-</div>
+</p></div>
 </details>
 <details class="secondary-details">
 <summary class="secondary-summary">
@@ -752,9 +759,9 @@ Complexity Analysis
 <p>
 <!-- Insert Time and Space Complexity of Brute Force Here -->
 <p><strong>Time Complexity: </strong>O(N) + O(X) + O(N-X) ~ O(2*N), where N = total no. of elements,<br/>X = no. of non-zero elements, and N-X = total no. of zeros.<br/><strong>Reason: </strong>O(N) for copying non-zero elements from the original to the temporary array. O(X) for again copying it back from the temporary to the original array. O(N-X) for filling zeros in the original array. So, the total time complexity will be O(2*N).</p>
-<p><strong>Space Complexity: </strong>O(N), as we are using a temporary array to solve this problem and the maximum size of the array can be N in the worst case.<br/><strong>Reason: </strong>The temporary array stores the non-zero elements. In the worst case, all the given array elements will be non-zero.</p>
+<p><strong>Space Complexity: </strong>O(N), as we are using a temporary array to solve this problem and the maximum size of the array can be N in the worst case.<br/><strong>Reason: </strong>The temporary array stores the non-zero elements. In the worst case, all the given array elements will be non-zero.
 </p>
-</details>
+</p></details>
 </div>
 </details>
 </div>
@@ -986,9 +993,10 @@ console.log(ans.join(' '));
 </div>
 <p>
 <!-- Insert Output of Optimal Apporach Here -->
-<p><strong>Output:</strong> 1 2 3 2 4 5 1 0 0 0</p>
+<p><strong>Output:</strong> 1 2 3 2 4 5 1 0 0 0 
+
 </p>
-</div>
+</p></div>
 </details>
 <details class="secondary-details">
 <summary class="secondary-summary">
@@ -1003,9 +1011,9 @@ Complexity Analysis
 <p>
 <!-- Insert Time and Space Complexity of Optimal Approach-->
 <p><strong>Time Complexity: </strong>O(N), N = size of the array.<br/><strong>Reason: </strong>We have used 2 loops and using those loops, we are basically traversing the array once.</p>
-<p><strong>Space Complexity: </strong>O(1) as we are not using any extra space to solve this problem.</p>
+<p><strong>Space Complexity: </strong>O(1) as we are not using any extra space to solve this problem.
 </p>
-</details>
+</p></details>
 </div>
 </details>
 </div>

@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -850,11 +857,11 @@ main();
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity: O(N*N)</strong> where N is the number of characters in the given word. The implementation has two nested loops:
                         <ol><li>The outer loop iterates over each character of the string, leading to O(N) iterations.</li><li>The inner loop iterates over the remaining characters in the string for each character, also leading to O(N) iterations in the worst case.</li></ol></p>
-<p><strong>Space Complexity : O(N*N)</strong>where N is the number of characters in the given word. The size of the set to store distinct substrings can grow up to O(N*N) in the worst case where all substrings are distinct. Each substring stored in the set occupies space proportional to its length, but the total space occupied by all substrings will limit to O(N*N).</p>
-</p>
+<p><strong>Space Complexity : O(N*N)</strong>where N is the number of characters in the given word. The size of the set to store distinct substrings can grow up to O(N*N) in the worst case where all substrings are distinct. Each substring stored in the set occupies space proportional to its length, but the total space occupied by all substrings will limit to O(N*N).
+
+                    </p>
 </details>
 </div>
 </details>
@@ -1397,10 +1404,11 @@ main();
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity: O(N*N)</strong>where N is the length of the input string. This is because for each starting position of the substring, we traverse the entire substring once. However, due to the Trie structure, the actual number of comparisons is reduced as we progress.</p>
-<p><strong>Space Complexity : O(N*N)</strong> where N is the length of the input string. In the worst-case scenario, where there are no common prefixes among substrings the number of nodes could be as high as the total number of substrings which is bounded by O(N*N). </p>
-</p>
+<p><strong>Space Complexity : O(N*N)</strong> where N is the length of the input string. In the worst-case scenario, where there are no common prefixes among substrings the number of nodes could be as high as the total number of substrings which is bounded by O(N*N). 
+
+
+                    </p>
 </details>
 </div>
 </details>

@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -708,10 +715,9 @@ main();
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity:  O(min(N<sub>1</sub>, N<sub>2</sub>))</strong>  where N1 and N2 is the input number. The algorithm iterates from 1 to the minimum of N1 and N2 and each iteration checks whether both the numbers are divisible by the current number (constant time operations).</p>
-<p><strong>Space Complexity: O(1)</strong>as the space complexity remains constant and independent of the input size. Only a fixed amount of memory is required to store the integer variables.</p>
-</p>
+<p><strong>Space Complexity: O(1)</strong>as the space complexity remains constant and independent of the input size. Only a fixed amount of memory is required to store the integer variables.
+                    </p>
 </details>
 </div>
 </details>
@@ -946,10 +952,11 @@ console.log("GCD of " + n1 + " and " + n2 + " is: " + gcd);
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity:  O(min(N<sub>1</sub>, N<sub>2</sub>))</strong>   where N1 and N2 is the input number. The algorithm iterates from the minimum of N1 and N2 to 1 and each iteration checks whether both the numbers are divisible by the current number (constant time operations).</p>
-<p><strong>Space Complexity: O(1)</strong> as the space complexity remains constant and independent of the input size. Only a fixed amount of memory is required to store the integer variables.</p>
-</p>
+<p><strong>Space Complexity: O(1)</strong> as the space complexity remains constant and independent of the input size. Only a fixed amount of memory is required to store the integer variables.
+
+
+                    </p>
 </details>
 </div>
 </details>
@@ -1213,10 +1220,9 @@ console.log("GCD of", n1, "and", n2, "is:", gcd);
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity: O(min(N<sub>1</sub>, N<sub>2</sub>))</strong> where N1 and N2 is the input number. The algorithm iterates from the minimum of N1 and N2 to 1 and each iteration checks whether both the numbers are divisible by the current number (constant time operations). </p>
-<p><strong>Space Complexity: O(1)</strong> as the space complexity remains constant and independent of the input size. Only a fixed amount of memory is required to store the integer variable</p>
-</p>
+<p><strong>Space Complexity: O(1)</strong> as the space complexity remains constant and independent of the input size. Only a fixed amount of memory is required to store the integer variable
+                    </p>
 </details>
 </div>
 </details>

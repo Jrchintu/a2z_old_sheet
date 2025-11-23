@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -945,30 +952,9 @@ if (loopLength &gt; 0) {
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Brute Force Here -->
-<strong>Output:</strong> 
-Length of the loop: 4
-
-</p>
-</div>
-</details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Brute Force Here -->
-</p><p><strong>Time Complexity: O(N)</strong> The code <strong>traverses</strong> the <strong>entire</strong> <strong>linked</strong> <strong>list</strong> at least once, where 'N' is the number of nodes in the list. Therefore, the time complexity is <strong>linear</strong>, O(N).</p>
+<p><strong>Time Complexity: O(N)</strong> The code <strong>traverses</strong> the <strong>entire</strong> <strong>linked</strong> <strong>list</strong> at least once, where 'N' is the number of nodes in the list. Therefore, the time complexity is <strong>linear</strong>, O(N).</p>
 <p><strong>Space Complexity: O(N) </strong>The code uses a <strong>hashmap</strong>/<strong>dictionary</strong> to store encountered nodes, which can take up to O(N) <strong>additional space</strong>, where ‘N' is the number of nodes in the list. Hence, the <strong>space complexity</strong> is O(N) due to the use of the map to track nodes.</p>
-<p></p>
-</details>
+</div></details>
 </div>
 </details>
 </div>
@@ -1449,30 +1435,9 @@ if (loopLength &gt; 0) {
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Optimal Apporach Here -->
-<strong>Output:</strong> 
-Length of the loop: 4
-
-</p>
-</div>
-</details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Optimal Approach-->
-</p><p><strong>Time Complexity: O(N) </strong>The code <strong>traverses</strong> the <strong>entire</strong> <strong>linked</strong> <strong>list</strong> once, where 'n' is the number of nodes in the list. This traversal has a <strong>linear</strong> <strong>time</strong> <strong>complexity</strong>, O(n).</p>
+<p><strong>Time Complexity: O(N) </strong>The code <strong>traverses</strong> the <strong>entire</strong> <strong>linked</strong> <strong>list</strong> once, where 'n' is the number of nodes in the list. This traversal has a <strong>linear</strong> <strong>time</strong> <strong>complexity</strong>, O(n).</p>
 <p><strong>Space Complexity: O(1)</strong> The code uses only a <strong>constant</strong> <strong>amount</strong> of <strong>additional</strong> <strong>space</strong>, regardless of the linked list's length. This is achieved by using two pointers (<strong>slow</strong> and <strong>fast</strong>) to detect the loop without any significant extra memory usage, resulting in <strong>constant</strong> <strong>space</strong> complexity, O(1).</p>
-<p></p>
-</details>
+</div></details>
 </div>
 </details>
 </div>

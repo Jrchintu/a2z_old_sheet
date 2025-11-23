@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -437,7 +444,6 @@
 <p><strong>Note: </strong>A subsequence of an array is a list with elements of the array where some elements are deleted ( or not deleted at all) and the elements should be in the same order in the subsequence as in the array.</p>
 <!-- /wp:paragraph -->
 <!-- wp:paragraph -->
-<p></p>
 <!-- /wp:paragraph -->
 <!-- wp:html -->
 <!-- This is Examples Drop-Down -->
@@ -771,12 +777,9 @@ main();
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Brute Force Here -->
-</p><p><strong>Output:</strong> 11
+<p><strong>Output:</strong> 11
 
 </p>
-<p></p>
 </div>
 </details>
 <details class="secondary-details">
@@ -789,13 +792,10 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
-<!-- Insert Time and Space Complexity of Brute Force Here -->
-</p><p id="block-4ae2decf-d2cd-4fc8-bbc4-fc9e2369fc78"><strong>Time Complexity: O(N)</strong></p>
+<p id="block-4ae2decf-d2cd-4fc8-bbc4-fc9e2369fc78"><strong>Time Complexity: O(N)</strong></p>
 <p id="block-4de755ea-5362-45fd-bf80-e09cc4be1f72">Reason: The overlapping subproblems will return the answer in constant time O(1). Therefore the total number of new subproblems we solve is ‘n’. Hence total time complexity is O(N).</p>
 <p id="block-3804d609-1a46-4132-99f5-151bad9c577a"><strong>Space Complexity: O(N)</strong></p>
 <p id="block-b56b4156-b041-43e7-959d-f9cae963ad30">Reason: We are using a recursion stack space(O(N)) and an array (again O(N)). Therefore total space complexity will be O(N) + O(N) ≈ O(N)</p>
-<p></p>
 </details>
 </div>
 </details>
@@ -1050,32 +1050,11 @@ main();
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Better Approach Here -->
-<strong>Output:</strong>  11
-
-
-</p>
-</div>
-</details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Better Approach Here -->
-</p><p><strong>Time Complexity: O(N)</strong></p>
+<p><strong>Time Complexity: O(N)</strong></p>
 <p>Reason: We are running a simple iterative loop</p>
 <p><strong>Space Complexity: O(N)</strong></p>
 <p>Reason: We are using an external array of size ‘n+1’.</p>
-<p></p>
-</details>
+</div></details>
 </div>
 </details>
 </div>
@@ -1310,32 +1289,11 @@ main();
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Optimal Apporach Here -->
-<strong>Output:</strong> 11
-
-
-</p>
-</div>
-</details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Optimal Approach-->
-</p><p><strong>Time Complexity: O(N)</strong></p>
+<p><strong>Time Complexity: O(N)</strong></p>
 <p>Reason: We are running a simple iterative loop</p>
 <p><strong>Space Complexity: O(1)</strong></p>
 <p>Reason: We are not using any extra space.</p>
-<p></p>
-</details>
+</div></details>
 </div>
 </details>
 </div>

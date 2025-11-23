@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -448,7 +455,7 @@ V = 5, edges = { {0, 1, 2}, {0, 2, 1}, {1, 2, 1}, {2, 3, 2}, {3, 4, 1}, {4, 2, 2
 <strong>Result</strong>: 5
 <strong>Explanation</strong>: 
 The minimum spanning tree is drawn below:
-<br/><strong><em>MST</em></strong><em> = {(0, 2), (1, 2), (2, 3), (3, 4)}</em><p></p>
+<br/><strong><em>MST</em></strong><em> = {(0, 2), (1, 2), (2, 3), (3, 4)}</em>
 <figure class="wp-block-image size-full"><img alt="" class="wp-image-7021" src="assets/a0b13d5225d6c3c236ac5ef873e5fb59.png"/></figure>
 </pre>
 <!-- wp:heading {"level":3} -->

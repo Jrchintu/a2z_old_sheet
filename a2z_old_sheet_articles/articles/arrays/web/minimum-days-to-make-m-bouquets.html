@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -451,8 +458,7 @@ Examples
 <strong>Input Format:</strong> N = 5, arr[] = {1, 10, 3, 10, 2}, m = 3, k = 2
 <strong>Result:</strong> -1
 <strong>Explanation:</strong> If we want to make 3 bouquets of 2 flowers each, we need at least 6 flowers. But we are given only 5 flowers, so, we cannot make the bouquets.
-<p>
-</p><p>Let's grasp the question better with the help of an example. Consider an array: {7, 7, 7, 7, 13, 11, 12, 7}. We aim to create bouquets with k, which is 3 adjacent flowers, and we need to make m, which is 2 such bouquets. Now, if we try to make bouquets on the 11th day, the first 4 flowers and the 6th and the last flowers would have bloomed. So, we will be having 6 flowers in total on the 11th day. However, we require two groups of 3 adjacent flowers each. Although we can form one group with the first 3 adjacent flowers, we cannot create a second group. Therefore, 11 is not the answer in this case.</p>
+<p>Let's grasp the question better with the help of an example. Consider an array: {7, 7, 7, 7, 13, 11, 12, 7}. We aim to create bouquets with k, which is 3 adjacent flowers, and we need to make m, which is 2 such bouquets. Now, if we try to make bouquets on the 11th day, the first 4 flowers and the 6th and the last flowers would have bloomed. So, we will be having 6 flowers in total on the 11th day. However, we require two groups of 3 adjacent flowers each. Although we can form one group with the first 3 adjacent flowers, we cannot create a second group. Therefore, 11 is not the answer in this case.</p>
 <p>If we choose the 12th day, we can make 2 such groups, one with the first 3 adjacent flowers and the other with the last 3 adjacent flowers. Hence, we need a minimum of 12 days to make 2 bouquets.</p>
 <p><strong>Observation: </strong></p>
 <ul><li><strong>Impossible case: </strong>To create m bouquets with k adjacent flowers each, we require a minimum of m*k flowers in total. If the number of flowers in the array, represented by array-size, is less than m*k, it becomes impossible to form m bouquets even after all the flowers have bloomed. <strong><em>In such cases, where array-size &lt; m*k, we should return -1</em></strong>.</li><li> <strong>Maximum possible answer: </strong>The maximum potential answer corresponds to the time needed for all the flowers to bloom. In other words, it is the highest value within the given array i.e. <strong>max(arr[])</strong>.</li><li><strong>Minimum possible answer: </strong>The minimum potential answer corresponds to the time needed for atleast one flower to bloom. In other words, it is the smallest value within the given array i.e. <strong>min(arr[])</strong>.</li></ul>
@@ -464,7 +470,7 @@ Examples
 <ol><li>We will declare two variables i.e. ‘cnt’ and ‘noOfB’.<br/>cnt -&gt; the number of adjacent flowers,<br/>noOfB -&gt; the number of bouquets.</li><li>We will run a loop to traverse the array.</li><li>Inside the loop, we will do the following:<ol><li><strong>If arr[i] &lt;= day: </strong>This means the ith flower has bloomed. So, we will increase the number of adjacent flowers i.e. ‘cnt’ by 1.</li><li><strong>Otherwise, </strong>the flower has not bloomed. Here, we will calculate the number of bouquets we can make with ‘cnt’ adjacent flowers i.e. floor(cnt/k), and add it to the noOfB. Now, as this ith flower breaks the sequence of the adjacent bloomed flowers, we will set the ‘cnt’ 0.</li></ol></li><li>Lastly, outside the loop, we will calculate the floor(cnt/k) and add it to the noOfB.</li><li><strong>If noOfB &gt;= m: </strong>This means, we can make at least m bouquets. So, we will return true.</li><li><strong>Otherwise, </strong>We will return false.</li></ol>
 <p><strong>Note: </strong><em>We actually pass a particular day as a parameter to the possible() function. The function returns true if it is possible to make atleast m bouquets on that particular day, otherwise, it returns false.</em></p>
 
-<p></p>
+
 </pre>
 </pre>
 </div>
@@ -782,29 +788,9 @@ if (ans === -1) {
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Brute Force Here -->
-<strong>Output:</strong> We can make bouquets on day 12.
-
-</p>
-</div>
-</details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Brute Force Here -->
-</p><p><strong>Time Complexity: </strong>O((max(arr[])-min(arr[])+1) * N), where {max(arr[]) -&gt; maximum element of the array, min(arr[]) -&gt; minimum element of the array, N = size of the array}.<br/><strong>Reason: </strong>We are running a loop to check our answers that are in the range of [min(arr[]), max(arr[])]. For every possible answer, we will call the possible() function. Inside the possible() function, we are traversing the entire array, which results in O(N).</p>
+<p><strong>Time Complexity: </strong>O((max(arr[])-min(arr[])+1) * N), where {max(arr[]) -&gt; maximum element of the array, min(arr[]) -&gt; minimum element of the array, N = size of the array}.<br/><strong>Reason: </strong>We are running a loop to check our answers that are in the range of [min(arr[]), max(arr[])]. For every possible answer, we will call the possible() function. Inside the possible() function, we are traversing the entire array, which results in O(N).</p>
 <p><strong>Space Complexity: </strong>O(1) as we are not using any extra space to solve this problem.</p>
-<p></p>
-</details>
+</div></details>
 </div>
 </details>
 </div>
@@ -1100,29 +1086,9 @@ if (ans === -1) {
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Optimal Apporach Here -->
-<strong>Output:</strong>We can make bouquets on day 12 
-
-</p>
-</div>
-</details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Optimal Approach-->
-</p><p><strong>Time Complexity: </strong>O(log(max(arr[])-min(arr[])+1) * N), where {max(arr[]) -&gt; maximum element of the array, min(arr[]) -&gt; minimum element of the array, N = size of the array}.<br/><strong>Reason: </strong>We are applying binary search on our answers that are in the range of [min(arr[]), max(arr[])]. For every possible answer ‘mid’, we will call the possible() function. Inside the possible() function, we are traversing the entire array, which results in O(N).</p>
+<p><strong>Time Complexity: </strong>O(log(max(arr[])-min(arr[])+1) * N), where {max(arr[]) -&gt; maximum element of the array, min(arr[]) -&gt; minimum element of the array, N = size of the array}.<br/><strong>Reason: </strong>We are applying binary search on our answers that are in the range of [min(arr[]), max(arr[])]. For every possible answer ‘mid’, we will call the possible() function. Inside the possible() function, we are traversing the entire array, which results in O(N).</p>
 <p><strong>Space Complexity: </strong>O(1) as we are not using any extra space to solve this problem.</p>
-<p></p>
-</details>
+</div></details>
 </div>
 </details>
 </div>

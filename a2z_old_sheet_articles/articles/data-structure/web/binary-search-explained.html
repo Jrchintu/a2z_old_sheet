@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -725,15 +732,13 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
-</p><h2><strong>Time Complexity:</strong></h2>
+<h2><strong>Time Complexity:</strong></h2>
 <p>In the algorithm, in every step, we are basically dividing the search space into 2 equal halves. This is actually equivalent to dividing the size of the array by 2, every time. After a certain number of divisions, the size will reduce to such an extent that we will not be able to divide that anymore and the process will stop. The number of total divisions will be equal to the time complexity.</p>
 <p>Let’s derive the number of divisions mathematically,</p>
 <pre class="wp-block-preformatted">If a number n can be divided by 2 for x times:
 	2^x = n
 Therefore, x = logn (base is 2)</pre>
 <p>So the overall time complexity is O(logN), where N = size of the given array.</p>
-<p></p>
 </details>
 </div>
 </details>
@@ -949,15 +954,13 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
-</p><h2><strong>Time Complexity:</strong></h2>
+<h2><strong>Time Complexity:</strong></h2>
 <p>In the algorithm, in every step, we are basically dividing the search space into 2 equal halves. This is actually equivalent to dividing the size of the array by 2, every time. After a certain number of divisions, the size will reduce to such an extent that we will not be able to divide that anymore and the process will stop. The number of total divisions will be equal to the time complexity.</p>
 <p>Let’s derive the number of divisions mathematically,</p>
 <pre class="wp-block-preformatted">If a number n can be divided by 2 for x times:
 	2^x = n
 Therefore, x = logn (base is 2)</pre>
 <p>So the overall time complexity is O(logN), where N = size of the given array.</p>
-<p></p>
 </details>
 </div>
 </details>

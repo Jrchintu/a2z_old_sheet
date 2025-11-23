@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -1006,10 +1013,10 @@ console.log("Kth largest element: ", kthElements[1]);
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity: O(N)</strong>  where N is the number of nodes in the Binary Search Tree. because traversing the entire BST to perform an inorder traversal takes linear time. We visit each node once resulting in time complexity proportional to the number of nodes in the BST.</p>
-<p><strong>Space Complexity : O(N)</strong> where N is the number of nodes in the Binary Search Tree as additional space is required to store the elements of the BST in an array.</p>
-</p>
+<p><strong>Space Complexity : O(N)</strong> where N is the number of nodes in the Binary Search Tree as additional space is required to store the elements of the BST in an array.
+
+                    </p>
 </details>
 </div>
 </details>
@@ -1658,10 +1665,11 @@ console.log("Kth largest element: " + kthElements[1]);
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity: O(N)</strong>  where N is the number of nodes in the Binary Search Tree as we traverse in inorder and reverse inorder fashion to get to the required nodes. We visit each node once resulting in time complexity proportional to the number of nodes in the BST.</p>
-<p><strong>Space Complexity :</strong>  as no additional space is allocated or data structures used to store any values.</p>
-</p>
+<p><strong>Space Complexity :</strong>  as no additional space is allocated or data structures used to store any values.
+
+
+                    </p>
 </details>
 </div>
 </details>

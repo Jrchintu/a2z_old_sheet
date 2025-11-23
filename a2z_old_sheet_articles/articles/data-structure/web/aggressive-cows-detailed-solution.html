@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -415,6 +418,10 @@
             .code-tab {
                 flex-shrink: 0;
             }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
         }
     </style>
 </head>
@@ -428,7 +435,6 @@
 <p><strong>Problem Statement:</strong> You are given an array <strong>'arr'</strong> of size <strong>'n'</strong> which denotes the position of stalls.<br/>You are also given an integer <strong>'k'</strong> which denotes the number of aggressive cows.<br/>You are given the task of assigning stalls to <strong>'k'</strong> cows such that the minimum distance between any two of them is the maximum possible.<br/>Find the maximum possible minimum distance.</p>
 <!-- /wp:paragraph -->
 <!-- wp:paragraph -->
-<p></p>
 <!-- /wp:paragraph -->
 <!-- wp:html -->
 <!-- This is Examples Drop-Down -->
@@ -761,9 +767,9 @@ Complexity Analysis
 <p>
 <!-- Insert Time and Space Complexity of Brute Force Here -->
 <p><strong>Time Complexity: </strong>O(NlogN) + O(N *(max(stalls[])-min(stalls[]))), where N = size of the array, max(stalls[]) = maximum element in stalls[] array, min(stalls[]) = minimum element in stalls[] array.<br/><strong>Reason: </strong>O(NlogN) for sorting the array.<strong> </strong>We are using a loop from 1 to max(stalls[])-min(stalls[]) to check all possible distances. Inside the loop, we are calling canWePlace() function for each distance. Now, inside the canWePlace() function, we are using a loop that runs for N times.</p>
-<p><strong>Space Complexity: </strong>O(1) as we are not using any extra space to solve this problem.</p>
+<p><strong>Space Complexity: </strong>O(1) as we are not using any extra space to solve this problem.
 </p>
-</details>
+</p></details>
 </div>
 </details>
 </div>
@@ -1022,9 +1028,9 @@ Complexity Analysis
 <p>
 <!-- Insert Time and Space Complexity of Optimal Approach-->
 <p><strong>Time Complexity: </strong>O(NlogN) + O(N * log(max(stalls[])-min(stalls[]))), where N = size of the array, max(stalls[]) = maximum element in stalls[] array, min(stalls[]) = minimum element in stalls[] array.<br/><strong>Reason: </strong>O(NlogN) for sorting the array. We are applying binary search on [1, max(stalls[])-min(stalls[])]. Inside the loop, we are calling canWePlace() function for each distance, ‘mid’. Now, inside the canWePlace() function, we are using a loop that runs for N times.</p>
-<p><strong>Space Complexity: </strong>O(1) as we are not using any extra space to solve this problem.</p>
+<p><strong>Space Complexity: </strong>O(1) as we are not using any extra space to solve this problem.
 </p>
-</details>
+</p></details>
 </div>
 </details>
 </div>

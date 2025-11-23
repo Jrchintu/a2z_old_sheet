@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -415,6 +418,10 @@
             .code-tab {
                 flex-shrink: 0;
             }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
         }
     </style>
 </head>
@@ -431,21 +438,21 @@
 <p><strong>Example 1:</strong></p>
 <!-- /wp:paragraph -->
 <!-- wp:html -->
-<p></p><pre><p><strong>Input</strong>: N = 10, E = 11</p>
+<pre><p><strong>Input</strong>: N = 10, E = 11</p>
 <figure class="wp-block-image size-full"><img alt="" class="wp-image-6688" src="assets/32d74e05e998499c189fb221be3a1082.png"/></figure>
 <p><strong>Output</strong>: true</p>
 <p><strong>Explanation</strong>: 8-&gt;9-&gt;10 is a cycle.</p>
-</pre><p></p>
+</pre>
 <!-- /wp:html -->
 <!-- wp:paragraph -->
 <p><strong>Example 2</strong>:</p>
 <!-- /wp:paragraph -->
 <!-- wp:html -->
-<p></p><pre><p><strong>Input Format</strong>: N = 10, E = 10</p>
+<pre><p><strong>Input Format</strong>: N = 10, E = 10</p>
 <figure class="wp-block-image size-full"><img alt="" class="wp-image-6689" src="assets/7f94f035f365b3527828d921566826f3.png"/></figure>
 <p><strong>Result</strong>: false</p>
 <p><strong>Explanation</strong>: No cycle detected.</p>
-</pre><p></p>
+</pre>
 <!-- /wp:html -->
 <!-- wp:heading {"level":3} -->
 <h3><strong>Solution</strong></h3>

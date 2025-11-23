@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -980,10 +987,9 @@ main();
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity: O(N)</strong>  where N is the number of nodes in the Binary Tree. Each node of the binary node is visited exactly once. At each node, constant-time operations are performed. Hence the time complexity is O(N).</p>
-<p><strong>Space Complexity : O(log<sub>2</sub>N)</strong>where N is the number of nodes in the Binary Tree. There are no additional data structures or space used but the auxiliary stack space is used during recursion. Since the recursion depth can be at most equal to the height to the Binary Tree, the space complexity is O(H) where H is the height of the Binary Tree. In the ideal case, H = log<sub>2</sub>N and in the worst case H = N (skewed tree).</p>
-</p>
+<p><strong>Space Complexity : O(log<sub>2</sub>N)</strong>where N is the number of nodes in the Binary Tree. There are no additional data structures or space used but the auxiliary stack space is used during recursion. Since the recursion depth can be at most equal to the height to the Binary Tree, the space complexity is O(H) where H is the height of the Binary Tree. In the ideal case, H = log<sub>2</sub>N and in the worst case H = N (skewed tree).
+                    </p>
 </details>
 </div>
 </details>
@@ -1527,10 +1533,11 @@ main();
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity: O(N)</strong> where N is the number of nodes in the Binary Tree. Each node of the binary node is visited exactly once. At each node, constant-time operations are performed. Hence the time complexity is O(N).</p>
-<p><strong>Space Complexity : O(log<sub>2</sub>N)</strong> where N is the number of nodes in the Binary Tree. There are no additional data structures or space used but the auxiliary stack space is used during recursion. Since the recursion depth can be at most equal to the height to the Binary Tree, the space complexity is O(H) where H is the height of the Binary Tree. In the ideal case, H = log<sub>2</sub>N and in the worst case H = N (skewed tree).</p>
-</p>
+<p><strong>Space Complexity : O(log<sub>2</sub>N)</strong> where N is the number of nodes in the Binary Tree. There are no additional data structures or space used but the auxiliary stack space is used during recursion. Since the recursion depth can be at most equal to the height to the Binary Tree, the space complexity is O(H) where H is the height of the Binary Tree. In the ideal case, H = log<sub>2</sub>N and in the worst case H = N (skewed tree).
+
+
+                    </p>
 </details>
 </div>
 </details>
@@ -2026,12 +2033,11 @@ main();
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity: O(2N)</strong>  where N is the number of nodes in the Binary Tree.
                         <ol><li>The time complexity is linear, as each node is visited at most twice (once for establishing the temporary link and once for reverting it).</li><li>In each step, we perform constant-time operations, such as moving to the left or right child and updating pointers.</li></ol></p>
 <p><strong>Space Complexity: O(1)</strong> The space complexity is constant, as the algorithm uses only a constant amount of extra space irrespective of the input size.
                         <ol><li>Morris Traversal does not use any additional data structures like stacks or recursion, making it an in-place algorithm.</li><li>The only space utilised is for a few auxiliary variables, such as pointers to current and in-order predecessor nodes.</li></ol></p>
-</p></details>
+</details>
 </div>
 </details>
 </div>

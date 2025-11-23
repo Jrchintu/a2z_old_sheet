@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -1047,9 +1054,9 @@ main();
 <!-- Insert Time and Space Complexity  Here -->
 <p><strong>Time Complexity: O(N)</strong>   where N is the number of nodes in the binary tree. This is because the algorithm traverses each node exactly once, performing constant-time operations at each node.</p>
 <p><strong>Space Complexity: O(N)</strong>   where N is the number of nodes in the Binary Tree.
-					<ol><li>In the worst case scenario the tree is skewed and the auxiliary recursion stack space would be stacked up to the maximum height of the tree, resulting in a space complexity of O(N).</li><li>In the optimal case of a balanced tree, the auxiliary space would take up space proportional to O(log2N).</li></ol></p>
+					<ol><li>In the worst case scenario the tree is skewed and the auxiliary recursion stack space would be stacked up to the maximum height of the tree, resulting in a space complexity of O(N).</li><li>In the optimal case of a balanced tree, the auxiliary space would take up space proportional to O(log2N).</li></ol>
 </p>
-</details>
+</p></details>
 </div>
 </details>
 </div>

@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -744,9 +751,9 @@ Complexity Analysis
 <p><strong>Time Complexity: O(N *K)</strong></p>
 <p>Reason: The overlapping subproblems will return the answer in constant time. Therefore the total number of new subproblems we solve is ‘n’. At every new subproblem, we are running another loop for K times. Hence total time complexity is O(N * K).</p>
 <p><strong>Space Complexity: O(N)</strong></p>
-<p>Reason: We are using a recursion stack space(O(N)) and an array (again O(N)). Therefore total space complexity will be O(N) + O(N) ≈ O(N)</p>
+<p>Reason: We are using a recursion stack space(O(N)) and an array (again O(N)). Therefore total space complexity will be O(N) + O(N) ≈ O(N)
 </p>
-</details>
+</p></details>
 </div>
 </details>
 </div>
@@ -1008,9 +1015,9 @@ Complexity Analysis
 <p><strong>Time Complexity: O(N*K)</strong></p>
 <p>Reason: We are running two nested loops, where outer loops run from 1 to n-1 and the inner loop runs from 1 to K</p>
 <p><strong>Space Complexity: O(N)</strong></p>
-<p>Reason: We are using an external array of size ‘n’’.</p>
+<p>Reason: We are using an external array of size ‘n’’.
 </p>
-</details>
+</p></details>
 </div>
 </details>
 </div>

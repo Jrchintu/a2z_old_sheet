@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -683,10 +690,8 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
-</p><p><strong>Time Complexity: </strong>O(N), N = size of the given array.<strong><br/></strong><strong>Reason: </strong>We have to iterate through the entire array to check if the target is present in the array.</p>
+<p><strong>Time Complexity: </strong>O(N), N = size of the given array.<strong><br/></strong><strong>Reason: </strong>We have to iterate through the entire array to check if the target is present in the array.</p>
 <p><strong>Space Complexity: </strong>O(1)<strong><br/></strong><strong>Reason: </strong>We have not used any extra data structures, this makes space complexity, even in the worst case as O(1).</p>
-<p></p>
 </details>
 </div>
 </details>
@@ -968,10 +973,8 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
-</p><p><strong>Time Complexity: </strong>O(logN), N = size of the given array.<strong><br/></strong><strong>Reason: </strong>We are using binary search to search the target.</p>
+<p><strong>Time Complexity: </strong>O(logN), N = size of the given array.<strong><br/></strong><strong>Reason: </strong>We are using binary search to search the target.</p>
 <p><strong>Space Complexity: </strong>O(1)<strong><br/></strong><strong>Reason: </strong>We have not used any extra data structures, this makes space complexity, even in the worst case as O(1).</p>
-<p></p>
 </details>
 </div>
 </details>
@@ -1183,13 +1186,11 @@ block.classList.remove('dsa_article_code_active');
 <script src="https://takeuforward.org/UXApproachDropDowns/2ApproachJSScript.js"></script>
 <!-- /wp:html -->
 <!-- wp:paragraph -->
-<p></p>
 <!-- /wp:paragraph -->
 <!-- wp:quote -->
 <blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/dewanshi-paul-2515091b9" rel="noreferrer noopener" target="_blank">Dewanshi Paul</a></strong><em><em>, <a href="https://www.linkedin.com/in/imsudip/" rel="noreferrer noopener" target="_blank"><strong>Sudip Ghosh</strong></a></em></em></em> <em>and <em><strong><a href="https://www.linkedin.com/in/kriti39/" rel="noreferrer noopener" target="_blank">KRITIDIPTA GHOSH</a></strong></em></em> <em>for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/contribute/help-us-grow-takeuforward/">please check out this articl</a><em>e</em></p></blockquote>
 <!-- /wp:quote -->
 <!-- wp:paragraph -->
-<p></p>
 <!-- /wp:paragraph -->
 </article>
 </div>

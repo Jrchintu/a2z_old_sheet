@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -1078,11 +1085,10 @@ printLinkedList(flattened);
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity:  O(N*M) + O(N*M log(N*M)) + O(N*M)</strong>where N is the length of the linked list along the next pointer and M is the length of the linked list along the child pointer.
                         <ol><li>O(N*M) as we traverse through all the elements, iterating through ‘N’ nodes along the next pointer and ‘M’ nodes along the child pointer.</li><li>O(N*M log(N*M)) as we sort the array containing N*M (total) elements.</li><li>O(N*M) as we reconstruct the linked list from the sorted array by iterating over the N*M elements of the array.</li></ol></p>
 <p><strong>Space Complexity : O(N*M) + O(N*M)</strong>where N is the length of the linked list along the next pointer and M is the length of the linked list along the child pointer.
-                        <ol><li>O(N*M) for storing all the elements in an additional array for sorting.</li><li>O(N*M) to reconstruct the linked list from the array after sorting</li></ol></p>
+                        <ol><li>O(N*M) for storing all the elements in an additional array for sorting.</li><li>O(N*M) to reconstruct the linked list from the array after sorting</li></ol>
 </p>
 </details>
 </div>
@@ -1714,11 +1720,12 @@ printLinkedList(flattened);
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity: O( N*(2M) ) ~ O(2 N*M)</strong>where N is the length of the linked list along the next pointer and M is the length of the linked list along the child pointers.
                         <ol><li>The merge operation in each recursive call takes time complexity proportional to the length of the linked lists being merged as they have to iterate over the entire lists. Since the vertical depth of the linked lists is assume to be M, the time complexity for a single merge operation is proportional to O(2*M).</li><li>This operation operation is performed N number of times (to each and every node along the next pointer list) hence the resultant time complexity becomes: O(N* 2M).</li></ol></p>
-<p><strong>Space Complexity : O(1)</strong> as this algorithm uses no external space or additional data structures to store values. But a recursive stack uses O(N) space to build the recursive calls for each node along the next pointer list.</p>
-</p>
+<p><strong>Space Complexity : O(1)</strong> as this algorithm uses no external space or additional data structures to store values. But a recursive stack uses O(N) space to build the recursive calls for each node along the next pointer list.
+
+
+                    </p>
 </details>
 </div>
 </details>

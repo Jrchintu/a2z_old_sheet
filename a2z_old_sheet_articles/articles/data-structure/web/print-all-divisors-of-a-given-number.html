@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -675,10 +682,10 @@ console.log(`Divisors of ${number} are: ${divisors.join(" ")}`);
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity: O(N)</strong> where N is the input number. The algorithm iterates through each number from 1 to n once to check if it is a divisor.</p>
-<p><strong>Space Complexity : O(N)</strong> where N is the input number. The algorithm iterates through each number from 1 to n once to check if it is a divisor.</p>
-</p>
+<p><strong>Space Complexity : O(N)</strong> where N is the input number. The algorithm iterates through each number from 1 to n once to check if it is a divisor.
+
+                    </p>
 </details>
 </div>
 </details>
@@ -960,12 +967,13 @@ console.log();
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity: O(sqrt(N))</strong> where N is the input number. The algorithm iterates through each number from 1 to the square root of N once to check if it is a divisor.</p>
 <p><strong>Space Complexity : O(2*sqrt(N))</strong>where N is the input number. This approach allocates memory for an array to hold all the divisors. The size of this array could go to be 2*(sqrt(N)).
 
-</p>
-</p>
+
+
+
+                    </p>
 </details>
 </div>
 </details>

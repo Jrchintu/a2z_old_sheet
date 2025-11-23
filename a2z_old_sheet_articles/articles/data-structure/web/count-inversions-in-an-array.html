@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -597,116 +604,9 @@ int main()
 }
 </code>
 </pre>
-<p>
-<!-- Insert Output of Brute Force Here -->
-Output: The number of inversions is: 10
-</p>
-</div>
-<div class="code-block" data-lang="java">
-<pre class="wp-block-code"><code class="language-java" lang="java">
-
-<!-- Insert Java code of Brute Force Here -->
-import java.util.*;
-
-public class tUf {
-
-    public static int numberOfInversions(int[] a, int n) {
-        // Count the number of pairs:
-        int cnt = 0;
-        for (int i = 0; i &lt; n; i++) {
-            for (int j = i + 1; j &lt; n; j++) {
-                if (a[i] &gt; a[j]) cnt++;
-            }
-        }
-        return cnt;
-    }
-
-
-    public static void main(String[] args) {
-        int[] a = {5, 4, 3, 2, 1};
-        int n = 5;
-        int cnt = numberOfInversions(a, n);
-        System.out.println("The number of inversions is: " + cnt);
-    }
-}
-
-
-</code>
-</pre>
-<p>
-<!-- Insert Output of Brute Force Here -->
-Output: The number of inversions is: 10
-</p>
-</div>
-<div class="code-block" data-lang="python">
-<pre class="wp-block-code"><code class="language-python" lang="python">
-
-<!-- Insert Python code of Brute Force Here -->
-from typing import List
-
-def numberOfInversions(a : List[int], n : int) -&gt; int:
-    # Count the number of pairs:
-    cnt = 0
-    for i in range(n):
-        for j in range(i+1, n):
-            if a[i] &gt; a[j]:
-                cnt += 1
-    return cnt
-
-if __name__ == "__main__":
-    a = [5, 4, 3, 2, 1]
-    n = 5
-    cnt = numberOfInversions(a, n)
-    print("The number of inversions is:", cnt)
-</code>
-</pre>
-<p>
-<!-- Insert Output of Brute Force Here -->
-Output: The number of inversions is: 10
-</p>
-</div>
-<div class="code-block" data-lang="javascript">
-<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
-function numberOfInversions(a) {
-    // Count the number of pairs:
-    let cnt = 0;
-    for (let i = 0; i &lt; a.length; i++) {
-        for (let j = i + 1; j &lt; a.length; j++) {
-            if (a[i] &gt; a[j]) cnt++;
-        }
-    }
-    return cnt;
-}
-
-const a = [5, 4, 3, 2, 1];
-const cnt = numberOfInversions(a);
-console.log("The number of inversions is: " + cnt);
-
-</code>
-</pre>
-<p>
-<!-- Insert Output of Brute Force Here -->
-Output: The number of inversions is: 10
-</p>
-</div>
-</div>
-</details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Brute Force Here -->
-</p><p><strong>Time Complexity: </strong>O(N<sup>2</sup>), where N = size of the given array.<br/><strong>Reason: </strong>We are using nested loops here and those two loops roughly run for N times.</p>
+<p><strong>Time Complexity: </strong>O(N<sup>2</sup>), where N = size of the given array.<br/><strong>Reason: </strong>We are using nested loops here and those two loops roughly run for N times.</p>
 <p><strong>Space Complexity: </strong>O(1) as we are not using any extra space to solve this problem.</p>
-<p></p>
-</details>
+</div></div></details>
 </div>
 </details>
 </div>
@@ -1039,10 +939,8 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
-</p><p><strong>Time Complexity:</strong> O(N*logN), where N = size of the given array.<br/><strong>Reason: </strong>We are not changing the merge sort algorithm except by adding a variable to it. So, the time complexity is as same as the merge sort.</p>
+<p><strong>Time Complexity:</strong> O(N*logN), where N = size of the given array.<br/><strong>Reason: </strong>We are not changing the merge sort algorithm except by adding a variable to it. So, the time complexity is as same as the merge sort.</p>
 <p><strong>Space Complexity: </strong>O(N), as in the merge sort We use a temporary array to store elements in sorted order.</p>
-<p></p>
 </details>
 </div>
 </details>
@@ -1257,7 +1155,6 @@ block.classList.remove('dsa_article_code_active');
 <blockquote class="wp-block-quote"><p> <em style="font-size: inherit; color: var(--text-color); font-family: var(--text-font);">Special thanks to <strong><a href="https://www.linkedin.com/in/harsh-prajapati-a349061b9" rel="noreferrer noopener" target="_blank">Harsh Prajapati</a></strong>, <a href="https://www.linkedin.com/in/imsudip/" rel="noreferrer noopener" target="_blank"><strong>Sudip Ghosh</strong></a> and <strong><a href="https://www.linkedin.com/in/kriti39/" rel="noreferrer noopener" target="_blank">KRITIDIPTA GHOSH</a></strong></em><span style="font-size: inherit; color: var(--text-color); font-family: var(--text-font);"> </span><em style="font-size: inherit; color: var(--text-color); font-family: var(--text-font);">for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/" style="font-size: inherit; font-family: var(--text-font);">please check out this article</a></p></blockquote>
 <!-- /wp:quote -->
 <!-- wp:paragraph -->
-<p></p>
 <!-- /wp:paragraph -->
 </article>
 </div>

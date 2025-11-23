@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -633,14 +640,6 @@ console.log(`The factorial of ${X} is ${result}`);
                             Complexity Analysis
                         </span>
 </summary>
-<p>
-<!-- wp:paragraph -->
-<p><strong>Time Complexity: O(n)</strong></p>
-<!-- /wp:paragraph -->
-<!-- wp:paragraph -->
-<p><strong>Space Complexity: O(1)</strong></p>
-<!-- /wp:paragraph -->
-</p>
 </details>
 </div>
 </details>
@@ -816,18 +815,6 @@ console.log(factorial(n));
 </path>
 </svg>
 </summary>
-<p>
-<!-- wp:paragraph -->
-<p><strong>Time Complexity:</strong> O(N), Since the function is being called n times, and for each
-                        function, we have only one printable line that takes O(1) time, so the cumulative time
-                        complexity would be O(N) </p>
-<!-- /wp:paragraph -->
-<!-- wp:paragraph -->
-<p><strong>Space Complexity:</strong> O(N), In the worst case, the recursion stack space would be
-                        full with all the function calls waiting to get completed and that would make it an O(N)
-                        recursion stack space.</p>
-<!-- /wp:paragraph -->
-</p>
 </details>
 </div>
 </details>

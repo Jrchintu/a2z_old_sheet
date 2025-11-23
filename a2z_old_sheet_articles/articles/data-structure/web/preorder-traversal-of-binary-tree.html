@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -505,14 +512,12 @@
 <!-- Insert Algorithm / Intuition of Brute Force Apporach Here -->
 <p>Preorder traversal is one of the depth-first traversal methods used to explore nodes in a binary tree. The algorithm first visits the root node then in the preorder traversal, we visit (ie. add to the array) the current node by accessing its value then we recursively traverse the left subtree in the same manner. We repeat these steps for the left subtree then when we return to the current node, we recursively travel to the right subtree in a preorder manner as well.The sequence of steps in preorder traversal follows: Root, Left, Right.</p>
 <p><figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/19275a94fec7b04ff33ae8ce11aeba31" width="439"/></figure></p>
-<p>
 <p><strong>Base Case:</strong> If the current node is null, it means we have reached the end of a subtree and there are no further nodes to explore. Hence the recursive function stops and we return from that particular recursive call.</p>
 <p><strong>Recursive Function:</strong></p>
 <p>
 <ol><li><strong>Process Current Node:</strong> The recursive function begins by processing ie. adding to the array or printing the current node.</li>
 <li><strong>Traverse Left Subtree:</strong> Recursively traverse the left subtree by invoking the preorder function on the left child of the current node. This step continues the exploration of nodes in a depth first manner.</li>
 <li><strong>Traverse Right Subtree:</strong> After traversing the entire left subtree,we traverse the right subtree recursively. We once again invoke the preorder function, but this time on the right child of the current node.</li></ol>
-</p>
 </p>
 <p><figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/b9ac0449cd588f614d3300d78ecd2bd2" width="439"/></figure></p>
 <p><strong>Algorithm:</strong></p>
@@ -846,9 +851,10 @@ console.log("Preorder Traversal: " + result.join(" "));
 <p>
 <!-- Insert Time and Space Complexity  Here -->
 <p><strong>Time Complexity: O(N)</strong> where N is the number of nodes in the binary tree as each node of the binary tree is visited exactly once.</p>
-<p><strong>Space Complexity: O(N)</strong> where N is the number of nodes in the binary tree as an additional space for array is allocated to store the values of all ‘N’ nodes of the binary tree.</p>
-</p>
-</details>
+<p><strong>Space Complexity: O(N)</strong> where N is the number of nodes in the binary tree as an additional space for array is allocated to store the values of all ‘N’ nodes of the binary tree.
+
+                </p>
+</p></details>
 </div>
 </details>
 </div>

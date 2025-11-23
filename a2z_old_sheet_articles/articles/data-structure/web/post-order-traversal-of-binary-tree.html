@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -506,7 +513,6 @@
 <!-- Insert Algorithm / Intuition of Brute Force Apporach Here -->
 <p>Postorder traversal, another depth-first method in tree exploration, follows a sequence where the algorithm first explores the left subtree, then the right subtree, and finally visits the root node. In postorder traversal, we visit (or add to the array) the current node after traversing both its left and right subtrees.The sequence of steps in preorder traversal follows: Left, Right, Root.</p>
 <p><figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/b07de8a36996ccb78bf53bc48832c915" width="439"/></figure></p>
-<p>
 <p><strong>Base Case:</strong>  If the current node is null, it means we have reached the end of a subtree and there are no further nodes to explore. Hence the recursive function stops and we return from that particular recursive call.</p>
 <p><strong>Recursive Function:</strong></p>
 <p>
@@ -515,7 +521,6 @@
 <li><strong>Traverse Right Subtree:</strong> After fully traversing the left subtree, we move on to the right subtree, invoking the postorder function on the right child of the current node.</li>
 <li><strong>Process Current Node:</strong> After exploring the children of the current node, we process it by adding its value to the postorder traversal array.</li>
 </ol>
-</p>
 </p>
 <p><figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/d485caa11b15e2d831d8d861e965a516" width="439"/></figure></p>
 <p><strong>Algorithm:</strong></p>
@@ -870,9 +875,10 @@ printArray(result);
 <p>
 <!-- Insert Time and Space Complexity  Here -->
 <p><strong>Time Complexity: O(N)</strong> where N is the number of nodes in the binary tree as each node of the binary tree is visited exactly once.</p>
-<p><strong>Space Complexity: O(N)</strong> where N is the number of nodes in the binary tree as an additional space for array is allocated to store the values of all ‘N’ nodes of the binary tree.</p>
-</p>
-</details>
+<p><strong>Space Complexity: O(N)</strong> where N is the number of nodes in the binary tree as an additional space for array is allocated to store the values of all ‘N’ nodes of the binary tree.
+
+                </p>
+</p></details>
 </div>
 </details>
 </div>

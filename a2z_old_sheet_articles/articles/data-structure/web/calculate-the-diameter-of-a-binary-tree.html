@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -872,7 +879,6 @@ main();
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity: O(N*N)</strong> where N is the number of nodes in the Binary Tree. 
                         <ol><li>
                         This arises as we calculate the diameter of each node and to calculate the height of its left and right children, we traverse the tree which is proportional to the number of nodes. 
@@ -880,8 +886,9 @@ main();
 <li>
                         Since this calculation is performed for each node in the tree, the complexity becomes: O(N x N) ~ O(N2).
                         </li></ol></p>
-<p><strong>Space Complexity : O(1)</strong> as no additional data structures or memory is allocated.O(H): Recursive Stack Space is used to calculate the height of the tree at each node which is proportional to the height of the tree.The recursive nature of the getHeight function, which incurs space on the call stack for each recursive call until it reaches the leaf nodes or the height of the tree.</p>
-</p>
+<p><strong>Space Complexity : O(1)</strong> as no additional data structures or memory is allocated.O(H): Recursive Stack Space is used to calculate the height of the tree at each node which is proportional to the height of the tree.The recursive nature of the getHeight function, which incurs space on the call stack for each recursive call until it reaches the leaf nodes or the height of the tree.
+
+                    </p>
 </details>
 </div>
 </details>
@@ -1261,10 +1268,11 @@ console.log("The diameter of the binary tree is: " + diameter);
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity: O(N)</strong> where N is the number of nodes in the Binary Tree. This complexity arises from visiting each node exactly once during the postorder traversal.</p>
-<p><strong>Space Complexity : O(1)</strong> as no additional space or data structures is created that is proportional to the input size of the tree. O(H) Recursive Stack Auxiliary Space : The recursion stack space is determined by the maximum depth of the recursion, which is the height of the binary tree denoted as H. In the balanced case it is log2N and in the worst case its N.</p>
-</p>
+<p><strong>Space Complexity : O(1)</strong> as no additional space or data structures is created that is proportional to the input size of the tree. O(H) Recursive Stack Auxiliary Space : The recursion stack space is determined by the maximum depth of the recursion, which is the height of the binary tree denoted as H. In the balanced case it is log2N and in the worst case its N.
+
+
+                    </p>
 </details>
 </div>
 </details>

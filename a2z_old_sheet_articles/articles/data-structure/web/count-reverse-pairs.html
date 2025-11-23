@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -701,10 +708,8 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
-</p><p><strong>Time Complexity: </strong>O(N<sup>2</sup>), where N = size of the given array.<br/><strong>Reason: </strong>We are using nested loops here and those two loops roughly run for N times.</p>
+<p><strong>Time Complexity: </strong>O(N<sup>2</sup>), where N = size of the given array.<br/><strong>Reason: </strong>We are using nested loops here and those two loops roughly run for N times.</p>
 <p><strong>Space Complexity: </strong>O(1) as we are not using any extra space to solve this problem.</p>
-<p></p>
 </details>
 </div>
 </details>
@@ -1088,10 +1093,8 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
-</p><p><strong>Time Complexity:</strong> O(2N*logN), where N = size of the given array.<br/><strong>Reason: </strong>Inside the mergeSort() we call merge() and countPairs() except mergeSort() itself. Now, inside the function countPairs(), though we are running a nested loop, we are actually iterating the left half once and the right half once in total. That is why, the time complexity is O(N). And the merge() function also takes O(N). The mergeSort() takes O(logN) time complexity. Therefore, the overall time complexity will be O(logN * (N+N)) = O(2N*logN).</p>
+<p><strong>Time Complexity:</strong> O(2N*logN), where N = size of the given array.<br/><strong>Reason: </strong>Inside the mergeSort() we call merge() and countPairs() except mergeSort() itself. Now, inside the function countPairs(), though we are running a nested loop, we are actually iterating the left half once and the right half once in total. That is why, the time complexity is O(N). And the merge() function also takes O(N). The mergeSort() takes O(logN) time complexity. Therefore, the overall time complexity will be O(logN * (N+N)) = O(2N*logN).</p>
 <p><strong>Space Complexity: </strong>O(N), as in the merge sort We use a temporary array to store elements in sorted order.</p>
-<p></p>
 </details>
 </div>
 </details>

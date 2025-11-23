@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -434,7 +441,6 @@
 <p>Find the minimum number of bananas ‘k’ to eat per hour so that the monkey can eat all the bananas within ‘h’ hours.</p>
 <!-- /wp:paragraph -->
 <!-- wp:paragraph -->
-<p></p>
 <!-- /wp:paragraph -->
 <!-- wp:html -->
 <!-- This is Examples Drop-Down -->
@@ -460,8 +466,7 @@ Examples
 <strong>Input Format:</strong> N = 5, a[] = {25, 12, 8, 14, 19}, h = 5
 <strong>Result:</strong> 25
 <strong>Explanation:</strong> If Koko eats 25 bananas/hr, he will take 1, 1, 1, 1, and 1 hour to eat the piles accordingly. So, he will take 5 hours to complete all the piles.
-<p>
-</p><p>Before moving on to the solution, let’s understand how Koko will eat the bananas. Assume, the given array is {3, 6, 7, 11} and the given time i.e. h is 8. </p>
+<p>Before moving on to the solution, let’s understand how Koko will eat the bananas. Assume, the given array is {3, 6, 7, 11} and the given time i.e. h is 8. </p>
 <ul><li>First of all, Koko cannot eat bananas from different piles. He should complete the pile he has chosen and then he can go for another pile.</li><li>Now, Koko decides to eat 2 bananas/hour. So, in order to complete the first he will take<br/>3 / 2 = 2 hours. Though mathematically, he should take 1.5 hrs but it is clearly stated in the question that after completing a pile Koko will not consume more bananas in that hour. So, for the first pile, Koko will eat 2 bananas in the first hour and then he will consume 1 banana in another hour. </li></ul>
 <p>From here we can conclude that we have to take ceil of (3/2). Similarly, we will calculate the times for other piles.</p>
 <ul><li><strong>1st pile: </strong>ceil(3/2) = 2 hrs</li><li><strong>2nd pile: </strong>ceil(6/2) = 3 hrs</li><li><strong>3rd pile: </strong>ceil(7/2) = 4 hrs</li><li><strong>4th pile: </strong>ceil(11/2) = 6 hrs</li></ul>
@@ -469,7 +474,7 @@ Examples
 <p><strong>Observation: </strong>Upon observation, it becomes evident that the maximum number of bananas (<em>represented by 'k'</em>) that Koko can consume in an hour is obtained from the pile that contains the largest quantity of bananas. Therefore, the maximum value of 'k' corresponds to the maximum element present in the given array.</p>
 <p><strong><em>So, our answer i.e. the minimum value of ‘k’ lies between 1 and the maximum element in the array i.e. max(a[]).</em></strong></p>
 <p>Now, let’s move on to the solution.</p>
-<p></p>
+
 </pre>
 </pre>
 </div>
@@ -778,29 +783,9 @@ console.log("Koko should eat at least " + ans + " bananas/hr.");
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Brute Force Here -->
-<strong>Output:</strong> Koko should eat atleast 5 bananas/hr.
-
-</p>
-</div>
-</details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Brute Force Here -->
-</p><p><strong>Time Complexity: </strong>O(max(a[]) * N), where max(a[]) is the maximum element in the array and N = size of the array.<br/><strong>Reason: </strong>We are running nested loops. The outer loop runs for max(a[]) times in the worst case and the inner loop runs for N times.</p>
+<p><strong>Time Complexity: </strong>O(max(a[]) * N), where max(a[]) is the maximum element in the array and N = size of the array.<br/><strong>Reason: </strong>We are running nested loops. The outer loop runs for max(a[]) times in the worst case and the inner loop runs for N times.</p>
 <p><strong>Space Complexity: </strong>O(1) as we are not using any extra space to solve this problem.</p>
-<p></p>
-</details>
+</div></details>
 </div>
 </details>
 </div>
@@ -1065,29 +1050,9 @@ console.log("Koko should eat at least " + ans + " bananas/hr.");
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Optimal Apporach Here -->
-<strong>Output:</strong> Koko should eat atleast 5 bananas/hr. 
-
-</p>
-</div>
-</details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Optimal Approach-->
-</p><p><strong>Time Complexity: </strong>O(N * log(max(a[]))), where max(a[]) is the maximum element in the array and N = size of the array.<br/><strong>Reason: </strong>We are applying Binary search for the range [1, max(a[])], and for every value of ‘mid’, we are traversing the entire array inside the function named <strong>calculateTotalHours().</strong></p>
+<p><strong>Time Complexity: </strong>O(N * log(max(a[]))), where max(a[]) is the maximum element in the array and N = size of the array.<br/><strong>Reason: </strong>We are applying Binary search for the range [1, max(a[])], and for every value of ‘mid’, we are traversing the entire array inside the function named <strong>calculateTotalHours().</strong></p>
 <p><strong>Space Complexity: </strong>O(1) as we are not using any extra space to solve this problem.</p>
-<p></p>
-</details>
+</div></details>
 </div>
 </details>
 </div>
@@ -1301,10 +1266,8 @@ block.classList.remove('dsa_article_code_active');
 <blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/kriti39/" rel="noreferrer noopener" target="_blank">KRITIDIPTA GHOSH</a></strong></em> <em>for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a></p></blockquote>
 <!-- /wp:quote -->
 <!-- wp:paragraph -->
-<p></p>
 <!-- /wp:paragraph -->
 <!-- wp:paragraph -->
-<p></p>
 <!-- /wp:paragraph -->
 </article>
 </div>

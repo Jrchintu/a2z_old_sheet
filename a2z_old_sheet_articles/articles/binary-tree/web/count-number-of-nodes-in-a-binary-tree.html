@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -867,11 +874,11 @@ console.log("Total number of nodes in the Complete Binary Tree: " + totalNodes);
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity: O(N)</strong> where N is the number of nodes in the binary tree as each node of the binary tree is visited exactly once.</p>
 <p><strong>Space Complexity : O(N)</strong> where N is the number of nodes in the binary tree. This is because the recursive stack uses an auxiliary space which can potentially hold all nodes in the tree when dealing with a skewed tree (all nodes have only one child), consuming space proportional to the number of nodes.
-                        In the average case or for a balanced tree, the maximum number of nodes that could be in the stack at any given time would be roughly the height of the tree hence O(log2N).</p>
-</p>
+                        In the average case or for a balanced tree, the maximum number of nodes that could be in the stack at any given time would be roughly the height of the tree hence O(log2N).
+
+                    </p>
 </details>
 </div>
 </details>
@@ -1311,11 +1318,10 @@ main();
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time Complexity: O(log N * log N)</strong> where N is the number of nodes in the Binary Tree.
                         <ol><li>The calculation of leftHeight and rightHeight takes O(log N) time.</li><li>In the worst case, when encountering the second case (leftHeight != rightHeight), the recursive calls are made at most log N times (the height of the tree).</li><li>Therefore, the total time complexity is O(log N * log N).</li></ol></p>
 <p><strong>Space Complexity : O(H) ~ O(N)</strong>  where N is the number of nodes in the Binary Tree.
-                        <ol><li>The space complexity is determined by the maximum depth of the recursion stack, which is equal to the height of the binary tree.</li><li>Since the given tree is a complete binary tree, the height will always be log N.</li><li>Therefore, the space complexity is O(log N).</li></ol></p>
+                        <ol><li>The space complexity is determined by the maximum depth of the recursion stack, which is equal to the height of the binary tree.</li><li>Since the given tree is a complete binary tree, the height will always be log N.</li><li>Therefore, the space complexity is O(log N).</li></ol>
 </p>
 </details>
 </div>

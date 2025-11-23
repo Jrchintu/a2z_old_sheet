@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -849,13 +856,10 @@ console.log("arr2[] = " + arr2.join(" "));
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Brute Force Here -->
-</p><p><strong>Output:</strong> The merged arrays are:
+<p><strong>Output:</strong> The merged arrays are:
 arr1[] = 1 2 3 4
 arr2[] = 8 9 10 
 </p>
-<p></p>
 </div>
 </details>
 <details class="secondary-details">
@@ -868,11 +872,8 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
-<!-- Insert Time and Space Complexity of Brute Force Here -->
-</p><p><strong>Time Complexity: </strong>O(n+m) + O(n+m), where n and m are the sizes of the given arrays.<br/><strong>Reason: </strong>O(n+m) is for copying the elements from arr1[] and arr2[] to arr3[]. And another O(n+m) is for filling back the two given arrays from arr3[].</p>
+<p><strong>Time Complexity: </strong>O(n+m) + O(n+m), where n and m are the sizes of the given arrays.<br/><strong>Reason: </strong>O(n+m) is for copying the elements from arr1[] and arr2[] to arr3[]. And another O(n+m) is for filling back the two given arrays from arr3[].</p>
 <p><strong>Space Complexity: </strong>O(n+m) as we use an extra array of size n+m.</p>
-<p></p>
 </details>
 </div>
 </details>
@@ -1121,31 +1122,9 @@ console.log("arr2[] = " + arr2.join(' '));
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Better Approach Here -->
-<strong>Output:</strong>  The merged arrays are:
-arr1[] = 1 2 3 4
-arr2[] = 8 9 10 
-
-</p>
-</div>
-</details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Better Approach Here -->
-</p><p><strong>Time Complexity: </strong>O(min(n, m)) + O(n*logn) + O(m*logm), where n and m are the sizes of the given arrays.<br/><strong>Reason: </strong>O(min(n, m)) is for swapping the array elements. And O(n*logn) and O(m*logm) are for sorting the two arrays.</p>
+<p><strong>Time Complexity: </strong>O(min(n, m)) + O(n*logn) + O(m*logm), where n and m are the sizes of the given arrays.<br/><strong>Reason: </strong>O(min(n, m)) is for swapping the array elements. And O(n*logn) and O(m*logm) are for sorting the two arrays.</p>
 <p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.</p>
-<p></p>
-</details>
+</div></details>
 </div>
 </details>
 </div>
@@ -1460,31 +1439,9 @@ console.log(`arr2[] = ${arr2.join(" ")}`);
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Optimal Apporach Here -->
-<strong>Output:</strong> The merged arrays are:
-arr1[] = 1 2 3 4
-arr2[] = 8 9 10 
-
-</p>
-</div>
-</details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Optimal Approach-->
-</p><p><strong>Time Complexity: </strong>O((n+m)*log(n+m)), where n and m are the sizes of the given arrays.<br/><strong>Reason: </strong>The gap is ranging from n+m to 1 and every time the gap gets divided by 2. So, the time complexity of the outer loop will be O(log(n+m)). Now, for each value of the gap, the inner loop can at most run for (n+m) times. So, the time complexity of the inner loop will be O(n+m). So, the overall time complexity will be O((n+m)*log(n+m)).</p>
+<p><strong>Time Complexity: </strong>O((n+m)*log(n+m)), where n and m are the sizes of the given arrays.<br/><strong>Reason: </strong>The gap is ranging from n+m to 1 and every time the gap gets divided by 2. So, the time complexity of the outer loop will be O(log(n+m)). Now, for each value of the gap, the inner loop can at most run for (n+m) times. So, the time complexity of the inner loop will be O(n+m). So, the overall time complexity will be O((n+m)*log(n+m)).</p>
 <p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.</p>
-<p></p>
-</details>
+</div></details>
 </div>
 </details>
 </div>

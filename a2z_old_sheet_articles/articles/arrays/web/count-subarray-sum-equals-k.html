@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -603,10 +610,7 @@ int main()
 
 </int></code>
 </pre>
-<p>
-<!-- Insert Output of Brute Force Here -->
-</p><p><strong>Output: </strong>The number of subarrays is: 2</p>
-<p></p>
+<p><strong>Output: </strong>The number of subarrays is: 2</p>
 </div>
 <div class="code-block" data-lang="java">
 <pre class="wp-block-code"><code class="language-java" lang="java">
@@ -642,10 +646,7 @@ public class tUf {
 }
 </code>
 </pre>
-<p>
-<!-- Insert Output of Brute Force Here -->
-</p><p><strong>Output: </strong>The number of subarrays is: 2</p>
-<p></p>
+<p><strong>Output: </strong>The number of subarrays is: 2</p>
 </div>
 <div class="code-block" data-lang="python">
 <pre class="wp-block-code"><code class="language-python" lang="python">
@@ -673,10 +674,7 @@ if __name__ == '__main__':
 
 </code>
 </pre>
-<p>
-<!-- Insert Output of Brute Force Here -->
-</p><p><strong>Output: </strong>The number of subarrays is: 2</p>
-<p></p>
+<p><strong>Output: </strong>The number of subarrays is: 2</p>
 </div>
 </div>
 </details>
@@ -690,11 +688,8 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
-<!-- Insert Time and Space Complexity of Brute Force Here -->
-</p><p><strong>Time Complexity: </strong>O(N<sup>3</sup>), where N = size of the array.<br/><strong>Reason: </strong>We are using three nested loops here. Though all are not running for exactly N times, the time complexity will be approximately O(N<sup>3</sup>).</p>
+<p><strong>Time Complexity: </strong>O(N<sup>3</sup>), where N = size of the array.<br/><strong>Reason: </strong>We are using three nested loops here. Though all are not running for exactly N times, the time complexity will be approximately O(N<sup>3</sup>).</p>
 <p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.</p>
-<p></p>
 </details>
 </div>
 </details>
@@ -787,10 +782,7 @@ int main()
 }
 </int></code>
 </pre>
-<p>
-<!-- Insert Output of Better Approach Here -->
-</p><p><strong>Output: </strong>The number of subarrays is: 2</p>
-<p></p>
+<p><strong>Output: </strong>The number of subarrays is: 2</p>
 </div>
 <div class="code-block" data-lang="java">
 <pre class="wp-block-code"><code class="language-java" lang="java">
@@ -825,10 +817,7 @@ public class tUf {
 }  
 </code>
 </pre>
-<p>
-<!-- Insert Output of Better Approach Here -->
-</p><p><strong>Output: </strong>The number of subarrays is: 2</p>
-<p></p>
+<p><strong>Output: </strong>The number of subarrays is: 2</p>
 </div>
 <div class="code-block" data-lang="python">
 <pre class="wp-block-code"><code class="language-python" lang="python">
@@ -858,10 +847,7 @@ if __name__ == '__main__':
     print("The number of subarrays is:", cnt)
 </code>
 </pre>
-<p>
-<!-- Insert Output of Better Approach Here -->
-</p><p><strong>Output: </strong>The number of subarrays is: 2</p>
-<p></p>
+<p><strong>Output: </strong>The number of subarrays is: 2</p>
 </div>
 </div>
 </details>
@@ -875,11 +861,8 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
-<!-- Insert Time and Space Complexity of Better Approach Here -->
-</p><p><strong>Time Complexity: </strong>O(N<sup>2</sup>), where N = size of the array.<br/><strong>Reason: </strong>We are using two nested loops here. As each of them is running for exactly N times, the time complexity will be approximately O(N<sup>2</sup>).</p>
+<p><strong>Time Complexity: </strong>O(N<sup>2</sup>), where N = size of the array.<br/><strong>Reason: </strong>We are using two nested loops here. As each of them is running for exactly N times, the time complexity will be approximately O(N<sup>2</sup>).</p>
 <p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.</p>
-<p></p>
 </details>
 </div>
 </details>
@@ -985,10 +968,7 @@ int main()
 
 </int></int,></code>
 </pre>
-<p>
-<!-- Insert Output of Optimal Apporach Here -->
-</p><p><strong>Output: </strong>The number of subarrays is: 2</p>
-<p></p>
+<p><strong>Output: </strong>The number of subarrays is: 2</p>
 </div>
 <div class="code-block" data-lang="java">
 <pre class="wp-block-code"><code class="language-java" lang="java">
@@ -1027,10 +1007,7 @@ public class tUf {
 }
 </integer,></integer,></code>
 </pre>
-<p>
-<!-- Insert Output of Optimal Apporach Here -->
-</p><p><strong>Output: </strong>The number of subarrays is: 2</p>
-<p></p>
+<p><strong>Output: </strong>The number of subarrays is: 2</p>
 </div>
 <div class="code-block" data-lang="python">
 <pre class="wp-block-code"><code class="language-python" lang="python">
@@ -1067,10 +1044,7 @@ if __name__ == '__main__':
     print("The number of subarrays is:", cnt)
 </code>
 </pre>
-<p>
-<!-- Insert Output of Optimal Apporach Here -->
-</p><p><strong>Output: </strong>The number of subarrays is: 2</p>
-<p></p>
+<p><strong>Output: </strong>The number of subarrays is: 2</p>
 </div>
 </div>
 </details>
@@ -1084,12 +1058,9 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
-<!-- Insert Time and Space Complexity of Optimal Approach-->
-</p><p><strong>Time Complexity: </strong>O(N) or O(N*logN) depending on which map data structure we are using, where N = size of the array.<br/><strong>Reason: </strong>For example, if we are using an unordered_map data structure in C++ the time complexity will be O(N) but if we are using a map data structure, the time complexity will be O(N*logN). The least complexity will be O(N) as we are using a loop to traverse the array.</p>
+<p><strong>Time Complexity: </strong>O(N) or O(N*logN) depending on which map data structure we are using, where N = size of the array.<br/><strong>Reason: </strong>For example, if we are using an unordered_map data structure in C++ the time complexity will be O(N) but if we are using a map data structure, the time complexity will be O(N*logN). The least complexity will be O(N) as we are using a loop to traverse the array.</p>
 <p><strong>Note: </strong><em>To know more about maps, please refer to this: </em><a href="https://takeuforward.org/hashing/hashing-maps-time-complexity-collisions-division-rule-of-hashing-strivers-a2z-dsa-course/"><em>Hashing | Maps | Time Complexity | Collisions | Division Rule of Hashing | Strivers A2Z DSA Course</em></a><em>.</em></p>
 <p><strong>Space Complexity: </strong>O(N) as we are using a map data structure.</p>
-<p></p>
 </details>
 </div>
 </details>

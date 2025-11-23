@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -729,9 +736,9 @@ console.log("The longest consecutive sequence is", ans);
 <!-- Insert Output of Brute Force Here -->
 <p><strong>Output:</strong>   The longest consecutive sequence is 4.
 
+
 </p>
-</p>
-</div>
+</p></div>
 </details>
 <details class="secondary-details">
 <summary class="secondary-summary">
@@ -746,9 +753,9 @@ Complexity Analysis
 <p>
 <!-- Insert Time and Space Complexity of Brute Force Here -->
 <p><strong>Time Complexity: </strong>O(N<sup>2</sup>), N = size of the given array.<br/><strong>Reason: </strong>We are using nested loops each running for approximately N times.</p>
-<p><strong>Space Complexity:</strong> O(1), as we are not using any extra space to solve this problem.</p>
+<p><strong>Space Complexity:</strong> O(1), as we are not using any extra space to solve this problem.
 </p>
-</details>
+</p></details>
 </div>
 </details>
 </div>
@@ -987,9 +994,9 @@ Complexity Analysis
 <p>
 <!-- Insert Time and Space Complexity of Better Approach Here -->
 <p><strong>Time Complexity: </strong>O(NlogN) + O(N), N = size of the given array.<br/><strong>Reason: </strong>O(NlogN) for sorting the array. To find the longest sequence, we are using a loop that results in O(N).</p>
-<p><strong>Space Complexity:</strong> O(1), as we are not using any extra space to solve this problem.</p>
+<p><strong>Space Complexity:</strong> O(1), as we are not using any extra space to solve this problem.
 </p>
-</details>
+</p></details>
 </div>
 </details>
 </div>

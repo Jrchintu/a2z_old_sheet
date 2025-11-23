@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -647,15 +654,12 @@ int main()
 </code>
 </pre>
 <p>
-<!-- Insert Output of Brute Force Here -->
-</p><p>
 Output: 
 The Final matrix is:
 1 0 1 <br/>
 0 0 0 <br/>
 1 0 1 <br/>
 </p>
-<p></p>
 </div>
 <div class="code-block" data-lang="java">
 <pre class="wp-block-code"><code class="language-java" lang="java">
@@ -862,11 +866,8 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
-<!-- Insert Time and Space Complexity of Brute Force Here -->
-</p><p><strong>Time Complexity: </strong>O((N*M)*(N + M)) + O(N*M), where N = no. of rows in the matrix and M = no. of columns in the matrix.<br/><strong>Reason: </strong>Firstly,<strong> </strong>we are traversing the matrix to find the cells with the value 0. It takes O(N*M). Now, whenever we find any such cell we mark that row and column with -1. This process takes O(N+M). So, combining this the whole process, finding and marking, takes O((N*M)*(N + M)).<br/>Another O(N*M) is taken to mark all the cells with -1 as 0 finally.</p>
+<p><strong>Time Complexity: </strong>O((N*M)*(N + M)) + O(N*M), where N = no. of rows in the matrix and M = no. of columns in the matrix.<br/><strong>Reason: </strong>Firstly,<strong> </strong>we are traversing the matrix to find the cells with the value 0. It takes O(N*M). Now, whenever we find any such cell we mark that row and column with -1. This process takes O(N+M). So, combining this the whole process, finding and marking, takes O((N*M)*(N + M)).<br/>Another O(N*M) is taken to mark all the cells with -1 as 0 finally.</p>
 <p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.</p>
-<p></p>
 </details>
 </div>
 </details>
@@ -1165,11 +1166,8 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
-<!-- Insert Time and Space Complexity of Better Approach Here -->
-</p><p><strong>Time Complexity: </strong>O(2*(N*M)), where N = no. of rows in the matrix and M = no. of columns in the matrix.<br/><strong>Reason: </strong>We are traversing the entire matrix 2 times and each traversal is taking O(N*M) time complexity.</p>
+<p><strong>Time Complexity: </strong>O(2*(N*M)), where N = no. of rows in the matrix and M = no. of columns in the matrix.<br/><strong>Reason: </strong>We are traversing the entire matrix 2 times and each traversal is taking O(N*M) time complexity.</p>
 <p><strong>Space Complexity: </strong>O(N) + O(M), where N = no. of rows in the matrix and M = no. of columns in the matrix.<br/><strong>Reason: </strong>O(N) is for using the row array and O(M) is for using the col array.</p>
-<p></p>
 </details>
 </div>
 </details>
@@ -1545,11 +1543,9 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
-</p><p><strong>Time Complexity: </strong>O(2*(N*M)), where N = no. of rows in the matrix and M = no. of columns in the matrix.<br/><strong>Reason: </strong>In this approach, we are also traversing the entire matrix 2 times and each traversal is taking O(N*M) time complexity.</p>
+<p><strong>Time Complexity: </strong>O(2*(N*M)), where N = no. of rows in the matrix and M = no. of columns in the matrix.<br/><strong>Reason: </strong>In this approach, we are also traversing the entire matrix 2 times and each traversal is taking O(N*M) time complexity.</p>
 <p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.</p>
 <!-- Insert Time and Space Complexity of Optimal Approach-->
-<p></p>
 </details>
 </div>
 </details>

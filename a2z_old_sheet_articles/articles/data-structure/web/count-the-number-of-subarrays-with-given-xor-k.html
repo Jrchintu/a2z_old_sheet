@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -415,6 +418,10 @@
             .code-tab {
                 flex-shrink: 0;
             }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
         }
     </style>
 </head>
@@ -431,7 +438,6 @@
 <p><strong>Pre-requisite: </strong><a href="https://takeuforward.org/arrays/count-subarray-sum-equals-k/">Find the number of subarrays with the sum K</a></p>
 <!-- /wp:paragraph -->
 <!-- wp:paragraph -->
-<p></p>
 <!-- /wp:paragraph -->
 <!-- wp:html -->
 <!-- This is Examples Drop-Down -->
@@ -733,9 +739,9 @@ Complexity Analysis
 <p>
 <!-- Insert Time and Space Complexity of Brute Force Here -->
 <p><strong>Time Complexity: </strong>O(N<sup>3</sup>) approx., where N = size of the array.<br/><strong>Reason: </strong>We are using three nested loops, each running approximately N times.</p>
-<p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.</p>
+<p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.
 </p>
-</details>
+</p></details>
 </div>
 </details>
 </div>
@@ -956,9 +962,9 @@ Complexity Analysis
 <p>
 <!-- Insert Time and Space Complexity of Better Approach Here -->
 <p><strong>Time Complexity: </strong>O(N<sup>2</sup>), where N = size of the array.<br/><strong>Reason: </strong>We are using two nested loops here. As each of them is running for N times, the time complexity will be approximately O(N<sup>2</sup>).</p>
-<p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.</p>
+<p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.
 </p>
-</details>
+</p></details>
 </div>
 </details>
 </div>
@@ -1215,9 +1221,9 @@ Complexity Analysis
 <p>
 <!-- Insert Time and Space Complexity of Optimal Approach-->
 <p><strong>Time Complexity: </strong>O(N) or O(N*logN) depending on which map data structure we are using, where N = size of the array.<br/><strong>Reason: </strong>For example, if we are using an unordered_map data structure in C++ the time complexity will be O(N) but if we are using a map data structure, the time complexity will be O(N*logN). The least complexity will be O(N) as we are using a loop to traverse the array. Point to remember for unordered_map in the worst case, the searching time increases to O(N), and hence the overall time complexity increases to O(N<sup>2</sup>). </p>
-<p><strong>Space Complexity: </strong>O(N) as we are using a map data structure.</p>
+<p><strong>Space Complexity: </strong>O(N) as we are using a map data structure.
 </p>
-</details>
+</p></details>
 </div>
 </details>
 </div>

@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -594,9 +601,9 @@ int main() {
 }
 </code>
 </pre>
-<p>
 <p><strong>Output:</strong></p>
-<p>Max profit is: 5</p>
+<p>Max profit is: 5
+
 </p>
 </div>
 <div class="code-block" data-lang="java">
@@ -623,9 +630,8 @@ public class Main {
 }
 </code>
 </pre>
-<p>
 <p><strong>Output:</strong></p>
-<p>Max profit is: 5</p>
+<p>Max profit is: 5
 </p>
 </div>
 <div class="code-block" data-lang="python">
@@ -652,9 +658,8 @@ if __name__ == "__main__":
     print("Max profit is: ", maxPro)
 </code>
 </pre>
-<p>
 <p><strong>Output:</strong></p>
-<p>Max profit is: 5</p>
+<p>Max profit is: 5
 </p>
 </div>
 </div>
@@ -669,9 +674,8 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time complexity:</strong> O(n^2)</p>
-<p><strong>Space Complexity:</strong> O(1)</p>
+<p><strong>Space Complexity:</strong> O(1)
 </p>
 </details>
 </div>
@@ -753,8 +757,7 @@ int main() {
 }
 </code>
 </pre>
-<p>
-<p><strong>Output:</strong> Max profit is: 5</p>
+<p><strong>Output:</strong> Max profit is: 5
 </p>
 </div>
 <div class="code-block" data-lang="java">
@@ -782,8 +785,7 @@ public class Main {
 }
 </code>
 </pre>
-<p>
-<p><strong>Output:</strong> Max profit is: 5</p>
+<p><strong>Output:</strong> Max profit is: 5
 </p>
 </div>
 <div class="code-block" data-lang="python">
@@ -801,8 +803,7 @@ maxPro = maxProfit(arr)
 print("Max profit is:", maxPro)
 </code>
 </pre>
-<p>
-<p><strong>Output:</strong> Max profit is: 5</p>
+<p><strong>Output:</strong> Max profit is: 5
 </p>
 </div>
 </div>
@@ -817,9 +818,8 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
 <p><strong>Time complexity:</strong> O(n)</p>
-<p><strong>Space Complexity:</strong> O(1)</p>
+<p><strong>Space Complexity:</strong> O(1)
 </p>
 </details>
 </div>

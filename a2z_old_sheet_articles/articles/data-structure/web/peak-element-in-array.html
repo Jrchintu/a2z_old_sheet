@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -522,7 +529,6 @@ Explanation: In this example, there is only 1 peak that is at the index 0.
 <ul><li><strong>If n == 1: </strong>The aforementioned condition will not be applicable. In this scenario, when the array size is 1, the single element within the array serves as the peak, and thus we should return its index. Prior information specifies that for the first element, we should treat the previous element as negative infinity, and similarly, for the last element, we should consider the next element as negative infinity.<br/></li><li><strong>If i == 0: </strong>The aforementioned condition will not be applicable as arr[i-1] will refer to arr[-1] which is invalid. So, in this case, we should check if <strong>arr[0] &gt; arr[1]. </strong>If this condition holds, we can conclude that arr[0] is a peak. Prior information specifies that for the first element, we should treat the previous element as negative infinity.<br/></li><li><strong>If i == n-1: </strong>The aforementioned condition will not be applicable as arr[i+1] will refer to arr[n] which is again invalid. So, in this case, we should check if <strong>arr[n-1] &gt; arr[n-2]. </strong>If this condition holds, we can conclude that arr[n-1] is a peak. Prior information specifies that for the last element, we should treat the next element as negative infinity.</li></ul>
 <!-- /wp:list -->
 <!-- wp:paragraph -->
-<p></p>
 <!-- /wp:paragraph -->
 <!-- wp:html -->
 <!-- This is Practice Section-->
@@ -735,29 +741,9 @@ console.log("The peak is at index:", ans);
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Brute Force Here -->
-<strong>Output:</strong> The peak is at index: 7
-
-</p>
-</div>
-</details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Brute Force Here -->
-</p><p><strong>Time Complexity: </strong>O(N), N = size of the given array.<br/><strong>Reason: </strong>We are traversing the entire array.</p>
+<p><strong>Time Complexity: </strong>O(N), N = size of the given array.<br/><strong>Reason: </strong>We are traversing the entire array.</p>
 <p><strong>Space Complexity: </strong>O(1) as we are not using any extra space.</p>
-<p></p>
-</details>
+</div></details>
 </div>
 </details>
 </div>
@@ -799,7 +785,7 @@ Algorithm / Intuition
 <ol><li><strong>If arr[i] &gt; arr[i-1]: </strong>we are in the left half.</li><li><strong>If arr[i] &gt; arr[i+1]: </strong>we are in the right half.</li></ol>
 <p><strong>How to eliminate the halves accordingly:</strong></p>
 <ul><li>If we are in the left half of the peak element, we have to eliminate this left half (i.e.    <br/>low = mid+1). Because our peak element appears somewhere on the right side.</li><li>If we are in the right half of the peak element, we have to eliminate this right half (i.e.     high = mid-1). Because our peak element appears somewhere on the left side.</li></ul>
-p&gt;Now, let’s see if these conditions are enough to handle the array with multiple peaks. Based on the observation, in an array with multiple peaks, an index has four possible positions as follows:<p></p>
+p&gt;Now, let’s see if these conditions are enough to handle the array with multiple peaks. Based on the observation, in an array with multiple peaks, an index has four possible positions as follows:
 <figure class="wp-block-image size-full"><img alt="" class="wp-image-11471" src="assets/fdae488d1188af018ced9c1fe1ed8b78.png"/></figure>
 <ul><li>The index is a common point where a decreasing sequence ends and an increasing sequence begins.</li><li>The index might be on the left half.</li><li>The index might be the peak itself.</li><li>The index might be on the right half.</li></ul>
 <p>Until now, we have found <strong>how to identify if an element is a peak and how</strong> <strong>to identify the halves and then eliminate them accordingly. </strong>So, the last 3 cases have been resolved. We have to find out how the first case should be handled.</p>
@@ -1004,29 +990,9 @@ console.log("The peak is at index:", ans);
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Optimal Apporach Here -->
-<strong>Output:</strong> The peak is at index: 7
-
-</p>
-</div>
-</details>
-<details class="secondary-details">
-<summary class="secondary-summary">
-<span>
-Complexity Analysis
-</span>
-<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
-</path>
-</svg>
-</summary>
-<p>
-<!-- Insert Time and Space Complexity of Optimal Approach-->
-</p><p><strong>Time Complexity: </strong>O(logN), N = size of the given array.<strong><br/>Reason: </strong>We are basically using binary search to find the minimum.</p>
+<p><strong>Time Complexity: </strong>O(logN), N = size of the given array.<strong><br/>Reason: </strong>We are basically using binary search to find the minimum.</p>
 <p><strong>Space Complexity: </strong>O(1)<strong><br/>Reason: </strong>We have not used any extra data structures, this makes space complexity, even in the worst case as O(1).</p>
-<p></p>
-</details>
+</div></details>
 </div>
 </details>
 </div>

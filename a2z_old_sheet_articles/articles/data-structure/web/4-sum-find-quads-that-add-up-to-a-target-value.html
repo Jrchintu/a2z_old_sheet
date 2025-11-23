@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -437,7 +444,6 @@
 <p>0 &lt;= a, b, c, d &lt; n<br/>a, b, c, and d are distinct.<br/>arr[a] + arr[b] + arr[c] + arr[d] == target</p>
 <!-- /wp:paragraph -->
 <!-- wp:paragraph -->
-<p></p>
 <!-- /wp:paragraph -->
 <!-- wp:html -->
 <!-- This is Examples Drop-Down -->
@@ -776,9 +782,9 @@ console.log();
 <p>
 <!-- Insert Output of Brute Force Here -->
 <p><strong>Output:</strong> The quadruplets are:
-[1 1 3 4 ] [1 2 2 4 ] [1 2 3 3 ]</p> 
+[1 1 3 4 ] [1 2 2 4 ] [1 2 3 3 ] 
 </p>
-</div>
+</p></div>
 </details>
 <details class="secondary-details">
 <summary class="secondary-summary">
@@ -793,9 +799,9 @@ Complexity Analysis
 <p>
 <!-- Insert Time and Space Complexity of Brute Force Here -->
 <p><strong>Time Complexity: </strong>O(N<sup>4</sup>), where N = size of the array.<br/><strong>Reason: </strong>Here, we are mainly using 4 nested loops. But we not considering the time complexity of sorting as we are just sorting 4 elements every time.</p>
-<p><strong>Space Complexity: </strong>O(2 * no. of the quadruplets) as we are using a set data structure and a list to store the quads.</p>
+<p><strong>Space Complexity: </strong>O(2 * no. of the quadruplets) as we are using a set data structure and a list to store the quads.
 </p>
-</details>
+</p></details>
 </div>
 </details>
 </div>
@@ -1067,9 +1073,9 @@ console.log();
 <p>
 <!-- Insert Output of Better Approach Here -->
 <p><strong>Output:</strong> The quadruplets are:
-[1 1 3 4 ] [1 2 2 4 ] [1 2 3 3 ]</p> 
+[1 1 3 4 ] [1 2 2 4 ] [1 2 3 3 ] 
 </p>
-</div>
+</p></div>
 </details>
 <details class="secondary-details">
 <summary class="secondary-summary">
@@ -1084,9 +1090,9 @@ Complexity Analysis
 <p>
 <!-- Insert Time and Space Complexity of Better Approach Here -->
 <p><strong>Time Complexity: </strong>O(N<sup>3</sup>*log(M)), where N = size of the array, M = no. of elements in the set.<br/><strong>Reason: </strong>Here, we are mainly using 3 nested loops, and inside the loops there are some operations on the set data structure which take log(M) time complexity.</p>
-<p><strong>Space Complexity: </strong>O(2 * no. of the quadruplets)+O(N)<br/><strong>Reason: </strong>we are using a set data structure and a list to store the quads. This results in the first term. And the second space is taken by the set data structure we are using to store the array elements. At most, the set can contain approximately all the array elements and so the space complexity is O(N).</p>
+<p><strong>Space Complexity: </strong>O(2 * no. of the quadruplets)+O(N)<br/><strong>Reason: </strong>we are using a set data structure and a list to store the quads. This results in the first term. And the second space is taken by the set data structure we are using to store the array elements. At most, the set can contain approximately all the array elements and so the space complexity is O(N).
 </p>
-</details>
+</p></details>
 </div>
 </details>
 </div>
@@ -1411,9 +1417,9 @@ console.log("The majority elements are: " + ans.join(" "));
 <p>
 <!-- Insert Output of Optimal Apporach Here -->
 <p><strong>Output:</strong>The quadruplets are:
-[1 1 3 4 ] [1 2 2 4 ] [1 2 3 3 ]</p> 
+[1 1 3 4 ] [1 2 2 4 ] [1 2 3 3 ] 
 </p>
-</div>
+</p></div>
 </details>
 <details class="secondary-details">
 <summary class="secondary-summary">
@@ -1428,9 +1434,9 @@ Complexity Analysis
 <p>
 <!-- Insert Time and Space Complexity of Optimal Approach-->
 <p><strong>Time Complexity: </strong>O(N<sup>3</sup>), where N = size of the array.<br/><strong>Reason: </strong>Each of the pointers i and j, is running for approximately N times. And both the pointers k and l combined can run for approximately N times including the operation of skipping duplicates. So the total time complexity will be O(N<sup>3</sup>). </p>
-<p><strong>Space Complexity: </strong>O(no. of quadruplets), <strong><em>This space is only used to store the answer. We are not using any extra space to solve this problem.</em></strong> So, from that perspective, space complexity can be written as O(1).</p>
+<p><strong>Space Complexity: </strong>O(no. of quadruplets), <strong><em>This space is only used to store the answer. We are not using any extra space to solve this problem.</em></strong> So, from that perspective, space complexity can be written as O(1).
 </p>
-</details>
+</p></details>
 </div>
 </details>
 </div>

@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -414,6 +417,10 @@
             
             .code-tab {
                 flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
             }
         }
     </style>
@@ -434,7 +441,6 @@
 <p>At any cell we are allowed to move in only two directions:- bottom and right.</p>
 <!-- /wp:paragraph -->
 <!-- wp:paragraph -->
-<p></p>
 <!-- /wp:paragraph -->
 <!-- wp:html -->
 <!-- This is Examples Drop-Down -->
@@ -772,12 +778,9 @@ main();
 </code>
 </pre>
 </div>
-<p>
-<!-- Insert Output of Brute Force Here -->
-</p><p><strong>Output:</strong> 3
+<p><strong>Output:</strong> 3
 
 </p>
-<p></p>
 </div>
 </details>
 <details class="secondary-details">
@@ -795,9 +798,9 @@ Complexity Analysis
 <p><strong>Time Complexity: O(M*N)</strong></p>
 <p>Reason: At max, there will be M*N calls of recursion.</p>
 <p><strong>Space Complexity: O((N-1)+(M-1)) + O(M*N)</strong></p>
-<p>Reason: We are using a recursion stack space: O((N-1)+(M-1)), here (N-1)+(M-1) is the path length and an external DP Array of size ‘M*N’.</p>
+<p>Reason: We are using a recursion stack space: O((N-1)+(M-1)), here (N-1)+(M-1) is the path length and an external DP Array of size ‘M*N’.
 </p>
-</details>
+</p></details>
 </div>
 </details>
 </div>
@@ -1103,9 +1106,9 @@ Complexity Analysis
 <p><strong>Time Complexity: O(M*N)</strong></p>
 <p>Reason: There are two nested loops</p>
 <p><strong>Space Complexity: O(M*N)</strong></p>
-<p>Reason: We are using an external array of size ‘M*N’’.</p>
+<p>Reason: We are using an external array of size ‘M*N’’.
 </p>
-</details>
+</p></details>
 </div>
 </details>
 </div>
@@ -1416,9 +1419,9 @@ Complexity Analysis
 <p><strong>Time Complexity: O(M*N)</strong></p>
 <p>Reason: There are two nested loops</p>
 <p><strong>Space Complexity: O(N)</strong></p>
-<p>Reason: We are using an external array of size ‘N’ to store only one row.</p>
+<p>Reason: We are using an external array of size ‘N’ to store only one row.
 </p>
-</details>
+</p></details>
 </div>
 </details>
 </div>

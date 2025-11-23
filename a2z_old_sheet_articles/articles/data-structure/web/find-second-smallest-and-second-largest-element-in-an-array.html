@@ -309,17 +309,20 @@
             width: 20px;
             height: 20px;
             fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
         }
         
+        /* Only rotate the arrow of the *active* details element */
         details[open] > summary .arrow-svg {
-            transform: rotate(180deg);
+            transform: rotate(90deg);
             fill: var(--primary-color);
         }
 
         .common-drops,
         .atricle_example_content,
         details > :not(summary) {
-            padding: 1rem;
+            padding: 0.5rem;
             border-top: 1px solid var(--border-color);
             background-color: var(--bg-surface);
         }
@@ -397,7 +400,7 @@
                 border: none;
                 border-radius: 0;
                 box-shadow: none;
-                padding: 1rem;
+                padding: 0.5rem;
                 max-width: 100%;
             }
 
@@ -415,6 +418,10 @@
             .code-tab {
                 flex-shrink: 0;
             }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
         }
     </style>
 </head>
@@ -428,7 +435,6 @@
 <p><strong>Problem Statement:</strong> Given an array, find the second smallest and second largest element in the array. Print ‘-1’ in the event that either of them doesn’t exist.</p>
 <!-- /wp:paragraph -->
 <!-- wp:paragraph -->
-<p></p>
 <!-- /wp:paragraph -->
 <!-- wp:html -->
 <!-- This is Examples Drop-Down -->
@@ -587,10 +593,8 @@ int main()
 
 </code>
 </pre>
-<p>
-</p><p><strong>Output: </strong></p>
+<p><strong>Output: </strong></p>
 <p>Second smallest is 2<br/>Second largest is 6</p>
-<p></p>
 </div>
 <div class="code-block" data-lang="java">
 <pre class="wp-block-code"><code class="language-java" lang="java">
@@ -622,10 +626,8 @@ public static void main(String[] args)
 }
 </code>
 </pre>
-<p>
-</p><p><strong>Output: </strong></p>
+<p><strong>Output: </strong></p>
 <p>Second smallest is 2<br/>Second largest is 6</p>
-<p></p>
 </div>
 <div class="code-block" data-lang="python">
 <pre class="wp-block-code"><code class="language-python" lang="python">
@@ -647,10 +649,8 @@ if __name__ == '__main__':
     getElements(arr, n)
 </code>
 </pre>
-<p>
-</p><p><strong>Output: </strong></p>
+<p><strong>Output: </strong></p>
 <p>Second smallest is 2<br/>Second largest is 6</p>
-<p></p>
 </div>
 <div class="code-block" data-lang="javascript">
 <pre class="wp-block-code"><code class="language-javascript" lang="javascript">
@@ -672,10 +672,8 @@ getElements(arr);
 
 </code>
 </pre>
-<p>
-</p><p><strong>Output: </strong></p>
+<p><strong>Output: </strong></p>
 <p>Second smallest is 2<br/>Second largest is 6</p>
-<p></p>
 </div>
 </div>
 </details>
@@ -689,10 +687,8 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
-</p><p><strong>Time Complexity: O(NlogN), For sorting the array</strong></p>
+<p><strong>Time Complexity: O(NlogN), For sorting the array</strong></p>
 <p><strong>Space Complexity: O(1)</strong></p>
-<p></p>
 </details>
 </div>
 </details>
@@ -786,10 +782,8 @@ int main()
 }
 </code>
 </pre>
-<p>
-</p><p><strong>Output:</strong> </p>
+<p><strong>Output:</strong> </p>
 <p>Second smallest is 2<br/>Second largest is 6</p>
-<p></p>
 </div>
 <div class="code-block" data-lang="java">
 <pre class="wp-block-code"><code class="language-java" lang="java">
@@ -841,10 +835,8 @@ public static void main(String[] args)
 
 </code>
 </pre>
-<p>
-</p><p><strong>Output:</strong> </p>
+<p><strong>Output:</strong> </p>
 <p>Second smallest is 2<br/>Second largest is 6</p>
-<p></p>
 </div>
 <div class="code-block" data-lang="python">
 <pre class="wp-block-code"><code class="language-python" lang="python">
@@ -876,10 +868,8 @@ if __name__ == '__main__':
 
 </code>
 </pre>
-<p>
-</p><p><strong>Output:</strong> </p>
+<p><strong>Output:</strong> </p>
 <p>Second smallest is 2<br/>Second largest is 6</p>
-<p></p>
 </div>
 <div class="code-block" data-lang="javascript">
 <pre class="wp-block-code"><code class="language-javascript" lang="javascript">
@@ -915,10 +905,8 @@ const arr = [1, 2, 4, 6, 7, 5];
 getElements(arr);
 </code>
 </pre>
-<p>
-</p><p><strong>Output:</strong> </p>
+<p><strong>Output:</strong> </p>
 <p>Second smallest is 2<br/>Second largest is 6</p>
-<p></p>
 </div>
 </div>
 </details>
@@ -932,10 +920,8 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
-</p><p><strong>Time Complexity: O(N), We do two linear traversals in our array</strong></p>
+<p><strong>Time Complexity: O(N), We do two linear traversals in our array</strong></p>
 <p><strong>Space Complexity: O(1)</strong></p>
-<p></p>
 </details>
 </div>
 </details>
@@ -1058,11 +1044,8 @@ int main() {
 
 </code>
 </pre>
-<p>
-<!-- Insert Output of Optimal Apporach Here -->
-</p><p><strong>Output:</strong></p>
+<p><strong>Output:</strong></p>
 <p>Second smallest is 2<br/>Second largest is 5</p>
-<p></p>
 </div>
 <div class="code-block" data-lang="java">
 <pre class="wp-block-code"><code class="language-java" lang="java">
@@ -1131,11 +1114,8 @@ public static void main(String[] args)
 
 </code>
 </pre>
-<p>
-<!-- Insert Output of Optimal Apporach Here -->
-</p><p><strong>Output:</strong></p>
+<p><strong>Output:</strong></p>
 <p>Second smallest is 2<br/>Second largest is 5</p>
-<p></p>
 </div>
 <div class="code-block" data-lang="python">
 <pre class="wp-block-code"><code class="language-python" lang="python">
@@ -1182,11 +1162,8 @@ if __name__ == "__main__":
     print("Second largest is", sL)
 </code>
 </pre>
-<p>
-<!-- Insert Output of Optimal Apporach Here -->
-</p><p><strong>Output:</strong></p>
+<p><strong>Output:</strong></p>
 <p>Second smallest is 2<br/>Second largest is 5</p>
-<p></p>
 </div>
 <div class="code-block" data-lang="javascript">
 <pre class="wp-block-code"><code class="language-javascript" lang="javascript">
@@ -1239,11 +1216,8 @@ console.log("Second largest is " + sL);
 
 </code>
 </pre>
-<p>
-<!-- Insert Output of Better Approach Here -->
-</p><p><strong>Output:</strong></p>
+<p><strong>Output:</strong></p>
 <p>Second smallest is 2<br/>Second largest is 5</p>
-<p></p>
 </div>
 </div>
 </details>
@@ -1257,11 +1231,8 @@ Complexity Analysis
 </path>
 </svg>
 </summary>
-<p>
-<!-- Insert Time and Space Complexity of Optimal Approach-->
-</p><p><strong>Time Complexity: O(N), Single-pass solution</strong></p>
+<p><strong>Time Complexity: O(N), Single-pass solution</strong></p>
 <p><strong>Space Complexity: O(1)</strong></p>
-<p></p>
 </details>
 </div>
 </details>
