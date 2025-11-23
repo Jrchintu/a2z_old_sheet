@@ -32,6 +32,44 @@
             --spacing-lg: 20px;
         }
 
+        /* Dark Theme Support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-text-primary: #e0e0e0;
+                --color-text-secondary: #d0d0d0;
+                --color-link-primary: #5dade2;
+                --color-link-hover: #85c1e9;
+                --color-bg-body: #121212;
+                --color-bg-container: #1e1e1e;
+                --color-bg-light: #2d2d2d;
+                --color-bg-lighter-hover: #383838;
+                --color-border-light: #444;
+                --color-border-header: #444;
+
+                /* Code Block Colors */
+                --color-code-bg: #282c34;
+                --color-code-text: #abb2bf;
+            }
+
+            /* Override specific hardcoded colors for dark mode */
+            .code-tab {
+                color: #aaa;
+            }
+
+            .code-tab:hover {
+                background-color: var(--color-bg-lighter-hover);
+                color: var(--color-text-primary);
+            }
+
+            .copy-btn path {
+                fill: #888;
+            }
+
+            .secondary-summary {
+                background-color: #252525;
+            }
+        }
+
         /* ---------------------------------- */
         /* 1. Base Structure & Global Styles */
         /* ---------------------------------- */

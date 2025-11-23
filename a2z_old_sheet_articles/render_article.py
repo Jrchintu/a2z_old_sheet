@@ -83,11 +83,27 @@ def generate_main_index(html_paths, root_dir):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Article Index</title>
     <style>
-        body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.6; max-width: 900px; margin: 40px auto; padding: 0 20px; }}
-        h1 {{ color: #2c3e50; }}
+        :root {{
+            --bg-color: #fff;
+            --text-color: #333;
+            --heading-color: #2c3e50;
+            --link-color: #3498db;
+            --border-color: #ecf0f1;
+        }}
+        @media (prefers-color-scheme: dark) {{
+            :root {{
+                --bg-color: #121212;
+                --text-color: #e0e0e0;
+                --heading-color: #d0d0d0;
+                --link-color: #5dade2;
+                --border-color: #444;
+            }}
+        }}
+        body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.6; max-width: 900px; margin: 40px auto; padding: 0 20px; background-color: var(--bg-color); color: var(--text-color); }}
+        h1 {{ color: var(--heading-color); }}
         ul {{ list-style-type: none; padding: 0; }}
-        li {{ margin: 8px 0; border-left: 3px solid #ecf0f1; padding-left: 15px; }}
-        a {{ text-decoration: none; color: #3498db; }}
+        li {{ margin: 8px 0; border-left: 3px solid var(--border-color); padding-left: 15px; }}
+        a {{ text-decoration: none; color: var(--link-color); }}
         a:hover {{ text-decoration: underline; }}
     </style>
 </head>
