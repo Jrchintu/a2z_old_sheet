@@ -82,29 +82,68 @@ def generate_main_index(html_paths, root_dir):
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Article Index</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {{
-            --bg-color: #fff;
-            --text-color: #333;
-            --heading-color: #2c3e50;
-            --link-color: #3498db;
-            --border-color: #ecf0f1;
+            /* Default to Dark Theme */
+            --primary-color: #3b82f6;
+            --bg-body: #0f172a;
+            --bg-surface: #1e293b;
+            --border-color: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --link-color: #60a5fa;
+            --radius-lg: 8px;
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
         }}
-        @media (prefers-color-scheme: dark) {{
-            :root {{
-                --bg-color: #121212;
-                --text-color: #e0e0e0;
-                --heading-color: #d0d0d0;
-                --link-color: #5dade2;
-                --border-color: #444;
-            }}
+        body {{ 
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6; 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 2rem; 
+            background-color: var(--bg-body); 
+            color: var(--text-primary); 
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }}
-        body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.6; max-width: 900px; margin: 40px auto; padding: 0 20px; background-color: var(--bg-color); color: var(--text-color); }}
-        h1 {{ color: var(--heading-color); }}
-        ul {{ list-style-type: none; padding: 0; }}
-        li {{ margin: 8px 0; border-left: 3px solid var(--border-color); padding-left: 15px; }}
-        a {{ text-decoration: none; color: var(--link-color); }}
-        a:hover {{ text-decoration: underline; }}
+        h1 {{ 
+            color: var(--text-primary); 
+            border-bottom: 1px solid var(--border-color); 
+            padding-bottom: 1rem; 
+            margin-bottom: 2rem;
+        }}
+        ul {{ 
+            list-style-type: none; 
+            padding: 0; 
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }}
+        li {{ 
+            margin: 0; 
+            border-bottom: 1px solid var(--border-color); 
+            padding: 0;
+        }}
+        li:last-child {{ border-bottom: none; }}
+        a {{ 
+            display: block;
+            padding: 1rem;
+            text-decoration: none; 
+            color: var(--link-color); 
+            transition: background-color 0.2s;
+        }}
+        a:hover {{ 
+            background-color: var(--border-color);
+            text-decoration: none; 
+        }}
+        @media (max-width: 768px) {{
+            body {{ padding: 0; }}
+            h1 {{ padding-left: 1rem; padding-right: 1rem; }}
+            ul {{ border-radius: 0; border: none; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }}
+        }}
     </style>
 </head>
 <body>

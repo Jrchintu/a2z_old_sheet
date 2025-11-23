@@ -5,249 +5,256 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Print Longest Common Subsequence | (DP - 26)</title>
+<link href="assets/34bd07407ad1de576cba1f67651fa31a" rel="stylesheet"/>
 <style>
-        /* Define CSS Variables for colors and spacing for better maintenance */
+        /* ==========================================================================
+           1. CSS Variables (Theme) - Utilitarian Modern
+           ========================================================================== */
         :root {
-            /* Color Palette (UI/UX Unchanged) */
-            --color-text-primary: #333;
-            --color-text-secondary: #2c3e50;
-            --color-link-primary: #3498db;
-            --color-link-hover: #2980b9;
-            --color-bg-body: #fdfdfd;
-            --color-bg-container: #fff;
-            --color-bg-light: #f9f9f9;
-            --color-bg-lighter-hover: #f1f1f1;
-            /* Used for summary hover */
-            --color-border-light: #e7e7e7;
-            --color-border-header: #ecf0f1;
+            /* Default to Light Theme */
+            --primary-color: #3b82f6; /* Blue 500 */
+            --primary-hover: #2563eb; /* Blue 600 */
+            
+            --bg-body: #f8fafc; /* Slate 50 */
+            --bg-surface: #ffffff; /* White */
+            --bg-subtle: #f1f5f9; /* Slate 100 */
+            
+            --border-color: #e2e8f0; /* Slate 200 */
+            
+            --text-primary: #0f172a; /* Slate 900 */
+            --text-secondary: #334155; /* Slate 700 */
+            --text-muted: #64748b; /* Slate 500 */
+            
+            --link-color: #2563eb; /* Blue 600 */
+            --link-hover: #3b82f6; /* Blue 500 */
 
-            /* Code Block Colors */
-            --color-code-bg: #2d2d2d;
-            --color-code-text: #f8f8f2;
+            --code-bg: #f1f5f9; /* Slate 100 */
+            --code-text: #0f172a; /* Slate 900 */
 
-            /* Standardized Spacing */
-            --spacing-xs: 5px;
-            --spacing-sm: 10px;
-            --spacing-md: 15px;
-            --spacing-lg: 20px;
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 0 25px -5px rgba(59, 130, 246, 0.25);
+            
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
         }
 
         /* Dark Theme Support */
         @media (prefers-color-scheme: dark) {
             :root {
-                --color-text-primary: #e0e0e0;
-                --color-text-secondary: #d0d0d0;
-                --color-link-primary: #5dade2;
-                --color-link-hover: #85c1e9;
-                --color-bg-body: #121212;
-                --color-bg-container: #1e1e1e;
-                --color-bg-light: #2d2d2d;
-                --color-bg-lighter-hover: #383838;
-                --color-border-light: #444;
-                --color-border-header: #444;
+                --bg-body: #0f172a; /* Slate 900 */
+                --bg-surface: #1e293b; /* Slate 800 */
+                --bg-subtle: #334155; /* Slate 700 */
+                
+                --border-color: #334155;
+                
+                --text-primary: #f8fafc; /* Slate 50 */
+                --text-secondary: #cbd5e1; /* Slate 300 */
+                --text-muted: #94a3b8; /* Slate 400 */
+                
+                --link-color: #60a5fa; /* Blue 400 */
+                --link-hover: #93c5fd; /* Blue 300 */
 
-                /* Code Block Colors */
-                --color-code-bg: #282c34;
-                --color-code-text: #abb2bf;
-            }
-
-            /* Override specific hardcoded colors for dark mode */
-            .code-tab {
-                color: #aaa;
-            }
-
-            .code-tab:hover {
-                background-color: var(--color-bg-lighter-hover);
-                color: var(--color-text-primary);
-            }
-
-            .copy-btn path {
-                fill: #888;
-            }
-
-            .secondary-summary {
-                background-color: #252525;
+                --code-bg: #020617; /* Slate 950 */
+                --code-text: #f8fafc;
             }
         }
 
-        /* ---------------------------------- */
-        /* 1. Base Structure & Global Styles */
-        /* ---------------------------------- */
+        /* ==========================================================================
+           2. Base & Reset
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
 
-        /* A clean, modern, and responsive base style for the articles */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             line-height: 1.6;
-            color: var(--color-text-primary);
-            background-color: var(--color-bg-body);
+            color: var(--text-primary);
+            background-color: var(--bg-body);
             margin: 0;
-            padding: 0;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Main container for the article content */
+        /* ==========================================================================
+           3. Layout
+           ========================================================================== */
         .container {
-            margin: var(--spacing-xs);
-            /* 5px */
-            padding: var(--spacing-sm);
-            /* 10px */
-            background-color: var(--color-bg-container);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            max-width: 800px; /* Optimal reading width */
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
         }
 
-        /* ---------------------------------- */
-        /* 2. Typography & Links */
-        /* ---------------------------------- */
+        /* Enhanced hover for desktop only */
+        @media (hover: hover) and (pointer: fine) {
+            .container:hover {
+                transform: translateY(-4px);
+                border-color: var(--primary-color);
+                box-shadow: var(--shadow-hover);
+            }
+        }
 
-        /* Main article title */
+        /* ==========================================================================
+           4. Typography
+           ========================================================================== */
         h1 {
-            color: var(--color-text-secondary);
-            font-size: 2.25rem;
-            margin-bottom: 0.5rem;
-            border-bottom: 2px solid var(--color-border-header);
-            padding-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
             text-align: center;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+        
+        h2, h3, h4 {
+            color: var(--text-secondary);
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+            font-weight: 600;
         }
 
-        /* Improve styling for links */
+        p {
+            margin-bottom: 1.25em;
+        }
+
         a {
-            color: var(--color-link-primary);
+            color: var(--link-color);
             text-decoration: none;
-            transition: color 0.2s ease-in-out;
+            font-weight: 500;
         }
 
         a:hover {
-            color: var(--color-link-hover);
+            color: var(--link-hover);
             text-decoration: underline;
         }
 
-        /* ---------------------------------- */
-        /* 3. Media Elements (Images & Video) */
-        /* ---------------------------------- */
-
-        /* Make images responsive and centered */
+        /* ==========================================================================
+           5. Media
+           ========================================================================== */
         img {
             max-width: 100%;
             height: auto;
-            border-radius: 4px;
+            border-radius: var(--radius-md);
             display: block;
-            margin: 1em auto;
+            margin: 1.5rem auto;
         }
 
-        /* Center figures which often wrap images */
-        figure {
-            text-align: center;
-            margin: 1.5em 0;
-        }
-
-        /* Center and style YouTube video wrapper for responsiveness (16:9) */
         .yt-video-wrapper {
             position: relative;
             overflow: hidden;
             width: 100%;
-            padding-top: 56.25%;
-            margin: 1.5em auto;
-            border-radius: 8px;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            margin: 1.5rem 0;
+            border-radius: var(--radius-md);
+            background-color: var(--bg-subtle);
         }
 
         .yt-video-wrapper iframe {
             position: absolute;
             top: 0;
             left: 0;
-            bottom: 0;
-            right: 0;
             width: 100%;
             height: 100%;
             border: none;
         }
 
-        /* Adjustments for video inside a details block */
-        .dsa_article_youtube_video .yt-video-wrapper {
-            padding-top: 56.25%;
-            margin: 0;
-            border-radius: 0;
-            padding-left: 0;
-            padding-right: 0;
-        }
-
-        /* ---------------------------------- */
-        /* 4. Code Blocks */
-        /* ---------------------------------- */
-
-        /* Basic code block styling */
+        /* ==========================================================================
+           6. Code Blocks
+           ========================================================================== */
         pre {
-            background-color: var(--color-code-bg);
-            color: var(--color-code-text);
-            padding: var(--spacing-sm);
-            /* 10px */
-            margin: 0px;
-            border-radius: 5px;
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--radius-md);
             overflow-x: auto;
-            font-family: "Fira Code", "Consolas", "Monaco", monospace;
-            font-size: 0.9rem;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
         }
 
         code {
-            font-family: "Fira Code", "Consolas", "Monaco", monospace;
+            font-family: inherit;
         }
 
-        /* Ensure the highlighted code block fills the <pre> area */
-        pre code.hljs {
-            display: block;
-            background: none;
-            padding: 0;
-            margin: 0;
+        /* ==========================================================================
+           7. Code Tabs
+           ========================================================================== */
+        .code-section {
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
         }
-
-        /* ---------------------------------- */
-        /* 5. Code Section Tabs Styling */
-        /* ---------------------------------- */
 
         .code-tabs {
             display: flex;
-            border-bottom: 1px solid var(--color-border-light);
-            margin-bottom: 1rem;
-            align-items: center;
+            background-color: var(--bg-subtle);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
         }
 
         .code-tab {
-            padding: 10px 15px;
+            padding: 0.75rem 1rem;
             cursor: pointer;
-            background-color: transparent;
+            background: none;
             border: none;
-            border-bottom: 3px solid transparent;
-            font-size: 1rem;
-            color: #555;
-            transition: all 0.2s ease-in-out;
+            border-bottom: 2px solid transparent;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
         }
 
         .code-tab:hover {
-            background-color: var(--color-bg-light);
-            color: var(--color-text-primary);
+            color: var(--text-primary);
         }
 
         .code-tab.dsa_article_code_active {
-            color: var(--color-text-secondary);
-            border-bottom: 3px solid var(--color-link-primary);
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
         }
 
         .copy-btn {
             margin-left: auto;
+            padding: 0.75rem;
             cursor: pointer;
-            padding: var(--spacing-sm);
-            /* 10px */
+            display: flex;
+            align-items: center;
+        }
+        
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-muted);
+        }
+        
+        .copy-btn:hover svg {
+            fill: var(--text-primary);
         }
 
-        .copy-btn path {
-            fill: #aaa;
-            transition: fill 0.2s;
+        .code-content {
+            background-color: var(--code-bg);
         }
-
-        .copy-btn:hover path {
-            fill: var(--color-text-primary);
-        }
-
-        .copy-btn.dsa_article_code_active path {
-            fill: var(--color-link-primary);
+        
+        .code-content pre {
+            margin: 0;
+            border-radius: 0;
         }
 
         .code-block {
@@ -258,27 +265,34 @@
             display: block;
         }
 
-        /* ---------------------------------- */
-        /* 6. Accordion/Dropdown Styling */
-        /* ---------------------------------- */
-
+        /* ==========================================================================
+           8. Accordions / Details
+           ========================================================================== */
         details {
             margin-bottom: 1rem;
-            border: 1px solid var(--color-border-light);
-            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
             overflow: hidden;
-            padding: 0;
+            background-color: var(--bg-surface);
+            transition: box-shadow 0.2s;
+        }
+        
+        details:hover {
+            box-shadow: var(--shadow-sm);
         }
 
         summary {
             list-style: none;
             cursor: pointer;
-            padding: var(--spacing-md) var(--spacing-lg);
-            /* 15px 20px */
-            background-color: var(--color-bg-light);
-            font-weight: 500;
-            color: var(--color-text-secondary);
-            transition: background-color 0.2s ease-in-out;
+            padding: 1rem;
+            background-color: var(--bg-subtle);
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+            user-select: none;
         }
 
         summary::-webkit-details-marker {
@@ -286,109 +300,120 @@
         }
 
         summary:hover {
-            background-color: var(--color-bg-lighter-hover);
+            background-color: #475569; /* Slate 600 */
+        }
+        
+        /* Arrow icon rotation */
+        summary .arrow-svg {
+            transition: transform 0.3s ease;
+            width: 20px;
+            height: 20px;
+            fill: var(--text-muted);
+        }
+        
+        details[open] > summary .arrow-svg {
+            transform: rotate(180deg);
+            fill: var(--primary-color);
         }
 
-        /* Content inside the dropdowns */
         .common-drops,
-        .atricle_example_content {
-            padding: 10px 10px 0;
-            border-bottom: 10px;
-            /* Kept original value */
-            background-color: var(--color-bg-container);
-            border-top: 1px solid var(--color-border-light);
+        .atricle_example_content,
+        details > :not(summary) {
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+            background-color: var(--bg-surface);
         }
 
-        /* Full padding for example */
-        .atricle_example_content {
-            padding: var(--spacing-sm);
-            /* 10px */
+        /* Nested details */
+        .secondary-details {
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
         }
-
-        /* Additional padding for details content that doesn't have specific classes */
-        details> :not(summary) {
-            padding-left: 10px;
-            padding-right: 10px;
-        }
-
-        /* Nested dropdown summaries */
+        
         .secondary-summary {
-            background-color: #fafafa;
-            padding: 12px 20px;
-            font-weight: normal;
+            background-color: rgba(51, 65, 85, 0.3); /* Semi-transparent slate-700 */
+            font-size: 0.95rem;
         }
-
+        
         .secondary-summary:hover {
-            background-color: var(--color-bg-lighter-hover);
+            background-color: var(--bg-subtle);
+        }
+        
+        .opacity-75 {
+            opacity: 0.75;
         }
 
-        /* ---------------------------------- */
-        /* 7. Practice and Disclaimer */
-        /* ---------------------------------- */
-
-        .practice,
-        .new-disclaimer {
-            display: flex;
-            justify-content: space-evenly;
-            align-items: center;
+        /* ==========================================================================
+           9. Practice & Disclaimer
+           ========================================================================== */
+        .practice, .new-disclaimer {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: var(--bg-subtle);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+        
+        .problem-buttons a {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+        }
+        
+        .problem-buttons a:hover {
+            background-color: var(--primary-hover);
+            text-decoration: none;
         }
 
-        .new-disclaimer {
-            justify-content: center;
-        }
-
-        /* ---------------------------------- */
-        /* 8. Utility: Hiding Specific Elements */
-        /* ---------------------------------- */
+        /* ==========================================================================
+           10. Utilities
+           ========================================================================== */
         .problem-buttons img,
-        .arrow-svg,
         .box-e.tooltip,
         .three-boxes.box-d svg,
         .horizontal_navbar_dsa_article,
         .has-text-align-center {
             display: none;
         }
-
-        /* ---------------------------------- */
-        /* 9. Responsive Adjustments */
-        /* ---------------------------------- */
-
-        @media (min-width: 769px) {
-            .container {
-                max-width: 960px;
-                margin: var(--spacing-lg) auto;
-                /* 20px auto */
-            }
+        
+        .arrow-svg {
+            display: inline-block; /* Ensure arrows are visible */
         }
 
+        /* ==========================================================================
+           11. Responsive (Full Page Mobile)
+           ========================================================================== */
         @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+
             .container {
-                margin: 0;
-                padding: var(--spacing-sm);
-                /* 10px */
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 1rem;
+                max-width: 100%;
             }
 
             h1 {
-                font-size: 2rem;
+                font-size: 1.5rem;
+                text-align: left;
             }
 
             .code-tabs {
-                flex-wrap: wrap;
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 2px; /* Space for scrollbar */
             }
-
-            /* Reduce padding on mobile for details sections */
-            details> :not(summary) {
-                padding-left: 10px;
-                padding-right: 10px;
-            }
-
-            .common-drops,
-            .atricle_example_content {
-                padding: 10px 10px 0;
-            }
-
-            .atricle_example_content {
-                padding: 10px;
+            
+            .code-tab {
+                flex-shrink: 0;
             }
         }
     </style>

@@ -5,94 +5,123 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A2Z DSA Course Roadmap</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* ==========================================================================
-           1. CSS Variables (Theme)
+           1. CSS Variables (Theme) - Utilitarian Modern
            ========================================================================== */
         :root {
-            /* Day (White) Theme */
-            --primary-color: #5c6bc0;
-            --primary-hover-color: #7986cb;
-            --success-color: #4caf50;
-            --success-hover-color: #66bb6a;
+            /* Default to Light Theme */
+            --primary-color: #3b82f6; /* Blue 500 */
+            --primary-hover: #2563eb; /* Blue 600 */
+            --success-color: #22c55e;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
 
-            --medium-gray: #f0f2f5;
-            /* Light gray page background */
-            --white-color: #ffffff;
-            /* white for the main container */
-            --border-color: #d9d9d9;
-            /* Borders for tables and elements */
+            --bg-body: #f8fafc; /* Slate 50 */
+            --bg-surface: #ffffff; /* White */
+            --bg-subtle: #f1f5f9; /* Slate 100 */
+            --bg-sub-collapsible: #f1f5f9; /* Slate 100 */
+            
+            --border-color: #e2e8f0; /* Slate 200 */
+            --border-hover: #cbd5e1; /* Slate 300 */
 
-            --text-color: #333333;
-            /* Main text color */
-            --dark-gray: #555555;
-            /* Darker text for table content */
-            --light-gray: #f5f5f5;
-            /* light gray background for table headers */
+            --text-primary: #0f172a; /* Slate 900 */
+            --text-secondary: #334155; /* Slate 700 */
+            --text-muted: #64748b; /* Slate 500 */
+            
+            --link-color: #2563eb; /* Blue 600 */
 
-            --link-color: #4dabf5;
-            /* Link color */
-            --warning-color: #f5a623;
-            --danger-color: #e52d27;
+            --completed-bg: rgba(34, 197, 94, 0.3);
+            --completed-text: #15803d; /* Green 700 */
 
-            --completed-bg-color: rgba(76, 175, 80, 0.1);
-            --completed-text-color: #4caf50;
-            /* Text color for completed topics */
-
-            --progress-bar-bg: var(--success-color);
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 0 25px -5px rgba(59, 130, 246, 0.25);
         }
 
         /* Dark Theme Support */
         @media (prefers-color-scheme: dark) {
             :root {
-                --medium-gray: #121212;
-                --white-color: #1e1e1e;
-                --border-color: #444444;
-                --text-color: #e0e0e0;
-                --dark-gray: #d0d0d0;
-                --light-gray: #2d2d2d;
-                --link-color: #5dade2;
-                --completed-bg-color: rgba(76, 175, 80, 0.2);
+                --bg-body: #0f172a; /* Slate 900 */
+                --bg-surface: #1e293b; /* Slate 800 */
+                --bg-subtle: #334155; /* Slate 700 */
+                --bg-sub-collapsible: rgba(30, 41, 59, 0.5);
+                
+                --border-color: #334155;
+                --border-hover: #475569;
+
+                --text-primary: #f8fafc; /* Slate 50 */
+                --text-secondary: #cbd5e1; /* Slate 300 */
+                --text-muted: #94a3b8; /* Slate 400 */
+                
+                --link-color: #60a5fa; /* Blue 400 */
+
+                --completed-bg: rgba(34, 197, 94, 0.5);
+                --completed-text: #4ade80;
             }
         }
 
         /* ==========================================================================
-           2. Base & Responsive Setup
+           2. Base & Reset
            ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
         html {
             font-size: 16px;
-            /* Base font size */
+            -webkit-text-size-adjust: 100%;
         }
 
         body {
             margin: 0;
-            padding: 1rem;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--medium-gray);
+            padding: 2rem;
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.5;
+            color: var(--text-primary);
+            background-color: var(--bg-body);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         /* ==========================================================================
            3. Layout
            ========================================================================== */
         .container {
-            max-width: 1200px;
-            margin: 1rem auto;
-            padding: 1rem 1.5rem;
-            background-color: var(--white-color);
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--bg-surface);
             border: 1px solid var(--border-color);
-            border-radius: 16px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        /* Enhanced hover for desktop only */
+        @media (hover: hover) and (pointer: fine) {
+            .container:hover {
+                transform: translateY(-4px);
+                border-color: var(--primary-color);
+                box-shadow: var(--shadow-hover);
+            }
         }
 
         h1 {
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 3px solid var(--border-color);
-            font-size: 2.25rem;
-            color: var(--text-color);
+            margin-top: 0;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--text-primary);
             text-align: center;
+            letter-spacing: -0.025em;
         }
 
         /* ==========================================================================
@@ -106,288 +135,270 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            margin-top: 0.75rem;
-            padding: 0.85rem 1.25rem;
-            border: none;
-            border-radius: 10px;
+            margin-top: 1rem;
+            padding: 1.25rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
             overflow: hidden;
-            color: #fff;
-            background-color: var(--primary-color);
+            color: var(--text-primary);
+            background-color: var(--bg-surface);
             text-align: left;
-            transition: background-color 0.4s ease;
-            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: inherit;
+            gap: 1rem;
         }
 
         .collapsible {
-            font-size: 1.5rem;
+            font-size: 1.125rem;
+            box-shadow: var(--shadow-sm);
         }
 
         .sub-collapsible {
-            font-size: 1.2rem;
+            font-size: 1rem;
+            margin-top: 0.75rem;
+            background-color: var(--bg-sub-collapsible);
+            border: 1px solid var(--border-color);
         }
 
-        .collapsible:hover,
-        .collapsible.active,
-        .sub-collapsible:hover,
-        .sub-collapsible.active {
-            background-color: var(--primary-hover-color);
-        }
-
-        .collapsible.completed,
-        .sub-collapsible.completed {
-            background-color: var(--success-color);
-        }
-
-        .collapsible.completed:hover,
-        .collapsible.completed.active,
-        .sub-collapsible.completed:hover,
-        .sub-collapsible.completed.active {
-            background-color: var(--success-hover-color);
-        }
-
-        .collapsible-title {
-            flex-grow: 1;
-        }
-
-        .content,
-        .sub-content {
-            max-height: 0;
-            overflow: hidden;
-            background-color: transparent;
-            transition: max-height 0.4s ease-in-out;
-        }
-
-        .content {
-            padding: 0 0.5rem;
-            border-top: none;
-            border-radius: 0 0 8px 8px;
-        }
-
-        /* ==========================================================================
-           5. Progress & Indicators
-           ========================================================================== */
-        .progress-counter {
-            margin-left: 1rem;
-            padding: 0.2rem 0.6rem;
-            border-radius: 1rem;
-            background-color: rgba(0, 0, 0, 0.25);
-            font-size: 0.7em;
-            font-weight: 500;
-            white-space: nowrap;
-        }
-
+        /* Progress Bar Overlay */
         .collapsible::before,
         .sub-collapsible::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            z-index: 1;
+            z-index: -1;
             width: var(--progress-width, 0%);
             height: 100%;
-            background-color: var(--progress-bar-bg);
-            transition: width 0.4s ease-out, background-color 0.4s ease;
+            background-color: var(--completed-bg);
+            transition: width 0.4s ease-out;
+            opacity: 1;
         }
 
-        .collapsible-title,
-        .progress-counter,
-        .collapsible::after,
-        .sub-collapsible::after {
-            position: relative;
-            z-index: 2;
+        .collapsible:hover,
+        .sub-collapsible:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .collapsible.active,
+        .sub-collapsible.active {
+            border-color: var(--primary-color);
+            background-color: var(--bg-surface);
+        }
+
+        .collapsible-title {
+            flex-grow: 1;
+            margin-right: auto;
+            line-height: 1.4;
+        }
+
+        .progress-counter {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            background-color: var(--bg-body);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            border: 1px solid var(--border-color);
+            flex-shrink: 0;
         }
 
         .collapsible::after,
         .sub-collapsible::after {
             content: '+';
-            margin-left: 1rem;
-            font-size: 1.5em;
-            font-weight: bold;
-            transition: transform 0.3s ease;
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            transition: transform 0.3s ease, color 0.2s;
+            flex-shrink: 0;
+            line-height: 1;
         }
 
         .collapsible.active::after,
         .sub-collapsible.active::after {
             transform: rotate(45deg);
+            color: var(--primary-color);
+        }
+
+        .content,
+        .sub-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out;
+        }
+
+        .content {
+            padding: 0 0.5rem;
         }
 
         /* ==========================================================================
-           6. Table Styles
+           5. Tables
            ========================================================================== */
         .table-container {
             overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
+            margin-top: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
         }
 
         table {
             width: 100%;
             min-width: 800px;
-            margin-top: 0.75rem;
-            border: 1px solid var(--border-color);
             border-collapse: collapse;
-            table-layout: fixed;
+            font-size: 0.9375rem;
         }
 
-        th,
-        td {
-            padding: 0.4rem 0.3rem;
-            border: 1px solid var(--border-color);
-            vertical-align: middle;
-            text-align: center;
-            word-wrap: break-word;
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        thead th {
-            color: var(--dark-gray);
-            background-color: var(--light-gray);
+        th {
+            background-color: var(--bg-subtle);
             font-weight: 600;
+            color: var(--text-secondary);
+            white-space: nowrap;
         }
 
-        tr {
-            color: var(--dark-gray);
+        tr:last-child td {
+            border-bottom: none;
         }
 
         .topic-cell {
-            width: 35%;
+            width: 40%;
             font-weight: 500;
-            text-align: left;
-        }
-
-        .topic-title {
-            padding: 0.5rem;
-            font-size: 0.95rem;
-        }
-
-        thead th:not(:first-child),
-        tbody td:not(.topic-cell) {
-            width: 8.13%;
+            color: var(--text-primary);
+            word-break: break-word;
+            min-width: 200px;
         }
 
         /* ==========================================================================
-           7. Difficulty & Completion
+           6. Status & Links
            ========================================================================== */
         tr.completed {
-            color: var(--completed-text-color) !important;
-            background-color: var(--completed-bg-color) !important;
+            background-color: var(--completed-bg);
+        }
+        
+        tr.completed .topic-title {
+            color: var(--completed-text);
+            text-decoration: line-through; /* Optional: strike-through for completed */
         }
 
-        tr.completed a {
-            color: var(--completed-text-color) !important;
-            font-weight: 500;
-        }
-
-        .difficulty-easy td:first-child {
-            box-shadow: inset 5px 0 0 0 var(--success-color);
-        }
-
-        .difficulty-medium td:first-child {
-            box-shadow: inset 5px 0 0 0 var(--warning-color);
-        }
-
-        .difficulty-hard td:first-child {
-            box-shadow: inset 5px 0 0 0 var(--danger-color);
-        }
-
-        /* ==========================================================================
-           8. Links, Buttons & Interactive Elements
-           ========================================================================== */
-        .collapsible,
-        .sub-collapsible,
-        .link-cell,
-        .status-cell {
-            cursor: pointer;
-        }
+        /* Difficulty Indicators (Left Border) */
+        .difficulty-easy td:first-child { box-shadow: inset 4px 0 0 0 var(--success-color); }
+        .difficulty-medium td:first-child { box-shadow: inset 4px 0 0 0 var(--warning-color); }
+        .difficulty-hard td:first-child { box-shadow: inset 4px 0 0 0 var(--danger-color); }
 
         .link-cell {
-            transition: background-color 0.2s ease;
+            text-align: center;
+            padding: 0;
+            min-width: 3.5rem; /* Ensure consistent width */
         }
-
-        .link-cell:hover {
-            background-color: var(--light-gray);
-        }
-
+        
         .link-cell a {
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            width: 100%;
             height: 100%;
-            margin: -0.5rem -0.4rem;
-            padding: 0.5rem 0.4rem;
+            min-height: 3.5rem; /* Ensure clickable area covers the row height */
             color: var(--link-color);
-            text-decoration: none;
+            padding: 0.25rem;
+            border-radius: 0;
+        }
+        
+        .link-cell a:hover {
+            background-color: var(--bg-subtle);
         }
 
-        .link-cell svg {
-            width: 24px;
-            height: 24px;
-            fill: currentColor;
+        .link-cell svg, .link-cell img {
+            width: 2.8rem;
+            height: 2.8rem;
+            display: block;
+            object-fit: contain;
         }
 
         .na-cell {
-            color: #7f8c8d;
-            font-size: 1.2rem;
-            font-weight: 600;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .status-cell {
+            text-align: center;
         }
 
         .status-checkbox {
-            display: grid;
-            place-content: center;
-            width: 1.15em;
-            height: 1.15em;
-            margin: auto;
-            border: 0.15em solid currentColor;
-            border-radius: 0.15em;
-            color: var(--dark-gray);
-            background-color: transparent;
-            font: inherit;
-            -webkit-appearance: none;
-            appearance: none;
-            pointer-events: none;
-        }
-
-        .status-checkbox:checked {
-            border-color: var(--success-color);
-        }
-
-        .status-checkbox::before {
-            content: "";
-            width: 0.65em;
-            height: 0.65em;
-            transform: scale(0);
-            transform-origin: bottom left;
-            transition: 120ms transform ease-in-out;
-            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
-            box-shadow: inset 1em 1em var(--success-color);
-        }
-
-        .status-checkbox:checked::before {
-            transform: scale(1);
+            width: 1.25rem;
+            height: 1.25rem;
+            cursor: pointer;
+            accent-color: var(--success-color);
         }
 
         /* ==========================================================================
-           9. Responsive Adjustments
+           7. Responsive (Full Page Mobile)
            ========================================================================== */
         @media (max-width: 768px) {
-            html {
-                font-size: 14px;
+            body {
+                padding: 0;
             }
-        }
 
-        @media (max-width: 480px) {
-            html {
-                font-size: 12px;
+            .container {
+                max-width: 100%;
+                margin: 0;
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 1rem;
             }
 
             h1 {
-                font-size: 2rem;
+                font-size: 1.5rem;
+                margin-bottom: 1.5rem;
+                border-bottom: 1px solid var(--border-color);
             }
 
-            .collapsible {
-                font-size: 1.3rem;
+            /* Keep collapsible items in one row, let title wrap */
+            .collapsible, .sub-collapsible {
+                padding: 1rem;
+                gap: 0.75rem;
+                align-items: center; /* Ensure vertical alignment */
+            }
+            
+            .collapsible-title {
+                font-size: 1rem;
+                width: auto; /* Reset width */
+                margin-bottom: 0; /* Reset margin */
+            }
+            
+            .progress-counter {
+                font-size: 0.7rem;
+                padding: 0.2rem 0.5rem;
+                margin-left: 0;
+            }
+            
+            .collapsible::after, .sub-collapsible::after {
+                margin-left: 0;
             }
 
-            .sub-collapsible {
-                font-size: 1.1rem;
+            /* Full width table container */
+            .table-container {
+                margin-left: 0;
+                margin-right: 0;
+                border-left: 1px solid var(--border-color);
+                border-right: 1px solid var(--border-color);
+                border-radius: var(--radius-md);
+                width: 100%;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            th, td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.875rem;
             }
         }
     </style>
@@ -607,10 +618,10 @@
                     if (content.style.maxHeight) {
                         content.style.maxHeight = null;
                     } else {
-                        content.style.maxHeight = content.scrollHeight + "px";
+                        content.style.maxHeight = (content.scrollHeight + 40) + "px";
                         const parentContent = content.closest('.content');
                         if (parentContent && parentContent.style.maxHeight) {
-                            parentContent.style.maxHeight = (parentContent.scrollHeight + content.scrollHeight) + "px";
+                            parentContent.style.maxHeight = (parentContent.scrollHeight + content.scrollHeight + 40) + "px";
                         }
                     }
                 }
@@ -618,7 +629,9 @@
                 if (statusCell) {
                     const checkbox = statusCell.querySelector('.status-checkbox');
                     if (checkbox) {
-                        checkbox.checked = !checkbox.checked;
+                        if (event.target !== checkbox) {
+                            checkbox.checked = !checkbox.checked;
+                        }
                         const topicId = checkbox.dataset.id;
                         const isChecked = checkbox.checked;
                         const progress = loadCompletionState();
