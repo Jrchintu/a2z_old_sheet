@@ -5,7 +5,7 @@ This repository manages the content for a Data Structures and Algorithms (DSA) l
 ## 🏗 Architecture & Data Flow
 
 ```
-a2z_old_sheet/
+a2z/
 ├── a2z.json              # Master curriculum - source of truth
 ├── content/articles/     # Source JSON files (EDIT THESE)
 ├── public/articles/      # Generated HTML (DO NOT EDIT)

@@ -7,7 +7,7 @@ A Data Structures and Algorithms (DSA) learning platform with JSON-based content
 ## 📁 Project Structure
 
 ```
-a2z_old_sheet/
+a2z/
 ├── a2z.json                 # Master curriculum - source of truth
 ├── index.html               # Main entry point
 ├── content/                 # Source content (edit these)
