@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Distance of Nearest Cell having 1</title>
+<link href="assets/34bd07407ad1de576cba1f67651fa31a" rel="stylesheet"/>
+<style>
+        /* ==========================================================================
+           1. CSS Variables (Theme) - Utilitarian Modern
+           ========================================================================== */
+        :root {
+            /* Default to Light Theme */
+            --primary-color: #3b82f6; /* Blue 500 */
+            --primary-hover: #2563eb; /* Blue 600 */
+            
+            --bg-body: #f8fafc; /* Slate 50 */
+            --bg-surface: #ffffff; /* White */
+            --bg-subtle: #f1f5f9; /* Slate 100 */
+            
+            --border-color: #e2e8f0; /* Slate 200 */
+            
+            --text-primary: #0f172a; /* Slate 900 */
+            --text-secondary: #334155; /* Slate 700 */
+            --text-muted: #64748b; /* Slate 500 */
+            
+            --link-color: #2563eb; /* Blue 600 */
+            --link-hover: #3b82f6; /* Blue 500 */
+
+            --code-bg: #f1f5f9; /* Slate 100 */
+            --code-text: #0f172a; /* Slate 900 */
+
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 0 25px -5px rgba(59, 130, 246, 0.25);
+            
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+        }
+
+        /* Dark Theme Support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-body: #0f172a; /* Slate 900 */
+                --bg-surface: #1e293b; /* Slate 800 */
+                --bg-subtle: #334155; /* Slate 700 */
+                
+                --border-color: #334155;
+                
+                --text-primary: #f8fafc; /* Slate 50 */
+                --text-secondary: #cbd5e1; /* Slate 300 */
+                --text-muted: #94a3b8; /* Slate 400 */
+                
+                --link-color: #60a5fa; /* Blue 400 */
+                --link-hover: #93c5fd; /* Blue 300 */
+
+                --code-bg: #020617; /* Slate 950 */
+                --code-text: #f8fafc;
+            }
+        }
+
+        /* ==========================================================================
+           2. Base & Reset
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ==========================================================================
+           3. Layout
+           ========================================================================== */
+        .container {
+            max-width: 800px; /* Optimal reading width */
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        /* Enhanced hover for desktop only */
+        @media (hover: hover) and (pointer: fine) {
+            .container:hover {
+                transform: translateY(-4px);
+                border-color: var(--primary-color);
+                box-shadow: var(--shadow-hover);
+            }
+        }
+
+        /* ==========================================================================
+           4. Typography
+           ========================================================================== */
+        h1 {
+            color: var(--text-primary);
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+        
+        h2, h3, h4 {
+            color: var(--text-secondary);
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.25em;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        /* ==========================================================================
+           5. Media
+           ========================================================================== */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            display: block;
+            margin: 1.5rem auto;
+        }
+
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            margin: 1.5rem 0;
+            border-radius: var(--radius-md);
+            background-color: var(--bg-subtle);
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ==========================================================================
+           6. Code Blocks
+           ========================================================================== */
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: inherit;
+        }
+
+        /* ==========================================================================
+           7. Code Tabs
+           ========================================================================== */
+        .code-section {
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .code-tabs {
+            display: flex;
+            background-color: var(--bg-subtle);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .code-tab {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .code-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            padding: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-muted);
+        }
+        
+        .copy-btn:hover svg {
+            fill: var(--text-primary);
+        }
+
+        .code-content {
+            background-color: var(--code-bg);
+        }
+        
+        .code-content pre {
+            margin: 0;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* ==========================================================================
+           8. Accordions / Details
+           ========================================================================== */
+        details {
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background-color: var(--bg-surface);
+            transition: box-shadow 0.2s;
+        }
+        
+        details:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1rem;
+            background-color: var(--bg-subtle);
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary:hover {
+            background-color: #475569; /* Slate 600 */
+        }
+        
+        /* Arrow icon rotation */
+        summary .arrow-svg {
+            transition: transform 0.3s ease;
+            width: 20px;
+            height: 20px;
+            fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
+        }
+        
+        /* Only rotate the arrow of the *active* details element */
+        details[open] > summary .arrow-svg {
+            transform: rotate(90deg);
+            fill: var(--primary-color);
+        }
+
+        .common-drops,
+        .atricle_example_content,
+        details > :not(summary) {
+            padding: 0.5rem;
+            background-color: var(--bg-surface);
+        }
+
+        /* Nested details */
+        .secondary-details {
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+        
+        .secondary-summary {
+            background-color: rgba(51, 65, 85, 0.3); /* Semi-transparent slate-700 */
+            font-size: 0.95rem;
+        }
+        
+        .secondary-summary:hover {
+            background-color: var(--bg-subtle);
+        }
+        
+        .opacity-75 {
+            opacity: 0.75;
+        }
+
+        /* ==========================================================================
+           9. Practice & Disclaimer
+           ========================================================================== */
+        .practice, .new-disclaimer {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: var(--bg-subtle);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+        
+        .problem-buttons a {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+        }
+        
+        .problem-buttons a:hover {
+            background-color: var(--primary-hover);
+            text-decoration: none;
+        }
+
+        /* ==========================================================================
+           10. Utilities
+           ========================================================================== */
+        .problem-buttons img,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article,
+        .has-text-align-center {
+            display: none;
+        }
+        
+        .arrow-svg {
+            display: inline-block; /* Ensure arrows are visible */
+        }
+
+        /* ==========================================================================
+           11. Responsive (Full Page Mobile)
+           ========================================================================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+
+            .container {
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 0.5rem;
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                text-align: left;
+            }
+
+            .code-tabs {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 2px; /* Space for scrollbar */
+            }
+            
+            .code-tab {
+                flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Distance of Nearest Cell having 1</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement: </strong>Given a binary grid of N*M. Find the distance of the nearest 1 in the grid for each cell.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The distance is calculated as |i1  - i2| + |j1 - j2|, where i1, j1 are the row number and column number of the current cell, and i2, j2 are the row number and column number of the nearest cell having value 1.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Examples:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Example 1:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Input:</strong> </p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":6544,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-6544" src="assets/b9f7d0540ec05dfaf888fedce7f17ff9.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":6545,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-6545" src="assets/947943f3b68847340e3911124dca92ad.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p><strong>Explanation: </strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted">0's at (0,1), (1,2), (2,1) and (2,2) are at a distance of 1, 1, 1 and 2 from 1's at (0,0), (0,2), (2,0) and (1,1) respectively.</pre>
+<!-- /wp:preformatted -->
+<!-- wp:paragraph -->
+<p><strong>Example 2:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Input:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":6546,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-6546" src="assets/bde3eab7d91868da643e2577855853dc.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":6547,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-6547" src="assets/0615eec23b69828b25229dbfa2a4ba0e.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Solution</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph {"textColor":"accent"} -->
+<p class="has-accent-color has-text-color"><strong><em>Disclaimer</em></strong>: <em>Don't jump directly to the solution, try it out yourself first.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Intuition:</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>Breadth First Search, BFS, is a traversal technique where we visit the nodes level-wise, i.e., it visits the same level nodes simultaneously, and then moves to the next level. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The intuition is that BFS will take a step from cells containing 1 and will reach out to all zeros that are at a distance of one. Apparently, we can say that the nearest 1 to the 0s is at a distance of one. Again if we take another step, we will reach the next set of zeros, for these zeros 1 is at a distance of two. If we continue the same, till we can go, we can reach all the 0’s possible. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>We will choose the BFS algorithm as it moves step by step and we want all of them to traverse in a single step together so that we can have a minimum count with us.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Approach</strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Initial configuration:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li><strong>Queue:</strong> Define a queue and insert the pair of starting nodes’ coordinates along with the steps (&lt;coordinates, step&gt;). For example, ((2, 1), 2) means cell (2, 1) is the source node and the nearest 1 can be found at a distance of 2 from the node.</li><li><strong>Visited array:</strong> an array initialized to 0 indicating unvisited nodes.  </li><li><strong>Distance matrix: </strong>stores the distance of the nearest cell having 1 for every particular cell.</li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p>The algorithm steps are as follows:</p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>Push the pair of starting points and its steps (&lt;coordinates, stept&gt;) in the queue, and mark the cell as visited.</li><li>Start the BFS traversal, pop out an element from the queue every time, and travel to all its unvisited neighbors having 0. </li><li>For every neighboring unvisited 0, we can mark the distance to be +1 of the current node distance and store it in the distance 2D array, and at the same time insert &lt;{row, col}, steps+1&gt; into the queue.</li><li>Repeat the steps until the queue becomes empty and then return the distance matrix where we have stored the steps.</li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p>Consider the following illustration to understand how BFS traverses the cells and calculates the distance of the nearest 1 in the grid.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><img height="459" src="assets/47d9ac38761d206142fcdf09bbaf01f5" width="459"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>How do set boundaries for 4 directions?</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The 4 neighbors will have the following indexes:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong><img height="118" src="assets/2f28127f1db4c47e1b4cb0ef9848cd6a" width="318"/></strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Now, either we can apply 4 conditions or follow the following method. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>From the above image, it is clear that the delta change in the row is -1, +0, +1, +0. Similarly, the delta change in the column is 0, +1, +0, -1.  So we can apply the same logic to find the neighbors of a particular pixel (&lt;row, column&gt;). </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+class Solution 
+{
+    public:
+    //Function to find the distance of nearest 1 in the grid for each cell.
+	vector&lt;vector&lt;int&gt;&gt;nearest(vector&lt;vector&lt;int&gt;&gt;grid)
+	{
+	    int n = grid.size(); 
+	    int m = grid[0].size(); 
+	    // visited and distance matrix
+	    vector&lt;vector&lt;int&gt;&gt; vis(n, vector&lt;int&gt;(m, 0)); 
+	    vector&lt;vector&lt;int&gt;&gt; dist(n, vector&lt;int&gt;(m, 0)); 
+	    // &lt;coordinates, steps&gt;
+	    queue&lt;pair&lt;pair&lt;int,int&gt;, int&gt;&gt; q; 
+	    // traverse the matrix
+	    for(int i = 0;i&lt;n;i++) {
+	        for(int j = 0;j&lt;m;j++) {
+	            // start BFS if cell contains 1
+	            if(grid[i][j] == 1) {
+	                q.push({{i,j}, 0}); 
+	                vis[i][j] = 1; 
+	            }
+	            else {
+	                // mark unvisited 
+	                vis[i][j] = 0; 
+	            }
+	        }
+	    }
+	    
+	    int delrow[] = {-1, 0, +1, 0}; 
+	    int delcol[] = {0, +1, 0, -1}; 
+	    
+	    // traverse till queue becomes empty
+	    while(!q.empty()) {
+	        int row = q.front().first.first; 
+	        int col = q.front().first.second; 
+	        int steps = q.front().second; 
+	        q.pop(); 
+	        dist[row][col] = steps; 
+	        // for all 4 neighbours
+	        for(int i = 0;i&lt;4;i++) {
+	            int nrow = row + delrow[i]; 
+	            int ncol = col + delcol[i]; 
+	            // check for valid unvisited cell
+	            if(nrow &gt;= 0 &amp;&amp; nrow &lt; n &amp;&amp; ncol &gt;= 0 &amp;&amp; ncol &lt; m 
+	            &amp;&amp; vis[nrow][ncol] == 0) {
+	                vis[nrow][ncol] = 1; 
+	                q.push({{nrow, ncol}, steps+1});  
+	            }
+	        }
+	    }
+	    // return distance matrix
+	    return dist; 
+	}
+};
+
+int main(){
+    vector&lt;vector&lt;int&gt;&gt;grid{
+        {0,1,1,0},
+        {1,1,0,0},
+        {0,0,1,1}
+    };
+	
+	Solution obj;
+	vector&lt;vector&lt;int&gt;&gt; ans = obj.nearest(grid);
+		
+	for(auto i: ans){
+		for(auto j: i)
+			cout &lt;&lt; j &lt;&lt; " ";
+		cout &lt;&lt; "\n";
+	}
+	
+	return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:  </strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>1 0 0 1 <br/>0 0 1 1 <br/>1 1 0 0 </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: </strong>O(NxM + NxMx4) ~ O(N x M)</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>For the worst case, the BFS function will be called for (N x M) nodes, and for every node, we are traversing for 4 neighbors, so it will take O(N x M x 4) time.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: </strong>O(N x M) + O(N x M) + O(N x M) ~ O(N x M)</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>O(N x M) for the visited array, distance matrix, and queue space takes up N x M locations at max. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+
+class Solution
+{
+    //Function to find distance of nearest 1 in the grid for each cell.
+    public int[][] nearest(int[][] grid)
+    {
+        int n = grid.length; 
+	    int m = grid[0].length; 
+	    // visited and distance matrix
+	    int vis[][] = new int[n][m]; 
+	    int dist[][] = new int[n][m]; 
+	    // &lt;coordinates, steps&gt;
+	    Queue&lt;Node&gt; q = new LinkedList&lt;Node&gt;();
+	    // traverse the matrix
+	    for(int i = 0;i&lt;n;i++) {
+	        for(int j = 0;j&lt;m;j++) {
+	        // start BFS if cell contains 1
+	            if(grid[i][j] == 1) {
+	                q.add(new Node(i, j, 0)); 
+	                vis[i][j] = 1; 
+	            }
+	            else {
+	                // mark unvisted 
+	                vis[i][j] = 0; 
+	            }
+	        }
+	    }
+	    
+	    
+	    
+	    int delrow[] = {-1, 0, +1, 0}; 
+	    int delcol[] = {0, +1, 0, -1}; 
+	    
+	    
+	    // n x m x 4 
+	    // traverse till queue becomes empty
+	    while(!q.isEmpty()) {
+	        int row = q.peek().first; 
+	        int col = q.peek().second; 
+	        int steps = q.peek().third; 
+	        q.remove(); 
+	        dist[row][col] = steps; 
+	        // for all 4 neighbours
+	        for(int i = 0;i&lt;4;i++) {
+	            int nrow = row + delrow[i]; 
+	            int ncol = col + delcol[i]; 
+	            // check for valid unvisited cell
+	            if(nrow &gt;= 0 &amp;&amp; nrow &lt; n &amp;&amp; ncol &gt;= 0 &amp;&amp; ncol &lt; m
+	            &amp;&amp; vis[nrow][ncol] == 0)  {
+	                    vis[nrow][ncol] = 1; 
+    	            q.add(new Node(nrow, ncol, steps+1));  
+	            } 
+	            }
+	        }
+	    
+	    // return distance matrix
+	    return dist; 
+    }
+     public static void main(String[] args)
+    {
+        int[][] grid = {
+            {0,1,1,0},
+            {1,1,0,0},
+            {0,0,1,1}
+        };
+
+        Solution obj = new Solution();
+        int[][] ans = obj.nearest(grid);
+        for(int i = 0; i &lt; ans.length; i++){
+            for(int j = 0; j &lt; ans[i].length; j++){
+                System.out.print(ans[i][j] + " "); 
+            }
+            System.out.println();
+        }
+    }
+}
+
+class Node {
+    int first;
+    int second;
+    int third; 
+    Node(int _first, int _second, int _third) {
+        this.first = _first; 
+        this.second = _second; 
+        this.third = _third; 
+    }
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:  </strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>1 0 0 1 <br/>0 0 1 1 <br/>1 1 0 0 </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: </strong>O(NxM + NxMx4) ~ O(N x M)</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>For the worst case, the BFS function will be called for (N x M) nodes, and for every node, we are traversing for 4 neighbors, so it will take O(N x M x 4) time.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: </strong>O(N x M) + O(N x M) + O(N x M) ~ O(N x M)</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>O(N x M) for the visited array, distance matrix, and queue space takes up N x M locations at max. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/vanshika-singh-ba6b15157" rel="noreferrer noopener" target="_blank">Vanshika Singh Gour</a></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a>. <em>If you want to suggest any improvement/correction in this article please mail us at write4tuf@gmail.com</em></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock && activeBlock.innerText) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

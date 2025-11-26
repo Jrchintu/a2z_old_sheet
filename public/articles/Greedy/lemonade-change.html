@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lemonade Change</title>
+<link href="assets/34bd07407ad1de576cba1f67651fa31a" rel="stylesheet"/>
+<style>
+        /* ==========================================================================
+           1. CSS Variables (Theme) - Utilitarian Modern
+           ========================================================================== */
+        :root {
+            /* Default to Light Theme */
+            --primary-color: #3b82f6; /* Blue 500 */
+            --primary-hover: #2563eb; /* Blue 600 */
+            
+            --bg-body: #f8fafc; /* Slate 50 */
+            --bg-surface: #ffffff; /* White */
+            --bg-subtle: #f1f5f9; /* Slate 100 */
+            
+            --border-color: #e2e8f0; /* Slate 200 */
+            
+            --text-primary: #0f172a; /* Slate 900 */
+            --text-secondary: #334155; /* Slate 700 */
+            --text-muted: #64748b; /* Slate 500 */
+            
+            --link-color: #2563eb; /* Blue 600 */
+            --link-hover: #3b82f6; /* Blue 500 */
+
+            --code-bg: #f1f5f9; /* Slate 100 */
+            --code-text: #0f172a; /* Slate 900 */
+
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 0 25px -5px rgba(59, 130, 246, 0.25);
+            
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+        }
+
+        /* Dark Theme Support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-body: #0f172a; /* Slate 900 */
+                --bg-surface: #1e293b; /* Slate 800 */
+                --bg-subtle: #334155; /* Slate 700 */
+                
+                --border-color: #334155;
+                
+                --text-primary: #f8fafc; /* Slate 50 */
+                --text-secondary: #cbd5e1; /* Slate 300 */
+                --text-muted: #94a3b8; /* Slate 400 */
+                
+                --link-color: #60a5fa; /* Blue 400 */
+                --link-hover: #93c5fd; /* Blue 300 */
+
+                --code-bg: #020617; /* Slate 950 */
+                --code-text: #f8fafc;
+            }
+        }
+
+        /* ==========================================================================
+           2. Base & Reset
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ==========================================================================
+           3. Layout
+           ========================================================================== */
+        .container {
+            max-width: 800px; /* Optimal reading width */
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        /* Enhanced hover for desktop only */
+        @media (hover: hover) and (pointer: fine) {
+            .container:hover {
+                transform: translateY(-4px);
+                border-color: var(--primary-color);
+                box-shadow: var(--shadow-hover);
+            }
+        }
+
+        /* ==========================================================================
+           4. Typography
+           ========================================================================== */
+        h1 {
+            color: var(--text-primary);
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+        
+        h2, h3, h4 {
+            color: var(--text-secondary);
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.25em;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        /* ==========================================================================
+           5. Media
+           ========================================================================== */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            display: block;
+            margin: 1.5rem auto;
+        }
+
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            margin: 1.5rem 0;
+            border-radius: var(--radius-md);
+            background-color: var(--bg-subtle);
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ==========================================================================
+           6. Code Blocks
+           ========================================================================== */
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: inherit;
+        }
+
+        /* ==========================================================================
+           7. Code Tabs
+           ========================================================================== */
+        .code-section {
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .code-tabs {
+            display: flex;
+            background-color: var(--bg-subtle);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .code-tab {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .code-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            padding: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-muted);
+        }
+        
+        .copy-btn:hover svg {
+            fill: var(--text-primary);
+        }
+
+        .code-content {
+            background-color: var(--code-bg);
+        }
+        
+        .code-content pre {
+            margin: 0;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* ==========================================================================
+           8. Accordions / Details
+           ========================================================================== */
+        details {
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background-color: var(--bg-surface);
+            transition: box-shadow 0.2s;
+        }
+        
+        details:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1rem;
+            background-color: var(--bg-subtle);
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary:hover {
+            background-color: #475569; /* Slate 600 */
+        }
+        
+        /* Arrow icon rotation */
+        summary .arrow-svg {
+            transition: transform 0.3s ease;
+            width: 20px;
+            height: 20px;
+            fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
+        }
+        
+        /* Only rotate the arrow of the *active* details element */
+        details[open] > summary .arrow-svg {
+            transform: rotate(90deg);
+            fill: var(--primary-color);
+        }
+
+        .common-drops,
+        .atricle_example_content,
+        details > :not(summary) {
+            padding: 0.5rem;
+            background-color: var(--bg-surface);
+        }
+
+        /* Nested details */
+        .secondary-details {
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+        
+        .secondary-summary {
+            background-color: rgba(51, 65, 85, 0.3); /* Semi-transparent slate-700 */
+            font-size: 0.95rem;
+        }
+        
+        .secondary-summary:hover {
+            background-color: var(--bg-subtle);
+        }
+        
+        .opacity-75 {
+            opacity: 0.75;
+        }
+
+        /* ==========================================================================
+           9. Practice & Disclaimer
+           ========================================================================== */
+        .practice, .new-disclaimer {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: var(--bg-subtle);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+        
+        .problem-buttons a {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+        }
+        
+        .problem-buttons a:hover {
+            background-color: var(--primary-hover);
+            text-decoration: none;
+        }
+
+        /* ==========================================================================
+           10. Utilities
+           ========================================================================== */
+        .problem-buttons img,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article,
+        .has-text-align-center {
+            display: none;
+        }
+        
+        .arrow-svg {
+            display: inline-block; /* Ensure arrows are visible */
+        }
+
+        /* ==========================================================================
+           11. Responsive (Full Page Mobile)
+           ========================================================================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+
+            .container {
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 0.5rem;
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                text-align: left;
+            }
+
+            .code-tabs {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 2px; /* Space for scrollbar */
+            }
+            
+            .code-tab {
+                flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Lemonade Change</h1>
+</header>
+<article>
+<p><strong>Problem Statement: </strong> Given an array representing a queue of customers and the value of bills they hold, determine if it is possible to provide correct change to each customer. Customers can only pay with 5$, 10$ or 20$ bills and we initially do not have any change at hand.
+Return true, if it is possible to provide correct change for each customer otherwise return false.
+</p>
+<div id="article_examples">
+<details class="article_example_details">
+<summary class="article_example_summary">
+<span><strong>
+                    Examples
+                </strong>
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="atricle_example_content">
+<pre class="wp-block-preformatted">
+                <span><strong>Example 1:</strong></span>
+                <span><strong>Input: </strong>bills = [5, 5, 5, 10, 20]
+                </span>
+                <span><strong>Output: </strong>True</span>           
+                <span><strong>Explanation: </strong>
+                <ol><li>Initially we have 0 change and the queue of customers is [5, 5, 5, 10, 20].</li><li>First Customer pays 5$, no change required.</li><li>Second Customer pays 5$, no change required.</li><li>Third Customer pays 5$, no change required.</li><li>The Fourth Customer pays 10$, out of the three 5$ bills we have, we pay a 5$ bill and accept the 10$ bill.</li><li>Fifth Customer pays 20$, out of the two 5$ bills and one 10$ bill we have, we pay 15$ in change and have one 5$ bill left.</li></ol></span>
+                <span>Hence, it is possible to provide change to all customers.</span>
+                <figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/557a7af2501e33fd83f8b6156a5d2b19" width="439"/></figure>
+                
+                <span><strong>Example 2:</strong></span>
+                <span><strong>Input: </strong>bills = [5, 5, 10, 10, 20]
+                </span>
+                
+                <span><strong>Output: </strong>False</span>
+
+                <span><strong>Explanation: </strong>
+                <ol><li>Initially, we have 0 change and the queue of customers is [5,5,10,10,20].</li><li>The first customer pays 5$, no change required.</li><li>The second customer pays 5$, no change required.</li><li>The third customer pays 10$, we collect a 5$ bill and give back a 5$ bill.</li><li>The fourth customer pays 10$, we collect a 5$ bill and give back a 5$ bill.</li><li>The fifth customer pays 20$, we cannot give the change of $15 back because we only have two $10 bills.</li><li>Since not every customer received the correct change, the answer is false.</li></ol></span>
+                <figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/c83cccc87ade3d67989f4bd7a990ae90" width="439"/></figure>
+                    
+            </pre>
+</div>
+</details>
+</div>
+<!-- This is Practice Section
+<div class="practice">
+    <span><strong>Practice: </strong></span>
+    <div class="problem-buttons">
+
+        
+        <a href="https://www.codingninjas.com/studio/problems/inorder-traversal_3839605?utm_source=striver&utm_medium=website&utm_campaign=a_zcoursetuf" target="_blank" rel="noopener">
+            <span>Solve Problem</span>
+            <img src="https://takeuforward-content-images.s3.ap-south-1.amazonaws.com/content/Group-11-5-pFOq-8ga"
+                alt="code-studio">
+        </a>
+    </div>
+    <div class="problem-buttons">
+         Add Problem Link inside href 
+        <a href="" target="_blank" rel="noopener">
+            <span>Solve Problem</span>
+            <img src="https://cdn.iconscout.com/icon/free/png-256/free-leetcode-3521542-2944960.png?f=webp"
+                alt="leetcode">
+        </a>
+    </div>
+</div>-->
+<p class="new-disclaimer"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out
+        yourself first. </em></p>
+<div id="brute-force-approach">
+<details>
+<summary class="main-summary">
+<span>
+                Optimal Approach 
+            </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+                        Algorithm / Intuition
+                    </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition of Brute Force Apporach Here -->
+<p>We can approach this question by maintaining two counters to keep track of the available 5$ and 10$ bills. We iterate through the customers and provide change accordingly.</p>
+<p>If a customer pays with a 5$ bill, we simply keep it as we will not have to provide any change. If the customer pays with a 10$ bill, we check if there is at least one 5$ bill available to provide change and decrement the counter.</p>
+<p>If the customer uses a 20$ bill, we provide change using 5$ and 10$ bills or with three 5$ bills. If at any point, we are not able to provide the required change we return false.</p>
+<p>Otherwise, if we successfully serve all customers with the correct change, we can return true.</p>
+<h3>Algorithm: </h3>
+<p><strong>Step 1:</strong>Initialise two counters, fives and tens to keep track of the number of 5$ and 10$ bills at hand. Initialise them to zero as we hold no change at the starting.</p>
+<p><strong>Step 2: </strong>Loop through each bill in the bills array and check the following: If the bill is 5$, increment the fives counter.</p>
+<p><strong>Step 3: </strong>
+                     If the bill is 10$, check if there are any 5$ bills available.
+                     <ol><li>If yes, provide change by incrementing the 10$ bill counter and decrementing the 5$ bill counter.</li><li>If there are no 5$ bills available, return false as we cannot provide change.</li></ol></p>
+<p><strong>Step 4: </strong>If the current bill is 20$, check if both 5$ and 10$ bills are available. If yes, provide change by decreasing the counter of 5$ and 10$ bills.
+                    <ol><li>If there are not enough 10$ bills available, check if there are at atleast three 5$ bills available. If yes, provide change by decreasing the 5$ counter by 3.</li><li>If not able to provide change, return false.</li></ol></p>
+<p><strong>Step 5: </strong>If all customers are served with the correct change, we exit out of the loop and return true.</p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+                        Code
+                    </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code">
+                            <code class="language-cpp" lang="cpp">
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;iostream&gt;
+
+using namespace std;
+
+// Function to find whether each customer can 
+// be provided with correct change
+bool lemonadeChange(vector&lt;int&gt;&amp; bills) {
+    
+    // Initialize a counter
+    // for $5 bills
+    int five = 0; 
+    
+    // Initialize a counter
+    // for $10 bills
+    int ten = 0;   
+    
+    // Iterate through each customer's bill
+    for(int i = 0; i &lt; bills.size(); i++){
+        
+        // If the customer's
+        // bill is $5
+        if(bills[i] == 5){
+            
+            // Increment the
+            // count of $5 bills
+            five++;  
+        }
+        
+        // If the customer's
+        // bill is $10
+        else if(bills[i] == 10){
+            
+            // Check if there are $5
+            // bills available to give change
+            if(five){
+                 // Use one $5 bill
+                 // to give change
+                five--; 
+                // Receive one $10 bill
+                ten++;   
+            }
+            
+            // If no $5 bill
+            // available, return false
+            else return false;  
+        }
+        
+        // If the customer's
+        // bill is $20
+        else {
+            // Check if there are both
+            // $5 and $10 bills
+            // available to give change
+            if(five &amp;&amp; ten){
+                 // Use one $5 bill
+                five--; 
+                // Use one $10 bill
+                ten--;   
+            }
+            // If there are not enough $10 bills,
+            // check if there are at least
+            // three $5 bills available
+            else if (five &gt;= 3){
+                // Use three $5 bills
+                // to give change
+                five -= 3;  
+            }
+            // If unable to give
+            // change, return false
+            else return false;  
+        }
+    }
+    
+    // Return true if all customers
+    // are served with correct change
+    return true;  
+}
+
+
+int main() {
+    vector&lt;int&gt; bills = {5, 5, 5, 10, 20};
+    cout &lt;&lt; "Queues of customers: ";
+    for(int bill : bills){
+        cout &lt;&lt; bill &lt;&lt; " ";
+    }
+    cout &lt;&lt; endl;
+    bool ans = lemonadeChange(bills);
+    if(ans)
+        cout &lt;&lt; "It is possible to provide change for all customers." &lt;&lt; endl;
+    else
+        cout &lt;&lt; "It is not possible to provide change for all customers." &lt;&lt; endl;
+    return 0;
+}
+                            </code>
+                        </pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code">
+                            <code class="language-java" lang="java">
+import java.util.ArrayList;
+import java.util.List;
+
+public class Main {
+    
+    // Function to find whether each customer can 
+    // be provided with correct change
+    public static boolean lemonadeChange(List&lt;Integer&gt; bills) {
+        
+        // Initialize a counter
+        // for $5 bills
+        int five = 0; 
+        
+        // Initialize a counter
+        // for $10 bills
+        int ten = 0;   
+        
+        // Iterate through each customer's bill
+        for(int i = 0; i &lt; bills.size(); i++){
+            
+            // If the customer's
+            // bill is $5
+            if(bills.get(i) == 5){
+                
+                // Increment the
+                // count of $5 bills
+                five++;  
+            }
+            
+            // If the customer's
+            // bill is $10
+            else if(bills.get(i) == 10){
+                
+                // Check if there are $5
+                // bills available to give change
+                if(five &gt; 0){
+                     // Use one $5 bill
+                     // to give change
+                    five--; 
+                    // Receive one $10 bill
+                    ten++;   
+                }
+                
+                // If no $5 bill
+                // available, return false
+                else return false;  
+            }
+            
+            // If the customer's
+            // bill is $20
+            else {
+                // Check if there are both
+                // $5 and $10 bills
+                // available to give change
+                if(five &gt; 0 &amp;&amp; ten &gt; 0){
+                     // Use one $5 bill
+                    five--; 
+                    // Use one $10 bill
+                    ten--;   
+                }
+                // If there are not enough $10 bills,
+                // check if there are at least
+                // three $5 bills available
+                else if (five &gt;= 3){
+                    // Use three $5 bills
+                    // to give change
+                    five -= 3;  
+                }
+                // If unable to give
+                // change, return false
+                else return false;  
+            }
+        }
+        
+        // Return true if all customers
+        // are served with correct change
+        return true;  
+    }
+
+    public static void main(String[] args) {
+        List&lt;Integer&gt; bills = new ArrayList&lt;&gt;();
+        bills.add(5);
+        bills.add(5);
+        bills.add(5);
+        bills.add(10);
+        bills.add(20);
+        
+        System.out.print("Queues of customers: ");
+        for(int bill : bills){
+            System.out.print(bill + " ");
+        }
+        System.out.println();
+        
+        boolean ans = lemonadeChange(bills);
+        if(ans)
+            System.out.println("It is possible to provide change for all customers.");
+        else
+            System.out.println("It is not possible to provide change for all customers.");
+    }
+}
+                            </code>
+                        </pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code">
+                            <code class="language-python" lang="python">
+# Function to find whether each customer can 
+# be provided with correct change
+def lemonadeChange(bills):
+    
+    # Initialize a counter
+    # for $5 bills
+    five = 0 
+    
+    # Initialize a counter
+    # for $10 bills
+    ten = 0   
+    
+    # Iterate through each customer's bill
+    for bill in bills:
+        
+        # If the customer's
+        # bill is $5
+        if bill == 5:
+            
+            # Increment the
+            # count of $5 bills
+            five += 1  
+        
+        # If the customer's
+        # bill is $10
+        elif bill == 10:
+            
+            # Check if there are $5
+            # bills available to give change
+            if five:
+                 # Use one $5 bill
+                 # to give change
+                five -= 1 
+                # Receive one $10 bill
+                ten += 1   
+            
+            # If no $5 bill
+            # available, return false
+            else:
+                return False  
+        
+        # If the customer's
+        # bill is $20
+        else:
+            # Check if there are both
+            # $5 and $10 bills
+            # available to give change
+            if five and ten:
+                 # Use one $5 bill
+                five -= 1 
+                # Use one $10 bill
+                ten -= 1   
+            
+            # If there are not enough $10 bills,
+            # check if there are at least
+            # three $5 bills available
+            elif five &gt;= 3:
+                # Use three $5 bills
+                # to give change
+                five -= 3  
+            
+            # If unable to give
+            # change, return false
+            else:
+                return False  
+    
+    # Return true if all customers
+    # are served with correct change
+    return True  
+
+# Main function
+def main():
+    bills = [5, 5, 5, 10, 20]
+    print("Queues of customers:", end=" ")
+    for bill in bills:
+        print(bill, end=" ")
+    print()
+    ans = lemonadeChange(bills)
+    if ans:
+        print("It is possible to provide change for all customers.")
+    else:
+        print("It is not possible to provide change for all customers.")
+
+# Run the main function
+if __name__ == "__main__":
+    main()
+                           </code>
+                        </pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code">
+                            <code class="language-javascript" lang="javascript">
+// Function to find whether each customer can 
+// be provided with correct change
+function lemonadeChange(bills) {
+    
+    // Initialize a counter
+    // for $5 bills
+    let five = 0; 
+    
+    // Initialize a counter
+    // for $10 bills
+    let ten = 0;   
+    
+    // Iterate through each customer's bill
+    for(let i = 0; i &lt; bills.length; i++){
+        
+        // If the customer's
+        // bill is $5
+        if(bills[i] === 5){
+            
+            // Increment the
+            // count of $5 bills
+            five++;  
+        }
+        
+        // If the customer's
+        // bill is $10
+        else if(bills[i] === 10){
+            
+            // Check if there are $5
+            // bills available to give change
+            if(five){
+                 // Use one $5 bill
+                 // to give change
+                five--; 
+                // Receive one $10 bill
+                ten++;   
+            }
+            
+            // If no $5 bill
+            // available, return false
+            else return false;  
+        }
+        
+        // If the customer's
+        // bill is $20
+        else {
+            // Check if there are both
+            // $5 and $10 bills
+            // available to give change
+            if(five &amp;&amp; ten){
+                 // Use one $5 bill
+                five--; 
+                // Use one $10 bill
+                ten--;   
+            }
+            // If there are not enough $10 bills,
+            // check if there are at least
+            // three $5 bills available
+            else if (five &gt;= 3){
+                // Use three $5 bills
+                // to give change
+                five -= 3;  
+            }
+            // If unable to give
+            // change, return false
+            else return false;  
+        }
+    }
+    
+    // Return true if all customers
+    // are served with correct change
+    return true;  
+}
+
+
+let bills = [5, 5, 5, 10, 20];
+console.log("Queues of customers: " + bills.join(" "));
+let ans = lemonadeChange(bills);
+if(ans)
+    console.log("It is possible to provide change for all customers.");
+else
+    console.log("It is not possible to provide change for all customers.");
+                            </code>
+                        </pre>
+</div>
+<p>
+<strong>Output</strong> 
+                       Queues of customers: 5 5 5 10 20 </p>
+<p>It is possible to provide change for all customers.</p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+                        Complexity Analysis
+                    </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity  Here -->
+<p><strong>Time Complexity: O(N)</strong>
+                    where N is the number of people in queue/ bills we will deal with. We iterate through each customer’s bills exactly once. The loop runs for N iterations and at each iteration the operations performed are constant time.</p>
+<p><strong>Space Complexity: O(1)</strong>  as the algorithm uses only a constant amount of extra space regardless of the size of the input array. It does not require any additional data structures that scale with the input size.
+
+                </p>
+</p></details>
+</div>
+</details>
+</div>
+<!-- This is Video Explination Drop-Down -->
+<div class="dsa_article_youtube_video" id="dsa_article_video_explanation">
+<details>
+<summary class="main-summary">
+<span>
+                Video Explanation
+            </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="yt-video-wrapper">
+<!-- Insert iframe embed Link of Youtube Video-->
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" frameborder="0" height="315" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/n_tmibEhO6Q?si=y6RVuvsELwuV8QRc" title="YouTube video player" width="560"></iframe>
+</div>
+</details>
+</div>
+<blockquote class="wp-block-quote">
+    Special thanks to <strong><a href="https://www.linkedin.com/in/gauri-tomar-005048268">Gauri Tomar</a></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam,<strong><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/"> please check out this article</a></strong>
+</blockquote>
+<script>
+
+    const codeSections = document.querySelectorAll('.code-section');
+
+    // Get last selected language from localStorage or set default value
+    let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+    codeSections.forEach((section, sectionIndex) => {
+        const codeTabs = section.querySelectorAll('.code-tab');
+        const codeBlocks = section.querySelectorAll('.code-block');
+        const copyBtn = section.querySelector('.copy-btn');
+
+        codeTabs.forEach((tab) => {
+            tab.addEventListener('click', () => {
+                codeTabs.forEach((t) => {
+                    t.classList.remove('dsa_article_code_active');
+                });
+                tab.classList.add('dsa_article_code_active');
+
+                const lang = tab.dataset.lang;
+                const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+                codeBlocks.forEach((block) => {
+                    if (block === activeBlock) {
+                        block.classList.add('dsa_article_code_active');
+                    } else {
+                        block.classList.remove('dsa_article_code_active');
+                    }
+                });
+
+                // Update last selected language for all sections and store in localStorage
+                lastSelectedLanguage = lang;
+                localStorage.setItem('lastSelectedLanguage', lang);
+                codeSections.forEach((otherSection, otherIndex) => {
+                    if (otherIndex !== sectionIndex) {
+                        const otherTabs = otherSection.querySelectorAll('.code-tab');
+                        otherTabs.forEach((otherTab) => {
+                            if (otherTab.dataset.lang === lang) {
+                                otherTab.classList.add('dsa_article_code_active');
+                            } else {
+                                otherTab.classList.remove('dsa_article_code_active');
+                            }
+                        });
+                        const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+                        const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+                        otherCodeBlocks.forEach((block) => {
+                            if (block === otherActiveBlock) {
+                                block.classList.add('dsa_article_code_active');
+                            } else {
+                                block.classList.remove('dsa_article_code_active');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+        // Handle copy button click event
+        copyBtn.addEventListener('click', () => {
+            const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+            navigator.clipboard.writeText(activeBlock.innerText);
+            copyBtn.classList.add('dsa_article_code_active');
+            setTimeout(() => {
+                copyBtn.classList.remove('dsa_article_code_active');
+            }, 1000);
+        });
+    });
+
+    // Set initial state of the tabs
+    codeSections.forEach((section) => {
+        const codeTabs = section.querySelectorAll('.code-tab');
+        const codeBlocks = section.querySelectorAll('.code-block');
+
+        codeTabs.forEach((tab) => {
+            if (tab.dataset.lang === lastSelectedLanguage) {
+                tab.classList.add('dsa_article_code_active');
+            } else {
+                tab.classList.remove('dsa_article_code_active');
+            }
+        });
+
+        codeBlocks.forEach((block) => {
+            if (block.dataset.lang === lastSelectedLanguage) {
+                block.classList.add('dsa_article_code_active');
+            } else {
+                block.classList.remove('dsa_article_code_active');
+            }
+        });
+    });
+</script>
+<link href="assets/4237ffca7ce6aadb438c457e0a675b12.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+<script src="index.js"></script>
+<script>hljs.highlightAll();</script>
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock && activeBlock.innerText) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

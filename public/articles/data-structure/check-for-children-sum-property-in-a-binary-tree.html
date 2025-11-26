@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Check for Children Sum Property in a Binary Tree</title>
+<link href="assets/34bd07407ad1de576cba1f67651fa31a" rel="stylesheet"/>
+<style>
+        /* ==========================================================================
+           1. CSS Variables (Theme) - Utilitarian Modern
+           ========================================================================== */
+        :root {
+            /* Default to Light Theme */
+            --primary-color: #3b82f6; /* Blue 500 */
+            --primary-hover: #2563eb; /* Blue 600 */
+            
+            --bg-body: #f8fafc; /* Slate 50 */
+            --bg-surface: #ffffff; /* White */
+            --bg-subtle: #f1f5f9; /* Slate 100 */
+            
+            --border-color: #e2e8f0; /* Slate 200 */
+            
+            --text-primary: #0f172a; /* Slate 900 */
+            --text-secondary: #334155; /* Slate 700 */
+            --text-muted: #64748b; /* Slate 500 */
+            
+            --link-color: #2563eb; /* Blue 600 */
+            --link-hover: #3b82f6; /* Blue 500 */
+
+            --code-bg: #f1f5f9; /* Slate 100 */
+            --code-text: #0f172a; /* Slate 900 */
+
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 0 25px -5px rgba(59, 130, 246, 0.25);
+            
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+        }
+
+        /* Dark Theme Support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-body: #0f172a; /* Slate 900 */
+                --bg-surface: #1e293b; /* Slate 800 */
+                --bg-subtle: #334155; /* Slate 700 */
+                
+                --border-color: #334155;
+                
+                --text-primary: #f8fafc; /* Slate 50 */
+                --text-secondary: #cbd5e1; /* Slate 300 */
+                --text-muted: #94a3b8; /* Slate 400 */
+                
+                --link-color: #60a5fa; /* Blue 400 */
+                --link-hover: #93c5fd; /* Blue 300 */
+
+                --code-bg: #020617; /* Slate 950 */
+                --code-text: #f8fafc;
+            }
+        }
+
+        /* ==========================================================================
+           2. Base & Reset
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ==========================================================================
+           3. Layout
+           ========================================================================== */
+        .container {
+            max-width: 800px; /* Optimal reading width */
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        /* Enhanced hover for desktop only */
+        @media (hover: hover) and (pointer: fine) {
+            .container:hover {
+                transform: translateY(-4px);
+                border-color: var(--primary-color);
+                box-shadow: var(--shadow-hover);
+            }
+        }
+
+        /* ==========================================================================
+           4. Typography
+           ========================================================================== */
+        h1 {
+            color: var(--text-primary);
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+        
+        h2, h3, h4 {
+            color: var(--text-secondary);
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.25em;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        /* ==========================================================================
+           5. Media
+           ========================================================================== */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            display: block;
+            margin: 1.5rem auto;
+        }
+
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            margin: 1.5rem 0;
+            border-radius: var(--radius-md);
+            background-color: var(--bg-subtle);
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ==========================================================================
+           6. Code Blocks
+           ========================================================================== */
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: inherit;
+        }
+
+        /* ==========================================================================
+           7. Code Tabs
+           ========================================================================== */
+        .code-section {
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .code-tabs {
+            display: flex;
+            background-color: var(--bg-subtle);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .code-tab {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .code-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            padding: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-muted);
+        }
+        
+        .copy-btn:hover svg {
+            fill: var(--text-primary);
+        }
+
+        .code-content {
+            background-color: var(--code-bg);
+        }
+        
+        .code-content pre {
+            margin: 0;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* ==========================================================================
+           8. Accordions / Details
+           ========================================================================== */
+        details {
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background-color: var(--bg-surface);
+            transition: box-shadow 0.2s;
+        }
+        
+        details:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1rem;
+            background-color: var(--bg-subtle);
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary:hover {
+            background-color: #475569; /* Slate 600 */
+        }
+        
+        /* Arrow icon rotation */
+        summary .arrow-svg {
+            transition: transform 0.3s ease;
+            width: 20px;
+            height: 20px;
+            fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
+        }
+        
+        /* Only rotate the arrow of the *active* details element */
+        details[open] > summary .arrow-svg {
+            transform: rotate(90deg);
+            fill: var(--primary-color);
+        }
+
+        .common-drops,
+        .atricle_example_content,
+        details > :not(summary) {
+            padding: 0.5rem;
+            background-color: var(--bg-surface);
+        }
+
+        /* Nested details */
+        .secondary-details {
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+        
+        .secondary-summary {
+            background-color: rgba(51, 65, 85, 0.3); /* Semi-transparent slate-700 */
+            font-size: 0.95rem;
+        }
+        
+        .secondary-summary:hover {
+            background-color: var(--bg-subtle);
+        }
+        
+        .opacity-75 {
+            opacity: 0.75;
+        }
+
+        /* ==========================================================================
+           9. Practice & Disclaimer
+           ========================================================================== */
+        .practice, .new-disclaimer {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: var(--bg-subtle);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+        
+        .problem-buttons a {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+        }
+        
+        .problem-buttons a:hover {
+            background-color: var(--primary-hover);
+            text-decoration: none;
+        }
+
+        /* ==========================================================================
+           10. Utilities
+           ========================================================================== */
+        .problem-buttons img,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article,
+        .has-text-align-center {
+            display: none;
+        }
+        
+        .arrow-svg {
+            display: inline-block; /* Ensure arrows are visible */
+        }
+
+        /* ==========================================================================
+           11. Responsive (Full Page Mobile)
+           ========================================================================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+
+            .container {
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 0.5rem;
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                text-align: left;
+            }
+
+            .code-tabs {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 2px; /* Space for scrollbar */
+            }
+            
+            .code-tab {
+                flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Check for Children Sum Property in a Binary Tree</h1>
+</header>
+<article>
+<p><strong>Problem Statement: </strong>  Given a Binary Tree, convert the value of its nodes to follow the Children Sum Property.
+The Children Sum Property in a binary tree states that for every node, the sum of its children's values (if they exist) should be equal to the node's value. If a child is missing, it is considered as having a value of 0.
+
+</p>
+<p><strong>Note: </strong>
+<ol><li>The node values can be increased by any positive integer any number of times, but decrementing any node value is not allowed.</li><li>A value for a NULL node can be assumed as 0.</li><li>We cannot change the structure of the given binary tree.</li></ol></p>
+<div id="article_examples">
+<details class="article_example_details">
+<summary class="article_example_summary">
+<span><strong>
+                    Examples
+                </strong>
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="atricle_example_content">
+<pre class="wp-block-preformatted">
+                <span><strong>Example 1:</strong></span>
+				<span><strong>Input:</strong>Binary Tree: 2 35 10 2 3 5 2
+				</span>
+				<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/dcb94402c15eb2e7ddf02e9386d0419f" width="439"/></figure>
+				<span><strong>Output:</strong> Binary Tree: 45 35 10 30 5 8 2</span>
+				<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/aa931669a764d294eea2296118fa6c25" width="439"/></figure>
+				<span><strong>Explanation: </strong>We cannot decrement the value of the node but only increment. There are many different ways to do this but we have to ensure that we are only increasing the values of the nodes in such a way that its value is equal to the sum of its left and right children.</span>
+				
+				<span><strong>Example 2:</strong></span>
+				<span><strong>Input:</strong>Binary Tree: 50 7 2 3 5 1 30
+				</span>
+				<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/023472c46ce172327a9b2deb5eb0b758" width="439"/></figure>
+				<span><strong>Output :</strong> Binary Tree: 50 55 5 86 1 31 30 </span>
+				<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/40e3ae1b8a2b8d1c5bce312abcec3f80" width="439"/></figure>
+				<span><strong>Explanation: </strong>We modify the tree in such a way that the value of each node becomes the value of its left and right children. If a node is a left or right child and its parent is of a greater value, since we cannot decrease the value of the parent, we increase the value of the children nodes so that the Binary Tree follows the children sum property.</span>
+				
+
+				
+            </pre>
+</div>
+</details>
+</div>
+<!-- This is Practice Section-->
+<div class="practice">
+<span><strong>Practice: </strong></span>
+<div class="problem-buttons">
+<!-- Add Problem Link inside href -->
+<a href="https://www.codingninjas.com/studio/problems/children-sum-property_8357239?utm_source=striver&amp;utm_medium=website&amp;utm_campaign=a_zcoursetuf" rel="noopener" target="_blank">
+<span>Solve Problem</span>
+<img alt="code-studio" src="assets/20f60e7969e701b07a63accd93ffe638"/>
+</a>
+</div>
+<!--<div class="problem-buttons">
+         Add Problem Link inside href 
+        <a href="" target="_blank" rel="noopener">
+            <span>Solve Problem</span>
+            <img src="https://cdn.iconscout.com/icon/free/png-256/free-leetcode-3521542-2944960.png?f=webp"
+                alt="leetcode">
+        </a>
+    </div>-->
+</div>
+<p class="new-disclaimer"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out
+        yourself first. </em></p>
+<div id="brute-force-approach">
+<details>
+<summary class="main-summary">
+<span>
+                Optimal Approach 
+            </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+                        Algorithm / Intuition
+                    </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition of Brute Force Apporach Here -->
+<p>The constraint is that we cannot decrease the value of any node, only increase it. Also, the structure of the binary tree cannot be changed.
+                    If we follow a bottom-up approach and try to adjust parent values based on children, we may reach a situation where the sum of children exceeds the parent's value, requiring us to decrease the parent's value, which is not allowed.</p>
+<p><figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/a79710977870c594b13e28b7f20f052a" width="439"/></figure></p>
+<p>With just a bottom-up approach, we cannot guarantee that the Children Sum Property will be satisfied at each level. It might work for some cases but not for all. There's no clear strategy to ensure that the property holds true for the entire tree.
+                    A key insight here is that there's no restriction on how much we can increase the value of each node. Hence, we have the flexibility to adjust the values as needed to ensure that the Children Sum Property holds true at every node in the tree.</p>
+<p><figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/49216cce2c35a47ba19ade2901bfbc91" width="439"/></figure></p>
+<p>This means that if the sum of the values of a node's children is less than the node's value, we can simply increase the values of the children (and potentially the grandchildren and so on) until the property is satisfied.
+                    Using recursive calls, we traverse the binary tree, addressing each node and its children iteratively. At each step, we calculate the sum of the children's values and compare it with the parent node's value.</p>
+<p><strong>Algorithm:</strong></p>
+<p><strong>Step 1: Base Case</strong>Start by checking if we've reached the end of a branch in the tree. If the current node is null, simply return.</p>
+<p><strong>Step 2: Calculate Children Sum:</strong> For each non-null node, calculate the sum of the values of its left and right children, if they exist. Add up the values of the left and right children (if they are not null) and store this sum in a variable called child.</p>
+<p><strong>Step 3: Comparison and Value Update: </strong>
+                    Compare the sum of the children (child) with the current node's value.</p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/6eda55647ae144cb67bb0e59a2a1f50e" width="439"/></figure>
+<p>If the sum of children is greater than or equal to the current node's value, we update the value of the parent to the sum of the children.</p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/46cfd5553b9de5bec735be6d9dd9689a" width="439"/></figure>
+<p>If the sum of children is smaller than the current node's value, we need to make an adjustment to ensure the property holds. However, remember that we cannot decrease the value of any node. So, instead, we update one of the children's values to match the current node's value.</p>
+<p><strong>Step 4: Recursive Calls: </strong>
+                    For each node in the current level:
+                    After handling the current node, we recursively call the function on the left and right children of the current node. </p>
+<p><strong>Step 5: Update Current Node's Value:</strong> Once both children have been processed, we recalculate the total sum of the values of the left and right children and update the current node’s value to match the total sum of its children. </p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+                        Code
+                    </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code">
+                            <code class="language-cpp" lang="cpp">
+#include &lt;iostream&gt;
+#include &lt;unordered_map&gt;
+#include &lt;vector&gt;
+#include &lt;queue&gt;
+
+using namespace std;
+
+// TreeNode structure
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+
+
+class Solution {
+public:
+    // Function to change the values of the nodes
+    // based on the sum of its children's values.
+    void changeTree(TreeNode* root) {
+        // Base case: If the current node
+        // is NULL, return and do nothing.
+        if (root == NULL) {
+            return;
+        }
+
+        // Calculate the sum of the values of
+        // the left and right children, if they exist.
+        int child = 0;
+        if (root-&gt;left) {
+            child += root-&gt;left-&gt;val;
+        }
+        if (root-&gt;right) {
+            child += root-&gt;right-&gt;val;
+        }
+
+        // Compare the sum of children with
+        // the current node's value and update
+        if (child &gt;= root-&gt;val) {
+            root-&gt;val = child;
+        } else {
+            // If the sum is smaller, update the
+            // child with the current node's value.
+            if (root-&gt;left) {
+                root-&gt;left-&gt;val = root-&gt;val;
+            } else if (root-&gt;right) {
+                root-&gt;right-&gt;val = root-&gt;val;
+            }
+        }
+
+        // Recursively call the function
+        // on the left and right children.
+        changeTree(root-&gt;left);
+        changeTree(root-&gt;right);
+
+        // Calculate the total sum of the
+        // values of the left and right
+        // children, if they exist.
+        int tot = 0;
+        if (root-&gt;left) {
+            tot += root-&gt;left-&gt;val;
+        }
+        if (root-&gt;right) {
+            tot += root-&gt;right-&gt;val;
+        }
+
+        // If either left or right child
+        // exists, update the current node's
+        // value with the total sum.
+        if (root-&gt;left or root-&gt;right) {
+            root-&gt;val = tot;
+        }
+    }
+};
+
+
+// Function to print the inorder
+// traversal of the tree
+void inorderTraversal(TreeNode* root) {
+    if (root == nullptr) {
+        return;
+    }
+    inorderTraversal(root-&gt;left);
+    cout &lt;&lt; root-&gt;val &lt;&lt; " ";
+    inorderTraversal(root-&gt;right);
+}
+
+int main() {
+    // Create the binary tree
+    TreeNode* root = new TreeNode(3);
+    root-&gt;left = new TreeNode(5);
+    root-&gt;right = new TreeNode(1);
+    root-&gt;left-&gt;left = new TreeNode(6);
+    root-&gt;left-&gt;right = new TreeNode(2);
+    root-&gt;right-&gt;left = new TreeNode(0);
+    root-&gt;right-&gt;right = new TreeNode(8);
+    root-&gt;left-&gt;right-&gt;left = new TreeNode(7);
+    root-&gt;left-&gt;right-&gt;right = new TreeNode(4);
+
+    Solution sol;
+
+    // Print the inorder traversal
+    // of tree before modification
+    cout &lt;&lt; "Binary Tree before modification: ";
+    inorderTraversal(root);
+    cout &lt;&lt; endl;
+
+    // Call the changeTree function
+    // to modify the binary tree
+    sol.changeTree(root);
+
+    // Print the inorder traversal
+    // after modification
+    cout &lt;&lt; "Binary Tree after Children Sum Property: " ;
+    inorderTraversal(root);
+    cout &lt;&lt; endl;
+
+    return 0;
+}
+                            </code>
+                        </pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code">
+                            <code class="language-java" lang="java">
+import java.util.LinkedList;
+import java.util.Queue;
+
+// TreeNode structure
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    public TreeNode(int x) {
+        val = x;
+        left = null;
+        right = null;
+    }
+}
+
+public class Solution {
+    // Function to change the values of the nodes
+    // based on the sum of its children's values.
+    public void changeTree(TreeNode root) {
+        // Base case: If the current node
+        // is null, return and do nothing.
+        if (root == null) {
+            return;
+        }
+
+        // Calculate the sum of the values of
+        // the left and right children, if they exist.
+        int child = 0;
+        if (root.left != null) {
+            child += root.left.val;
+        }
+        if (root.right != null) {
+            child += root.right.val;
+        }
+
+        // Compare the sum of children with
+        // the current node's value and update
+        if (child &gt;= root.val) {
+            root.val = child;
+        } else {
+            // If the sum is smaller, update the
+            // child with the current node's value.
+            if (root.left != null) {
+                root.left.val = root.val;
+            } else if (root.right != null) {
+                root.right.val = root.val;
+            }
+        }
+
+        // Recursively call the function
+        // on the left and right children.
+        changeTree(root.left);
+        changeTree(root.right);
+
+        // Calculate the total sum of the
+        // values of the left and right
+        // children, if they exist.
+        int tot = 0;
+        if (root.left != null) {
+            tot += root.left.val;
+        }
+        if (root.right != null) {
+            tot += root.right.val;
+        }
+
+        // If either left or right child
+        // exists, update the current node's
+        // value with the total sum.
+        if (root.left != null || root.right != null) {
+            root.val = tot;
+        }
+    }
+}
+
+// Function to print the inorder
+// traversal of the tree
+class TreeTraversal {
+    public static void inorderTraversal(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        inorderTraversal(root.left);
+        System.out.print(root.val + " ");
+        inorderTraversal(root.right);
+    }
+}
+
+class Main {
+    public static void main(String[] args) {
+        // Create the binary tree
+        TreeNode root = new TreeNode(3);
+        root.left = new TreeNode(5);
+        root.right = new TreeNode(1);
+        root.left.left = new TreeNode(6);
+        root.left.right = new TreeNode(2);
+        root.right.left = new TreeNode(0);
+        root.right.right = new TreeNode(8);
+        root.left.right.left = new TreeNode(7);
+        root.left.right.right = new TreeNode(4);
+
+        Solution sol = new Solution();
+
+        // Print the inorder traversal
+        // of tree before modification
+        System.out.print("Binary Tree before modification: ");
+        TreeTraversal.inorderTraversal(root);
+        System.out.println();
+
+        // Call the changeTree function
+        // to modify the binary tree
+        sol.changeTree(root);
+
+        // Print the inorder traversal
+        // after modification
+        System.out.print("Binary Tree after Children Sum Property: ");
+        TreeTraversal.inorderTraversal(root);
+        System.out.println();
+    }
+}
+                            </code>
+                        </pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code">
+                            <code class="language-python" lang="python">
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+
+class Solution:
+    def changeTree(self, root):
+        # Base case: If the current node
+        # is None, return and do nothing.
+        if root is None:
+            return
+
+        # Calculate the sum of the values of
+        # the left and right children, if they exist.
+        child = 0
+        if root.left:
+            child += root.left.val
+        if root.right:
+            child += root.right.val
+
+        # Compare the sum of children with
+        # the current node's value and update
+        if child &gt;= root.val:
+            root.val = child
+        else:
+            # If the sum is smaller, update the
+            # child with the current node's value.
+            if root.left:
+                root.left.val = root.val
+            elif root.right:
+                root.right.val = root.val
+
+        # Recursively call the function
+        # on the left and right children.
+        self.changeTree(root.left)
+        self.changeTree(root.right)
+
+        # Calculate the total sum of the
+        # values of the left and right
+        # children, if they exist.
+        tot = 0
+        if root.left:
+            tot += root.left.val
+        if root.right:
+            tot += root.right.val
+
+        # If either left or right child
+        # exists, update the current node's
+        # value with the total sum.
+        if root.left or root.right:
+            root.val = tot
+
+
+# Function to print the inorder
+# traversal of the tree
+def inorderTraversal(root):
+    if root is None:
+        return
+    inorderTraversal(root.left)
+    print(root.val, end=" ")
+    inorderTraversal(root.right)
+
+
+# Create the binary tree
+root = TreeNode(3)
+root.left = TreeNode(5)
+root.right = TreeNode(1)
+root.left.left = TreeNode(6)
+root.left.right = TreeNode(2)
+root.right.left = TreeNode(0)
+root.right.right = TreeNode(8)
+root.left.right.left = TreeNode(7)
+root.left.right.right = TreeNode(4)
+
+sol = Solution()
+
+# Print the inorder traversal
+# of tree before modification
+print("Binary Tree before modification:", end=" ")
+inorderTraversal(root)
+print()
+
+# Call the changeTree function
+# to modify the binary tree
+sol.changeTree(root)
+
+# Print the inorder traversal
+# after modification
+print("Binary Tree after Children Sum Property:", end=" ")
+inorderTraversal(root)
+print()
+                           </code>
+                        </pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code">
+                            <code class="language-javascript" lang="javascript">
+// TreeNode structure
+class TreeNode {
+    constructor(x) {
+        this.val = x;
+        this.left = null;
+        this.right = null;
+    }
+}
+
+class Solution {
+    // Function to change the values of the nodes
+    // based on the sum of its children's values.
+    changeTree(root) {
+        // Base case: If the current node
+        // is null, return and do nothing.
+        if (root === null) {
+            return;
+        }
+
+        // Calculate the sum of the values of
+        // the left and right children, if they exist.
+        let child = 0;
+        if (root.left) {
+            child += root.left.val;
+        }
+        if (root.right) {
+            child += root.right.val;
+        }
+
+        // Compare the sum of children with
+        // the current node's value and update
+        if (child &gt;= root.val) {
+            root.val = child;
+        } else {
+            // If the sum is smaller, update the
+            // child with the current node's value.
+            if (root.left) {
+                root.left.val = root.val;
+            } else if (root.right) {
+                root.right.val = root.val;
+            }
+        }
+
+        // Recursively call the function
+        // on the left and right children.
+        this.changeTree(root.left);
+        this.changeTree(root.right);
+
+        // Calculate the total sum of the
+        // values of the left and right
+        // children, if they exist.
+        let tot = 0;
+        if (root.left) {
+            tot += root.left.val;
+        }
+        if (root.right) {
+            tot += root.right.val;
+        }
+
+        // If either left or right child
+        // exists, update the current node's
+        // value with the total sum.
+        if (root.left || root.right) {
+            root.val = tot;
+        }
+    }
+}
+
+// Function to print the inorder
+// traversal of the tree
+function inorderTraversal(root) {
+    if (root === null) {
+        return;
+    }
+    inorderTraversal(root.left);
+    console.log(root.val + " ");
+    inorderTraversal(root.right);
+}
+
+// Main function
+function main() {
+    // Create the binary tree
+    const root = new TreeNode(3);
+    root.left = new TreeNode(5);
+    root.right = new TreeNode(1);
+    root.left.left = new TreeNode(6);
+    root.left.right = new TreeNode(2);
+    root.right.left = new TreeNode(0);
+    root.right.right = new TreeNode(8);
+    root.left.right.left = new TreeNode(7);
+    root.left.right.right = new TreeNode(4);
+
+    const sol = new Solution();
+
+    // Print the inorder traversal
+    // of tree before modification
+    console.log("Binary Tree before modification: ");
+    inorderTraversal(root);
+    console.log("");
+
+    // Call the changeTree function
+    // to modify the binary tree
+    sol.changeTree(root);
+
+    // Print the inorder traversal
+    // after modification
+    console.log("Binary Tree after Children Sum Property: ");
+    inorderTraversal(root);
+    console.log("");
+}
+
+// Call the main function
+main();
+
+                            </code>
+                        </pre>
+</div>
+<p>
+<strong>Output</strong> 
+                      	Binary Tree before modification: 6 5 7 2 4 3 0 1 8, Binary Tree after Children Sum Property: 6 17 7 11 4 25 0 8 8
+
+                    </p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+                        Complexity Analysis
+                    </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity  Here -->
+<p><strong>Time Complexity: O(N)</strong>   where N is the number of nodes in the binary tree. This is because the algorithm traverses each node exactly once, performing constant-time operations at each node.</p>
+<p><strong>Space Complexity: O(N)</strong>   where N is the number of nodes in the Binary Tree.
+					<ol><li>In the worst case scenario the tree is skewed and the auxiliary recursion stack space would be stacked up to the maximum height of the tree, resulting in a space complexity of O(N).</li><li>In the optimal case of a balanced tree, the auxiliary space would take up space proportional to O(log2N).</li></ol>
+</p>
+</p></details>
+</div>
+</details>
+</div>
+<!-- This is Video Explination Drop-Down -->
+<div class="dsa_article_youtube_video" id="dsa_article_video_explanation">
+<details>
+<summary class="main-summary">
+<span>
+                Video Explanation
+            </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="yt-video-wrapper">
+<!-- Insert iframe embed Link of Youtube Video-->
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" frameborder="0" height="315" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/fnmisPM6cVo?si=ADOYcFA-Gs-DvtHd" title="YouTube video player" width="560"></iframe>
+</div>
+</details>
+</div>
+<blockquote class="wp-block-quote">
+    Special thanks to <strong><a href="https://www.linkedin.com/in/gauri-tomar-005048268">Gauri Tomar</a></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam,<strong><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/"> please check out this article</a></strong>
+</blockquote>
+<script>
+
+    const codeSections = document.querySelectorAll('.code-section');
+
+    // Get last selected language from localStorage or set default value
+    let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+    codeSections.forEach((section, sectionIndex) => {
+        const codeTabs = section.querySelectorAll('.code-tab');
+        const codeBlocks = section.querySelectorAll('.code-block');
+        const copyBtn = section.querySelector('.copy-btn');
+
+        codeTabs.forEach((tab) => {
+            tab.addEventListener('click', () => {
+                codeTabs.forEach((t) => {
+                    t.classList.remove('dsa_article_code_active');
+                });
+                tab.classList.add('dsa_article_code_active');
+
+                const lang = tab.dataset.lang;
+                const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+                codeBlocks.forEach((block) => {
+                    if (block === activeBlock) {
+                        block.classList.add('dsa_article_code_active');
+                    } else {
+                        block.classList.remove('dsa_article_code_active');
+                    }
+                });
+
+                // Update last selected language for all sections and store in localStorage
+                lastSelectedLanguage = lang;
+                localStorage.setItem('lastSelectedLanguage', lang);
+                codeSections.forEach((otherSection, otherIndex) => {
+                    if (otherIndex !== sectionIndex) {
+                        const otherTabs = otherSection.querySelectorAll('.code-tab');
+                        otherTabs.forEach((otherTab) => {
+                            if (otherTab.dataset.lang === lang) {
+                                otherTab.classList.add('dsa_article_code_active');
+                            } else {
+                                otherTab.classList.remove('dsa_article_code_active');
+                            }
+                        });
+                        const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+                        const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+                        otherCodeBlocks.forEach((block) => {
+                            if (block === otherActiveBlock) {
+                                block.classList.add('dsa_article_code_active');
+                            } else {
+                                block.classList.remove('dsa_article_code_active');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+        // Handle copy button click event
+        copyBtn.addEventListener('click', () => {
+            const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+            navigator.clipboard.writeText(activeBlock.innerText);
+            copyBtn.classList.add('dsa_article_code_active');
+            setTimeout(() => {
+                copyBtn.classList.remove('dsa_article_code_active');
+            }, 1000);
+        });
+    });
+
+    // Set initial state of the tabs
+    codeSections.forEach((section) => {
+        const codeTabs = section.querySelectorAll('.code-tab');
+        const codeBlocks = section.querySelectorAll('.code-block');
+
+        codeTabs.forEach((tab) => {
+            if (tab.dataset.lang === lastSelectedLanguage) {
+                tab.classList.add('dsa_article_code_active');
+            } else {
+                tab.classList.remove('dsa_article_code_active');
+            }
+        });
+
+        codeBlocks.forEach((block) => {
+            if (block.dataset.lang === lastSelectedLanguage) {
+                block.classList.add('dsa_article_code_active');
+            } else {
+                block.classList.remove('dsa_article_code_active');
+            }
+        });
+    });
+</script>
+<link href="assets/4237ffca7ce6aadb438c457e0a675b12.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+<script src="index.js"></script>
+<script>hljs.highlightAll();</script>
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock && activeBlock.innerText) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

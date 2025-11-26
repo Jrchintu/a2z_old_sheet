@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Maximum sum of non-adjacent elements (DP 5)</title>
+<link href="assets/34bd07407ad1de576cba1f67651fa31a" rel="stylesheet"/>
+<style>
+        /* ==========================================================================
+           1. CSS Variables (Theme) - Utilitarian Modern
+           ========================================================================== */
+        :root {
+            /* Default to Light Theme */
+            --primary-color: #3b82f6; /* Blue 500 */
+            --primary-hover: #2563eb; /* Blue 600 */
+            
+            --bg-body: #f8fafc; /* Slate 50 */
+            --bg-surface: #ffffff; /* White */
+            --bg-subtle: #f1f5f9; /* Slate 100 */
+            
+            --border-color: #e2e8f0; /* Slate 200 */
+            
+            --text-primary: #0f172a; /* Slate 900 */
+            --text-secondary: #334155; /* Slate 700 */
+            --text-muted: #64748b; /* Slate 500 */
+            
+            --link-color: #2563eb; /* Blue 600 */
+            --link-hover: #3b82f6; /* Blue 500 */
+
+            --code-bg: #f1f5f9; /* Slate 100 */
+            --code-text: #0f172a; /* Slate 900 */
+
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 0 25px -5px rgba(59, 130, 246, 0.25);
+            
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+        }
+
+        /* Dark Theme Support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-body: #0f172a; /* Slate 900 */
+                --bg-surface: #1e293b; /* Slate 800 */
+                --bg-subtle: #334155; /* Slate 700 */
+                
+                --border-color: #334155;
+                
+                --text-primary: #f8fafc; /* Slate 50 */
+                --text-secondary: #cbd5e1; /* Slate 300 */
+                --text-muted: #94a3b8; /* Slate 400 */
+                
+                --link-color: #60a5fa; /* Blue 400 */
+                --link-hover: #93c5fd; /* Blue 300 */
+
+                --code-bg: #020617; /* Slate 950 */
+                --code-text: #f8fafc;
+            }
+        }
+
+        /* ==========================================================================
+           2. Base & Reset
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ==========================================================================
+           3. Layout
+           ========================================================================== */
+        .container {
+            max-width: 800px; /* Optimal reading width */
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        /* Enhanced hover for desktop only */
+        @media (hover: hover) and (pointer: fine) {
+            .container:hover {
+                transform: translateY(-4px);
+                border-color: var(--primary-color);
+                box-shadow: var(--shadow-hover);
+            }
+        }
+
+        /* ==========================================================================
+           4. Typography
+           ========================================================================== */
+        h1 {
+            color: var(--text-primary);
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+        
+        h2, h3, h4 {
+            color: var(--text-secondary);
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.25em;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        /* ==========================================================================
+           5. Media
+           ========================================================================== */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            display: block;
+            margin: 1.5rem auto;
+        }
+
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            margin: 1.5rem 0;
+            border-radius: var(--radius-md);
+            background-color: var(--bg-subtle);
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ==========================================================================
+           6. Code Blocks
+           ========================================================================== */
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: inherit;
+        }
+
+        /* ==========================================================================
+           7. Code Tabs
+           ========================================================================== */
+        .code-section {
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .code-tabs {
+            display: flex;
+            background-color: var(--bg-subtle);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .code-tab {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .code-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            padding: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-muted);
+        }
+        
+        .copy-btn:hover svg {
+            fill: var(--text-primary);
+        }
+
+        .code-content {
+            background-color: var(--code-bg);
+        }
+        
+        .code-content pre {
+            margin: 0;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* ==========================================================================
+           8. Accordions / Details
+           ========================================================================== */
+        details {
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background-color: var(--bg-surface);
+            transition: box-shadow 0.2s;
+        }
+        
+        details:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1rem;
+            background-color: var(--bg-subtle);
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary:hover {
+            background-color: #475569; /* Slate 600 */
+        }
+        
+        /* Arrow icon rotation */
+        summary .arrow-svg {
+            transition: transform 0.3s ease;
+            width: 20px;
+            height: 20px;
+            fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
+        }
+        
+        /* Only rotate the arrow of the *active* details element */
+        details[open] > summary .arrow-svg {
+            transform: rotate(90deg);
+            fill: var(--primary-color);
+        }
+
+        .common-drops,
+        .atricle_example_content,
+        details > :not(summary) {
+            padding: 0.5rem;
+            background-color: var(--bg-surface);
+        }
+
+        /* Nested details */
+        .secondary-details {
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+        
+        .secondary-summary {
+            background-color: rgba(51, 65, 85, 0.3); /* Semi-transparent slate-700 */
+            font-size: 0.95rem;
+        }
+        
+        .secondary-summary:hover {
+            background-color: var(--bg-subtle);
+        }
+        
+        .opacity-75 {
+            opacity: 0.75;
+        }
+
+        /* ==========================================================================
+           9. Practice & Disclaimer
+           ========================================================================== */
+        .practice, .new-disclaimer {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: var(--bg-subtle);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+        
+        .problem-buttons a {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+        }
+        
+        .problem-buttons a:hover {
+            background-color: var(--primary-hover);
+            text-decoration: none;
+        }
+
+        /* ==========================================================================
+           10. Utilities
+           ========================================================================== */
+        .problem-buttons img,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article,
+        .has-text-align-center {
+            display: none;
+        }
+        
+        .arrow-svg {
+            display: inline-block; /* Ensure arrows are visible */
+        }
+
+        /* ==========================================================================
+           11. Responsive (Full Page Mobile)
+           ========================================================================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+
+            .container {
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 0.5rem;
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                text-align: left;
+            }
+
+            .code-tabs {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 2px; /* Space for scrollbar */
+            }
+            
+            .code-tab {
+                flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Maximum sum of non-adjacent elements (DP 5)</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p>In this article we will solve the problem: <strong>Maximum sum of non-adjacent elements (DP 5)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Problem Statement:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Given an array of ‘N’  positive integers, we need to return the maximum sum of the subsequence such that no two elements of the subsequence are adjacent elements in the array.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Note: </strong>A subsequence of an array is a list with elements of the array where some elements are deleted ( or not deleted at all) and the elements should be in the same order in the subsequence as in the array.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<!-- This is Examples Drop-Down -->
+<div id="article_examples">
+<details class="article_example_details">
+<summary class="article_example_summary">
+<span><strong>
+Examples
+</strong>
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="atricle_example_content">
+<pre class="wp-block-preformatted"><!-- Insert New Examples Here -->
+<pre class="wp-block-preformatted"><strong><img height="216" src="assets/012ddbcfdd5476b523d1b50687cf6fa8" width="624"/></strong>
+</pre>
+</pre>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Practice Section-->
+<div class="practice">
+<span><strong>Practice: </strong></span>
+<div class="problem-buttons">
+<!-- Add Problem Link inside href -->
+<a href="https://www.codingninjas.com/studio/problems/maximum-sum-of-non-adjacent-elements_843261?utm_source=striver&amp;utm_medium=website&amp;utm_campaign=a_zcoursetuf" rel="noopener" target="_blank">
+<span>Solve Problem</span>
+<img alt="code-studio" src="assets/86dd2cadbd0e7ef71ad98d3b7f2f2efc.png"/>
+</a>
+</div>
+</div>
+<p class="new-disclaimer"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out
+yourself first. </em></p>
+<!-- /wp:html -->
+<!-- wp:html -->
+<div class="horizontal_navbar_dsa_article">
+<div class="grid_container_three">
+<a class="three-boxes box-a" href="#brute-force-approach">
+Memorization approach
+</a>
+<a class="three-boxes box-b" href="#better-approach">
+Tabulation approach
+</a>
+<a class="three-boxes box-c" href="#optimal-approach">
+Space Optimization
+</a>
+<a class="three-boxes box-d" href="#dsa_article_video_explanation">
+<svg fill="none" height="26" viewbox="0 0 20 14" width="26" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 10L13.19 7L8 4V10ZM19.56 2.17C19.69 2.64 19.78 3.27 19.84 4.07C19.91 4.87 19.94 5.56 19.94 6.16L20 7C20 9.19 19.84 10.8 19.56 11.83C19.31 12.73 18.73 13.31 17.83 13.56C17.36 13.69 16.5 13.78 15.18 13.84C13.88 13.91 12.69 13.94 11.59 13.94L10 14C5.81 14 3.2 13.84 2.17 13.56C1.27 13.31 0.69 12.73 0.44 11.83C0.31 11.36 0.22 10.73 0.16 9.93C0.0900001 9.13 0.0599999 8.44 0.0599999 7.84L0 7C0 4.81 0.16 3.2 0.44 2.17C0.69 1.27 1.27 0.69 2.17 0.44C2.64 0.31 3.5 0.22 4.82 0.16C6.12 0.0899998 7.31 0.0599999 8.41 0.0599999L10 0C14.19 0 16.8 0.16 17.83 0.44C18.73 0.69 19.31 1.27 19.56 2.17Z" fill="red"></path>
+</svg>
+</a>
+<div class="box-e tooltip">
+<svg fill="none" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.842 9.25L11.9577 10.17C11.2502 10.89 10.8081 11.5 10.8081 13H8.84297V12.5C8.84297 11.39 9.28511 10.39 9.99255 9.67L11.2109 8.41C11.5745 8.05 11.7906 7.55 11.7906 7C11.7906 6.46957 11.5836 5.96086 11.2151 5.58579C10.8465 5.21071 10.3467 5 9.82552 5C9.30434 5 8.80451 5.21071 8.43598 5.58579C8.06745 5.96086 7.86041 6.46957 7.86041 7H5.89531C5.89531 5.93913 6.30938 4.92172 7.04644 4.17157C7.7835 3.42143 8.78316 3 9.82552 3C10.8679 3 11.8675 3.42143 12.6046 4.17157C13.3417 4.92172 13.7557 5.93913 13.7557 7C13.7543 7.84324 13.4259 8.65183 12.842 9.25ZM10.8081 17H8.84297V15H10.8081M9.82552 0C8.53521 0 7.25754 0.258658 6.06545 0.761205C4.87337 1.26375 3.79021 2.00035 2.87783 2.92893C1.03519 4.8043 0 7.34784 0 10C0 12.6522 1.03519 15.1957 2.87783 17.0711C3.79021 17.9997 4.87337 18.7362 6.06545 19.2388C7.25754 19.7413 8.53521 20 9.82552 20C12.4314 20 14.9306 18.9464 16.7732 17.0711C18.6158 15.1957 19.651 12.6522 19.651 10C19.651 4.47 15.2296 0 9.82552 0Z" fill="black"></path>
+</svg>
+<div class="bottom">
+<p>Expand any one approach by clicking the given options in the bar. Clicking one approach on bar,
+closes all other expands. You can manually expand more than one approach at a time</p>
+<i></i>
+</div>
+</div>
+</div>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Approaches Drop-Down -->
+<div class="dsa_article_dropdown_approachs">
+<!-- Brute Force Approach Starts from here -->
+<div id="brute-force-approach">
+<details>
+<summary class="main-summary">
+<span>
+Memorization Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition of Brute Force Apporach Here -->
+<p>As we need to find the sum of subsequences, one approach that comes to our mind is to generate all subsequences and pick the one with the maximum sum. </p>
+<p>To generate all the subsequences, we can use the pick/non-pick technique. This technique can be briefly explained as follows:</p>
+<ul><li>At every index of the array, we have two options.</li><li>First, to pick the array element at that index and consider it in our subsequence.</li><li>Second, to leave the array element at that index and not to consider it in our subsequence.</li></ul>
+<p>A more detailed explanation of this technique is taught in <a href="https://www.youtube.com/watch?v=AxNNVECce8c">Recursion on subsequences</a>. Readers are highly advised to watch that video.</p>
+<p>First, we will try to form the recursive solution to the problem with the pick/non-pick technique. There is one more catch, the problem wants us to have only non-adjacent elements of the array in the subsequence, therefore we need to address that too.</p>
+<p><strong>Steps to form the recursive solution</strong></p>
+<p>We will use the steps mentioned in the article <a href="https://takeuforward.org/data-structure/dynamic-programming-introduction/">Dynamic Programming Introduction</a> in order to form our recursive solution.</p>
+<p><strong>Step 1: </strong>Form the function in terms of indexes: </p>
+<ul><li>We are given an array which can be easily thought of in terms of indexes. </li><li>We can define our function f(ind) as : Maximum sum of the subsequence starting from index 0 to index ind.</li><li>We need to return f(n-1) as our final answer.</li></ul>
+<p><strong>Step 2: </strong>Try all the choices to reach the goal.</p>
+<p>As mentioned earlier we will use the pick/non-pick technique to generate all subsequences. We also need to take care of the non-adjacent elements in this step.</p>
+<ul><li>If we pick an element then, pick = arr[ind] + f(ind-2). The reason we are doing f(ind-2) is because we have picked the current index element so we need to pick a non-adjacent element so we choose the index ‘ind-2’ instead of ‘ind-1’.</li><li>Next we need to ignore the current element in our subsequence. So nonPick= 0 + f(ind-1). As we don’t pick the current element, we can consider the adjacent element in the subsequence.</li></ul>
+<p>Our pseudocode till this step will be:</p>
+<p><img height="274" src="assets/37c6cb3d76cf58050c5a80fb8ed4639e" width="358"/></p>
+<p><strong>Step 3: </strong>Take the maximum of all the choices</p>
+<p>As the problem statement asks to find the maximum subsequence total, we will return the maximum of two choices of step2.</p>
+<p><img height="293" src="assets/a8d4f504d0d224a1c4b4ec1e4dc9da78" width="383"/></p>
+<p><strong>Base Conditions</strong></p>
+<p>The base conditions for the recursive function will be as follows:</p>
+<ul><li>If ind=0, then we know to reach at index=0, we would have ignored the element at index = 1. Therefore, we can simply return the value of arr[ind] and consider it in the subsequence.</li><li>If ind&lt;0, this case can hit when we call f(ind-2) at ind=1. In this case we want to return to the calling function so we simply return 0 so that nothing is added to the subsequence sum.</li></ul>
+<p>Our final pseudo-code will be:</p>
+<p><img height="373" src="assets/b7c77f95954fd707cf289a9989e0ef1a" width="434"/></p>
+<p>Once we form the recursive solution, we can use the approach told in <a href="https://takeuforward.org/data-structure/dynamic-programming-introduction/">Dynamic Programming Introduction</a> to convert it into a dynamic programming one.</p>
+<p><strong>Memoization approach</strong></p>
+<p>If we observe the recursion tree, we will observe a number of overlapping subproblems. Therefore the recursive solution can be memoized to reduce the time complexity.</p>
+<p><strong>Recursion tree diagram:</strong></p>
+<p><img height="351" src="assets/03fc5684b59f85e2774de772dd1b9247" width="624"/></p>
+<p><strong>Note: </strong>To watch a detailed dry run of this approach, please watch the video attached below</p>
+<p><strong>Steps to convert Recursive code to memoization solution:</strong></p>
+<ul><li>Create a dp[n] array initialized to -1.</li><li>Whenever we want to find the answer of a particular value (say n), we first check whether the answer is already calculated using the dp array(i.e dp[n] != -1 ). If yes, simply return the value from the dp array.</li><li>If not, then we are finding the answer for the given value for the first time, we will use the recursive relation as usual but before returning from the function, we will set dp[n] to the solution we get.</li></ul>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+// Function to solve the problem using dynamic programming
+int solveUtil(int ind, vector&lt;int&gt;&amp; arr, vector&lt;int&gt;&amp; dp) {
+    // If the result for this index is already computed, return it
+    if (dp[ind] != -1)
+        return dp[ind];
+
+    // Base cases
+    if (ind == 0) 
+        return arr[ind];
+    if (ind &lt; 0)  
+        return 0;
+
+    // Choose the current element or skip it, and take the maximum
+    int pick = arr[ind] + solveUtil(ind - 2, arr, dp); // Choosing the current element
+    int nonPick = 0 + solveUtil(ind - 1, arr, dp);      // Skipping the current element
+
+    // Store the result in the DP table and return it
+    return dp[ind] = max(pick, nonPick);
+}
+
+// Function to initiate the solving process
+int solve(int n, vector&lt;int&gt;&amp; arr) {
+    vector&lt;int&gt; dp(n, -1); // Initialize the DP table with -1
+    return solveUtil(n - 1, arr, dp); // Start solving from the last element
+}
+
+int main() {
+    vector&lt;int&gt; arr{2, 1, 4, 9};
+    int n = arr.size();
+    
+    // Call the solve function and print the result
+    cout &lt;&lt; solve(n, arr);
+
+    return 0;
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.*;
+
+public class Main {
+    // This function recursively calculates the maximum possible sum
+    // by considering or not considering the current element.
+    static int solveUtil(int ind, int[] arr, int[] dp) {
+        // If the index is negative, there are no elements left to consider.
+        if (ind &lt; 0) return 0;
+        
+        // If the index is 0, there is only one element to consider, so return its value.
+        if (ind == 0) return arr[ind];
+        
+        // If we have already calculated the result for this index, return it.
+        if (dp[ind] != -1) return dp[ind];
+        
+        // Calculate the maximum sum by either picking the current element or not picking it.
+        int pick = arr[ind] + solveUtil(ind - 2, arr, dp);
+        int nonPick = solveUtil(ind - 1, arr, dp);
+        
+        // Store the maximum of the two options in the dp array for future reference.
+        return dp[ind] = Math.max(pick, nonPick);
+    }
+
+    // This function initializes the dp array and calls the recursive solver.
+    static int solve(int n, int[] arr) {
+        int dp[] = new int[n];
+        
+        // Initialize the dp array with -1 to indicate that values are not calculated yet.
+        Arrays.fill(dp, -1);
+        
+        // Call the recursive solver for the last index (n-1).
+        return solveUtil(n - 1, arr, dp);
+    }
+
+    public static void main(String args[]) {
+        // Input array with elements.
+        int arr[] = {2, 1, 4, 9};
+        
+        // Get the length of the array.
+        int n = arr.length;
+        
+        // Call the solve function to find the maximum possible sum.
+        int result = solve(n, arr);
+        
+        // Print the result.
+        System.out.println(result);
+    }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+# Function to solve the problem using dynamic programming
+def solveUtil(ind, arr, dp):
+    # Check if the solution for this index has already been calculated
+    if dp[ind] != -1:
+        return dp[ind]
+    
+    # Base case: when the index is 0, return the value at that index
+    if ind == 0:
+        return arr[ind]
+    
+    # Base case: when the index is negative, return 0 (out of bounds)
+    if ind &lt; 0:
+        return 0
+    
+    # Calculate the maximum value when picking the current element
+    pick = arr[ind] + solveUtil(ind - 2, arr, dp)
+    
+    # Calculate the maximum value when not picking the current element
+    nonPick = 0 + solveUtil(ind - 1, arr, dp)
+    
+    # Store the maximum of the two choices in the DP table
+    dp[ind] = max(pick, nonPick)
+    
+    # Return the maximum value for the current index
+    return dp[ind]
+
+# Function to solve the problem for the given array
+def solve(n, arr):
+    # Initialize a DP table with -1 values to store intermediate results
+    dp = [-1 for i in range(n)]
+    
+    # Call the recursive utility function to find the maximum value
+    return solveUtil(n - 1, arr, dp)
+
+# Main function to test the code
+def main():
+    arr = [2, 1, 4, 9]
+    n = len(arr)
+    
+    # Call the solve function and print the result
+    print(solve(n, arr))
+
+if __name__ == '__main__':
+    main()
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+// Define the function to solve the problem
+function solveUtil(ind, arr, dp) {
+    // Check if the result for this index is already calculated
+    if (dp[ind] !== -1) return dp[ind];
+
+    // Base cases
+    if (ind === 0) return arr[ind];
+    if (ind &lt; 0) return 0;
+
+    // Calculate the maximum value by either picking or not picking the current element
+    const pick = arr[ind] + solveUtil(ind - 2, arr, dp);
+    const nonPick = 0 + solveUtil(ind - 1, arr, dp);
+
+    // Store the result in the DP array and return it
+    return (dp[ind] = Math.max(pick, nonPick));
+}
+
+// Main function to solve the problem
+function solve(n, arr) {
+    // Initialize a DP array with -1
+    const dp = new Array(n).fill(-1);
+    // Call the solveUtil function with the last index
+    return solveUtil(n - 1, arr, dp);
+}
+
+// Main program
+function main() {
+    const arr = [2, 1, 4, 9];
+    const n = arr.length;
+    console.log(solve(n, arr)); // Print the result
+}
+
+// Call the main function to run the program
+main();
+</code>
+</pre>
+</div>
+<p><strong>Output:</strong> 11
+
+</p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p id="block-4ae2decf-d2cd-4fc8-bbc4-fc9e2369fc78"><strong>Time Complexity: O(N)</strong></p>
+<p id="block-4de755ea-5362-45fd-bf80-e09cc4be1f72">Reason: The overlapping subproblems will return the answer in constant time O(1). Therefore the total number of new subproblems we solve is ‘n’. Hence total time complexity is O(N).</p>
+<p id="block-3804d609-1a46-4132-99f5-151bad9c577a"><strong>Space Complexity: O(N)</strong></p>
+<p id="block-b56b4156-b041-43e7-959d-f9cae963ad30">Reason: We are using a recursion stack space(O(N)) and an array (again O(N)). Therefore total space complexity will be O(N) + O(N) ≈ O(N)</p>
+</details>
+</div>
+</details>
+</div>
+<!-- Brute Force Approach Ends here -->
+<!-- Better Approach Starts from here -->
+<div id="better-approach">
+<details>
+<summary class="main-summary">
+<span>
+Tabulation Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition For Better Approach Here -->
+<p><strong>Tabulation approach</strong></p>
+<ul><li>Declare a dp[] array of size n.</li><li>First initialize the base condition values, i.e dp[0] as 0.</li><li>Set an iterative loop which traverses the array( from index 1 to n-1) and for every index calculate pick  and nonPick</li><li> And then we can set dp[i] = max (pick, nonPick)</li></ul>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+// Function to solve the problem using dynamic programming
+int solveUtil(int n, vector&lt;int&gt;&amp; arr, vector&lt;int&gt;&amp; dp) {
+    // Base case: If there are no elements in the array, return 0
+    dp[0] = arr[0];
+    
+    // Iterate through the elements of the array
+    for (int i = 1; i &lt; n; i++) {
+        // Calculate the maximum value by either picking the current element
+        // or not picking it (i.e., taking the maximum of dp[i-2] + arr[i] and dp[i-1])
+        int pick = arr[i];
+        if (i &gt; 1)
+            pick += dp[i - 2];
+        int nonPick = dp[i - 1];
+        
+        // Store the maximum value in the dp array
+        dp[i] = max(pick, nonPick);
+    }
+    
+    // The last element of the dp array will contain the maximum sum
+    return dp[n - 1];
+}
+
+// Function to initiate the solving process
+int solve(int n, vector&lt;int&gt;&amp; arr) {
+    vector&lt;int&gt; dp(n, 0); // Initialize dp array with 0
+    return solveUtil(n, arr, dp);
+}
+
+int main() {
+    vector&lt;int&gt; arr{2, 1, 4, 9};
+    int n = arr.size();
+    
+    // Call the solve function and print the result
+    cout &lt;&lt; solve(n, arr);
+
+    return 0;
+}
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.*;
+
+class TUF {
+    // This function uses dynamic programming to find the maximum possible sum of non-adjacent elements.
+    static int solveUtil(int n, int[] arr, int[] dp) {
+        // Initialize the dp array with the first element of the input array.
+        dp[0] = arr[0];
+
+        // Iterate through the input array to fill the dp array.
+        for (int i = 1; i &lt; n; i++) {
+            // Calculate the maximum sum by either picking the current element or not picking it.
+            int pick = arr[i];
+            
+            // If there are at least two elements before the current element, add the value from dp[i-2].
+            if (i &gt; 1)
+                pick += dp[i - 2];
+            
+            // The non-pick option is to use the maximum sum from the previous element.
+            int nonPick = dp[i - 1];
+
+            // Store the maximum of the two options in the dp array for the current index.
+            dp[i] = Math.max(pick, nonPick);
+        }
+
+        // The final element of the dp array contains the maximum possible sum.
+        return dp[n - 1];
+    }
+
+    // This function initializes the dp array and calls the solver function.
+    static int solve(int n, int[] arr) {
+        int dp[] = new int[n];
+        
+        // Initialize the dp array with -1 to indicate that values are not calculated yet.
+        Arrays.fill(dp, -1);
+        
+        // Call the solver function to find the maximum possible sum.
+        return solveUtil(n, arr, dp);
+    }
+
+    public static void main(String args[]) {
+        // Input array with elements.
+        int arr[] = {2, 1, 4, 9};
+        
+        // Get the length of the array.
+        int n = arr.length;
+        
+        // Call the solve function to find the maximum possible sum.
+        int result = solve(n, arr);
+        
+        // Print the result.
+        System.out.println(result);
+    }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+# Function to solve the problem using dynamic programming
+def solveUtil(n, arr, dp):
+    # Initialize the first element of the DP table with the first element of the array
+    dp[0] = arr[0]
+    
+    # Loop through the array starting from the second element
+    for i in range(1, n):
+        # Calculate the maximum value when picking the current element
+        pick = arr[i]
+        
+        # Check if there are at least two elements before the current element
+        if i &gt; 1:
+            pick += dp[i - 2]
+        
+        # Calculate the maximum value when not picking the current element
+        non_pick = 0 + dp[i - 1]
+        
+        # Store the maximum of the two choices in the DP table
+        dp[i] = max(pick, non_pick)
+    
+    # Return the maximum value for the last index
+    return dp[n - 1]
+
+# Function to solve the problem for the given array
+def solve(n, arr):
+    # Initialize a DP table with -1 values to store intermediate results
+    dp = [-1 for _ in range(n)]
+    
+    # Call the solveUtil function to find the maximum value
+    return solveUtil(n, arr, dp)
+
+# Main function to test the code
+def main():
+    arr = [2, 1, 4, 9]
+    n = len(arr)
+    
+    # Call the solve function and print the result
+    print(solve(n, arr))
+
+if __name__ == '__main__':
+    main()
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+// Function to solve the problem using dynamic programming
+function solveUtil(n, arr, dp) {
+    // Initialize the first element of dp with the first element of the array
+    dp[0] = arr[0];
+
+    // Loop through the array to fill the dp array
+    for (let i = 1; i &lt; n; i++) {
+        // Calculate the maximum value when picking the current element
+        let pick = arr[i];
+        if (i &gt; 1) {
+            pick += dp[i - 2];
+        }
+
+        // Calculate the maximum value when not picking the current element
+        const nonPick = dp[i - 1];
+
+        // Store the maximum of pick and nonPick in dp
+        dp[i] = Math.max(pick, nonPick);
+    }
+
+    // Return the result, which is the last element of dp
+    return dp[n - 1];
+}
+
+// Main function to solve the problem
+function solve(n, arr) {
+    // Initialize a DP array with the same length as the input array, filled with -1
+    const dp = new Array(n).fill(-1);
+    // Call the solveUtil function to find the maximum sum
+    return solveUtil(n, arr, dp);
+}
+
+// Main program
+function main() {
+    // Input array
+    const arr = [2, 1, 4, 9];
+    const n = arr.length;
+
+    // Call the solve function and print the result
+    console.log(solve(n, arr));
+}
+
+// Call the main function to run the program
+main();
+</code>
+</pre>
+</div>
+<p><strong>Time Complexity: O(N)</strong></p>
+<p>Reason: We are running a simple iterative loop</p>
+<p><strong>Space Complexity: O(N)</strong></p>
+<p>Reason: We are using an external array of size ‘n+1’.</p>
+</div></details>
+</div>
+</details>
+</div>
+<!-- Better Approach Ends from here -->
+<!-- Optimal Approach Starts from here -->
+<div id="optimal-approach">
+<details>
+<summary class="main-summary">
+<span>
+Space Optimization Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm of Better Approach Here -->
+<p><strong>Part 3: Space Optimization</strong></p>
+<p>If we closely look at the values required at every iteration,</p>
+<p><strong>dp[i], dp[i-1], and  dp[i-2]</strong></p>
+<p>we see that for any i, we do need only the last two values in the array. So is there a need to maintain a whole array for it? </p>
+<p>The answer is ‘No’. Let us call dp[i-1] as prev and dp[i-2] as prev2. Now understand the following illustration.</p>
+<p><img height="348" src="assets/d48474fbc4e8be86ebc018e21db3067d" width="575"/></p>
+<ul><li>Each iteration’s cur_i and prev become the next iteration’s prev and prev2 respectively.</li><li>Therefore after calculating cur_i, if we update prev and prev2 according to the next step, we will always get the answer. </li><li>After the iterative loop has ended we can simply return prev as our answer.</li></ul>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+// Function to solve the problem using dynamic programming
+int solve(int n, vector&lt;int&gt;&amp; arr) {
+    int prev = arr[0];   // Initialize the maximum sum ending at the previous element
+    int prev2 = 0;       // Initialize the maximum sum ending two elements ago
+    
+    for (int i = 1; i &lt; n; i++) {
+        int pick = arr[i];  // Maximum sum if we pick the current element
+        if (i &gt; 1)
+            pick += prev2;  // Add the maximum sum two elements ago
+        
+        int nonPick = 0 + prev;  // Maximum sum if we don't pick the current element
+        
+        int cur_i = max(pick, nonPick);  // Maximum sum ending at the current element
+        prev2 = prev;   // Update the maximum sum two elements ago
+        prev = cur_i;   // Update the maximum sum ending at the previous element
+    }
+    
+    return prev;  // Return the maximum sum
+}
+
+int main() {
+    vector&lt;int&gt; arr{2, 1, 4, 9};
+    int n = arr.size();
+    
+    // Call the solve function and print the result
+    cout &lt;&lt; solve(n, arr);
+
+    return 0;
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.*;
+
+class TUF {
+    // This function finds the maximum possible sum of non-adjacent elements in an array
+    // using a more space-efficient dynamic programming approach.
+    static int solve(int n, int[] arr) {
+        // Initialize variables to keep track of the maximum sums at the current and previous positions.
+        int prev = arr[0];
+        int prev2 = 0;
+
+        // Iterate through the array starting from the second element.
+        for (int i = 1; i &lt; n; i++) {
+            // Calculate the maximum sum by either picking the current element or not picking it.
+            int pick = arr[i];
+
+            // If there are at least two elements before the current element, add the value from prev2.
+            if (i &gt; 1)
+                pick += prev2;
+
+            // The non-pick option is to use the maximum sum from the previous position.
+            int nonPick = prev;
+
+            // Calculate the maximum sum for the current position and update prev and prev2.
+            int cur_i = Math.max(pick, nonPick);
+            prev2 = prev;
+            prev = cur_i;
+        }
+
+        // The 'prev' variable now holds the maximum possible sum.
+        return prev;
+    }
+
+    public static void main(String args[]) {
+        // Input array with elements.
+        int arr[] = {2, 1, 4, 9};
+
+        // Get the length of the array.
+        int n = arr.length;
+
+        // Call the solve function to find the maximum possible sum.
+        int result = solve(n, arr);
+
+        // Print the result.
+        System.out.println(result);
+    }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+# Function to solve the problem of finding the maximum sum of non-adjacent elements in an array
+def solve(n, arr):
+    # Initialize variables to keep track of the previous maximum and the one before that
+    prev = arr[0]  # Initialize with the first element of the array
+    prev2 = 0      # Initialize with 0 because there is no element before the first
+    
+    # Loop through the array starting from the second element
+    for i in range(1, n):
+        # Calculate the maximum value when picking the current element
+        pick = arr[i]
+        
+        # Check if there are at least two elements before the current element
+        if i &gt; 1:
+            pick += prev2
+        
+        # Calculate the maximum value when not picking the current element
+        non_pick = 0 + prev
+        
+        # Calculate the maximum value for the current index
+        cur_i = max(pick, non_pick)
+        
+        # Update the 'prev' and 'prev2' variables for the next iteration
+        prev2 = prev
+        prev = cur_i
+    
+    # Return the maximum value for the last index, which represents the solution
+    return prev
+
+# Main function to test the code
+def main():
+    arr = [2, 1, 4, 9]
+    n = len(arr)
+    
+    # Call the solve function and print the result
+    print(solve(n, arr))
+
+if __name__ == "__main__":
+    main()
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+// Function to solve the problem
+function solve(n, arr) {
+    // Initialize variables to keep track of the previous two maximum values
+    let prev = arr[0];
+    let prev2 = 0;
+    
+    // Loop through the array starting from the second element
+    for (let i = 1; i &lt; n; i++) {
+        // Calculate the maximum value when picking the current element
+        let pick = arr[i];
+        if (i &gt; 1) {
+            pick += prev2;
+        }
+        
+        // Calculate the maximum value when not picking the current element
+        const nonPick = prev;
+        
+        // Calculate the current maximum value and update prev and prev2
+        const cur_i = Math.max(pick, nonPick);
+        prev2 = prev;
+        prev = cur_i;
+    }
+    
+    // Return the final maximum value
+    return prev;
+}
+
+// Main program
+function main() {
+    // Input array
+    const arr = [2, 1, 4, 9];
+    const n = arr.length;
+
+    // Call the solve function and print the result
+    console.log(solve(n, arr));
+}
+
+// Call the main function to run the program
+main();
+</code>
+</pre>
+</div>
+<p><strong>Time Complexity: O(N)</strong></p>
+<p>Reason: We are running a simple iterative loop</p>
+<p><strong>Space Complexity: O(1)</strong></p>
+<p>Reason: We are not using any extra space.</p>
+</div></details>
+</div>
+</details>
+</div>
+<!-- Optimal Approach Starts from here -->
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Video Explination Drop-Down -->
+<div class="dsa_article_youtube_video" id="dsa_article_video_explanation">
+<details>
+<summary class="main-summary">
+<span>
+Video Explanation
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="yt-video-wrapper">
+<!-- Insert iframe embed Link of Youtube Video-->
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" class="lazy-loaded" data-lazy-type="iframe" data-src="https://www.youtube.com/embed/GrMBfJNk_NY?si=NEGz-0JUohNKsQVB" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/GrMBfJNk_NY?feature=oembed" title="Maximum Sum of Non Adjacent Elements" width="810"></iframe><noscript>
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/GrMBfJNk_NY?si=NEGz-0JUohNKsQVB" title="Maximum Sum of Non Adjacent Elements" width="810"></iframe></noscript>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script>
+
+const codeSections = document.querySelectorAll('.code-section');
+
+// Get last selected language from localStorage or set default value
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+// Update last selected language for all sections and store in localStorage
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+// Handle copy button click event
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+// Set initial state of the tabs
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<script>
+const codeSections = document.querySelectorAll('.code-section');
+
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<link href="assets/4237ffca7ce6aadb438c457e0a675b12.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+<script src="index.js"></script>
+<script>hljs.highlightAll();</script>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script src="https://takeuforward.org/UXApproachDropDowns/3ApproachJSScript.js"></script>
+<!-- /wp:html -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/anshuman-sharma-a1b245194/" rel="noreferrer noopener" target="_blank">Anshuman Sharma</a></strong> and <a href="https://www.linkedin.com/in/abhipsita-das-5b7069212/?originalSubdomain=in" rel="noopener" target="_blank" title=""><strong>Abhipsita Das</strong></a></em> <em>for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock && activeBlock.innerText) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

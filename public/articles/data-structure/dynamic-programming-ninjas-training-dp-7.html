@@ -1,0 +1,1643 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dynamic Programming: Ninja's Training (DP 7)</title>
+<link href="assets/34bd07407ad1de576cba1f67651fa31a" rel="stylesheet"/>
+<style>
+        /* ==========================================================================
+           1. CSS Variables (Theme) - Utilitarian Modern
+           ========================================================================== */
+        :root {
+            /* Default to Light Theme */
+            --primary-color: #3b82f6; /* Blue 500 */
+            --primary-hover: #2563eb; /* Blue 600 */
+            
+            --bg-body: #f8fafc; /* Slate 50 */
+            --bg-surface: #ffffff; /* White */
+            --bg-subtle: #f1f5f9; /* Slate 100 */
+            
+            --border-color: #e2e8f0; /* Slate 200 */
+            
+            --text-primary: #0f172a; /* Slate 900 */
+            --text-secondary: #334155; /* Slate 700 */
+            --text-muted: #64748b; /* Slate 500 */
+            
+            --link-color: #2563eb; /* Blue 600 */
+            --link-hover: #3b82f6; /* Blue 500 */
+
+            --code-bg: #f1f5f9; /* Slate 100 */
+            --code-text: #0f172a; /* Slate 900 */
+
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 0 25px -5px rgba(59, 130, 246, 0.25);
+            
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+        }
+
+        /* Dark Theme Support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-body: #0f172a; /* Slate 900 */
+                --bg-surface: #1e293b; /* Slate 800 */
+                --bg-subtle: #334155; /* Slate 700 */
+                
+                --border-color: #334155;
+                
+                --text-primary: #f8fafc; /* Slate 50 */
+                --text-secondary: #cbd5e1; /* Slate 300 */
+                --text-muted: #94a3b8; /* Slate 400 */
+                
+                --link-color: #60a5fa; /* Blue 400 */
+                --link-hover: #93c5fd; /* Blue 300 */
+
+                --code-bg: #020617; /* Slate 950 */
+                --code-text: #f8fafc;
+            }
+        }
+
+        /* ==========================================================================
+           2. Base & Reset
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ==========================================================================
+           3. Layout
+           ========================================================================== */
+        .container {
+            max-width: 800px; /* Optimal reading width */
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        /* Enhanced hover for desktop only */
+        @media (hover: hover) and (pointer: fine) {
+            .container:hover {
+                transform: translateY(-4px);
+                border-color: var(--primary-color);
+                box-shadow: var(--shadow-hover);
+            }
+        }
+
+        /* ==========================================================================
+           4. Typography
+           ========================================================================== */
+        h1 {
+            color: var(--text-primary);
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+        
+        h2, h3, h4 {
+            color: var(--text-secondary);
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.25em;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        /* ==========================================================================
+           5. Media
+           ========================================================================== */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            display: block;
+            margin: 1.5rem auto;
+        }
+
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            margin: 1.5rem 0;
+            border-radius: var(--radius-md);
+            background-color: var(--bg-subtle);
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ==========================================================================
+           6. Code Blocks
+           ========================================================================== */
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: inherit;
+        }
+
+        /* ==========================================================================
+           7. Code Tabs
+           ========================================================================== */
+        .code-section {
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .code-tabs {
+            display: flex;
+            background-color: var(--bg-subtle);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .code-tab {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .code-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            padding: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-muted);
+        }
+        
+        .copy-btn:hover svg {
+            fill: var(--text-primary);
+        }
+
+        .code-content {
+            background-color: var(--code-bg);
+        }
+        
+        .code-content pre {
+            margin: 0;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* ==========================================================================
+           8. Accordions / Details
+           ========================================================================== */
+        details {
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background-color: var(--bg-surface);
+            transition: box-shadow 0.2s;
+        }
+        
+        details:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1rem;
+            background-color: var(--bg-subtle);
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary:hover {
+            background-color: #475569; /* Slate 600 */
+        }
+        
+        /* Arrow icon rotation */
+        summary .arrow-svg {
+            transition: transform 0.3s ease;
+            width: 20px;
+            height: 20px;
+            fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
+        }
+        
+        /* Only rotate the arrow of the *active* details element */
+        details[open] > summary .arrow-svg {
+            transform: rotate(90deg);
+            fill: var(--primary-color);
+        }
+
+        .common-drops,
+        .atricle_example_content,
+        details > :not(summary) {
+            padding: 0.5rem;
+            background-color: var(--bg-surface);
+        }
+
+        /* Nested details */
+        .secondary-details {
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+        
+        .secondary-summary {
+            background-color: rgba(51, 65, 85, 0.3); /* Semi-transparent slate-700 */
+            font-size: 0.95rem;
+        }
+        
+        .secondary-summary:hover {
+            background-color: var(--bg-subtle);
+        }
+        
+        .opacity-75 {
+            opacity: 0.75;
+        }
+
+        /* ==========================================================================
+           9. Practice & Disclaimer
+           ========================================================================== */
+        .practice, .new-disclaimer {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: var(--bg-subtle);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+        
+        .problem-buttons a {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+        }
+        
+        .problem-buttons a:hover {
+            background-color: var(--primary-hover);
+            text-decoration: none;
+        }
+
+        /* ==========================================================================
+           10. Utilities
+           ========================================================================== */
+        .problem-buttons img,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article,
+        .has-text-align-center {
+            display: none;
+        }
+        
+        .arrow-svg {
+            display: inline-block; /* Ensure arrows are visible */
+        }
+
+        /* ==========================================================================
+           11. Responsive (Full Page Mobile)
+           ========================================================================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+
+            .container {
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 0.5rem;
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                text-align: left;
+            }
+
+            .code-tabs {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 2px; /* Space for scrollbar */
+            }
+            
+            .code-tab {
+                flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Dynamic Programming: Ninja's Training (DP 7)</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Introduction To 2D Dynamic Programming / Ninja Training</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>In this article, we will understand the concept of 2D dynamic programming. We will use the problem ‘Ninja Training’ to understand this concept.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Pre-req: <a href="https://takeuforward.org/data-structure/dynamic-programming-introduction/">Dynamic Programming Introduction</a></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Problem Link: </strong><a href="https://www.codingninjas.com/codestudio/problems/ninja-s-training_3621003?source=youtube&amp;campaign=striver_dp_videos&amp;utm_source=youtube&amp;utm_medium=affiliate&amp;utm_campaign=striver_dp_videos">Ninja Training</a></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Problem Statement:</strong> A Ninja has an ‘N’ Day training schedule. He has to perform one of these three activities (Running, Fighting Practice, or Learning New Moves) each day. There are merit points associated with performing an activity each day. The same activity can’t be performed on two consecutive days. We need to find the maximum merit points the ninja can attain in N Days.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>We are given a 2D Array POINTS of size ‘N*3’ which tells us the merit point of specific activity on that particular day. Our task is to calculate the maximum number of merit points that the ninja can earn.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<!-- This is Examples Drop-Down -->
+<div id="article_examples">
+<details class="article_example_details">
+<summary class="article_example_summary">
+<span><strong>
+Examples
+</strong>
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="atricle_example_content">
+<pre class="wp-block-preformatted"><!-- Insert New Examples Here -->
+<pre class="wp-block-preformatted"><strong>Example:</strong>
+
+<img height="180" src="assets/16fb4f232234ffe8d8c6425497cae601" width="423"/></pre>
+</pre>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Practice Section-->
+<div class="practice">
+<span><strong>Practice: </strong></span>
+<div class="problem-buttons">
+<!-- Add Problem Link inside href -->
+<a href="https://www.codingninjas.com/studio/problems/ninja%E2%80%99s-training_3621003?utm_source=striver&amp;utm_medium=website&amp;utm_campaign=a_zcoursetuf" rel="noopener" target="_blank">
+<span>Solve Problem</span>
+<img alt="code-studio" src="assets/86dd2cadbd0e7ef71ad98d3b7f2f2efc.png"/>
+</a>
+</div>
+</div>
+<p class="new-disclaimer"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out
+yourself first. </em></p>
+<!-- /wp:html -->
+<!-- wp:html -->
+<div class="horizontal_navbar_dsa_article">
+<div class="grid_container_three">
+<a class="three-boxes box-a" href="#brute-force-approach">
+Memorization approach
+</a>
+<a class="three-boxes box-b" href="#better-approach">
+Tabulation approach
+</a>
+<a class="three-boxes box-c" href="#optimal-approach">
+Space Optimization
+</a>
+<a class="three-boxes box-d" href="#dsa_article_video_explanation">
+<svg fill="none" height="26" viewbox="0 0 20 14" width="26" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 10L13.19 7L8 4V10ZM19.56 2.17C19.69 2.64 19.78 3.27 19.84 4.07C19.91 4.87 19.94 5.56 19.94 6.16L20 7C20 9.19 19.84 10.8 19.56 11.83C19.31 12.73 18.73 13.31 17.83 13.56C17.36 13.69 16.5 13.78 15.18 13.84C13.88 13.91 12.69 13.94 11.59 13.94L10 14C5.81 14 3.2 13.84 2.17 13.56C1.27 13.31 0.69 12.73 0.44 11.83C0.31 11.36 0.22 10.73 0.16 9.93C0.0900001 9.13 0.0599999 8.44 0.0599999 7.84L0 7C0 4.81 0.16 3.2 0.44 2.17C0.69 1.27 1.27 0.69 2.17 0.44C2.64 0.31 3.5 0.22 4.82 0.16C6.12 0.0899998 7.31 0.0599999 8.41 0.0599999L10 0C14.19 0 16.8 0.16 17.83 0.44C18.73 0.69 19.31 1.27 19.56 2.17Z" fill="red"></path>
+</svg>
+</a>
+<div class="box-e tooltip">
+<svg fill="none" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.842 9.25L11.9577 10.17C11.2502 10.89 10.8081 11.5 10.8081 13H8.84297V12.5C8.84297 11.39 9.28511 10.39 9.99255 9.67L11.2109 8.41C11.5745 8.05 11.7906 7.55 11.7906 7C11.7906 6.46957 11.5836 5.96086 11.2151 5.58579C10.8465 5.21071 10.3467 5 9.82552 5C9.30434 5 8.80451 5.21071 8.43598 5.58579C8.06745 5.96086 7.86041 6.46957 7.86041 7H5.89531C5.89531 5.93913 6.30938 4.92172 7.04644 4.17157C7.7835 3.42143 8.78316 3 9.82552 3C10.8679 3 11.8675 3.42143 12.6046 4.17157C13.3417 4.92172 13.7557 5.93913 13.7557 7C13.7543 7.84324 13.4259 8.65183 12.842 9.25ZM10.8081 17H8.84297V15H10.8081M9.82552 0C8.53521 0 7.25754 0.258658 6.06545 0.761205C4.87337 1.26375 3.79021 2.00035 2.87783 2.92893C1.03519 4.8043 0 7.34784 0 10C0 12.6522 1.03519 15.1957 2.87783 17.0711C3.79021 17.9997 4.87337 18.7362 6.06545 19.2388C7.25754 19.7413 8.53521 20 9.82552 20C12.4314 20 14.9306 18.9464 16.7732 17.0711C18.6158 15.1957 19.651 12.6522 19.651 10C19.651 4.47 15.2296 0 9.82552 0Z" fill="black"></path>
+</svg>
+<div class="bottom">
+<p>Expand any one approach by clicking the given options in the bar. Clicking one approach on bar,
+closes all other expands. You can manually expand more than one approach at a time</p>
+<i></i>
+</div>
+</div>
+</div>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Approaches Drop-Down -->
+<div class="dsa_article_dropdown_approachs">
+<!-- Brute Force Approach Starts from here -->
+<div id="brute-force-approach">
+<details>
+<summary class="main-summary">
+<span>
+Memorization Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition of Brute Force Apporach Here -->
+<p><strong>Why a Greedy Solution doesn’t work?</strong></p>
+<p>The first approach that comes to our mind is the greedy approach. We will see with an example how a greedy solution doesn’t give the correct solution.</p>
+<p>Consider this example:</p>
+<p><img height="148" src="assets/53e78ea2aaa3cab118e3a1168793a2ac" width="435"/></p>
+<p>We want to know the maximum amount of merit points. For the greedy approach, we will consider the maximum point activity each day, respecting the condition that activity can’t be performed on consecutive days.</p>
+<ul><li>On Day 0, we will consider the activity with maximum points i.e 50.</li><li>On Day 1, the maximum point activity is 100 but we can’t perform the same activity in two consecutive days. Therefore we will take the next maximum point activity of 11 points. </li><li>Total Merit points by Greedy Solution : 50+11 = 61</li></ul>
+<p>As this is a small example we can clearly see that we have a better approach, to consider activity with 10 points on day0 and 100 points on day1. It gives us the total merit points as 110 which is better than the greedy solution.</p>
+<p><img height="181" src="assets/d423681573a304241a031eae85b42027" width="449"/></p>
+<p>So we see that the greedy solution restricts us from choices and we can lose activity with better points on the next day in the greedy solution. Therefore, it is better to try out all the possible choices as our next solution. We will use <strong>recursion </strong>to generate all the possible choices.</p>
+<p><strong>Steps to form the recursive solution: </strong></p>
+<p>We will first form the recursive solution by the three points mentioned in <a href="https://takeuforward.org/data-structure/dynamic-programming-introduction/">Dynamic Programming Introduction</a>. </p>
+<p><strong>Step 1: </strong>Express the problem in terms of indexes.</p>
+<p>Now given an example, what is the one clear parameter which breaks the problem in different steps?<br/>It is the number of days. Clearly, we have n days (from 0 to n-1), so one changing parameter which can be expressed in terms of indexes is ‘<strong>day’</strong>.</p>
+<p><img height="85" src="assets/0ee1112f2503654e1f4c6dcbab3f7ae6" width="260"/></p>
+<p>Every day we have the option of three activities(say 0,1,2) to be performed. Suppose that we are at a day_i ( shown in the fig) in the example given below. What is one more parameter along with the day that we must know to try out the correct choices at day_i?</p>
+<p><img height="307" src="assets/3a7ac24f1ebf15ca64866563f4f034af" width="386"/></p>
+<p>It is the ‘<strong>last’ </strong>choice that we tried out on day_i+1 ( i+1 in case of top-down recursion). Unless we know the last choice we made, how can we decide whether a choice we are making is correct or not?<br/>Now there are three options each day(say 0,1,2) which becomes the ‘<strong>last’ </strong>of the next day. If we are just starting from the day_n-1, then for the day_n-1 we can try all three options. We can say ‘<strong>last</strong>’ for day_n-1 is 3.</p>
+<p><img height="344" src="assets/2f47e449792f70dec253ab05a6c69647" width="426"/></p>
+<p>Therefore our function will take two parameters - <strong>day </strong>and <strong>last</strong>.</p>
+<p><img height="90" src="assets/2ff98136ddfa412ae70ac165e4a55690" width="529"/></p>
+<p><strong>Step 2: </strong>Try out all possible choices at a given index.</p>
+<p>We are writing a top-down recursive function. We start from day_n-1 to day_0. Therefore whenever we call the recursive function for the next day we call it for f(day-1, //second parameter).<br/>Now let’s discuss the second parameter. The choices we have for a current day depend on the ‘last’ variable. If we are at our <strong>base case </strong>(day=0), we will have the following choices.</p>
+<p><strong><img height="385" src="assets/f835766f9201b7851d77b086bea94599" width="548"/></strong></p>
+<p>Other than the base case, whenever we perform an activity ‘i’ its merit points will be given by <strong>points[day][i]</strong> and to get merit points of the remaining days we will let recursion do its job by passing<strong> f(d-1, i)</strong>. We are passing the second parameter as i because the current day’s activity will become the next day’s last.</p>
+<p><strong>Step 3:  Take the maximum of all choices</strong></p>
+<p>As the problem statement wants us to find the maximum merit points, we will take the maximum of all choices.</p>
+<p>The final pseudocode after steps 1, 2, and 3:</p>
+<p><img height="615" src="assets/89fe393e1c65d2eb69b8310843f9b3ba" width="479"/></p>
+<p><strong>Steps to memoize a recursive solution:</strong></p>
+<p>If we draw the recursion tree, we will see that there are overlapping subproblems. In order to convert a recursive solution to the following steps will be taken:</p>
+<ol><li>Create a dp array of size [n][4]. There are total ‘n’ days and for every day, there can be 4 choices (0,1,2 and 3). Therefore we take the dp array as dp[n][4].</li><li>Whenever we want to find the answer of particular parameters (say f(day,last)), we first check whether the answer is already calculated using the dp array(i.e dp[day][last]!= -1 ). If yes, simply return the value from the dp array.</li><li>If not, then we are finding the answer for the given value for the first time, we will use the recursive relation as usual but before returning from the function, we will set dp[day][last] to the solution we get.</li></ol>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+// Recursive function to calculate the maximum points for the ninja training
+int f(int day, int last, vector&lt;vector&lt;int&gt;&gt; &amp;points, vector&lt;vector&lt;int&gt;&gt; &amp;dp) {
+  // If the result for this day and last activity is already calculated, return it
+  if (dp[day][last] != -1) return dp[day][last];
+
+  // Base case: When we reach the first day (day == 0)
+  if (day == 0) {
+    int maxi = 0;
+    // Calculate the maximum points for the first day by choosing an activity
+    // different from the last one
+    for (int i = 0; i &lt;= 2; i++) {
+      if (i != last)
+        maxi = max(maxi, points[0][i]);
+    }
+    // Store the result in dp array and return it
+    return dp[day][last] = maxi;
+  }
+
+  int maxi = 0;
+  // Iterate through the activities for the current day
+  for (int i = 0; i &lt;= 2; i++) {
+    if (i != last) {
+      // Calculate the points for the current activity and add it to the
+      // maximum points obtained so far (recursively calculated)
+      int activity = points[day][i] + f(day - 1, i, points, dp);
+      maxi = max(maxi, activity);
+    }
+  }
+
+  // Store the result in dp array and return it
+  return dp[day][last] = maxi;
+}
+
+// Function to find the maximum points for ninja training
+int ninjaTraining(int n, vector&lt;vector&lt;int&gt;&gt; &amp;points) {
+  // Create a memoization table (dp) to store intermediate results
+  vector&lt;vector&lt;int&gt;&gt; dp(n, vector&lt;int&gt;(4, -1));
+  // Start the recursive calculation from the last day with no previous activity
+  return f(n - 1, 3, points, dp);
+}
+
+int main() {
+  // Define the points matrix
+  vector&lt;vector&lt;int&gt;&gt; points = {{10, 40, 70},
+                                 {20, 50, 80},
+                                 {30, 60, 90}};
+
+  int n = points.size();  // Get the number of days
+  // Call the ninjaTraining function to find the maximum points and print the result
+  cout &lt;&lt; ninjaTraining(n, points);
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.*;
+
+class TUF {
+    // Recursive function to calculate the maximum points for the ninja training
+    static int f(int day, int last, int[][] points, int[][] dp) {
+        // If the result is already calculated, return it
+        if (dp[day][last] != -1) return dp[day][last];
+
+        // Base case: When it's the first day (day == 0)
+        if (day == 0) {
+            int maxi = 0;
+            for (int i = 0; i &lt;= 2; i++) {
+                if (i != last)
+                    maxi = Math.max(maxi, points[0][i]);
+            }
+            return dp[day][last] = maxi; // Store and return the result
+        }
+
+        int maxi = 0;
+        // Loop through the three activities on the current day
+        for (int i = 0; i &lt;= 2; i++) {
+            if (i != last) {
+                // Calculate the points for the current activity and recursively
+                // calculate the maximum points for the previous day
+                int activity = points[day][i] + f(day - 1, i, points, dp);
+                maxi = Math.max(maxi, activity); // Update the maximum points
+            }
+        }
+
+        return dp[day][last] = maxi; // Store and return the result
+    }
+
+    // Function to find the maximum points for ninja training
+    static int ninjaTraining(int n, int[][] points) {
+        // Initialize a memoization table with -1 values
+        int dp[][] = new int[n][4];
+        for (int[] row : dp)
+            Arrays.fill(row, -1);
+
+        // Start the recursive calculation from the last day (n - 1) with the last activity (3)
+        return f(n - 1, 3, points, dp);
+    }
+
+    public static void main(String args[]) {
+        // Define the points for each activity on each day
+        int[][] points = {{10, 40, 70},
+                          {20, 50, 80},
+                          {30, 60, 90}};
+
+        int n = points.length; // Get the number of days
+        System.out.println(ninjaTraining(n, points)); // Calculate and print the maximum points
+    }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+def f(day, last, points, dp):
+    # Check if the result for this day and last activity is already computed.
+    if dp[day][last] != -1:
+        return dp[day][last]
+
+    # Base case: When we reach day 0, return the maximum point for the last day.
+    if day == 0:
+        maxi = 0
+        for i in range(3):
+            if i != last:
+                maxi = max(maxi, points[0][i])
+        dp[day][last] = maxi
+        return dp[day][last]
+
+    maxi = 0
+    # Iterate through all activities for the current day.
+    for i in range(3):
+        if i != last:
+            # Calculate the total points for the current day's activity and recursively call for the previous day.
+            activity = points[day][i] + f(day - 1, i, points, dp)
+            maxi = max(maxi, activity)
+
+    # Store the maximum points in the DP table and return it.
+    dp[day][last] = maxi
+    return dp[day][last]
+
+def ninjaTraining(n, points):
+    # Initialize a DP table to store the computed results.
+    dp = [[-1 for j in range(4)] for i in range(n)]
+    # Start the recursive function from the last day with no previous activity.
+    return f(n - 1, 3, points, dp)
+
+def main():
+    # Define the points matrix for each day.
+    points = [[10, 40, 70],
+              [20, 50, 80],
+              [30, 60, 90]]
+
+    n = len(points)  # Get the number of days.
+    # Call the ninjaTraining function to find the maximum points.
+    print(ninjaTraining(n, points))
+
+if __name__ == '__main__':
+    main()
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+function ninjaTraining(n, points) {
+  // Create a 2D array 'dp' with dimensions (n x 4) and initialize it with -1
+  let dp = new Array(n);
+  for (let i = 0; i &lt; n; i++) {
+    dp[i] = new Array(4).fill(-1);
+  }
+
+  // Define the recursive function 'f' with parameters 'day', 'last', 'points', and 'dp'
+  function f(day, last) {
+    // If the result is already calculated, return it from 'dp'
+    if (dp[day][last] !== -1) return dp[day][last];
+
+    // Base case: When 'day' is 0, calculate the maximum points for the last day
+    if (day === 0) {
+      let maxi = 0;
+      for (let i = 0; i &lt;= 2; i++) {
+        if (i !== last) {
+          maxi = Math.max(maxi, points[0][i]);
+        }
+      }
+      return dp[day][last] = maxi;
+    }
+
+    // Initialize 'maxi' to store the maximum points
+    let maxi = 0;
+
+    // Iterate through the activities for the current day
+    for (let i = 0; i &lt;= 2; i++) {
+      if (i !== last) {
+        // Calculate the points for the current activity and recursively call 'f' for the previous day
+        let activity = points[day][i] + f(day - 1, i);
+        maxi = Math.max(maxi, activity);
+      }
+    }
+
+    // Store the result in 'dp' and return it
+    return dp[day][last] = maxi;
+  }
+
+  // Call the recursive function 'f' to find the maximum points starting from day 'n-1' and 'last' activity 3
+  return f(n - 1, 3);
+}
+
+// Define the 'points' array with the ninja training data
+let points = [
+  [10, 40, 70],
+  [20, 50, 80],
+  [30, 60, 90]
+];
+
+// Get the number of days
+let n = points.length;
+
+// Call the 'ninjaTraining' function and print the result
+console.log(ninjaTraining(n, points));
+</code>
+</pre>
+</div>
+<p><strong>Output:</strong> 210
+
+</p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p><strong>Time Complexity: O(N*4*3)</strong></p>
+<p>Reason: There are N*4 states and for every state, we are running a for loop iterating three times.</p>
+<p><strong>Space Complexity: O(N) + O(N*4)</strong></p>
+<p>Reason: We are using a recursion stack space(O(N)) and a 2D array (again O(N*4)). Therefore total space complexity will be O(N) + O(N) ≈ O(N)</p>
+</details>
+</div>
+</details>
+</div>
+<!-- Brute Force Approach Ends here -->
+<!-- Better Approach Starts from here -->
+<div id="better-approach">
+<details>
+<summary class="main-summary">
+<span>
+Tabulation Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition For Better Approach Here -->
+<p><strong>Steps to convert Recursive Solution to Tabulation one.</strong></p>
+<ul><li>Declare a dp[] array of size [n][4]</li><li>First initialize the base condition values. We know that base condition arises when day = 0. Therefore, we can say that the following will be the base conditions<ul><li>dp[0][0] = max(points[0][1], points[0][2]) </li><li>dp[0][1] = max(points[0][0], points[0][2]) </li><li>dp[0][2] = max(points[0][0], points[0][1]) </li><li>dp[0][3] = max(points[0][0], points[0][1] and points[0][2]) </li></ul></li><li>Set an iterative loop which traverses dp array (from index 1 to n) and for every index set its value according to the recursive logic</li></ul>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+// Function to find the maximum points for ninja training
+int ninjaTraining(int n, vector&lt;vector&lt;int&gt;&gt;&amp; points) {
+  // Create a 2D DP (Dynamic Programming) table to store the maximum points
+  // dp[i][j] represents the maximum points at day i, considering the last activity as j
+  vector&lt;vector&lt;int&gt;&gt; dp(n, vector&lt;int&gt;(4, 0));
+
+  // Initialize the DP table for the first day (day 0)
+  dp[0][0] = max(points[0][1], points[0][2]);
+  dp[0][1] = max(points[0][0], points[0][2]);
+  dp[0][2] = max(points[0][0], points[0][1]);
+  dp[0][3] = max(points[0][0], max(points[0][1], points[0][2]));
+
+  // Iterate through the days starting from day 1
+  for (int day = 1; day &lt; n; day++) {
+    for (int last = 0; last &lt; 4; last++) {
+      dp[day][last] = 0;
+      // Iterate through the tasks for the current day
+      for (int task = 0; task &lt;= 2; task++) {
+        if (task != last) {
+          // Calculate the points for the current activity and add it to the
+          // maximum points obtained on the previous day (recursively calculated)
+          int activity = points[day][task] + dp[day - 1][task];
+          // Update the maximum points for the current day and last activity
+          dp[day][last] = max(dp[day][last], activity);
+        }
+      }
+    }
+  }
+
+  // The maximum points for the last day with any activity can be found in dp[n-1][3]
+  return dp[n - 1][3];
+}
+
+int main() {
+  // Define the points matrix
+  vector&lt;vector&lt;int&gt;&gt; points = {{10, 40, 70},
+                                 {20, 50, 80},
+                                 {30, 60, 90}};
+  int n = points.size();  // Get the number of days
+  // Call the ninjaTraining function to find the maximum points and print the result
+  cout &lt;&lt; ninjaTraining(n, points);
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.*;
+
+class TUF {
+    // Function to find the maximum points for ninja training
+    static int ninjaTraining(int n, int[][] points) {
+        // Initialize a 2D array 'dp' to store the maximum points
+        int[][] dp = new int[n][4];
+        
+        // Initialize the first day's maximum points based on the available choices
+        dp[0][0] = Math.max(points[0][1], points[0][2]);
+        dp[0][1] = Math.max(points[0][0], points[0][2]);
+        dp[0][2] = Math.max(points[0][0], points[0][1]);
+        dp[0][3] = Math.max(points[0][0], Math.max(points[0][1], points[0][2]));
+
+        // Iterate through each day and each activity
+        for (int day = 1; day &lt; n; day++) {
+            for (int last = 0; last &lt; 4; last++) {
+                dp[day][last] = 0; // Initialize the maximum points for the current day and last activity
+                // Consider each possible task for the current day
+                for (int task = 0; task &lt;= 2; task++) {
+                    if (task != last) { // Ensure that the current task is different from the last
+                        // Calculate the points for the current activity and add it to the maximum points from the previous day
+                        int activity = points[day][task] + dp[day - 1][task];
+                        // Update the maximum points for the current day and last activity
+                        dp[day][last] = Math.max(dp[day][last], activity);
+                    }
+                }
+            }
+        }
+
+        // Return the maximum points achievable after all days (last activity is 3)
+        return dp[n - 1][3];
+    }
+
+    public static void main(String args[]) {
+        // Define the points for each activity on each day
+        int[][] points = {{10, 40, 70},
+                          {20, 50, 80},
+                          {30, 60, 90}};
+
+        int n = points.length; // Get the number of days
+        System.out.println(ninjaTraining(n, points)); // Calculate and print the maximum points
+    }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+def ninjaTraining(n, points):
+    # Initialize a DP table with dimensions (n x 4) to store the maximum points.
+    dp = [[0 for j in range(4)] for i in range(n)]
+
+    # Initialize the DP table for day 0 with base cases.
+    dp[0][0] = max(points[0][1], points[0][2])
+    dp[0][1] = max(points[0][0], points[0][2])
+    dp[0][2] = max(points[0][0], points[0][1])
+    dp[0][3] = max(points[0][0], max(points[0][1], points[0][2]))
+
+    # Loop through the days starting from the second day.
+    for day in range(1, n):
+        for last in range(4):
+            dp[day][last] = 0  # Initialize the maximum points for the current day and last activity.
+            for task in range(3):
+                if task != last:
+                    # Calculate the total points for the current day's activity and the previous day's maximum points.
+                    activity = points[day][task] + dp[day - 1][task]
+                    dp[day][last] = max(dp[day][last], activity)
+
+    # Return the maximum points achievable after the last day with any activity.
+    return dp[n - 1][3]
+
+def main():
+    # Define the points matrix for each day.
+    points = [[10, 40, 70],
+              [20, 50, 80],
+              [30, 60, 90]]
+    n = len(points)  # Get the number of days.
+    # Call the ninjaTraining function to find the maximum points.
+    print(ninjaTraining(n, points))
+
+if __name__ == '__main__':
+    main()
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+function ninjaTraining(n, points) {
+  // Create a 2D array 'dp' with dimensions (n x 4) and initialize it with 0
+  let dp = new Array(n);
+  for (let i = 0; i &lt; n; i++) {
+    dp[i] = new Array(4).fill(0);
+  }
+
+  // Initialize the base cases for the first day
+  dp[0][0] = Math.max(points[0][1], points[0][2]);
+  dp[0][1] = Math.max(points[0][0], points[0][2]);
+  dp[0][2] = Math.max(points[0][0], points[0][1]);
+  dp[0][3] = Math.max(points[0][0], Math.max(points[0][1], points[0][2]));
+
+  // Loop through each day and calculate the maximum points
+  for (let day = 1; day &lt; n; day++) {
+    for (let last = 0; last &lt; 4; last++) {
+      dp[day][last] = 0;
+      for (let task = 0; task &lt;= 2; task++) {
+        if (task !== last) {
+          // Calculate the points for the current activity and update 'dp'
+          let activity = points[day][task] + dp[day - 1][task];
+          dp[day][last] = Math.max(dp[day][last], activity);
+        }
+      }
+    }
+  }
+
+  // The maximum points are stored in dp[n-1][3]
+  return dp[n - 1][3];
+}
+
+// Define the 'points' array with the ninja training data
+let points = [
+  [10, 40, 70],
+  [20, 50, 80],
+  [30, 60, 90]
+];
+
+// Get the number of days
+let n = points.length;
+
+// Call the 'ninjaTraining' function and print the result
+console.log(ninjaTraining(n, points));
+</code>
+</pre>
+</div>
+<p><strong>Time Complexity: O(N*4*3)</strong></p>
+<p>Reason: There are three nested loops</p>
+<p><strong>Space Complexity: O(N*4)</strong></p>
+<p>Reason: We are using an external array of size ‘N*4’’.</p>
+</div></details>
+</div>
+</details>
+</div>
+<!-- Better Approach Ends from here -->
+<!-- Optimal Approach Starts from here -->
+<div id="optimal-approach">
+<details>
+<summary class="main-summary">
+<span>
+Space Optimization Approach 
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm of Better Approach Here -->
+<p>If we closely look the relation,</p>
+<p><strong>dp[day][last] =  max(dp[day][last],points[day][task] + dp[day-1][task])</strong></p>
+<p>Here the task can be anything from 0 to 3 and day-1 is the previous stage of recursion. So in order to compute any dp array value, we only require the last row to calculate it.</p>
+<p><img height="371" src="assets/4037e75d8aaf177fb8ab01efd4b9a8b6" width="624"/></p>
+<p><img height="375" src="assets/4b7ca34d6b0927f6f2634efb6444067a" width="624"/></p>
+<ul><li>So rather than storing the entire 2D Array of size N*4, we can just store values of size 4(say prev). </li><li>We can then take a dummy array, again of size 4 (say temp) and calculate the next row’s value using the array we stored in step 1.</li><li>After that whenever we move to the next day, the temp array becomes our prev for the next step.</li><li>At last prev[3] will give us the answer.</li></ul>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+// Function to find the maximum points for ninja training
+int ninjaTraining(int n, vector&lt;vector&lt;int&gt;&gt;&amp; points) {
+  // Initialize a vector to store the maximum points for the previous day's activities
+  vector&lt;int&gt; prev(4, 0);
+
+  // Initialize the DP table for the first day (day 0)
+  prev[0] = max(points[0][1], points[0][2]);
+  prev[1] = max(points[0][0], points[0][2]);
+  prev[2] = max(points[0][0], points[0][1]);
+  prev[3] = max(points[0][0], max(points[0][1], points[0][2]));
+
+  // Iterate through the days starting from day 1
+  for (int day = 1; day &lt; n; day++) {
+    // Create a temporary vector to store the maximum points for the current day's activities
+    vector&lt;int&gt; temp(4, 0);
+    for (int last = 0; last &lt; 4; last++) {
+      temp[last] = 0;
+      // Iterate through the tasks for the current day
+      for (int task = 0; task &lt;= 2; task++) {
+        if (task != last) {
+          // Calculate the points for the current activity and add it to the
+          // maximum points obtained on the previous day (stored in prev)
+          temp[last] = max(temp[last], points[day][task] + prev[task]);
+        }
+      }
+    }
+    // Update prev with the maximum points for the current day
+    prev = temp;
+  }
+
+  // The maximum points for the last day with any activity can be found in prev[3]
+  return prev[3];
+}
+
+int main() {
+  // Define the points matrix
+  vector&lt;vector&lt;int&gt;&gt; points = {{10, 40, 70},
+                                 {20, 50, 80},
+                                 {30, 60, 90}};
+  int n = points.size();  // Get the number of days
+  // Call the ninjaTraining function to find the maximum points and print the result
+  cout &lt;&lt; ninjaTraining(n, points);
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.*;
+
+class TUF {
+    // Function to find the maximum points for ninja training
+    static int ninjaTraining(int n, int[][] points) {
+        // Initialize an array 'prev' to store the maximum points for the previous day
+        int prev[] = new int[4];
+
+        // Initialize the first day's maximum points based on the available choices
+        prev[0] = Math.max(points[0][1], points[0][2]);
+        prev[1] = Math.max(points[0][0], points[0][2]);
+        prev[2] = Math.max(points[0][0], points[0][1]);
+        prev[3] = Math.max(points[0][0], Math.max(points[0][1], points[0][2]));
+
+        // Iterate through each day starting from the second day
+        for (int day = 1; day &lt; n; day++) {
+            // Initialize an array 'temp' to store the maximum points for the current day
+            int temp[] = new int[4];
+            for (int last = 0; last &lt; 4; last++) {
+                temp[last] = 0; // Initialize the maximum points for the current day and last activity
+                // Consider each possible task for the current day
+                for (int task = 0; task &lt;= 2; task++) {
+                    if (task != last) { // Ensure that the current task is different from the last
+                        // Calculate the points for the current activity and add it to the maximum points from the previous day
+                        temp[last] = Math.max(temp[last], points[day][task] + prev[task]);
+                    }
+                }
+            }
+            // Update 'prev' to store the maximum points for the current day
+            prev = temp;
+        }
+
+        // Return the maximum points achievable after all days (last activity is 3)
+        return prev[3];
+    }
+
+    public static void main(String args[]) {
+        // Define the points for each activity on each day
+        int[][] points = {{10, 40, 70},
+                          {20, 50, 80},
+                          {30, 60, 90}};
+
+        int n = points.length; // Get the number of days
+        System.out.println(ninjaTraining(n, points)); // Calculate and print the maximum points
+    }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+def ninjaTraining(n, points):
+    # Initialize a list 'prev' to store the maximum points for each possible last activity on the previous day.
+    prev = [0] * 4
+
+    # Initialize 'prev' with the maximum points for the first day's activities.
+    prev[0] = max(points[0][1], points[0][2])
+    prev[1] = max(points[0][0], points[0][2])
+    prev[2] = max(points[0][0], points[0][1])
+    prev[3] = max(points[0][0], max(points[0][1], points[0][2]))
+
+    # Loop through the days starting from the second day.
+    for day in range(1, n):
+        # Initialize a temporary list 'temp' to store the maximum points for each possible last activity on the current day.
+        temp = [0] * 4
+
+        for last in range(4):
+            # Initialize 'temp' for the current last activity.
+            temp[last] = 0
+
+            for task in range(3):
+                if task != last:
+                    # Calculate the total points for the current day's activity and the previous day's maximum points.
+                    activity = points[day][task] + prev[task]
+                    # Update 'temp' with the maximum points for the current last activity.
+                    temp[last] = max(temp[last], activity)
+
+        # Update 'prev' with 'temp' for the next iteration.
+        prev = temp
+
+    # Return the maximum points achievable after the last day with any activity.
+    return prev[3]
+
+def main():
+    # Define the points matrix for each day.
+    points = [[10, 40, 70],
+              [20, 50, 80],
+              [30, 60, 90]]
+    n = len(points)  # Get the number of days.
+    # Call the ninjaTraining function to find and print the maximum points.
+    print(ninjaTraining(n, points))
+
+if __name__ == '__main__':
+    main()
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+function ninjaTraining(n, points) {
+  // Initialize the 'prev' array with 4 elements, all set to 0
+  let prev = new Array(4).fill(0);
+
+  // Initialize the base cases for the first day
+  prev[0] = Math.max(points[0][1], points[0][2]);
+  prev[1] = Math.max(points[0][0], points[0][2]);
+  prev[2] = Math.max(points[0][0], points[0][1]);
+  prev[3] = Math.max(points[0][0], Math.max(points[0][1], points[0][2]));
+
+  // Loop through each day and calculate the maximum points
+  for (let day = 1; day &lt; n; day++) {
+    // Initialize a temporary 'temp' array with 4 elements, all set to 0
+    let temp = new Array(4).fill(0);
+    for (let last = 0; last &lt; 4; last++) {
+      // Initialize the current 'temp' value to 0
+      temp[last] = 0;
+      for (let task = 0; task &lt;= 2; task++) {
+        if (task !== last) {
+          // Calculate the points for the current activity and update 'temp'
+          temp[last] = Math.max(temp[last], points[day][task] + prev[task]);
+        }
+      }
+    }
+
+    // Update 'prev' with the values from 'temp' for the next iteration
+    prev = temp;
+  }
+
+  // The maximum points are stored in 'prev[3]'
+  return prev[3];
+}
+
+// Define the 'points' array with the ninja training data
+let points = [
+  [10, 40, 70],
+  [20, 50, 80],
+  [30, 60, 90]
+];
+
+// Get the number of days
+let n = points.length;
+
+// Call the 'ninjaTraining' function and print the result
+console.log(ninjaTraining(n, points));
+</code>
+</pre>
+</div>
+<p><strong>Time Complexity: O(N*4*3)</strong></p>
+<p>Reason: There are three nested loops</p>
+<p><strong>Space Complexity: O(4)</strong></p>
+<p>Reason: We are using an external array of size ‘4’ to store only one row.</p>
+</div></details>
+</div>
+</details>
+</div>
+<!-- Optimal Approach Starts from here -->
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Video Explination Drop-Down -->
+<div class="dsa_article_youtube_video" id="dsa_article_video_explanation">
+<details>
+<summary class="main-summary">
+<span>
+Video Explanation
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="yt-video-wrapper">
+<!-- Insert iframe embed Link of Youtube Video-->
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" class="lazy-loaded" data-lazy-type="iframe" data-src="https://www.youtube.com/embed/AE39gJYuRog?si=W6KTv4pKUqmn9ban" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/AE39gJYuRog?feature=oembed" title="Ninja's Training" width="810"></iframe><noscript>
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/AE39gJYuRog?si=W6KTv4pKUqmn9ban" title="Ninja's Training" width="810"></iframe></noscript>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script>
+
+const codeSections = document.querySelectorAll('.code-section');
+
+// Get last selected language from localStorage or set default value
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+// Update last selected language for all sections and store in localStorage
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+// Handle copy button click event
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+// Set initial state of the tabs
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<script>
+const codeSections = document.querySelectorAll('.code-section');
+
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<link href="assets/4237ffca7ce6aadb438c457e0a675b12.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+<script src="index.js"></script>
+<script>hljs.highlightAll();</script>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script src="https://takeuforward.org/UXApproachDropDowns/3ApproachJSScript.js"></script>
+<!-- /wp:html -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/anshuman-sharma-a1b245194/" rel="noreferrer noopener" target="_blank">Anshuman Sharma</a></strong> and <a href="https://www.linkedin.com/in/abhipsita-das-5b7069212/?originalSubdomain=in" rel="noopener" target="_blank" title=""><strong>Abhipsita Das</strong></a></em> <em>for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/"><strong>please check out this article</strong></a></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock && activeBlock.innerText) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

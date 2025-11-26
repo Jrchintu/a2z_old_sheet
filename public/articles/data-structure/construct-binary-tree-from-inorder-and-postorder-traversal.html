@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Construct Binary Tree from Inorder and PostOrder Traversal</title>
+<link href="assets/34bd07407ad1de576cba1f67651fa31a" rel="stylesheet"/>
+<style>
+        /* ==========================================================================
+           1. CSS Variables (Theme) - Utilitarian Modern
+           ========================================================================== */
+        :root {
+            /* Default to Light Theme */
+            --primary-color: #3b82f6; /* Blue 500 */
+            --primary-hover: #2563eb; /* Blue 600 */
+            
+            --bg-body: #f8fafc; /* Slate 50 */
+            --bg-surface: #ffffff; /* White */
+            --bg-subtle: #f1f5f9; /* Slate 100 */
+            
+            --border-color: #e2e8f0; /* Slate 200 */
+            
+            --text-primary: #0f172a; /* Slate 900 */
+            --text-secondary: #334155; /* Slate 700 */
+            --text-muted: #64748b; /* Slate 500 */
+            
+            --link-color: #2563eb; /* Blue 600 */
+            --link-hover: #3b82f6; /* Blue 500 */
+
+            --code-bg: #f1f5f9; /* Slate 100 */
+            --code-text: #0f172a; /* Slate 900 */
+
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 0 25px -5px rgba(59, 130, 246, 0.25);
+            
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+        }
+
+        /* Dark Theme Support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-body: #0f172a; /* Slate 900 */
+                --bg-surface: #1e293b; /* Slate 800 */
+                --bg-subtle: #334155; /* Slate 700 */
+                
+                --border-color: #334155;
+                
+                --text-primary: #f8fafc; /* Slate 50 */
+                --text-secondary: #cbd5e1; /* Slate 300 */
+                --text-muted: #94a3b8; /* Slate 400 */
+                
+                --link-color: #60a5fa; /* Blue 400 */
+                --link-hover: #93c5fd; /* Blue 300 */
+
+                --code-bg: #020617; /* Slate 950 */
+                --code-text: #f8fafc;
+            }
+        }
+
+        /* ==========================================================================
+           2. Base & Reset
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ==========================================================================
+           3. Layout
+           ========================================================================== */
+        .container {
+            max-width: 800px; /* Optimal reading width */
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        /* Enhanced hover for desktop only */
+        @media (hover: hover) and (pointer: fine) {
+            .container:hover {
+                transform: translateY(-4px);
+                border-color: var(--primary-color);
+                box-shadow: var(--shadow-hover);
+            }
+        }
+
+        /* ==========================================================================
+           4. Typography
+           ========================================================================== */
+        h1 {
+            color: var(--text-primary);
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+        
+        h2, h3, h4 {
+            color: var(--text-secondary);
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.25em;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        /* ==========================================================================
+           5. Media
+           ========================================================================== */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            display: block;
+            margin: 1.5rem auto;
+        }
+
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            margin: 1.5rem 0;
+            border-radius: var(--radius-md);
+            background-color: var(--bg-subtle);
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ==========================================================================
+           6. Code Blocks
+           ========================================================================== */
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: inherit;
+        }
+
+        /* ==========================================================================
+           7. Code Tabs
+           ========================================================================== */
+        .code-section {
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .code-tabs {
+            display: flex;
+            background-color: var(--bg-subtle);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .code-tab {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .code-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            padding: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-muted);
+        }
+        
+        .copy-btn:hover svg {
+            fill: var(--text-primary);
+        }
+
+        .code-content {
+            background-color: var(--code-bg);
+        }
+        
+        .code-content pre {
+            margin: 0;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* ==========================================================================
+           8. Accordions / Details
+           ========================================================================== */
+        details {
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background-color: var(--bg-surface);
+            transition: box-shadow 0.2s;
+        }
+        
+        details:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1rem;
+            background-color: var(--bg-subtle);
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary:hover {
+            background-color: #475569; /* Slate 600 */
+        }
+        
+        /* Arrow icon rotation */
+        summary .arrow-svg {
+            transition: transform 0.3s ease;
+            width: 20px;
+            height: 20px;
+            fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
+        }
+        
+        /* Only rotate the arrow of the *active* details element */
+        details[open] > summary .arrow-svg {
+            transform: rotate(90deg);
+            fill: var(--primary-color);
+        }
+
+        .common-drops,
+        .atricle_example_content,
+        details > :not(summary) {
+            padding: 0.5rem;
+            background-color: var(--bg-surface);
+        }
+
+        /* Nested details */
+        .secondary-details {
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+        
+        .secondary-summary {
+            background-color: rgba(51, 65, 85, 0.3); /* Semi-transparent slate-700 */
+            font-size: 0.95rem;
+        }
+        
+        .secondary-summary:hover {
+            background-color: var(--bg-subtle);
+        }
+        
+        .opacity-75 {
+            opacity: 0.75;
+        }
+
+        /* ==========================================================================
+           9. Practice & Disclaimer
+           ========================================================================== */
+        .practice, .new-disclaimer {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: var(--bg-subtle);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+        
+        .problem-buttons a {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+        }
+        
+        .problem-buttons a:hover {
+            background-color: var(--primary-hover);
+            text-decoration: none;
+        }
+
+        /* ==========================================================================
+           10. Utilities
+           ========================================================================== */
+        .problem-buttons img,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article,
+        .has-text-align-center {
+            display: none;
+        }
+        
+        .arrow-svg {
+            display: inline-block; /* Ensure arrows are visible */
+        }
+
+        /* ==========================================================================
+           11. Responsive (Full Page Mobile)
+           ========================================================================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+
+            .container {
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 0.5rem;
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                text-align: left;
+            }
+
+            .code-tabs {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 2px; /* Space for scrollbar */
+            }
+            
+            .code-tab {
+                flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Construct Binary Tree from Inorder and PostOrder Traversal</h1>
+</header>
+<article>
+<p><strong>Problem Statement: </strong> Given the Postorder and Inorder traversal of a Binary Tree, construct the Unique Binary Tree represented by them.
+
+</p>
+<div id="article_examples">
+<details class="article_example_details">
+<summary class="article_example_summary">
+<span><strong>
+                    Examples
+                </strong>
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="atricle_example_content">
+<pre class="wp-block-preformatted">
+                <span><strong>Example :</strong></span>
+                <span><strong>Input:</strong> Inorder: [ 40, 20 , 50, 10, 60, 30], Postorder: [40, 50, 20, 60, 30, 10]</span>
+               
+                <span><strong>Output:</strong></span>
+
+                <figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/1b98309a682a7e82a41fe5b483c0e5b8" width="439"/></figure>
+                
+                <span><strong>Explanation: </strong> The unique Binary Tree hence created has inorder traversal: [40, 20, 50, 10, 60, 30] and postorder traversal: [40, 50, 20, 60, 30, 10].</span>
+                                      
+                <span><strong>Example :</strong></span>
+                <span><strong>Input:</strong> Inorder: [9, 3, 15, 20, 7], Postorder: [9, 15, 7, 20, 3]</span>
+               
+                <span><strong>Output:</strong></span>
+
+                <figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/9c8414e635ef212991151fa12574d4ad" width="439"/></figure>
+                
+                <span><strong>Explanation: </strong> The unique Binary Tree hence created has inorder traversal: [9, 3, 15, 20, 7] and postorder traversal: [9, 15, 7, 20, 3].</span>								
+					
+            </pre>
+</div>
+</details>
+</div>
+<!-- This is Practice Section
+<div class="practice">
+    <span><strong>Practice: </strong></span>
+    <div class="problem-buttons">
+
+        
+        <a href="https://www.codingninjas.com/studio/problems/check-armstrong_589?utm_source=striver&utm_medium=website&utm_campaign=a_zcoursetuf" target="_blank" rel="noopener">
+            <span>Solve Problem</span>
+            <img src="https://takeuforward-content-images.s3.ap-south-1.amazonaws.com/content/Group-11-5-pFOq-8ga"
+                alt="code-studio">
+        </a>
+    </div>
+    
+</div>-->
+<p class="new-disclaimer"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out
+        yourself first. </em></p>
+<div id="brute-force-approach">
+<details>
+<summary class="main-summary">
+<span>
+                Optimal Approach 
+            </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+                        Algorithm / Intuition
+                    </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition of Brute Force Apporach Here -->
+<p><a href="https://takeuforward.org/data-structure/construct-a-binary-tree-from-inorder-and-preorder-traversal/">Construct Binary Tree from Inorder and Preorder</a> is a prerequisite to this problem as the core approach remains recursively focusing on creating one node at a time We identify a node from the postorder array, locate it in the inorder traversal which splits the array into the left and right subtree.</p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/ae7e2b9e0b325e6b3161b3cbd8993ceb" width="439"/></figure>
+<p>To avoid unnecessary array duplication, we use variables (inStart, inEnd) and (postStart, postEnd) on the inorder and postorder arrays, respectively. These variables effectively define the boundaries of the current subtree within the original inorder and postorder traversals.</p>
+<p>Similar to the previous algorithm, we employ a hashmap to store the index of each element in the inorder traversal, transforming the search operation into a constant-time lookup.</p>
+<h4>Algorithm </h4>
+<p><strong>Step 1:</strong>Create an empty map to store the indices of elements in the inorder traversal. Iterate through each element in the inorder traversal and store its index in the map (inMap) using the element as the key and its index as the value.</p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/b7da890c788723fd6b8a2e0daae61c22" width="439"/></figure>
+<p><strong>Step 2: </strong>
+                   	 Create a recursive helper function buildTree with the following parameters:
+                   	 <ol><li>Postorder vector</li><li>Start index of postorder (postStart), initially set to 0</li><li>End index of postorder (postEnd), initially set to postorder.size() - 1</li><li>Inorder vector</li><li>Start index of inorder (inStart), initially set to 0</li><li>End index of inorder (inEnd), initially set to inorder.size() - 1</li><li>Map for efficient root index lookup in the inorder traversal.</li></ol></p>
+<p><strong>Step 3:</strong> Base Case: Check if postStart is greater than postEnd or inStart is greater than inEnd. If true, return NULL, indicating an empty subtree/node.</p>
+<p><strong>Step 4: </strong>
+                   	The root node for the current subtree is the last element in the postorder traversal (postorder[postEnd]).</p>
+<p><strong>Step 5: </strong>
+                   	Find the index of this root node in the inorder traversal using the map (inMap[rootValue]). This is the rootIndex.</p>
+<p><strong>Step 6: </strong>
+                   	Hence, the left subtree ranges from inStart to rootIndex. Subtracting these indexes gives us the leftSubtreeSize.</p>
+<p><strong>Step 7: </strong>
+                   	Make two recursive calls to buildTree to build the left and right subtrees:</p>
+<p>For the left subtree:
+                   	<ol><li>Update postStart to postEnd - leftSubtreeSize (moving to the next element in postorder)</li><li>Update postEnd to postEnd - 1 (end of left subtree in postorder)</li><li>Update inEnd to rootIndex - 1 (end of left subtree in inorder)</li></ol></p>
+<p>For the right subtree:
+                   	<ol><li>Update postStart to postStart (moving to the next element in postorder)</li><li>Update postEnd to postEnd - leftSubtreeSize - 1 (end of right subtree in postorder)</li><li>Update inStart to rootIndex + 1 (start of right subtree in inorder)</li></ol></p>
+<p><strong>Step 8: </strong>
+                   	Return the root node constructed for the current subtree.</p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+                        Code
+                    </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code">
+                            <code class="language-cpp" lang="cpp">
+#include &lt;iostream&gt;
+#include &lt;unordered_map&gt;
+#include &lt;vector&gt;
+#include &lt;queue&gt;
+#include &lt;map&gt;
+
+using namespace std;
+
+// TreeNode structure
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    // Function to build a binary tree
+    // from inorder and postorder traversals
+    TreeNode* buildTree(vector&lt;int&gt;&amp; inorder, vector&lt;int&gt;&amp; postorder) {
+        if (inorder.size() != postorder.size()) {
+            return NULL;
+        }
+
+        // Create a map to store the indices
+        // of elements in the inorder traversal
+        map&lt;int, int&gt; hm;
+        for (int i = 0; i &lt; inorder.size(); i++) {
+            hm[inorder[i]] = i;
+        }
+
+        // Call the recursive function
+        // to build the binary tree
+        return buildTreePostIn(inorder, 0, inorder.size() - 1, postorder, 0,
+            postorder.size() - 1, hm);
+    }
+
+    // Recursive function to build a binary
+    // tree from inorder and postorder traversals
+    TreeNode* buildTreePostIn(vector&lt;int&gt;&amp; inorder, int is, int ie,
+        vector&lt;int&gt;&amp; postorder, int ps, int pe, map&lt;int, int&gt;&amp; hm) {
+
+        // Base case: If the subtree
+        // is empty, return NULL
+        if (ps &gt; pe || is &gt; ie) {
+            return NULL;
+        }
+
+        // Create a new TreeNode
+        // with the root value from postorder
+        TreeNode* root = new TreeNode(postorder[pe]);
+
+        // Find the index of the root
+        // value in inorder traversal
+        int inRoot = hm[postorder[pe]];
+        
+        // Number of nodes in the left subtree
+        int numsLeft = inRoot - is; 
+
+        // Recursively build the
+        // left and right subtrees
+        root-&gt;left = buildTreePostIn(inorder, is, inRoot - 1, postorder,
+            ps, ps + numsLeft - 1, hm);
+
+        root-&gt;right = buildTreePostIn(inorder, inRoot + 1, ie, postorder,
+            ps + numsLeft, pe - 1, hm);
+
+        // Return the root of
+        // the constructed subtree
+        return root;
+    }
+};
+
+// Function to print the
+// inorder traversal of a tree
+void printInorder(TreeNode* root) {
+    if (!root) {
+        return;
+    }
+    printInorder(root-&gt;left);
+    cout &lt;&lt; root-&gt;val &lt;&lt; " ";
+    printInorder(root-&gt;right);
+}
+
+// Function to print the given vector
+void printVector(vector&lt;int&gt;&amp; vec) {
+    for (int i = 0; i &lt; vec.size(); i++) {
+        cout &lt;&lt; vec[i] &lt;&lt; " ";
+    }
+    cout &lt;&lt; endl;
+}
+
+int main() {
+    // Example input vectors
+    vector&lt;int&gt; inorder = {40, 20, 50, 10, 60, 30};
+    vector&lt;int&gt; postorder = {40, 50, 20, 60, 30, 10};
+
+    // Display the input vectors
+    cout &lt;&lt; "Inorder Vector: ";
+    printVector(inorder);
+
+    cout &lt;&lt; "Postorder Vector: ";
+    printVector(postorder);
+
+    Solution sol;
+
+    // Build the binary tree and
+    // print its inorder traversal
+    TreeNode* root = sol.buildTree(inorder, postorder);
+
+    cout &lt;&lt; "Inorder of Unique Binary Tree Created: " &lt;&lt; endl;
+    printInorder(root);
+    cout &lt;&lt; endl;
+
+    return 0;
+}
+
+                            </code>
+                        </pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code">
+                            <code class="language-java" lang="java">
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Vector;
+
+// TreeNode structure
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    public TreeNode(int x) {
+        val = x;
+        left = null;
+        right = null;
+    }
+}
+
+class Solution {
+    public TreeNode buildTree(Vector&lt;Integer&gt; inorder, Vector&lt;Integer&gt; postorder) {
+        if (inorder.size() != postorder.size()) {
+            return null;
+        }
+
+        // Create a map to store the indices
+        // of elements in the inorder traversal
+        Map&lt;Integer, Integer&gt; hm = new HashMap&lt;&gt;();
+        for (int i = 0; i &lt; inorder.size(); i++) {
+            hm.put(inorder.get(i), i);
+        }
+
+        // Call the recursive function
+        // to build the binary tree
+        return buildTreePostIn(inorder, 0, inorder.size() - 1, postorder, 0,
+                postorder.size() - 1, hm);
+    }
+
+    public TreeNode buildTreePostIn(Vector&lt;Integer&gt; inorder, int is, int ie,
+                                     Vector&lt;Integer&gt; postorder, int ps, int pe, Map&lt;Integer, Integer&gt; hm) {
+
+        // Base case: If the subtree
+        // is empty, return null
+        if (ps &gt; pe || is &gt; ie) {
+            return null;
+        }
+
+        // Create a new TreeNode
+        // with the root value from postorder
+        TreeNode root = new TreeNode(postorder.get(pe));
+
+        // Find the index of the root
+        // value in inorder traversal
+        int inRoot = hm.get(postorder.get(pe));
+
+        // Number of nodes in the left subtree
+        int numsLeft = inRoot - is;
+
+        // Recursively build the
+        // left and right subtrees
+        root.left = buildTreePostIn(inorder, is, inRoot - 1, postorder,
+                ps, ps + numsLeft - 1, hm);
+
+        root.right = buildTreePostIn(inorder, inRoot + 1, ie, postorder,
+                ps + numsLeft, pe - 1, hm);
+
+        // Return the root of
+        // the constructed subtree
+        return root;
+    }
+}
+
+// Function to print the
+// inorder traversal of a tree
+class TreeTraversal {
+    public static void printInorder(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        printInorder(root.left);
+        System.out.print(root.val + " ");
+        printInorder(root.right);
+    }
+}
+
+public class Main {
+    // Function to print the given vector
+    public static void printVector(Vector&lt;Integer&gt; vec) {
+        for (int i = 0; i &lt; vec.size(); i++) {
+            System.out.print(vec.get(i) + " ");
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        // Example input vectors
+        Vector&lt;Integer&gt; inorder = new Vector&lt;&gt;(Vector.of(40, 20, 50, 10, 60, 30));
+        Vector&lt;Integer&gt; postorder = new Vector&lt;&gt;(Vector.of(40, 50, 20, 60, 30, 10));
+
+        // Display the input vectors
+        System.out.print("Inorder Vector: ");
+        printVector(inorder);
+
+        System.out.print("Postorder Vector: ");
+        printVector(postorder);
+
+        Solution sol = new Solution();
+
+        // Build the binary tree and
+        // print its inorder traversal
+        TreeNode root = sol.buildTree(inorder, postorder);
+
+        System.out.println("Inorder of Unique Binary Tree Created: ");
+        TreeTraversal.printInorder(root);
+        System.out.println();
+    }
+}
+                            </code>
+                        </pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code">
+                            <code class="language-python" lang="python">
+from typing import List
+
+# TreeNode class definition
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+class Solution:
+    def buildTree(self, inorder: List[int], postorder: List[int]) -&gt; TreeNode:
+        """
+        Function to build a binary tree
+        from inorder and postorder traversals
+        """
+        if len(inorder) != len(postorder):
+            return None
+
+        # Create a map to store the indices
+        # of elements in the inorder traversal
+        hm = {val: i for i, val in enumerate(inorder)}
+
+        # Call the recursive function
+        # to build the binary tree
+        return self.buildTreePostIn(inorder, 0, len(inorder) - 1, postorder, 0,
+                                     len(postorder) - 1, hm)
+
+    def buildTreePostIn(self, inorder: List[int], is_, ie, postorder: List[int], ps, pe, hm):
+        """
+        Recursive function to build a binary
+        tree from inorder and postorder traversals
+        """
+        # Base case: If the subtree
+        # is empty, return None
+        if ps &gt; pe or is_ &gt; ie:
+            return None
+
+        # Create a new TreeNode
+        # with the root value from postorder
+        root = TreeNode(postorder[pe])
+
+        # Find the index of the root
+        # value in inorder traversal
+        inRoot = hm[postorder[pe]]
+
+        # Number of nodes in the left subtree
+        numsLeft = inRoot - is_
+
+        # Recursively build the
+        # left and right subtrees
+        root.left = self.buildTreePostIn(inorder, is_, inRoot - 1, postorder,
+                                         ps, ps + numsLeft - 1, hm)
+
+        root.right = self.buildTreePostIn(inorder, inRoot + 1, ie, postorder,
+                                          ps + numsLeft, pe - 1, hm)
+
+        # Return the root of
+        # the constructed subtree
+        return root
+
+# Function to print the
+# inorder traversal of a tree
+def printInorder(root):
+    if not root:
+        return
+    printInorder(root.left)
+    print(root.val, end=" ")
+    printInorder(root.right)
+
+# Function to print the given list
+def printList(lst):
+    for item in lst:
+        print(item, end=" ")
+    print()
+
+# Example input lists
+inorder = [40, 20, 50, 10, 60, 30]
+postorder = [40, 50, 20, 60, 30, 10]
+
+# Display the input lists
+print("Inorder List: ", end="")
+printList(inorder)
+
+print("Postorder List: ", end="")
+printList(postorder)
+
+sol = Solution()
+
+# Build the binary tree and
+# print its inorder traversal
+root = sol.buildTree(inorder, postorder)
+
+print("Inorder of Unique Binary Tree Created:")
+printInorder(root)
+print()
+
+                           </code>
+                        </pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code">
+                            <code class="language-javascript" lang="javascript">
+// TreeNode structure
+class TreeNode {
+    constructor(x) {
+        this.val = x;
+        this.left = null;
+        this.right = null;
+    }
+}
+
+class Solution {
+    // Function to build a binary tree
+    // from inorder and postorder traversals
+    buildTree(inorder, postorder) {
+        if (inorder.length !== postorder.length) {
+            return null;
+        }
+
+        // Create a map to store the indices
+        // of elements in the inorder traversal
+        const hm = new Map();
+        inorder.forEach((val, index) =&gt; {
+            hm.set(val, index);
+        });
+
+        // Call the recursive function
+        // to build the binary tree
+        return this.buildTreePostIn(inorder, 0, inorder.length - 1, postorder, 0,
+            postorder.length - 1, hm);
+    }
+
+    // Recursive function to build a binary
+    // tree from inorder and postorder traversals
+    buildTreePostIn(inorder, is, ie, postorder, ps, pe, hm) {
+        // Base case: If the subtree
+        // is empty, return null
+        if (ps &gt; pe || is &gt; ie) {
+            return null;
+        }
+
+        // Create a new TreeNode
+        // with the root value from postorder
+        const root = new TreeNode(postorder[pe]);
+
+        // Find the index of the root
+        // value in inorder traversal
+        const inRoot = hm.get(postorder[pe]);
+
+        // Number of nodes in the left subtree
+        const numsLeft = inRoot - is;
+
+        // Recursively build the
+        // left and right subtrees
+        root.left = this.buildTreePostIn(inorder, is, inRoot - 1, postorder,
+            ps, ps + numsLeft - 1, hm);
+
+        root.right = this.buildTreePostIn(inorder, inRoot + 1, ie, postorder,
+            ps + numsLeft, pe - 1, hm);
+
+        // Return the root of
+        // the constructed subtree
+        return root;
+    }
+}
+
+// Function to print the
+// inorder traversal of a tree
+function printInorder(root) {
+    if (!root) {
+        return;
+    }
+    printInorder(root.left);
+    console.log(root.val + " ");
+    printInorder(root.right);
+}
+
+// Function to print the given array
+function printArray(arr) {
+    arr.forEach(element =&gt; {
+        console.log(element + " ");
+    });
+    console.log();
+}
+
+// Example input arrays
+const inorder = [40, 20, 50, 10, 60, 30];
+const postorder = [40, 50, 20, 60, 30, 10];
+
+// Display the input arrays
+console.log("Inorder Array: ");
+printArray(inorder);
+
+console.log("Postorder Array: ");
+printArray(postorder);
+
+const sol = new Solution();
+
+// Build the binary tree and
+// print its inorder traversal
+const root = sol.buildTree(inorder, postorder);
+
+console.log("Inorder of Unique Binary Tree Created: ");
+printInorder(root);
+
+                            </code>
+                        </pre>
+</div>
+<span><strong>Output:</strong> Inorder Vector: 40 20 50 10 60 30 </span>
+<span>Postorder Vector: 40 50 20 60 30 10</span>
+<span>Inorder of Unique Binary Tree Created: 40 20 50 10 60 30</span>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+                        Complexity Analysis
+                    </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity  Here -->
+<p><strong>Time Complexity: O(N)</strong>
+                     where N is the number of nodes in the Binary Tree. This is because each node is processed and visited exactly once.
+                     <ol><li>The algorithm processes each element in the inorder traversal and for each element it performs constant-time operations (lookup in the hashmap, recursive calls and variable operations).</li></ol></p>
+<p><strong>Space Complexity: O(N + log<sub>2</sub>N)</strong>   
+					where N is the number of elements in the iwhere N is the number of nodes in the Binary Tree. 
+					<ol><li>This complexity arises from the space used by the recursion stack during the recursive calls. In the worst case, the maximum depth of the recursion stack would be equal to the height of the Binary Tree and in the optimal case the recursion stack complexity would be O(log<sub>2</sub>N).</li></ol>
+</p>
+</p></details>
+</div>
+</details>
+</div>
+<!-- This is Video Explination Drop-Down -->
+<div class="dsa_article_youtube_video" id="dsa_article_video_explanation">
+<details>
+<summary class="main-summary">
+<span>
+                Video Explanation
+            </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="yt-video-wrapper">
+<!-- Insert iframe embed Link of Youtube Video-->
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" frameborder="0" height="315" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/LgLRTaEMRVc?si=U-R2dYSjqAQJcLwk" title="YouTube video player" width="560"></iframe>
+</div>
+</details>
+</div>
+<blockquote class="wp-block-quote">
+    Special thanks to <strong><a href="https://www.linkedin.com/in/gauri-tomar-005048268">Gauri Tomar</a></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam,<strong><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/"> please check out this article</a></strong>
+</blockquote>
+<script>
+
+    const codeSections = document.querySelectorAll('.code-section');
+
+    // Get last selected language from localStorage or set default value
+    let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+    codeSections.forEach((section, sectionIndex) => {
+        const codeTabs = section.querySelectorAll('.code-tab');
+        const codeBlocks = section.querySelectorAll('.code-block');
+        const copyBtn = section.querySelector('.copy-btn');
+
+        codeTabs.forEach((tab) => {
+            tab.addEventListener('click', () => {
+                codeTabs.forEach((t) => {
+                    t.classList.remove('dsa_article_code_active');
+                });
+                tab.classList.add('dsa_article_code_active');
+
+                const lang = tab.dataset.lang;
+                const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+                codeBlocks.forEach((block) => {
+                    if (block === activeBlock) {
+                        block.classList.add('dsa_article_code_active');
+                    } else {
+                        block.classList.remove('dsa_article_code_active');
+                    }
+                });
+
+                // Update last selected language for all sections and store in localStorage
+                lastSelectedLanguage = lang;
+                localStorage.setItem('lastSelectedLanguage', lang);
+                codeSections.forEach((otherSection, otherIndex) => {
+                    if (otherIndex !== sectionIndex) {
+                        const otherTabs = otherSection.querySelectorAll('.code-tab');
+                        otherTabs.forEach((otherTab) => {
+                            if (otherTab.dataset.lang === lang) {
+                                otherTab.classList.add('dsa_article_code_active');
+                            } else {
+                                otherTab.classList.remove('dsa_article_code_active');
+                            }
+                        });
+                        const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+                        const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+                        otherCodeBlocks.forEach((block) => {
+                            if (block === otherActiveBlock) {
+                                block.classList.add('dsa_article_code_active');
+                            } else {
+                                block.classList.remove('dsa_article_code_active');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+        // Handle copy button click event
+        copyBtn.addEventListener('click', () => {
+            const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+            navigator.clipboard.writeText(activeBlock.innerText);
+            copyBtn.classList.add('dsa_article_code_active');
+            setTimeout(() => {
+                copyBtn.classList.remove('dsa_article_code_active');
+            }, 1000);
+        });
+    });
+
+    // Set initial state of the tabs
+    codeSections.forEach((section) => {
+        const codeTabs = section.querySelectorAll('.code-tab');
+        const codeBlocks = section.querySelectorAll('.code-block');
+
+        codeTabs.forEach((tab) => {
+            if (tab.dataset.lang === lastSelectedLanguage) {
+                tab.classList.add('dsa_article_code_active');
+            } else {
+                tab.classList.remove('dsa_article_code_active');
+            }
+        });
+
+        codeBlocks.forEach((block) => {
+            if (block.dataset.lang === lastSelectedLanguage) {
+                block.classList.add('dsa_article_code_active');
+            } else {
+                block.classList.remove('dsa_article_code_active');
+            }
+        });
+    });
+</script>
+<link href="assets/4237ffca7ce6aadb438c457e0a675b12.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+<script src="index.js"></script>
+<script>hljs.highlightAll();</script>
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock && activeBlock.innerText) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

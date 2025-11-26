@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Print Root to Node Path in a Binary Tree</title>
+<link href="assets/34bd07407ad1de576cba1f67651fa31a" rel="stylesheet"/>
+<style>
+        /* ==========================================================================
+           1. CSS Variables (Theme) - Utilitarian Modern
+           ========================================================================== */
+        :root {
+            /* Default to Light Theme */
+            --primary-color: #3b82f6; /* Blue 500 */
+            --primary-hover: #2563eb; /* Blue 600 */
+            
+            --bg-body: #f8fafc; /* Slate 50 */
+            --bg-surface: #ffffff; /* White */
+            --bg-subtle: #f1f5f9; /* Slate 100 */
+            
+            --border-color: #e2e8f0; /* Slate 200 */
+            
+            --text-primary: #0f172a; /* Slate 900 */
+            --text-secondary: #334155; /* Slate 700 */
+            --text-muted: #64748b; /* Slate 500 */
+            
+            --link-color: #2563eb; /* Blue 600 */
+            --link-hover: #3b82f6; /* Blue 500 */
+
+            --code-bg: #f1f5f9; /* Slate 100 */
+            --code-text: #0f172a; /* Slate 900 */
+
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 0 25px -5px rgba(59, 130, 246, 0.25);
+            
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+        }
+
+        /* Dark Theme Support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-body: #0f172a; /* Slate 900 */
+                --bg-surface: #1e293b; /* Slate 800 */
+                --bg-subtle: #334155; /* Slate 700 */
+                
+                --border-color: #334155;
+                
+                --text-primary: #f8fafc; /* Slate 50 */
+                --text-secondary: #cbd5e1; /* Slate 300 */
+                --text-muted: #94a3b8; /* Slate 400 */
+                
+                --link-color: #60a5fa; /* Blue 400 */
+                --link-hover: #93c5fd; /* Blue 300 */
+
+                --code-bg: #020617; /* Slate 950 */
+                --code-text: #f8fafc;
+            }
+        }
+
+        /* ==========================================================================
+           2. Base & Reset
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ==========================================================================
+           3. Layout
+           ========================================================================== */
+        .container {
+            max-width: 800px; /* Optimal reading width */
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        /* Enhanced hover for desktop only */
+        @media (hover: hover) and (pointer: fine) {
+            .container:hover {
+                transform: translateY(-4px);
+                border-color: var(--primary-color);
+                box-shadow: var(--shadow-hover);
+            }
+        }
+
+        /* ==========================================================================
+           4. Typography
+           ========================================================================== */
+        h1 {
+            color: var(--text-primary);
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+        
+        h2, h3, h4 {
+            color: var(--text-secondary);
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.25em;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        /* ==========================================================================
+           5. Media
+           ========================================================================== */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            display: block;
+            margin: 1.5rem auto;
+        }
+
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            margin: 1.5rem 0;
+            border-radius: var(--radius-md);
+            background-color: var(--bg-subtle);
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ==========================================================================
+           6. Code Blocks
+           ========================================================================== */
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: inherit;
+        }
+
+        /* ==========================================================================
+           7. Code Tabs
+           ========================================================================== */
+        .code-section {
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .code-tabs {
+            display: flex;
+            background-color: var(--bg-subtle);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .code-tab {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .code-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            padding: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-muted);
+        }
+        
+        .copy-btn:hover svg {
+            fill: var(--text-primary);
+        }
+
+        .code-content {
+            background-color: var(--code-bg);
+        }
+        
+        .code-content pre {
+            margin: 0;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* ==========================================================================
+           8. Accordions / Details
+           ========================================================================== */
+        details {
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background-color: var(--bg-surface);
+            transition: box-shadow 0.2s;
+        }
+        
+        details:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1rem;
+            background-color: var(--bg-subtle);
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary:hover {
+            background-color: #475569; /* Slate 600 */
+        }
+        
+        /* Arrow icon rotation */
+        summary .arrow-svg {
+            transition: transform 0.3s ease;
+            width: 20px;
+            height: 20px;
+            fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
+        }
+        
+        /* Only rotate the arrow of the *active* details element */
+        details[open] > summary .arrow-svg {
+            transform: rotate(90deg);
+            fill: var(--primary-color);
+        }
+
+        .common-drops,
+        .atricle_example_content,
+        details > :not(summary) {
+            padding: 0.5rem;
+            background-color: var(--bg-surface);
+        }
+
+        /* Nested details */
+        .secondary-details {
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+        
+        .secondary-summary {
+            background-color: rgba(51, 65, 85, 0.3); /* Semi-transparent slate-700 */
+            font-size: 0.95rem;
+        }
+        
+        .secondary-summary:hover {
+            background-color: var(--bg-subtle);
+        }
+        
+        .opacity-75 {
+            opacity: 0.75;
+        }
+
+        /* ==========================================================================
+           9. Practice & Disclaimer
+           ========================================================================== */
+        .practice, .new-disclaimer {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: var(--bg-subtle);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+        
+        .problem-buttons a {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+        }
+        
+        .problem-buttons a:hover {
+            background-color: var(--primary-hover);
+            text-decoration: none;
+        }
+
+        /* ==========================================================================
+           10. Utilities
+           ========================================================================== */
+        .problem-buttons img,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article,
+        .has-text-align-center {
+            display: none;
+        }
+        
+        .arrow-svg {
+            display: inline-block; /* Ensure arrows are visible */
+        }
+
+        /* ==========================================================================
+           11. Responsive (Full Page Mobile)
+           ========================================================================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+
+            .container {
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 0.5rem;
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                text-align: left;
+            }
+
+            .code-tabs {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 2px; /* Space for scrollbar */
+            }
+            
+            .code-tab {
+                flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Print Root to Node Path in a Binary Tree</h1>
+</header>
+<article>
+<p><strong>Problem Statement: </strong> Given a Binary Tree and a reference to a root belonging to it. Return the path from the root node to the given leaf node.
+<ol><li>No two nodes in the tree have the same data value.</li><li>It is assured that the given node is present and a path always exists.</li></ol></p>
+<div id="article_examples">
+<details class="article_example_details">
+<summary class="article_example_summary">
+<span><strong>
+                    Examples
+                </strong>
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="atricle_example_content">
+<pre class="wp-block-preformatted">
+                <span><strong>Example 1:</strong></span>
+				<span><strong>Input:</strong>Binary Tree: 1 2 3 4 5 -1 -1 -1 -1, Node: 7
+				</span>
+				<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/7f88e528eac713f911503043b9ee95b0" width="439"/></figure>
+				<span><strong>Output:</strong>[1, 2, 5, 7]</span>
+				<span><strong>Explanation: </strong></span>
+				<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/d7dfaa1452fd82ea9e55f7152b96c7d2" width="439"/></figure>
+				<span><strong>Example 2:</strong></span>
+				<span><strong>Input:</strong>Binary Tree: [1, 2, 3, -1, -1, 4, 5, -1, -1, 6]
+				</span>
+				<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/b9165c99dd648e0d3204d255abad14d3" width="439"/></figure>
+				<span><strong>Output :</strong> [1, 3, 5, 6]</span>
+				<span><strong>Explanation: </strong></span>
+				<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/5e88e93387b8989bf21b488dba904d9d" width="439"/></figure>
+				
+            </pre>
+</div>
+</details>
+</div>
+<!-- This is Practice Section-->
+<div class="practice">
+<span><strong>Practice: </strong></span>
+<div class="problem-buttons">
+<!-- Add Problem Link inside href -->
+<a href="https://www.codingninjas.com/studio/problems/all-root-to-leaf-paths-in-binary-tree._983599?utm_source=striver&amp;utm_medium=website&amp;utm_campaign=a_zcoursetuf" rel="noopener" target="_blank">
+<span>Solve Problem</span>
+<img alt="code-studio" src="assets/20f60e7969e701b07a63accd93ffe638"/>
+</a>
+</div>
+<!--<div class="problem-buttons">
+         Add Problem Link inside href 
+        <a href="" target="_blank" rel="noopener">
+            <span>Solve Problem</span>
+            <img src="https://cdn.iconscout.com/icon/free/png-256/free-leetcode-3521542-2944960.png?f=webp"
+                alt="leetcode">
+        </a>
+    </div>-->
+</div>
+<p class="new-disclaimer"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out
+        yourself first. </em></p>
+<div id="brute-force-approach">
+<details>
+<summary class="main-summary">
+<span>
+                Optimal Approach 
+            </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+                        Algorithm / Intuition
+                    </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition of Brute Force Apporach Here -->
+<p>To find the path from the root to the given node in the tree we use a Depth-First Traversal. We initialise a vector to store the current path and recursively travel to each node in the tree. At each step, we check if the current node is null, if it is we return false and if the data value of the current node is equal to the given node, we return true signifying the end of the traversal search.</p>
+<p><figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/0e4c5b12fa50ed461b23b092c5d4fc8d" width="439"/></figure></p>
+<p>During the recursive calls, we append the current node’s data value to the vector and explore the left and right children. We backtrack if the target value is not found as the children return ‘false’ and remove the last node from the path vector. In the end, we return the vector containing the path from the root to the given node.</p>
+<p><strong>Algorithm:</strong></p>
+<p><strong>Step 1:</strong>Initialise an empty vector to store the current path.</p>
+<p><strong>Step 2:</strong> Initialise a recursive function to explore the Binary Tree using Depth First Search. Starting from the root node, we traverse the tree using the inorder sequence. </p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/aa6bb0e9820b2461dcff8743df70fd42" width="439"/></figure>
+<p><strong>Base Case:</strong> If the current node is null then we return false, indicating the end of the path.
+                    If the current node’s data value is equal to the given node then we return the true, signifying the completion of the path.</p>
+<p><strong>Step 3: Recursive Calls: </strong>
+<ol><li>During the recursive exploration, the recursive function appends the current node's data value to the vector arr.</li><li>It checks if the current node's value matches the target value x. If it does, the function returns true, indicating the completion of the path to the target node.</li><li>We then call the function on the left and right children of the current node.</li></ol></p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/5226fae5bf2479207836a97612d6791b" width="439"/></figure>
+<p><strong>Step 4: Backtracking: </strong>
+<ol><li>If the target value x is not found in the current path, the function backtracks by removing the last node from the path vector arr.</li><li>This means the current node is not part of the valid path from the root to the given node ensuring that the algorithm explores all possible paths and doesn't miss any valid routes to the target node.</li></ol></p>
+<p><strong>Step 5:</strong> In the end, we return the vector containing the path from the root to the given node.</p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+                        Code
+                    </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code">
+                            <code class="language-cpp" lang="cpp">
+#include &lt;iostream&gt;
+#include &lt;unordered_map&gt;
+#include &lt;vector&gt;
+#include &lt;queue&gt;
+
+using namespace std;
+
+// TreeNode structure
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+
+class Solution {
+public:
+    // Function to find the path from the
+    // root to a given node with value 'x'
+    bool getPath(TreeNode* root, vector&lt;int&gt;&amp; arr, int x) {
+        // Base case: If the current
+        // node is null, return false
+        if (!root) {
+            return false;
+        }
+
+        // Add the current node's
+        // value to the path vector
+        arr.push_back(root-&gt;val);
+
+        // If the current node's value is equal
+        // to the target value 'x', return true
+        if (root-&gt;val == x) {
+            return true;
+        }
+
+        // Recursively search for the target value
+        // 'x' in the left and right subtrees
+        if (getPath(root-&gt;left, arr, x)
+            || getPath(root-&gt;right, arr, x)) {
+            return true;
+        }
+
+        // If the target value 'x' is not found
+        // in the current path, backtrack
+        arr.pop_back();
+        return false;
+    }
+
+    // Function to find and return the path from
+    // the root to a given node with value 'B'
+    vector&lt;int&gt; solve(TreeNode* A, int B) {
+        // Initialize an empty
+        // vector to store the path
+        vector&lt;int&gt; arr;
+
+        // If the root node is null,
+        // return the empty path vector
+        if (A == NULL) {
+            return arr;
+        }
+
+        // Call the getPath function to find
+        // the path to the node with value 'B'
+        getPath(A, arr, B);
+
+        // Return the path vector
+        return arr;
+    }
+};
+
+int main() {
+    TreeNode* root = new TreeNode(3);
+    root-&gt;left = new TreeNode(5);
+    root-&gt;right = new TreeNode(1);
+    root-&gt;left-&gt;left = new TreeNode(6);
+    root-&gt;left-&gt;right = new TreeNode(2);
+    root-&gt;right-&gt;left = new TreeNode(0);
+    root-&gt;right-&gt;right = new TreeNode(8);
+    root-&gt;left-&gt;right-&gt;left = new TreeNode(7);
+    root-&gt;left-&gt;right-&gt;right = new TreeNode(4);
+
+    Solution sol;
+
+    int targetLeafValue = 7;
+
+    vector&lt;int&gt; path = sol.solve(root, targetLeafValue);
+
+    cout &lt;&lt; "Path from root to leaf with value " &lt;&lt;
+        targetLeafValue &lt;&lt; ": ";
+    for (int i = 0; i &lt; path.size(); ++i) {
+        cout &lt;&lt; path[i];
+        if (i &lt; path.size() - 1) {
+            cout &lt;&lt; " -&gt; ";
+        }
+    }
+
+    return 0;
+}
+                            </code>
+                        </pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code">
+                            <code class="language-java" lang="java">
+import java.util.ArrayList;
+import java.util.List;
+
+// TreeNode structure
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    public TreeNode(int x) {
+        val = x;
+        left = null;
+        right = null;
+    }
+}
+
+public class Solution {
+    // Function to find the path from the
+    // root to a given node with value 'x'
+    public boolean getPath(TreeNode root, List&lt;Integer&gt; arr, int x) {
+        // Base case: If the current
+        // node is null, return false
+        if (root == null) {
+            return false;
+        }
+
+        // Add the current node's
+        // value to the path list
+        arr.add(root.val);
+
+        // If the current node's value is equal
+        // to the target value 'x', return true
+        if (root.val == x) {
+            return true;
+        }
+
+        // Recursively search for the target value
+        // 'x' in the left and right subtrees
+        if (getPath(root.left, arr, x) || getPath(root.right, arr, x)) {
+            return true;
+        }
+
+        // If the target value 'x' is not found
+        // in the current path, backtrack
+        arr.remove(arr.size() - 1);
+        return false;
+    }
+
+    // Function to find and return the path from
+    // the root to a given node with value 'B'
+    public List&lt;Integer&gt; solve(TreeNode A, int B) {
+        // Initialize an empty
+        // list to store the path
+        List&lt;Integer&gt; arr = new ArrayList&lt;&gt;();
+
+        // If the root node is null,
+        // return the empty path list
+        if (A == null) {
+            return arr;
+        }
+
+        // Call the getPath function to find
+        // the path to the node with value 'B'
+        getPath(A, arr, B);
+
+        // Return the path list
+        return arr;
+    }
+
+    public static void main(String[] args) {
+        TreeNode root = new TreeNode(3);
+        root.left = new TreeNode(5);
+        root.right = new TreeNode(1);
+        root.left.left = new TreeNode(6);
+        root.left.right = new TreeNode(2);
+        root.right.left = new TreeNode(0);
+        root.right.right = new TreeNode(8);
+        root.left.right.left = new TreeNode(7);
+        root.left.right.right = new TreeNode(4);
+
+        Solution sol = new Solution();
+
+        int targetLeafValue = 7;
+
+        List&lt;Integer&gt; path = sol.solve(root, targetLeafValue);
+
+        System.out.print("Path from root to leaf with value " +
+                targetLeafValue + ": ");
+        for (int i = 0; i &lt; path.size(); ++i) {
+            System.out.print(path.get(i));
+            if (i &lt; path.size() - 1) {
+                System.out.print(" -&gt; ");
+            }
+        }
+    }
+}
+                            </code>
+                        </pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code">
+                            <code class="language-python" lang="python">
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+class Solution:
+    def getPath(self, root, arr, x):
+        """
+        Function to find the path from the
+        root to a given node with value 'x'
+        """
+        # Base case: If the current
+        # node is None, return False
+        if not root:
+            return False
+
+        # Add the current node's
+        # value to the path list
+        arr.append(root.val)
+
+        # If the current node's value is equal
+        # to the target value 'x', return True
+        if root.val == x:
+            return True
+
+        # Recursively search for the target value
+        # 'x' in the left and right subtrees
+        if self.getPath(root.left, arr, x) or self.getPath(root.right, arr, x):
+            return True
+
+        # If the target value 'x' is not found
+        # in the current path, backtrack
+        arr.pop()
+        return False
+
+    def solve(self, A, B):
+        """
+        Function to find and return the path from
+        the root to a given node with value 'B'
+        """
+        # Initialize an empty
+        # list to store the path
+        arr = []
+
+        # If the root node is None,
+        # return the empty path list
+        if not A:
+            return arr
+
+        # Call the getPath function to find
+        # the path to the node with value 'B'
+        self.getPath(A, arr, B)
+
+        # Return the path list
+        return arr
+
+if __name__ == "__main__":
+    root = TreeNode(3)
+    root.left = TreeNode(5)
+    root.right = TreeNode(1)
+    root.left.left = TreeNode(6)
+    root.left.right = TreeNode(2)
+    root.right.left = TreeNode(0)
+    root.right.right = TreeNode(8)
+    root.left.right.left = TreeNode(7)
+    root.left.right.right = TreeNode(4)
+
+    sol = Solution()
+
+    target_leaf_value = 7
+
+    path = sol.solve(root, target_leaf_value)
+
+    print(f"Path from root to leaf with value {target_leaf_value}: ", end="")
+    for i in range(len(path)):
+        print(path[i], end="")
+        if i &lt; len(path) - 1:
+            print(" -&gt; ", end="")
+                           </code>
+                        </pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code">
+                            <code class="language-javascript" lang="javascript">
+// TreeNode structure
+class TreeNode {
+    constructor(x) {
+        this.val = x;
+        this.left = null;
+        this.right = null;
+    }
+}
+
+class Solution {
+    // Function to find the path from the
+    // root to a given node with value 'x'
+    getPath(root, arr, x) {
+        // Base case: If the current
+        // node is null, return false
+        if (!root) {
+            return false;
+        }
+
+        // Add the current node's
+        // value to the path array
+        arr.push(root.val);
+
+        // If the current node's value is equal
+        // to the target value 'x', return true
+        if (root.val === x) {
+            return true;
+        }
+
+        // Recursively search for the target value
+        // 'x' in the left and right subtrees
+        if (this.getPath(root.left, arr, x) ||
+            this.getPath(root.right, arr, x)) {
+            return true;
+        }
+
+        // If the target value 'x' is not found
+        // in the current path, backtrack
+        arr.pop();
+        return false;
+    }
+
+    // Function to find and return the path from
+    // the root to a given node with value 'B'
+    solve(A, B) {
+        // Initialize an empty
+        // array to store the path
+        const arr = [];
+
+        // If the root node is null,
+        // return the empty path array
+        if (A === null) {
+            return arr;
+        }
+
+        // Call the getPath function to find
+        // the path to the node with value 'B'
+        this.getPath(A, arr, B);
+
+        // Return the path array
+        return arr;
+    }
+}
+
+// Main function
+function main() {
+    const root = new TreeNode(3);
+    root.left = new TreeNode(5);
+    root.right = new TreeNode(1);
+    root.left.left = new TreeNode(6);
+    root.left.right = new TreeNode(2);
+    root.right.left = new TreeNode(0);
+    root.right.right = new TreeNode(8);
+    root.left.right.left = new TreeNode(7);
+    root.left.right.right = new TreeNode(4);
+
+    const sol = new Solution();
+
+    const targetLeafValue = 7;
+
+    const path = sol.solve(root, targetLeafValue);
+
+    console.log("Path from root to leaf with value " +
+        targetLeafValue + ": " + path.join(" -&gt; "));
+}
+
+// Run the main function
+main();
+
+                            </code>
+                        </pre>
+</div>
+<p>
+<strong>Output</strong> 
+                      	Path from root to leaf with value 7: 3 -&gt; 5 -&gt; 2 -&gt; 7
+                    </p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+                        Complexity Analysis
+                    </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity  Here -->
+<p><strong>Time Complexity: O(N)</strong>  where N is the number of nodes in the binary tree as each node of the binary tree is visited exactly once in the inorder traversal.</p>
+<p><strong>Space Complexity: O(N)</strong>  awhere N is the number of nodes in the binary tree. This is because the stack can potentially hold all nodes in the tree when dealing with a skewed tree (all nodes have only one child), consuming space proportional to the number of nodes.
+					<ol><li>O(H): In the average case or for a balanced tree, the maximum number of nodes that could be in the stack at any given time would be roughly the height of the tree hence O(log2N).</li></ol>
+</p>
+</p></details>
+</div>
+</details>
+</div>
+<!-- This is Video Explination Drop-Down -->
+<div class="dsa_article_youtube_video" id="dsa_article_video_explanation">
+<details>
+<summary class="main-summary">
+<span>
+                Video Explanation
+            </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="yt-video-wrapper">
+<!-- Insert iframe embed Link of Youtube Video-->
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" frameborder="0" height="315" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/fmflMqVOC7k?si=ixQFFUT4nmBsiOU_" title="YouTube video player" width="560"></iframe>
+</div>
+</details>
+</div>
+<blockquote class="wp-block-quote">
+    Special thanks to <strong><a href="https://www.linkedin.com/in/gauri-tomar-005048268">Gauri Tomar</a></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam,<strong><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/"> please check out this article</a></strong>
+</blockquote>
+<script>
+
+    const codeSections = document.querySelectorAll('.code-section');
+
+    // Get last selected language from localStorage or set default value
+    let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+    codeSections.forEach((section, sectionIndex) => {
+        const codeTabs = section.querySelectorAll('.code-tab');
+        const codeBlocks = section.querySelectorAll('.code-block');
+        const copyBtn = section.querySelector('.copy-btn');
+
+        codeTabs.forEach((tab) => {
+            tab.addEventListener('click', () => {
+                codeTabs.forEach((t) => {
+                    t.classList.remove('dsa_article_code_active');
+                });
+                tab.classList.add('dsa_article_code_active');
+
+                const lang = tab.dataset.lang;
+                const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+                codeBlocks.forEach((block) => {
+                    if (block === activeBlock) {
+                        block.classList.add('dsa_article_code_active');
+                    } else {
+                        block.classList.remove('dsa_article_code_active');
+                    }
+                });
+
+                // Update last selected language for all sections and store in localStorage
+                lastSelectedLanguage = lang;
+                localStorage.setItem('lastSelectedLanguage', lang);
+                codeSections.forEach((otherSection, otherIndex) => {
+                    if (otherIndex !== sectionIndex) {
+                        const otherTabs = otherSection.querySelectorAll('.code-tab');
+                        otherTabs.forEach((otherTab) => {
+                            if (otherTab.dataset.lang === lang) {
+                                otherTab.classList.add('dsa_article_code_active');
+                            } else {
+                                otherTab.classList.remove('dsa_article_code_active');
+                            }
+                        });
+                        const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+                        const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+                        otherCodeBlocks.forEach((block) => {
+                            if (block === otherActiveBlock) {
+                                block.classList.add('dsa_article_code_active');
+                            } else {
+                                block.classList.remove('dsa_article_code_active');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+        // Handle copy button click event
+        copyBtn.addEventListener('click', () => {
+            const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+            navigator.clipboard.writeText(activeBlock.innerText);
+            copyBtn.classList.add('dsa_article_code_active');
+            setTimeout(() => {
+                copyBtn.classList.remove('dsa_article_code_active');
+            }, 1000);
+        });
+    });
+
+    // Set initial state of the tabs
+    codeSections.forEach((section) => {
+        const codeTabs = section.querySelectorAll('.code-tab');
+        const codeBlocks = section.querySelectorAll('.code-block');
+
+        codeTabs.forEach((tab) => {
+            if (tab.dataset.lang === lastSelectedLanguage) {
+                tab.classList.add('dsa_article_code_active');
+            } else {
+                tab.classList.remove('dsa_article_code_active');
+            }
+        });
+
+        codeBlocks.forEach((block) => {
+            if (block.dataset.lang === lastSelectedLanguage) {
+                block.classList.add('dsa_article_code_active');
+            } else {
+                block.classList.remove('dsa_article_code_active');
+            }
+        });
+    });
+</script>
+<link href="assets/4237ffca7ce6aadb438c457e0a675b12.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+<script src="index.js"></script>
+<script>hljs.highlightAll();</script>
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock && activeBlock.innerText) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

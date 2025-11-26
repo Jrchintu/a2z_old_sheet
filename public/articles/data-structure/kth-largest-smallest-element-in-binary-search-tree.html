@@ -1,0 +1,1865 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kth largest/smallest element in  Binary Search Tree</title>
+<link href="assets/34bd07407ad1de576cba1f67651fa31a" rel="stylesheet"/>
+<style>
+        /* ==========================================================================
+           1. CSS Variables (Theme) - Utilitarian Modern
+           ========================================================================== */
+        :root {
+            /* Default to Light Theme */
+            --primary-color: #3b82f6; /* Blue 500 */
+            --primary-hover: #2563eb; /* Blue 600 */
+            
+            --bg-body: #f8fafc; /* Slate 50 */
+            --bg-surface: #ffffff; /* White */
+            --bg-subtle: #f1f5f9; /* Slate 100 */
+            
+            --border-color: #e2e8f0; /* Slate 200 */
+            
+            --text-primary: #0f172a; /* Slate 900 */
+            --text-secondary: #334155; /* Slate 700 */
+            --text-muted: #64748b; /* Slate 500 */
+            
+            --link-color: #2563eb; /* Blue 600 */
+            --link-hover: #3b82f6; /* Blue 500 */
+
+            --code-bg: #f1f5f9; /* Slate 100 */
+            --code-text: #0f172a; /* Slate 900 */
+
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 0 25px -5px rgba(59, 130, 246, 0.25);
+            
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+        }
+
+        /* Dark Theme Support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-body: #0f172a; /* Slate 900 */
+                --bg-surface: #1e293b; /* Slate 800 */
+                --bg-subtle: #334155; /* Slate 700 */
+                
+                --border-color: #334155;
+                
+                --text-primary: #f8fafc; /* Slate 50 */
+                --text-secondary: #cbd5e1; /* Slate 300 */
+                --text-muted: #94a3b8; /* Slate 400 */
+                
+                --link-color: #60a5fa; /* Blue 400 */
+                --link-hover: #93c5fd; /* Blue 300 */
+
+                --code-bg: #020617; /* Slate 950 */
+                --code-text: #f8fafc;
+            }
+        }
+
+        /* ==========================================================================
+           2. Base & Reset
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ==========================================================================
+           3. Layout
+           ========================================================================== */
+        .container {
+            max-width: 800px; /* Optimal reading width */
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        /* Enhanced hover for desktop only */
+        @media (hover: hover) and (pointer: fine) {
+            .container:hover {
+                transform: translateY(-4px);
+                border-color: var(--primary-color);
+                box-shadow: var(--shadow-hover);
+            }
+        }
+
+        /* ==========================================================================
+           4. Typography
+           ========================================================================== */
+        h1 {
+            color: var(--text-primary);
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+        
+        h2, h3, h4 {
+            color: var(--text-secondary);
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.25em;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        /* ==========================================================================
+           5. Media
+           ========================================================================== */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            display: block;
+            margin: 1.5rem auto;
+        }
+
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            margin: 1.5rem 0;
+            border-radius: var(--radius-md);
+            background-color: var(--bg-subtle);
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ==========================================================================
+           6. Code Blocks
+           ========================================================================== */
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: inherit;
+        }
+
+        /* ==========================================================================
+           7. Code Tabs
+           ========================================================================== */
+        .code-section {
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .code-tabs {
+            display: flex;
+            background-color: var(--bg-subtle);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .code-tab {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .code-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            padding: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-muted);
+        }
+        
+        .copy-btn:hover svg {
+            fill: var(--text-primary);
+        }
+
+        .code-content {
+            background-color: var(--code-bg);
+        }
+        
+        .code-content pre {
+            margin: 0;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* ==========================================================================
+           8. Accordions / Details
+           ========================================================================== */
+        details {
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background-color: var(--bg-surface);
+            transition: box-shadow 0.2s;
+        }
+        
+        details:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1rem;
+            background-color: var(--bg-subtle);
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary:hover {
+            background-color: #475569; /* Slate 600 */
+        }
+        
+        /* Arrow icon rotation */
+        summary .arrow-svg {
+            transition: transform 0.3s ease;
+            width: 20px;
+            height: 20px;
+            fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
+        }
+        
+        /* Only rotate the arrow of the *active* details element */
+        details[open] > summary .arrow-svg {
+            transform: rotate(90deg);
+            fill: var(--primary-color);
+        }
+
+        .common-drops,
+        .atricle_example_content,
+        details > :not(summary) {
+            padding: 0.5rem;
+            background-color: var(--bg-surface);
+        }
+
+        /* Nested details */
+        .secondary-details {
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+        
+        .secondary-summary {
+            background-color: rgba(51, 65, 85, 0.3); /* Semi-transparent slate-700 */
+            font-size: 0.95rem;
+        }
+        
+        .secondary-summary:hover {
+            background-color: var(--bg-subtle);
+        }
+        
+        .opacity-75 {
+            opacity: 0.75;
+        }
+
+        /* ==========================================================================
+           9. Practice & Disclaimer
+           ========================================================================== */
+        .practice, .new-disclaimer {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: var(--bg-subtle);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+        
+        .problem-buttons a {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+        }
+        
+        .problem-buttons a:hover {
+            background-color: var(--primary-hover);
+            text-decoration: none;
+        }
+
+        /* ==========================================================================
+           10. Utilities
+           ========================================================================== */
+        .problem-buttons img,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article,
+        .has-text-align-center {
+            display: none;
+        }
+        
+        .arrow-svg {
+            display: inline-block; /* Ensure arrows are visible */
+        }
+
+        /* ==========================================================================
+           11. Responsive (Full Page Mobile)
+           ========================================================================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+
+            .container {
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 0.5rem;
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                text-align: left;
+            }
+
+            .code-tabs {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 2px; /* Space for scrollbar */
+            }
+            
+            .code-tab {
+                flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Kth largest/smallest element in  Binary Search Tree</h1>
+</header>
+<article>
+<p><strong>Problem Statement: </strong> Given a Binary Search Tree and an integer ‘K’. Find and return the ‘K-th’ smallest and ‘K-th’ largest element in the given Binary Search Tree.
+</p>
+<!-- This is Examples Drop-Down -->
+<div id="article_examples">
+<details class="article_example_details">
+<summary class="article_example_summary">
+<span><strong>
+                    Examples
+                </strong>
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="atricle_example_content">
+<pre class="wp-block-preformatted">
+                <span><strong>Example 1:</strong></span>
+                <span><strong>Input:</strong>Binary Search Tree: 5 3 7 1 4 6 8 -1 2, K =3</span>
+                <figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/6f6748efde62dbe09ee0aceb257e04d5" width="439"/></figure>
+                <span><strong>Output:</strong> 3rd smallest: 3, 3rd largest: 6</span>
+                <span><strong>Explanation: </strong>All the elements of the BST in the sorted order would be: [1, 2, 3, 4, 5, 6, 7, 8]. From this array is it evident that the index of the Kth smallest element would be K-1 and the index of the Kth largest element would be 1-K or (size of elements) - K. Hence 3rd smallest = 3 and 3rd largest = 6.</span>
+                
+                <span><strong>Example 2:</strong></span>
+                <span><strong>Input:</strong>Binary Search Tree: 8 5 12 4 7 10 14 -1 -1 6 -1 -1 -1 13, K = 4
+
+                </span>
+                <!--<figure class="wp-block-image size-full is-resized"><img src="https://static.takeuforward.org/content/lca-tree-image2-kwG05v8u" alt="" class="wp-image-8107" width="439" height="286"/></figure>-->
+                <span><strong>Output :</strong> 4th smallest: 7, 4th largest: 10</span>
+                <span><strong>Explanation: </strong>All the elements of the BST in the sorted order would be: [4, 5, 6, 7, 8, 10, 12, 13, 14]. From this array is it evident that the index of the Kth smallest element would be K-1 and the index of the Kth largest element would be 1-K or (size of elements) - K. Hence 4th smallest = 7 and 4th largest = 10. </span>
+                
+
+            </pre>
+</div>
+</details>
+</div>
+<!-- This is Practice Section-->
+<div class="practice">
+<span><strong>Practice: </strong></span>
+<div class="problem-buttons">
+<!-- Add Problem Link inside href -->
+<a href="https://www.codingninjas.com/studio/problems/kth-smallest-node-in-bst_920441?utm_source=striver&amp;utm_medium=website&amp;utm_campaign=a_zcoursetuf" rel="noopener" target="_blank">
+<span>Solve Problem</span>
+<img alt="code-studio" src="assets/20f60e7969e701b07a63accd93ffe638"/>
+</a>
+</div>
+</div>
+<p class="new-disclaimer"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out yourself first. </em></p>
+<!-- This is Approaches Drop-Down -->
+<div class="dsa_article_dropdown_approachs">
+<!-- Approach - 1 Starts from here -->
+<div id="brute-force-approach">
+<details>
+<summary class="main-summary">
+<span>
+<!-- Change Name Here -->
+                   Brute Force Approach 
+                </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+                            Algorithm / Intuition
+                        </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<p>A brute force approach would be to traverse the BST using an inorder traversal which will get us an array containing all node values in the ascending sorted order. 
+                        Following this traversal, we retrieve the Kth smallest element by accessing the element at index k-1 in the array considering array indices start from 0. Similarly to determine the Kth largest element, we can access it at index array.length - k.</p>
+<p><strong>Algorithm:</strong></p>
+<p><strong>Step 1:</strong> Initialise an array to store the elements of the BST. Traverse the BST using an inorder traversal and store each node’s value in the array.</p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/423eb7cbf41c220e15dc47ebf6f0397b" width="439"/></figure>
+<p><strong>Step 2:</strong>Once the traversal is complete, the array will contain elements in ascending order (due to inorder traversal).
+                        <ol><li>To find the Kth smallest element access the element at index ‘k - 1’ in the array. (As the indices start from 0).</li><li>To find the Kth largest element access the element at index ‘array.length - K’ index.</li></ol></p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/d1735b9fe68512710cd0e53a358c59ee" width="439"/></figure>
+<p><strong>Step 3:</strong>  Return the pair containing the Kth smallest and the Kth largest elements.</p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+                            Code
+                        </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code">
+                                <code class="language-cpp" lang="cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;climits&gt; 
+using namespace std;
+
+// Definition of TreeNode structure
+// for a binary tree node
+struct TreeNode {
+    // Value of the node
+    int val;
+    
+    // Pointer to the left child node
+    TreeNode* left;
+    
+    // Pointer to the right child node
+    TreeNode* right;
+
+    // Constructor to initialize the node with a
+    // value and set left and right pointers to null
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+private:
+    // Inorder traversal to populate
+    // the vector with BST elements
+    void inorder(TreeNode* node, vector&lt;int&gt;&amp; arr){
+        if(!node){
+            return;
+        }
+        // Recursive call to the left subtree
+        inorder(node-&gt;left, arr);
+        
+        // Push the value of current
+        // node into the vector
+        arr.push_back(node-&gt;val);
+        
+        // Recursive call to the right subtree
+        inorder(node-&gt;right, arr);
+        return;
+    }
+public:
+    // Function to find the Kth
+    // smallest and largest elements in BST
+    pair&lt;int, int&gt; findKth(TreeNode* node, int k){
+        // Vector to store the
+        // elements of the BST
+        vector&lt;int&gt; arr;
+        
+        // Perform inorder traversal
+        // to populate the vector
+        inorder(node, arr);
+        
+        // Calculate Kth largest
+        // and smallest elements
+        int kLargest = arr[arr.size() - k];
+        int kSmallest = arr[k-1]; 
+        
+        // Returning a pair containing
+        // Kth smallest and largest elements
+        return make_pair(kSmallest, kLargest);
+    }
+    
+};
+
+
+
+
+// Function to perform an in-order traversal
+// of a binary tree and print its nodes
+void printInOrder(TreeNode* root) {
+    // Check if the current node
+    // is null (base case for recursion)
+    if (root == nullptr) {
+        // If null, return and
+        // terminate the function
+        return;
+    }
+
+    // Recursively call printInOrder
+    // for the left subtree
+    printInOrder(root-&gt;left);
+
+    // Print the value of the current node
+    cout &lt;&lt; root-&gt;val &lt;&lt; " ";
+
+    // Recursively call printInOrder
+    // for the right subtree
+    printInOrder(root-&gt;right);
+}
+
+int main() {
+    // Creating a BST
+    TreeNode* root = new TreeNode(10);
+    root-&gt;left = new TreeNode(5);
+    root-&gt;right = new TreeNode(13);
+    root-&gt;left-&gt;left = new TreeNode(3);
+    root-&gt;left-&gt;left-&gt;left = new TreeNode(2);
+    root-&gt;left-&gt;left-&gt;right = new TreeNode(4);
+    root-&gt;left-&gt;right = new TreeNode(6);
+    root-&gt;left-&gt;right-&gt;right = new TreeNode(9);
+    root-&gt;right-&gt;left = new TreeNode(11);
+    root-&gt;right-&gt;right = new TreeNode(14);
+    
+    cout &lt;&lt; "Binary Search Tree: "&lt;&lt; endl;
+    printInOrder(root);
+    cout &lt;&lt; endl;
+    
+  
+    
+    Solution solution;
+
+    // Find the Kth smallest and largest elements
+    int k = 3; 
+    cout &lt;&lt; "k: "&lt;&lt; k &lt;&lt;endl;
+    pair&lt;int, int&gt; kthElements = solution.findKth(root, k);
+
+    cout &lt;&lt; "Kth smallest element: " &lt;&lt; kthElements.first &lt;&lt; endl;
+    cout &lt;&lt; "Kth largest element: " &lt;&lt; kthElements.second &lt;&lt; endl;
+
+    return 0;
+}
+                                </code>
+                            </pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code">
+                                <code class="language-java" lang="java">
+import java.util.*;
+
+// Definition of TreeNode structure
+// for a binary tree node
+class TreeNode {
+    // Value of the node
+    int val;
+    
+    // Pointer to the left child node
+    TreeNode left;
+    
+    // Pointer to the right child node
+    TreeNode right;
+
+    // Constructor to initialize the node with a
+    // value and set left and right pointers to null
+    TreeNode(int x) {
+        val = x;
+        left = null;
+        right = null;
+    }
+}
+
+class Solution {
+    // Inorder traversal to populate
+    // the vector with BST elements
+    private void inorder(TreeNode node, List<integer> arr) {
+        if (node == null) {
+            return;
+        }
+        // Recursive call to the left subtree
+        inorder(node.left, arr);
+        
+        // Push the value of current
+        // node into the vector
+        arr.add(node.val);
+        
+        // Recursive call to the right subtree
+        inorder(node.right, arr);
+        return;
+    }
+
+    // Function to find the Kth
+    // smallest and largest elements in BST
+    public List<integer> findKth(TreeNode node, int k) {
+        // List to store the
+        // elements of the BST
+        List<integer> arr = new ArrayList&lt;&gt;();
+        
+        // Perform inorder traversal
+        // to populate the vector
+        inorder(node, arr);
+        
+        // Calculate Kth largest
+        // and smallest elements
+        int kLargest = arr.get(arr.size() - k);
+        int kSmallest = arr.get(k - 1); 
+        
+        // Returning a list containing
+        // Kth smallest and largest elements
+        return Arrays.asList(kSmallest, kLargest);
+    }
+}
+
+public class Main {
+    // Function to perform an in-order traversal
+    // of a binary tree and print its nodes
+    private static void printInOrder(TreeNode root) {
+        // Check if the current node
+        // is null (base case for recursion)
+        if (root == null) {
+            // If null, return and
+            // terminate the function
+            return;
+        }
+
+        // Recursively call printInOrder
+        // for the left subtree
+        printInOrder(root.left);
+
+        // Print the value of the current node
+        System.out.print(root.val + " ");
+
+        // Recursively call printInOrder
+        // for the right subtree
+        printInOrder(root.right);
+    }
+
+    public static void main(String[] args) {
+        // Creating a BST
+        TreeNode root = new TreeNode(10);
+        root.left = new TreeNode(5);
+        root.right = new TreeNode(13);
+        root.left.left = new TreeNode(3);
+        root.left.left.left = new TreeNode(2);
+        root.left.left.right = new TreeNode(4);
+        root.left.right = new TreeNode(6);
+        root.left.right.right = new TreeNode(9);
+        root.right.left = new TreeNode(11);
+        root.right.right = new TreeNode(14);
+        
+        System.out.println("Binary Search Tree: ");
+        printInOrder(root);
+        System.out.println();
+
+        Solution solution = new Solution();
+
+        // Find the Kth smallest and largest elements
+        int k = 3; 
+        System.out.println("k: " + k);
+        List<integer> kthElements = solution.findKth(root, k);
+
+        System.out.println("Kth smallest element: " + kthElements.get(0));
+        System.out.println("Kth largest element: " + kthElements.get(1));
+    }
+}
+                                </integer></integer></integer></integer></code>
+                            </pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code">
+                                <code class="language-python" lang="python">
+# Definition of TreeNode structure
+# for a binary tree node
+class TreeNode:
+    # Constructor to initialize the node with a
+    # value and set left and right pointers to null
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+class Solution:
+    # Inorder traversal to populate
+    # the list with BST elements
+    def inorder(self, node, arr):
+        if not node:
+            return
+        # Recursive call to the left subtree
+        self.inorder(node.left, arr)
+        
+        # Append the value of current
+        # node into the list
+        arr.append(node.val)
+        
+        # Recursive call to the right subtree
+        self.inorder(node.right, arr)
+        return
+
+    # Function to find the Kth
+    # smallest and largest elements in BST
+    def findKth(self, node, k):
+        # List to store the
+        # elements of the BST
+        arr = []
+        
+        # Perform inorder traversal
+        # to populate the list
+        self.inorder(node, arr)
+        
+        # Calculate Kth largest
+        # and smallest elements
+        kLargest = arr[len(arr) - k]
+        kSmallest = arr[k - 1]
+        
+        # Returning a tuple containing
+        # Kth smallest and largest elements
+        return (kSmallest, kLargest)
+
+
+# Function to perform an in-order traversal
+# of a binary tree and print its nodes
+def printInOrder(root):
+    # Check if the current node
+    # is null (base case for recursion)
+    if not root:
+        # If null, return and
+        # terminate the function
+        return
+    
+    # Recursively call printInOrder
+    # for the left subtree
+    printInOrder(root.left)
+    
+    # Print the value of the current node
+    print(root.val, end=" ")
+
+    # Recursively call printInOrder
+    # for the right subtree
+    printInOrder(root.right)
+
+# Creating a BST
+root = TreeNode(10)
+root.left = TreeNode(5)
+root.right = TreeNode(13)
+root.left.left = TreeNode(3)
+root.left.left.left = TreeNode(2)
+root.left.left.right = TreeNode(4)
+root.left.right = TreeNode(6)
+root.left.right.right = TreeNode(9)
+root.right.left = TreeNode(11)
+root.right.right = TreeNode(14)
+
+print("Binary Search Tree:")
+printInOrder(root)
+print()
+
+solution = Solution()
+
+# Find the Kth smallest and largest elements
+k = 3
+print("k:", k)
+kthElements = solution.findKth(root, k)
+
+print("Kth smallest element:", kthElements[0])
+print("Kth largest element:", kthElements[1])
+                                </code>
+                            </pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code">
+                            <code class="language-javascript" lang="javascript">
+// Definition of TreeNode structure
+// for a binary tree node
+class TreeNode {
+    // Constructor to initialize the node with a
+    // value and set left and right pointers to null
+    constructor(x) {
+        this.val = x;
+        this.left = null;
+        this.right = null;
+    }
+}
+
+class Solution {
+    // Inorder traversal to populate
+    // the array with BST elements
+    inorder(node, arr){
+        if(!node){
+            return;
+        }
+        // Recursive call to the left subtree
+        this.inorder(node.left, arr);
+        
+        // Push the value of current
+        // node into the array
+        arr.push(node.val);
+        
+        // Recursive call to the right subtree
+        this.inorder(node.right, arr);
+        return;
+    }
+
+    // Function to find the Kth
+    // smallest and largest elements in BST
+    findKth(node, k){
+        // Array to store the
+        // elements of the BST
+        let arr = [];
+        
+        // Perform inorder traversal
+        // to populate the array
+        this.inorder(node, arr);
+        
+        // Calculate Kth largest
+        // and smallest elements
+        let kLargest = arr[arr.length + 1 - k];
+        let kSmallest = arr[k - 1]; 
+        
+        // Returning a pair containing
+        // Kth smallest and largest elements
+        return [kSmallest, kLargest];
+    }
+}
+
+// Function to perform an in-order traversal
+// of a binary tree and print its nodes
+function printInOrder(root) {
+    // Check if the current node
+    // is null (base case for recursion)
+    if (root === null) {
+        // If null, return and
+        // terminate the function
+        return;
+    }
+
+    // Recursively call printInOrder
+    // for the left subtree
+    printInOrder(root.left);
+
+    // Print the value of the current node
+    console.log(root.val + " ");
+
+    // Recursively call printInOrder
+    // for the right subtree
+    printInOrder(root.right);
+}
+
+// Creating a BST
+let root = new TreeNode(10);
+root.left = new TreeNode(5);
+root.right = new TreeNode(13);
+root.left.left = new TreeNode(3);
+root.left.left.left = new TreeNode(2);
+root.left.left.right = new TreeNode(4);
+root.left.right = new TreeNode(6);
+root.left.right.right = new TreeNode(9);
+root.right.left = new TreeNode(11);
+root.right.right = new TreeNode(14);
+
+console.log("Binary Search Tree: ");
+printInOrder(root);
+console.log();
+
+let solution = new Solution();
+
+// Find the Kth smallest and largest elements
+let k = 3;
+console.log("k: ", k);
+let kthElements = solution.findKth(root, k);
+
+console.log("Kth smallest element: ", kthElements[0]);
+console.log("Kth largest element: ", kthElements[1]);
+
+                            </code>
+                        </pre>
+</div>
+<p>
+<strong>Output: </strong>Binary Search Tree: 2 3 4 5 6 9 10 11 13 14 
+                        </p>
+<p>k: 3</p>
+<p>Kth smallest element: 4</p>
+<p>Kth largest element: 11</p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+                            Complexity Analysis
+                        </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p><strong>Time Complexity: O(N)</strong>  where N is the number of nodes in the Binary Search Tree. because traversing the entire BST to perform an inorder traversal takes linear time. We visit each node once resulting in time complexity proportional to the number of nodes in the BST.</p>
+<p><strong>Space Complexity : O(N)</strong> where N is the number of nodes in the Binary Search Tree as additional space is required to store the elements of the BST in an array.
+
+                    </p>
+</details>
+</div>
+</details>
+</div>
+<!-- Approach - 1 Ends here -->
+<!-- Approach - 2 Starts from here -->
+<div id="optimal-approach">
+<details>
+<summary class="main-summary">
+<span>
+                    Optimal Approach 
+                </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+                            Algorithm / Intuition
+                        </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<p>A more efficient approach for finding the K-th smallest and K-th largest elements in a Binary Search Tree (BST) without using extra space would involve an optimised traversal technique directly targeting the K-th elements without storing all elements in an array. We use two traversal methods (inorder and reverse inorder) to find the Kth smallest and largest elements in the given BST. We maintain a counter variable to track the number of visited nodes, stopping when the Kth element is found in each traversal.</p>
+<p><strong>Algorithm for Kth Smallest Element: </strong></p>
+<p><strong>Step 1: </strong> Perform inorder traversal from the root node. At every visited node, increment a counter variable to keep track of visited nodes. Inorder Traversal: Traverse the left subtree, then current node then right subtree.</p>
+<p><strong>Step 2: </strong>When the counter reaches K, store the value of the current node as the Kth smallest.</p>
+<p><strong>Step 3: </strong>Return this value as the Kth smallest.</p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="1000" src="assets/6b0d828f2b2b207320c8edbc42935d0f" width="600"/></figure>
+<p><strong>Algorithm for Kth Largest Element: </strong></p>
+<p><strong>Step 1: </strong> Perform reverse inorder traversal from the root node. At every visited node, increment a counter variable to keep track of visited nodes. Traverse the right subtree, then current node then left subtree.</p>
+<p><strong>Step 2: </strong>When the counter reaches K, store the value of the current node as the Kth smallest.</p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="1000" src="assets/ac98347075de28bd9eeff37646819184" width="600"/></figure>
+<p><strong>Step 3: </strong>Return this value as the Kth largest.</p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+                            Code
+                        </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code">
+                                <code class="language-cpp" lang="cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;climits&gt; 
+using namespace std;
+
+// Definition of TreeNode structure
+// for a binary tree node
+struct TreeNode {
+    // Value of the node
+    int val;
+    
+    // Pointer to the left child node
+    TreeNode* left;
+    
+    // Pointer to the right child node
+    TreeNode* right;
+
+    // Constructor to initialize the node with a
+    // value and set left and right pointers to null
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+private:
+    // Helper function to perform reverse inorder
+    // traversal to find Kth largest element
+    void reverseInorder(TreeNode* node, int&amp; counter, int k, int&amp; kLargest) {
+        if (!node || counter &gt;= k) return;
+
+        // Traverse right subtree
+        reverseInorder(node-&gt;right, counter, k, kLargest);
+
+        // Increment counter after
+        // visiting right subtree
+        counter++;
+
+        // Check if current node
+        // is the Kth largest
+        if (counter == k) {
+            kLargest = node-&gt;val;
+            return;
+        }
+
+        // Traverse left subtree if
+        // Kth largest is not found yet
+        reverseInorder(node-&gt;left, counter, k, kLargest);
+    }
+
+    // Helper function to perform inorder
+    // traversal to find Kth smallest element
+    void inorder(TreeNode* node, int&amp; counter, int k, int&amp; kSmallest) {
+        if (!node || counter &gt;= k) return;
+
+        // Traverse left subtree
+        inorder(node-&gt;left, counter, k, kSmallest);
+
+        // Increment counter after visiting left subtree
+        counter++;
+
+        // Check if current node is the Kth smallest
+        if (counter == k) {
+            kSmallest = node-&gt;val;
+            return;
+        }
+
+        // Traverse right subtree if
+        // Kth smallest is not found yet
+        inorder(node-&gt;right, counter, k, kSmallest);
+    }
+
+public:
+    pair&lt;int, int&gt; findKth(TreeNode* root, int k) {
+        int kSmallest = INT_MIN, kLargest = INT_MIN;
+        // Counter to track visited nodes
+        int counter = 0; 
+
+        // Find Kth smallest element
+        // (perform inorder traversal)
+        inorder(root, counter, k, kSmallest);
+        
+        // Reset counter for Kth largest element
+        counter = 0; 
+        // Find Kth largest element
+        // (perform reverse inorder traversal)
+        reverseInorder(root, counter, k, kLargest);
+
+        return make_pair(kSmallest, kLargest);
+    }
+};
+
+
+
+
+
+// Function to perform an in-order traversal
+// of a binary tree and print its nodes
+void printInOrder(TreeNode* root) {
+    // Check if the current node
+    // is null (base case for recursion)
+    if (root == nullptr) {
+        // If null, return and
+        // terminate the function
+        return;
+    }
+
+    // Recursively call printInOrder
+    // for the left subtree
+    printInOrder(root-&gt;left);
+
+    // Print the value of the current node
+    cout &lt;&lt; root-&gt;val &lt;&lt; " ";
+
+    // Recursively call printInOrder
+    // for the right subtree
+    printInOrder(root-&gt;right);
+}
+
+int main() {
+    // Creating a BST
+    TreeNode* root = new TreeNode(10);
+    root-&gt;left = new TreeNode(5);
+    root-&gt;right = new TreeNode(13);
+    root-&gt;left-&gt;left = new TreeNode(3);
+    root-&gt;left-&gt;left-&gt;left = new TreeNode(2);
+    root-&gt;left-&gt;left-&gt;right = new TreeNode(4);
+    root-&gt;left-&gt;right = new TreeNode(6);
+    root-&gt;left-&gt;right-&gt;right = new TreeNode(9);
+    root-&gt;right-&gt;left = new TreeNode(11);
+    root-&gt;right-&gt;right = new TreeNode(14);
+    
+    cout &lt;&lt; "Binary Search Tree: "&lt;&lt; endl;
+    printInOrder(root);
+    cout &lt;&lt; endl;
+    
+  
+    
+    Solution solution;
+
+    // Find the Kth smallest and largest elements
+    int k = 3; 
+    cout &lt;&lt; "k: "&lt;&lt; k &lt;&lt;endl;
+    pair&lt;int, int&gt; kthElements = solution.findKth(root, k);
+
+    cout &lt;&lt; "Kth smallest element: " &lt;&lt; kthElements.first &lt;&lt; endl;
+    cout &lt;&lt; "Kth largest element: " &lt;&lt; kthElements.second &lt;&lt; endl;
+
+    return 0;
+}
+                                </code>
+                            </pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code">
+                                <code class="language-java" lang="java">
+import java.util.*;
+
+// Definition of TreeNode structure
+// for a binary tree node
+class TreeNode {
+    // Value of the node
+    int val;
+    
+    // Pointer to the left child node
+    TreeNode left;
+    
+    // Pointer to the right child node
+    TreeNode right;
+
+    // Constructor to initialize the node with a
+    // value and set left and right pointers to null
+    TreeNode(int x) {
+        val = x;
+        left = null;
+        right = null;
+    }
+}
+
+class Solution {
+    private void reverseInorder(TreeNode node, int[] counter, int k, int[] kLargest) {
+        if (node == null || counter[0] &gt;= k) return;
+
+        // Traverse right subtree
+        reverseInorder(node.right, counter, k, kLargest);
+
+        // Increment counter after
+        // visiting right subtree
+        counter[0]++;
+
+        // Check if current node
+        // is the Kth largest
+        if (counter[0] == k) {
+            kLargest[0] = node.val;
+            return;
+        }
+
+        // Traverse left subtree if
+        // Kth largest is not found yet
+        reverseInorder(node.left, counter, k, kLargest);
+    }
+
+    private void inorder(TreeNode node, int[] counter, int k, int[] kSmallest) {
+        if (node == null || counter[0] &gt;= k) return;
+
+        // Traverse left subtree
+        inorder(node.left, counter, k, kSmallest);
+
+        // Increment counter after visiting left subtree
+        counter[0]++;
+
+        // Check if current node is the Kth smallest
+        if (counter[0] == k) {
+            kSmallest[0] = node.val;
+            return;
+        }
+
+        // Traverse right subtree if
+        // Kth smallest is not found yet
+        inorder(node.right, counter, k, kSmallest);
+    }
+
+    public int[] findKth(TreeNode root, int k) {
+        int[] kSmallest = new int[]{Integer.MIN_VALUE};
+        int[] kLargest = new int[]{Integer.MIN_VALUE};
+        // Counter to track visited nodes
+        int[] counter = new int[]{0};
+
+        // Find Kth smallest element
+        // (perform inorder traversal)
+        inorder(root, counter, k, kSmallest);
+        
+        // Reset counter for Kth largest element
+        counter[0] = 0; 
+        // Find Kth largest element
+        // (perform reverse inorder traversal)
+        reverseInorder(root, counter, k, kLargest);
+
+        return new int[]{kSmallest[0], kLargest[0]};
+    }
+}
+
+// Function to perform an in-order traversal
+// of a binary tree and print its nodes
+class BinaryTree {
+    // Recursive function to perform in-order traversal
+    private void printInOrder(TreeNode root) {
+        // Check if the current node
+        // is null (base case for recursion)
+        if (root == null) {
+            // If null, return and
+            // terminate the function
+            return;
+        }
+
+        // Recursively call printInOrder
+        // for the left subtree
+        printInOrder(root.left);
+
+        // Print the value of the current node
+        System.out.print(root.val + " ");
+
+        // Recursively call printInOrder
+        // for the right subtree
+        printInOrder(root.right);
+    }
+
+    public static void main(String[] args) {
+        // Creating a BST
+        TreeNode root = new TreeNode(10);
+        root.left = new TreeNode(5);
+        root.right = new TreeNode(13);
+        root.left.left = new TreeNode(3);
+        root.left.left.left = new TreeNode(2);
+        root.left.left.right = new TreeNode(4);
+        root.left.right = new TreeNode(6);
+        root.left.right.right = new TreeNode(9);
+        root.right.left = new TreeNode(11);
+        root.right.right = new TreeNode(14);
+        
+        System.out.println("Binary Search Tree: ");
+        new BinaryTree().printInOrder(root);
+        System.out.println();
+        
+        Solution solution = new Solution();
+
+        // Find the Kth smallest and largest elements
+        int k = 3; 
+        System.out.println("k: " + k);
+        int[] kthElements = solution.findKth(root, k);
+
+        System.out.println("Kth smallest element: " + kthElements[0]);
+        System.out.println("Kth largest element: " + kthElements[1]);
+    }
+}
+                                </code>
+                            </pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code">
+                                <code class="language-python" lang="python">
+                     
+# Definition of TreeNode class
+# for a binary tree node
+class TreeNode:
+    def __init__(self, x):
+        # Value of the node
+        self.val = x
+        
+        # Pointer to the left child node
+        self.left = None
+        
+        # Pointer to the right child node
+        self.right = None
+
+# Solution class to find Kth smallest and largest elements
+class Solution:
+    def __init__(self):
+        pass
+
+    # Helper function to perform reverse inorder
+    # traversal to find Kth largest element
+    def reverse_inorder(self, node, counter, k, k_largest):
+        if not node or counter[0] &gt;= k:
+            return
+        
+        # Traverse right subtree
+        self.reverse_inorder(node.right, counter, k, k_largest)
+
+        # Increment counter after
+        # visiting right subtree
+        counter[0] += 1
+
+        # Check if current node
+        # is the Kth largest
+        if counter[0] == k:
+            k_largest[0] = node.val
+            return
+
+        # Traverse left subtree if
+        # Kth largest is not found yet
+        self.reverse_inorder(node.left, counter, k, k_largest)
+
+    # Helper function to perform inorder
+    # traversal to find Kth smallest element
+    def inorder(self, node, counter, k, k_smallest):
+        if not node or counter[0] &gt;= k:
+            return
+
+        # Traverse left subtree
+        self.inorder(node.left, counter, k, k_smallest)
+
+        # Increment counter after visiting left subtree
+        counter[0] += 1
+
+        # Check if current node is the Kth smallest
+        if counter[0] == k:
+            k_smallest[0] = node.val
+            return
+
+        # Traverse right subtree if
+        # Kth smallest is not found yet
+        self.inorder(node.right, counter, k, k_smallest)
+
+    def find_kth(self, root, k):
+        k_smallest = [float('inf')]
+        k_largest = [float('-inf')]
+        # Counter to track visited nodes
+        counter = [0]
+
+        # Find Kth smallest element
+        # (perform inorder traversal)
+        self.inorder(root, counter, k, k_smallest)
+        
+        # Reset counter for Kth largest element
+        counter[0] = 0
+        # Find Kth largest element
+        # (perform reverse inorder traversal)
+        self.reverse_inorder(root, counter, k, k_largest)
+
+        return k_smallest[0], k_largest[0]
+
+
+# Function to perform an in-order traversal
+# of a binary tree and print its nodes
+def print_in_order(root):
+    # Check if the current node
+    # is null (base case for recursion)
+    if not root:
+        # If null, return and
+        # terminate the function
+        return
+    
+    # Recursively call printInOrder
+    # for the left subtree
+    print_in_order(root.left)
+
+    # Print the value of the current node
+    print(root.val, end=" ")
+
+    # Recursively call printInOrder
+    # for the right subtree
+    print_in_order(root.right)
+
+# Creating a BST
+root = TreeNode(10)
+root.left = TreeNode(5)
+root.right = TreeNode(13)
+root.left.left = TreeNode(3)
+root.left.left.left = TreeNode(2)
+root.left.left.right = TreeNode(4)
+root.left.right = TreeNode(6)
+root.left.right.right = TreeNode(9)
+root.right.left = TreeNode(11)
+root.right.right = TreeNode(14)
+
+print("Binary Search Tree:")
+print_in_order(root)
+print()
+
+solution = Solution()
+
+# Find the Kth smallest and largest elements
+k = 3
+print("k:", k)
+kth_elements = solution.find_kth(root, k)
+
+print("Kth smallest element:", kth_elements[0])
+print("Kth largest element:", kth_elements[1])
+                                </code>
+                            </pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code">
+                            <code class="language-javascript" lang="javascript">
+// Definition of TreeNode structure
+// for a binary tree node
+class TreeNode {
+    // Constructor to initialize the node with a
+    // value and set left and right pointers to null
+    constructor(x) {
+        this.val = x;
+        this.left = null;
+        this.right = null;
+    }
+}
+
+class Solution {
+    // Helper function to perform reverse inorder
+    // traversal to find Kth largest element
+    reverseInorder(node, counter, k, kLargest) {
+        if (!node || counter &gt;= k) return;
+
+        // Traverse right subtree
+        this.reverseInorder(node.right, counter, k, kLargest);
+
+        // Increment counter after
+        // visiting right subtree
+        counter++;
+
+        // Check if current node
+        // is the Kth largest
+        if (counter === k) {
+            kLargest[0] = node.val;
+            return;
+        }
+
+        // Traverse left subtree if
+        // Kth largest is not found yet
+        this.reverseInorder(node.left, counter, k, kLargest);
+    }
+
+    // Helper function to perform inorder
+    // traversal to find Kth smallest element
+    inorder(node, counter, k, kSmallest) {
+        if (!node || counter &gt;= k) return;
+
+        // Traverse left subtree
+        this.inorder(node.left, counter, k, kSmallest);
+
+        // Increment counter after visiting left subtree
+        counter++;
+
+        // Check if current node is the Kth smallest
+        if (counter === k) {
+            kSmallest[0] = node.val;
+            return;
+        }
+
+        // Traverse right subtree if
+        // Kth smallest is not found yet
+        this.inorder(node.right, counter, k, kSmallest);
+    }
+
+    findKth(root, k) {
+        const kSmallest = [Number.MIN_SAFE_INTEGER];
+        const kLargest = [Number.MIN_SAFE_INTEGER];
+        // Counter to track visited nodes
+        let counter = 0;
+
+        // Find Kth smallest element
+        // (perform inorder traversal)
+        this.inorder(root, counter, k, kSmallest);
+
+        // Reset counter for Kth largest element
+        counter = 0;
+        // Find Kth largest element
+        // (perform reverse inorder traversal)
+        this.reverseInorder(root, counter, k, kLargest);
+
+        return [kSmallest[0], kLargest[0]];
+    }
+}
+
+// Function to perform an in-order traversal
+// of a binary tree and print its nodes
+function printInOrder(root) {
+    // Check if the current node
+    // is null (base case for recursion)
+    if (root === null) {
+        // If null, return and
+        // terminate the function
+        return;
+    }
+
+    // Recursively call printInOrder
+    // for the left subtree
+    printInOrder(root.left);
+
+    // Print the value of the current node
+    console.log(root.val + " ");
+
+    // Recursively call printInOrder
+    // for the right subtree
+    printInOrder(root.right);
+}
+
+// Creating a BST
+const root = new TreeNode(10);
+root.left = new TreeNode(5);
+root.right = new TreeNode(13);
+root.left.left = new TreeNode(3);
+root.left.left.left = new TreeNode(2);
+root.left.left.right = new TreeNode(4);
+root.left.right = new TreeNode(6);
+root.left.right.right = new TreeNode(9);
+root.right.left = new TreeNode(11);
+root.right.right = new TreeNode(14);
+
+console.log("Binary Search Tree:");
+printInOrder(root);
+console.log();
+
+const solution = new Solution();
+
+// Find the Kth smallest and largest elements
+const k = 3;
+console.log("k: " + k);
+const kthElements = solution.findKth(root, k);
+
+console.log("Kth smallest element: " + kthElements[0]);
+console.log("Kth largest element: " + kthElements[1]);
+                    
+                            </code>
+                        </pre>
+</div>
+<p>
+<strong>Output: </strong>Binary Search Tree: 2 3 4 5 6 9 10 11 13 14 
+                        </p>
+<p>k: 3</p>
+<p>Kth smallest element: 4</p>
+<p>Kth largest element: 11</p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+                            Complexity Analysis
+                        </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p><strong>Time Complexity: O(N)</strong>  where N is the number of nodes in the Binary Search Tree as we traverse in inorder and reverse inorder fashion to get to the required nodes. We visit each node once resulting in time complexity proportional to the number of nodes in the BST.</p>
+<p><strong>Space Complexity :</strong>  as no additional space is allocated or data structures used to store any values.
+
+
+                    </p>
+</details>
+</div>
+</details>
+</div>
+</div>
+<!-- This is Video Explination Drop-Down -->
+<div class="dsa_article_youtube_video" id="dsa_article_video_explanation">
+<details>
+<summary class="main-summary">
+<span>
+                Video Explanation
+            </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="yt-video-wrapper">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" frameborder="0" height="315" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/9TJYWh0adfk?si=h83K6K3TEQMSOI95" title="YouTube video player" width="560"></iframe>
+</div>
+</details>
+</div>
+<script src="https://takeuforward.org/UXApproachDropDowns/2ApproachJSScript.js"></script>
+<blockquote class="wp-block-quote">
+    Special thanks to <strong><a href="https://www.linkedin.com/in/gauri-tomar-005048268">Gauri Tomar</a></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam,<strong><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/"> please check out this article</a></strong>
+</blockquote>
+<script>
+
+    const codeSections = document.querySelectorAll('.code-section');
+
+    // Get last selected language from localStorage or set default value
+    let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+    codeSections.forEach((section, sectionIndex) => {
+        const codeTabs = section.querySelectorAll('.code-tab');
+        const codeBlocks = section.querySelectorAll('.code-block');
+        const copyBtn = section.querySelector('.copy-btn');
+
+        codeTabs.forEach((tab) => {
+            tab.addEventListener('click', () => {
+                codeTabs.forEach((t) => {
+                    t.classList.remove('dsa_article_code_active');
+                });
+                tab.classList.add('dsa_article_code_active');
+
+                const lang = tab.dataset.lang;
+                const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+                codeBlocks.forEach((block) => {
+                    if (block === activeBlock) {
+                        block.classList.add('dsa_article_code_active');
+                    } else {
+                        block.classList.remove('dsa_article_code_active');
+                    }
+                });
+
+                // Update last selected language for all sections and store in localStorage
+                lastSelectedLanguage = lang;
+                localStorage.setItem('lastSelectedLanguage', lang);
+                codeSections.forEach((otherSection, otherIndex) => {
+                    if (otherIndex !== sectionIndex) {
+                        const otherTabs = otherSection.querySelectorAll('.code-tab');
+                        otherTabs.forEach((otherTab) => {
+                            if (otherTab.dataset.lang === lang) {
+                                otherTab.classList.add('dsa_article_code_active');
+                            } else {
+                                otherTab.classList.remove('dsa_article_code_active');
+                            }
+                        });
+                        const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+                        const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+                        otherCodeBlocks.forEach((block) => {
+                            if (block === otherActiveBlock) {
+                                block.classList.add('dsa_article_code_active');
+                            } else {
+                                block.classList.remove('dsa_article_code_active');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+        // Handle copy button click event
+        copyBtn.addEventListener('click', () => {
+            const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+            navigator.clipboard.writeText(activeBlock.innerText);
+            copyBtn.classList.add('dsa_article_code_active');
+            setTimeout(() => {
+                copyBtn.classList.remove('dsa_article_code_active');
+            }, 1000);
+        });
+    });
+
+    // Set initial state of the tabs
+    codeSections.forEach((section) => {
+        const codeTabs = section.querySelectorAll('.code-tab');
+        const codeBlocks = section.querySelectorAll('.code-block');
+
+        codeTabs.forEach((tab) => {
+            if (tab.dataset.lang === lastSelectedLanguage) {
+                tab.classList.add('dsa_article_code_active');
+            } else {
+                tab.classList.remove('dsa_article_code_active');
+            }
+        });
+
+        codeBlocks.forEach((block) => {
+            if (block.dataset.lang === lastSelectedLanguage) {
+                block.classList.add('dsa_article_code_active');
+            } else {
+                block.classList.remove('dsa_article_code_active');
+            }
+        });
+    });
+</script>
+<link href="assets/4237ffca7ce6aadb438c457e0a675b12.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+<script src="index.js"></script>
+<script>hljs.highlightAll();</script>
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock && activeBlock.innerText) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

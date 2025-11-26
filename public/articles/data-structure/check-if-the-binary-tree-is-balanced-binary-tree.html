@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Check if the Binary Tree is Balanced Binary Tree</title>
+<link href="assets/34bd07407ad1de576cba1f67651fa31a" rel="stylesheet"/>
+<style>
+        /* ==========================================================================
+           1. CSS Variables (Theme) - Utilitarian Modern
+           ========================================================================== */
+        :root {
+            /* Default to Light Theme */
+            --primary-color: #3b82f6; /* Blue 500 */
+            --primary-hover: #2563eb; /* Blue 600 */
+            
+            --bg-body: #f8fafc; /* Slate 50 */
+            --bg-surface: #ffffff; /* White */
+            --bg-subtle: #f1f5f9; /* Slate 100 */
+            
+            --border-color: #e2e8f0; /* Slate 200 */
+            
+            --text-primary: #0f172a; /* Slate 900 */
+            --text-secondary: #334155; /* Slate 700 */
+            --text-muted: #64748b; /* Slate 500 */
+            
+            --link-color: #2563eb; /* Blue 600 */
+            --link-hover: #3b82f6; /* Blue 500 */
+
+            --code-bg: #f1f5f9; /* Slate 100 */
+            --code-text: #0f172a; /* Slate 900 */
+
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 0 25px -5px rgba(59, 130, 246, 0.25);
+            
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+        }
+
+        /* Dark Theme Support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-body: #0f172a; /* Slate 900 */
+                --bg-surface: #1e293b; /* Slate 800 */
+                --bg-subtle: #334155; /* Slate 700 */
+                
+                --border-color: #334155;
+                
+                --text-primary: #f8fafc; /* Slate 50 */
+                --text-secondary: #cbd5e1; /* Slate 300 */
+                --text-muted: #94a3b8; /* Slate 400 */
+                
+                --link-color: #60a5fa; /* Blue 400 */
+                --link-hover: #93c5fd; /* Blue 300 */
+
+                --code-bg: #020617; /* Slate 950 */
+                --code-text: #f8fafc;
+            }
+        }
+
+        /* ==========================================================================
+           2. Base & Reset
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ==========================================================================
+           3. Layout
+           ========================================================================== */
+        .container {
+            max-width: 800px; /* Optimal reading width */
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        /* Enhanced hover for desktop only */
+        @media (hover: hover) and (pointer: fine) {
+            .container:hover {
+                transform: translateY(-4px);
+                border-color: var(--primary-color);
+                box-shadow: var(--shadow-hover);
+            }
+        }
+
+        /* ==========================================================================
+           4. Typography
+           ========================================================================== */
+        h1 {
+            color: var(--text-primary);
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+        
+        h2, h3, h4 {
+            color: var(--text-secondary);
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.25em;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        /* ==========================================================================
+           5. Media
+           ========================================================================== */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            display: block;
+            margin: 1.5rem auto;
+        }
+
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            margin: 1.5rem 0;
+            border-radius: var(--radius-md);
+            background-color: var(--bg-subtle);
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ==========================================================================
+           6. Code Blocks
+           ========================================================================== */
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: inherit;
+        }
+
+        /* ==========================================================================
+           7. Code Tabs
+           ========================================================================== */
+        .code-section {
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .code-tabs {
+            display: flex;
+            background-color: var(--bg-subtle);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .code-tab {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .code-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            padding: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-muted);
+        }
+        
+        .copy-btn:hover svg {
+            fill: var(--text-primary);
+        }
+
+        .code-content {
+            background-color: var(--code-bg);
+        }
+        
+        .code-content pre {
+            margin: 0;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* ==========================================================================
+           8. Accordions / Details
+           ========================================================================== */
+        details {
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background-color: var(--bg-surface);
+            transition: box-shadow 0.2s;
+        }
+        
+        details:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1rem;
+            background-color: var(--bg-subtle);
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary:hover {
+            background-color: #475569; /* Slate 600 */
+        }
+        
+        /* Arrow icon rotation */
+        summary .arrow-svg {
+            transition: transform 0.3s ease;
+            width: 20px;
+            height: 20px;
+            fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
+        }
+        
+        /* Only rotate the arrow of the *active* details element */
+        details[open] > summary .arrow-svg {
+            transform: rotate(90deg);
+            fill: var(--primary-color);
+        }
+
+        .common-drops,
+        .atricle_example_content,
+        details > :not(summary) {
+            padding: 0.5rem;
+            background-color: var(--bg-surface);
+        }
+
+        /* Nested details */
+        .secondary-details {
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+        
+        .secondary-summary {
+            background-color: rgba(51, 65, 85, 0.3); /* Semi-transparent slate-700 */
+            font-size: 0.95rem;
+        }
+        
+        .secondary-summary:hover {
+            background-color: var(--bg-subtle);
+        }
+        
+        .opacity-75 {
+            opacity: 0.75;
+        }
+
+        /* ==========================================================================
+           9. Practice & Disclaimer
+           ========================================================================== */
+        .practice, .new-disclaimer {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: var(--bg-subtle);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+        
+        .problem-buttons a {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+        }
+        
+        .problem-buttons a:hover {
+            background-color: var(--primary-hover);
+            text-decoration: none;
+        }
+
+        /* ==========================================================================
+           10. Utilities
+           ========================================================================== */
+        .problem-buttons img,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article,
+        .has-text-align-center {
+            display: none;
+        }
+        
+        .arrow-svg {
+            display: inline-block; /* Ensure arrows are visible */
+        }
+
+        /* ==========================================================================
+           11. Responsive (Full Page Mobile)
+           ========================================================================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+
+            .container {
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 0.5rem;
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                text-align: left;
+            }
+
+            .code-tabs {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 2px; /* Space for scrollbar */
+            }
+            
+            .code-tab {
+                flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Check if the Binary Tree is Balanced Binary Tree</h1>
+</header>
+<article>
+<p><strong>Problem Statement: </strong>  Given a Binary Tree, return true if it is a Balanced Binary Tree else return false. 
+A Binary Tree is balanced if, for all nodes in the tree, the difference between left and right subtree height is not more than 1.</p>
+<!-- This is Examples Drop-Down -->
+<div id="article_examples">
+<details class="article_example_details">
+<summary class="article_example_summary">
+<span><strong>
+                    Examples
+                </strong>
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="atricle_example_content">
+<pre class="wp-block-preformatted">
+                <span><strong>Example 1:</strong></span>
+                <span><strong>Input:</strong>Binary Tree: 3 9 20 -1 -1 15 7</span>
+                <figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/e36e849c7b8d6865277aa54401def363" width="439"/></figure>
+                <span><strong>Output:</strong> True, This is a Balanced Binary Tree.</span>
+                <span><strong>Explanation: </strong>The difference in the height of left and right subtree is 1 hence the tree is balanced.</span>
+                <figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/293d0690183c3e10a6eb68de92a05c6e" width="439"/></figure>
+                <span><strong>Example 2:</strong></span>
+                <span><strong>Input:</strong>Binary Tree: 1 3 2 5 4 -1 -1 7 6 
+                </span>
+                <figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/89da631a082b2abdf7dfcea4f0fab2c2" width="439"/></figure>
+                <span><strong>Output :</strong> False, this is not a Balanced Binary Tree.</span>
+                <span><strong>Explanation: </strong>The difference in the height of left and right subtree is 2 hence the tree is not balanced.</span>
+                <figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/95c72ad8b0e7f7b5544abb72d14534c4" width="439"/></figure>
+
+            </pre>
+</div>
+</details>
+</div>
+<!-- This is Practice Section-->
+<div class="practice">
+<span><strong>Practice: </strong></span>
+<div class="problem-buttons">
+<!-- Add Problem Link inside href -->
+<a href="https://www.codingninjas.com/studio/problems/is-height-balanced-binary-tree_975497?utm_source=striver&amp;utm_medium=website&amp;utm_campaign=a_zcoursetuf" rel="noopener" target="_blank">
+<span>Solve Problem</span>
+<img alt="code-studio" src="assets/20f60e7969e701b07a63accd93ffe638"/>
+</a>
+</div>
+</div>
+<p class="new-disclaimer"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out yourself first. </em></p>
+<!-- This is Approaches Drop-Down -->
+<div class="dsa_article_dropdown_approachs">
+<!-- Approach - 1 Starts from here -->
+<div id="brute-force-approach">
+<details>
+<summary class="main-summary">
+<span>
+<!-- Change Name Here -->
+                   Brute Force Approach 
+                </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+                            Algorithm / Intuition
+                        </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<p>As a prerequisite, make sure you are thorough with the concepts of Calculating the <a href="https://takeuforward.org/data-structure/maximum-depth-of-a-binary-tree/"> Height of a Binary Tree</a>. </p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/84aa564ee454f9895d7de25c9109298f" width="439"/></figure>
+<p><strong>Base Case:</strong>If the root node is null, signifying an empty tree, return true as an empty tree is considered balanced.</p>
+<p><strong>Recursive Algorithm: </strong>The `isBalanced` function is used to check if a Binary Tree is balanced, accepting a `root` node. 
+                        Calculate the height of the left subtree and store it in a variable. Calculate the height of the right subtree and store it in a variable. 
+                        Check if the absolute difference in heights of the left and right subtree is less than or equal to 1.  If true then call the `isBalanced` recursive function for both the left and right child.
+                        <ol><li>If the condition is satisfied and both the left and right subtrees are balanced (recursive calls to isBalanced return true), return true, indicating a balanced tree.</li><li>If the absolute difference of heights is greater than 1 or the recursive calls to left and right subtrees return false then return false.</li></ol></p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/a2169d86140e6c0babe17eaaa7b5a827" width="439"/></figure>
+<p><strong>Algorithm:</strong></p>
+<p><strong>Step 1:</strong>   Check if the root is null. If so, return true as an empty tree is balanced.</p>
+<p><strong>Step 2:</strong> Recursively calculate the height of the left and right subtrees using the `getHeight` function and store them.
+                        If their absolute height difference is greater than 1, return false.</p>
+<p><strong>Step 3:</strong> If their absolute height difference is less than or equal to 1, recursively call the isBalanced function on the left and right children as well. If the left and right children are also balanced, return true.</p>
+<p><strong>Step 4:</strong> If any of the conditions in Step 2 and Step 3 fail, return false.</p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+                            Code
+                        </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code">
+                                <code class="language-cpp" lang="cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+// Node structure for the binary tree
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+    // Constructor to initialize
+    // the node with a value
+    Node(int val) : data(val), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    // Function to check if a binary tree is balanced
+    bool isBalanced(Node* root) {
+        // If the tree is empty, it's balanced
+        if (root == nullptr) {
+            return true;
+        }
+
+        // Calculate the height of left and right subtrees
+        int leftHeight = getHeight(root-&gt;left);
+        int rightHeight = getHeight(root-&gt;right);
+
+        // Check if the absolute difference in heights
+        // of left and right subtrees is &lt;= 1
+        if (abs(leftHeight - rightHeight) &lt;= 1 &amp;&amp;
+            isBalanced(root-&gt;left) &amp;&amp;
+            isBalanced(root-&gt;right)) {
+            return true;
+        }
+
+        // If any condition fails, the tree is unbalanced
+        return false;
+    }
+
+    // Function to calculate the height of a subtree
+    int getHeight(Node* root) {
+        // Base case: if the current node is NULL,
+        // return 0 (height of an empty tree)
+        if (root == nullptr) {
+            return 0;
+        }
+
+        // Recursively calculate the height
+        // of left and right subtrees
+        int leftHeight = getHeight(root-&gt;left);
+        int rightHeight = getHeight(root-&gt;right);
+
+        // Return the maximum height of left and right subtrees
+        // plus 1 (to account for the current node)
+        return max(leftHeight, rightHeight) + 1;
+    }
+};
+
+// Main function
+int main() {
+    // Creating a sample binary tree
+    Node* root = new Node(1);
+    root-&gt;left = new Node(2);
+    root-&gt;right = new Node(3);
+    root-&gt;left-&gt;left = new Node(4);
+    root-&gt;left-&gt;right = new Node(5);
+    root-&gt;left-&gt;right-&gt;right = new Node(6);
+    root-&gt;left-&gt;right-&gt;right-&gt;right = new Node(7);
+
+    // Creating an instance of the Solution class
+    Solution solution;
+
+    // Checking if the tree is balanced
+    if (solution.isBalanced(root)) {
+        cout &lt;&lt; "The tree is balanced." &lt;&lt; endl;
+    } else {
+        cout &lt;&lt; "The tree is not balanced." &lt;&lt; endl;
+    }
+
+    return 0;
+}
+                                </code>
+                            </pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code">
+                                <code class="language-java" lang="java">
+// Node structure for the binary tree
+class Node {
+    int data;
+    Node left;
+    Node right;
+
+    // Constructor to initialize
+    // the node with a value
+    Node(int val) {
+        data = val;
+        left = null;
+        right = null;
+    }
+}
+
+class Solution {
+    // Function to check if a binary tree is balanced
+    public boolean isBalanced(Node root) {
+        // If the tree is empty, it's balanced
+        if (root == null) {
+            return true;
+        }
+
+        // Calculate the height of left and right subtrees
+        int leftHeight = getHeight(root.left);
+        int rightHeight = getHeight(root.right);
+
+        // Check if the absolute difference in heights
+        // of left and right subtrees is &lt;= 1
+        if (Math.abs(leftHeight - rightHeight) &lt;= 1 &amp;&amp;
+            isBalanced(root.left) &amp;&amp;
+            isBalanced(root.right)) {
+            return true;
+        }
+
+        // If any condition fails, the tree is unbalanced
+        return false;
+    }
+
+    // Function to calculate the height of a subtree
+    public int getHeight(Node root) {
+        // Base case: if the current node is NULL,
+        // return 0 (height of an empty tree)
+        if (root == null) {
+            return 0;
+        }
+
+        // Recursively calculate the height
+        // of left and right subtrees
+        int leftHeight = getHeight(root.left);
+        int rightHeight = getHeight(root.right);
+
+        // Return the maximum height of left and right subtrees
+        // plus 1 (to account for the current node)
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+}
+
+// Main function
+public class Main {
+    public static void main(String[] args) {
+        // Creating a sample binary tree
+        Node root = new Node(1);
+        root.left = new Node(2);
+        root.right = new Node(3);
+        root.left.left = new Node(4);
+        root.left.right = new Node(5);
+        root.left.right.right = new Node(6);
+        root.left.right.right.right = new Node(7);
+
+        // Creating an instance of the Solution class
+        Solution solution = new Solution();
+
+        // Checking if the tree is balanced
+        if (solution.isBalanced(root)) {
+            System.out.println("The tree is balanced.");
+        } else {
+            System.out.println("The tree is not balanced.");
+        }
+    }
+}
+                                </code>
+                            </pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code">
+                                <code class="language-python" lang="python">
+# Node structure for the binary tree
+class Node:
+    def __init__(self, val):
+        self.data = val
+        self.left = None
+        self.right = None
+
+class Solution:
+    # Function to check if a binary tree is balanced
+    def isBalanced(self, root):
+        # If the tree is empty, it's balanced
+        if not root:
+            return True
+        
+        # Calculate the height of left and right subtrees
+        leftHeight = self.getHeight(root.left)
+        rightHeight = self.getHeight(root.right)
+
+        # Check if the absolute difference in heights
+        # of left and right subtrees is &lt;= 1
+        if abs(leftHeight - rightHeight) &lt;= 1 \
+            and self.isBalanced(root.left) \
+            and self.isBalanced(root.right):
+            return True
+
+        # If any condition fails, the tree is unbalanced
+        return False
+
+    # Function to calculate the height of a subtree
+    def getHeight(self, root):
+        # Base case: if the current node is NULL,
+        # return 0 (height of an empty tree)
+        if not root:
+            return 0
+        
+        # Recursively calculate the height
+        # of left and right subtrees
+        leftHeight = self.getHeight(root.left)
+        rightHeight = self.getHeight(root.right)
+        
+        # Return the maximum height of left and right subtrees
+        # plus 1 (to account for the current node)
+        return max(leftHeight, rightHeight) + 1
+
+# Creating a sample binary tree
+root = Node(1)
+root.left = Node(2)
+root.right = Node(3)
+root.left.left = Node(4)
+root.left.right = Node(5)
+root.left.right.right = Node(6)
+root.left.right.right.right = Node(7)
+
+# Creating an instance of the Solution class
+solution = Solution()
+
+# Checking if the tree is balanced
+if solution.isBalanced(root):
+    print("The tree is balanced.")
+else:
+    print("The tree is not balanced.")
+                                </code>
+                            </pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code">
+                            <code class="language-javascript" lang="javascript">
+// Node structure for the binary tree
+class Node {
+    constructor(val) {
+        this.data = val;
+        this.left = null;
+        this.right = null;
+    }
+}
+
+class Solution {
+    // Function to check if a binary tree is balanced
+    isBalanced(root) {
+        // If the tree is empty, it's balanced
+        if (root === null) {
+            return true;
+        }
+
+        // Calculate the height of left and right subtrees
+        const leftHeight = this.getHeight(root.left);
+        const rightHeight = this.getHeight(root.right);
+
+        // Check if the absolute difference in heights
+        // of left and right subtrees is &lt;= 1
+        if (Math.abs(leftHeight - rightHeight) &lt;= 1 &amp;&amp;
+            this.isBalanced(root.left) &amp;&amp;
+            this.isBalanced(root.right)) {
+            return true;
+        }
+
+        // If any condition fails, the tree is unbalanced
+        return false;
+    }
+
+    // Function to calculate the height of a subtree
+    getHeight(root) {
+        // Base case: if the current node is NULL,
+        // return 0 (height of an empty tree)
+        if (root === null) {
+            return 0;
+        }
+
+        // Recursively calculate the height
+        // of left and right subtrees
+        const leftHeight = this.getHeight(root.left);
+        const rightHeight = this.getHeight(root.right);
+
+        // Return the maximum height of left and right subtrees
+        // plus 1 (to account for the current node)
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+}
+
+// Creating a sample binary tree
+const root = new Node(1);
+root.left = new Node(2);
+root.right = new Node(3);
+root.left.left = new Node(4);
+root.left.right = new Node(5);
+root.left.right.right = new Node(6);
+root.left.right.right.right = new Node(7);
+
+// Creating an instance of the Solution class
+const solution = new Solution();
+
+// Checking if the tree is balanced
+if (solution.isBalanced(root)) {
+    console.log("The tree is balanced.");
+} else {
+    console.log("The tree is not balanced.");
+}
+                            </code>
+                        </pre>
+</div>
+<p>
+<strong>Output: </strong> The tree is not balanced.
+                        </p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+                            Complexity Analysis
+                        </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p><strong>Time Complexity: O(N2)</strong> where N is the number of nodes in the Binary Tree.This arises as we calculate the height of each node and to calculate the height for each node, we traverse the tree which is proportional to the number of nodes. Since this calculation is performed for each node in the tree, the complexity becomes: O(N x N) ~ O(N2).</p>
+<p><strong>Space Complexity : O(1)</strong> as no additional data structures or memory is allocated.O(H): Recursive Stack Space is used to calculate the height of the tree at each node which is proportional to the height of the tree.The recursive nature of the getHeight function, which incurs space on the call stack for each recursive call until it reaches the leaf nodes or the height of the tree.
+
+                    </p>
+</details>
+</div>
+</details>
+</div>
+<!-- Approach - 1 Ends here -->
+<!-- Approach - 2 Starts from here -->
+<div id="optimal-approach">
+<details>
+<summary class="main-summary">
+<span>
+                    Optimal Approach 
+                </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+                            Algorithm / Intuition
+                        </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<p>The O(N*N) time complexity of the previous approach can be optimised by simultaneously checking the balance condition while traversing the tree.
+                        Instead of repeatedly calculating the heights of left and right subtrees at each node, we can compute these heights in a bottom-up manner. The Postorder method allows us to validate balance conditions efficiently during the traversal.
+                        The postorder traversal operates in a bottom-up manner, calculating subtree information before moving to the parent node. We save on time complexity of calling the height of children over and over again as we have access to the height information of both subtrees when evaluating the balance condition at the parent.</p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/f9a37f70362886e57a2f6fac31aacd8a" width="439"/></figure>
+<p>This also allows early detection of unbalanced nodes without unnecessary height calculate if a subtree is already found to be unbalanced, hence avoiding unnecessary function calls.</p>
+<p><strong>Algorithm:</strong></p>
+<p><strong>Step 1:</strong> Traverse the Binary Tree is post-order manner using recursion. Visit left subtree, then right subtree, and finally the root node.</p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/cbdf3b4c1d1d84a4db3abea939b01ea6" width="439"/></figure>
+<p><strong>Step 2:</strong>During the traversal, for each node, calculate the heights of the its left and right subrees. Use the obtained subtree heights to validate the balance conditions for the current node.</p>
+<p><strong>Step 3:</strong> At each node, if the absolute difference between the heights of the left and right subtrees is greater than 1 or if any subtree is unbalanced (returns -1), return -1 immediately indicating an unbalanced tree.</p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="1000" src="assets/5bf62cc1880a3b2f230748edbe82d6fb" width="600"/></figure>
+<p><strong>Step 4:</strong>  If the tree is balanced, return the height of the current node by considering the maximum height of its left and right subtree plus 1 accounting for the current node.</p>
+<p><strong>Step 5:</strong> Complete the traversal until all nodes are visited and return the final result - either the height of the entire tree if balanced or -1 if unbalanced.</p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="1000" src="assets/d9de23f7fe420481b10badb0d6739c20" width="600"/></figure>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+                            Code
+                        </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code">
+                                <code class="language-cpp" lang="cpp">
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;stack&gt;
+
+using namespace std;
+
+// Node structure for the binary tree
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+    // Constructor to initialize
+    // the node with a value
+    Node(int val) : data(val), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+
+public:
+    // Function to check if a binary tree is balanced
+    bool isBalanced(Node* root) {
+        // Check if the tree's height difference
+        // between subtrees is less than 2
+        // If not, return false; otherwise, return true
+        return dfsHeight(root) != -1;
+    }
+
+    // Recursive function to calculate
+    // the height of the tree
+    int dfsHeight(Node* root) {
+        // Base case: if the current node is NULL,
+        // return 0 (height of an empty tree)
+        if (root == NULL) return 0;
+
+        // Recursively calculate the
+        // height of the left subtree
+        int leftHeight = dfsHeight(root-&gt;left);
+
+        // If the left subtree is unbalanced,
+        // propagate the unbalance status
+        if (leftHeight == -1) 
+            return -1;
+
+        // Recursively calculate the
+        // height of the right subtree
+        int rightHeight = dfsHeight(root-&gt;right);
+
+        // If the right subtree is unbalanced,
+        // propagate the unbalance status
+        if (rightHeight == -1) 
+            return -1;
+
+        // Check if the difference in height between
+        // left and right subtrees is greater than 1
+        // If it's greater, the tree is unbalanced,
+        // return -1 to propagate the unbalance status
+        if (abs(leftHeight - rightHeight) &gt; 1)  
+            return -1;
+
+        // Return the maximum height of left and
+        // right subtrees, adding 1 for the current node
+        return max(leftHeight, rightHeight) + 1;
+    }
+};
+
+
+
+
+
+// Main function
+int main() {
+    // Creating a sample binary tree
+    Node* root = new Node(1);
+    root-&gt;left = new Node(2);
+    root-&gt;right = new Node(3);
+    root-&gt;left-&gt;left = new Node(4);
+    root-&gt;left-&gt;right = new Node(5);
+    root-&gt;left-&gt;right-&gt;right = new Node(6);
+    root-&gt;left-&gt;right-&gt;right-&gt;right = new Node(7);
+
+    // Creating an instance of the Solution class
+    Solution solution;
+
+    // Checking if the tree is balanced
+    if (solution.isBalanced(root)) {
+        cout &lt;&lt; "The tree is balanced." &lt;&lt; endl;
+    } else {
+        cout &lt;&lt; "The tree is not balanced." &lt;&lt; endl;
+    }
+
+    return 0;
+}
+                                </code>
+                            </pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code">
+                                <code class="language-java" lang="java">
+import java.lang.Math;
+
+// Node structure for the binary tree
+class Node {
+    int data;
+    Node left;
+    Node right;
+
+    // Constructor to initialize
+    // the node with a value
+    Node(int val) {
+        data = val;
+        left = null;
+        right = null;
+    }
+}
+
+class Solution {
+
+    // Function to check if a binary tree is balanced
+    public boolean isBalanced(Node root) {
+        // Check if the tree's height difference
+        // between subtrees is less than 2
+        // If not, return false; otherwise, return true
+        return dfsHeight(root) != -1;
+    }
+
+    // Recursive function to calculate
+    // the height of the tree
+    public int dfsHeight(Node root) {
+        // Base case: if the current node is NULL,
+        // return 0 (height of an empty tree)
+        if (root == null) return 0;
+
+        // Recursively calculate the
+        // height of the left subtree
+        int leftHeight = dfsHeight(root.left);
+
+        // If the left subtree is unbalanced,
+        // propagate the unbalance status
+        if (leftHeight == -1) 
+            return -1;
+
+        // Recursively calculate the
+        // height of the right subtree
+        int rightHeight = dfsHeight(root.right);
+
+        // If the right subtree is unbalanced,
+        // propagate the unbalance status
+        if (rightHeight == -1) 
+            return -1;
+
+        // Check if the difference in height between
+        // left and right subtrees is greater than 1
+        // If it's greater, the tree is unbalanced,
+        // return -1 to propagate the unbalance status
+        if (Math.abs(leftHeight - rightHeight) &gt; 1)  
+            return -1;
+
+        // Return the maximum height of left and
+        // right subtrees, adding 1 for the current node
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+}
+
+public class Main {
+    // Main function
+    public static void main(String[] args) {
+        // Creating a sample binary tree
+        Node root = new Node(1);
+        root.left = new Node(2);
+        root.right = new Node(3);
+        root.left.left = new Node(4);
+        root.left.right = new Node(5);
+        root.left.right.right = new Node(6);
+        root.left.right.right.right = new Node(7);
+
+        // Creating an instance of the Solution class
+        Solution solution = new Solution();
+
+        // Checking if the tree is balanced
+        if (solution.isBalanced(root)) {
+            System.out.println("The tree is balanced.");
+        } else {
+            System.out.println("The tree is not balanced.");
+        }
+    }
+}                                   
+
+                                </code>
+                            </pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code">
+                                <code class="language-python" lang="python">
+# Node class for the binary tree
+class Node:
+    def __init__(self, val):
+        self.data = val
+        self.left = None
+        self.right = None
+
+class Solution:
+    # Function to check if a binary tree is balanced
+    def isBalanced(self, root):
+        # Check if the tree's height difference
+        # between subtrees is less than 2
+        # If not, return False; otherwise, return True
+        return self.dfsHeight(root) != -1
+
+    # Recursive function to calculate
+    # the height of the tree
+    def dfsHeight(self, root):
+        # Base case: if the current node is None,
+        # return 0 (height of an empty tree)
+        if not root:
+            return 0
+
+        # Recursively calculate the
+        # height of the left subtree
+        left_height = self.dfsHeight(root.left)
+
+        # If the left subtree is unbalanced,
+        # propagate the unbalance status
+        if left_height == -1:
+            return -1
+
+        # Recursively calculate the
+        # height of the right subtree
+        right_height = self.dfsHeight(root.right)
+
+        # If the right subtree is unbalanced,
+        # propagate the unbalance status
+        if right_height == -1:
+            return -1
+
+        # Check if the difference in height between
+        # left and right subtrees is greater than 1
+        # If it's greater, the tree is unbalanced,
+        # return -1 to propagate the unbalance status
+        if abs(left_height - right_height) &gt; 1:
+            return -1
+
+        # Return the maximum height of left and
+        # right subtrees, adding 1 for the current node
+        return max(left_height, right_height) + 1
+
+
+# Creating a sample binary tree
+root = Node(1)
+root.left = Node(2)
+root.right = Node(3)
+root.left.left = Node(4)
+root.left.right = Node(5)
+root.left.right.right = Node(6)
+root.left.right.right.right = Node(7)
+
+# Creating an instance of the Solution class
+solution = Solution()
+
+# Checking if the tree is balanced
+if solution.isBalanced(root):
+    print("The tree is balanced.")
+else:
+    print("The tree is not balanced.")                                   
+
+                                </code>
+                            </pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code">
+                            <code class="language-javascript" lang="javascript">
+// Node structure for the binary tree
+class Node {
+    constructor(val) {
+        this.data = val;
+        this.left = null;
+        this.right = null;
+    }
+}
+
+class Solution {
+    // Function to check if a binary tree is balanced
+    isBalanced(root) {
+        // Check if the tree's height difference
+        // between subtrees is less than 2
+        // If not, return false; otherwise, return true
+        return this.dfsHeight(root) !== -1;
+    }
+
+    // Recursive function to calculate
+    // the height of the tree
+    dfsHeight(root) {
+        // Base case: if the current node is NULL,
+        // return 0 (height of an empty tree)
+        if (root === null) return 0;
+
+        // Recursively calculate the
+        // height of the left subtree
+        const leftHeight = this.dfsHeight(root.left);
+
+        // If the left subtree is unbalanced,
+        // propagate the unbalance status
+        if (leftHeight === -1) 
+            return -1;
+
+        // Recursively calculate the
+        // height of the right subtree
+        const rightHeight = this.dfsHeight(root.right);
+
+        // If the right subtree is unbalanced,
+        // propagate the unbalance status
+        if (rightHeight === -1) 
+            return -1;
+
+        // Check if the difference in height between
+        // left and right subtrees is greater than 1
+        // If it's greater, the tree is unbalanced,
+        // return -1 to propagate the unbalance status
+        if (Math.abs(leftHeight - rightHeight) &gt; 1)  
+            return -1;
+
+        // Return the maximum height of left and
+        // right subtrees, adding 1 for the current node
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+}
+
+// Creating a sample binary tree
+const root = new Node(1);
+root.left = new Node(2);
+root.right = new Node(3);
+root.left.left = new Node(4);
+root.left.right = new Node(5);
+root.left.right.right = new Node(6);
+root.left.right.right.right = new Node(7);
+
+// Creating an instance of the Solution class
+const solution = new Solution();
+
+// Checking if the tree is balanced
+if (solution.isBalanced(root)) {
+    console.log("The tree is balanced.");
+} else {
+    console.log("The tree is not balanced.");
+}                                
+                            </code>
+                        </pre>
+</div>
+<p>
+<strong>Output:</strong> The tree is not balanced.
+                        </p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+                            Complexity Analysis
+                        </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p><strong>Time Complexity: O(N)</strong> where N is the number of nodes in the Binary Tree. This complexity arises from visiting each node exactly once during the postorder traversal.</p>
+<p><strong>Space Complexity : O(1)</strong> as no additional space or data structures is created that is proportional to the input size of the tree. O(H) Recursive Stack Auxiliary Space : The recursion stack space is determined by the maximum depth of the recursion, which is the height of the binary tree denoted as H. In the balanced case it is log2N and in the worst case its N.
+
+
+                    </p>
+</details>
+</div>
+</details>
+</div>
+</div>
+<!-- This is Video Explination Drop-Down -->
+<div class="dsa_article_youtube_video" id="dsa_article_video_explanation">
+<details>
+<summary class="main-summary">
+<span>
+                Video Explanation
+            </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="yt-video-wrapper">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" frameborder="0" height="315" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/Yt50Jfbd8Po?si=aeyUcjrBhd_CqnoB" title="YouTube video player" width="560"></iframe>
+</div>
+</details>
+</div>
+<script src="https://takeuforward.org/UXApproachDropDowns/2ApproachJSScript.js"></script>
+<blockquote class="wp-block-quote">
+    Special thanks to <strong><a href="https://www.linkedin.com/in/gauri-tomar-005048268">Gauri Tomar</a></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam,<strong><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/"> please check out this article</a></strong>
+</blockquote>
+<script>
+
+    const codeSections = document.querySelectorAll('.code-section');
+
+    // Get last selected language from localStorage or set default value
+    let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+    codeSections.forEach((section, sectionIndex) => {
+        const codeTabs = section.querySelectorAll('.code-tab');
+        const codeBlocks = section.querySelectorAll('.code-block');
+        const copyBtn = section.querySelector('.copy-btn');
+
+        codeTabs.forEach((tab) => {
+            tab.addEventListener('click', () => {
+                codeTabs.forEach((t) => {
+                    t.classList.remove('dsa_article_code_active');
+                });
+                tab.classList.add('dsa_article_code_active');
+
+                const lang = tab.dataset.lang;
+                const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+                codeBlocks.forEach((block) => {
+                    if (block === activeBlock) {
+                        block.classList.add('dsa_article_code_active');
+                    } else {
+                        block.classList.remove('dsa_article_code_active');
+                    }
+                });
+
+                // Update last selected language for all sections and store in localStorage
+                lastSelectedLanguage = lang;
+                localStorage.setItem('lastSelectedLanguage', lang);
+                codeSections.forEach((otherSection, otherIndex) => {
+                    if (otherIndex !== sectionIndex) {
+                        const otherTabs = otherSection.querySelectorAll('.code-tab');
+                        otherTabs.forEach((otherTab) => {
+                            if (otherTab.dataset.lang === lang) {
+                                otherTab.classList.add('dsa_article_code_active');
+                            } else {
+                                otherTab.classList.remove('dsa_article_code_active');
+                            }
+                        });
+                        const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+                        const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+                        otherCodeBlocks.forEach((block) => {
+                            if (block === otherActiveBlock) {
+                                block.classList.add('dsa_article_code_active');
+                            } else {
+                                block.classList.remove('dsa_article_code_active');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+        // Handle copy button click event
+        copyBtn.addEventListener('click', () => {
+            const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+            navigator.clipboard.writeText(activeBlock.innerText);
+            copyBtn.classList.add('dsa_article_code_active');
+            setTimeout(() => {
+                copyBtn.classList.remove('dsa_article_code_active');
+            }, 1000);
+        });
+    });
+
+    // Set initial state of the tabs
+    codeSections.forEach((section) => {
+        const codeTabs = section.querySelectorAll('.code-tab');
+        const codeBlocks = section.querySelectorAll('.code-block');
+
+        codeTabs.forEach((tab) => {
+            if (tab.dataset.lang === lastSelectedLanguage) {
+                tab.classList.add('dsa_article_code_active');
+            } else {
+                tab.classList.remove('dsa_article_code_active');
+            }
+        });
+
+        codeBlocks.forEach((block) => {
+            if (block.dataset.lang === lastSelectedLanguage) {
+                block.classList.add('dsa_article_code_active');
+            } else {
+                block.classList.remove('dsa_article_code_active');
+            }
+        });
+    });
+</script>
+<link href="assets/4237ffca7ce6aadb438c457e0a675b12.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+<script src="index.js"></script>
+<script>hljs.highlightAll();</script>
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock && activeBlock.innerText) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Length of Loop in Linked List</title>
+<link href="assets/34bd07407ad1de576cba1f67651fa31a" rel="stylesheet"/>
+<style>
+        /* ==========================================================================
+           1. CSS Variables (Theme) - Utilitarian Modern
+           ========================================================================== */
+        :root {
+            /* Default to Light Theme */
+            --primary-color: #3b82f6; /* Blue 500 */
+            --primary-hover: #2563eb; /* Blue 600 */
+            
+            --bg-body: #f8fafc; /* Slate 50 */
+            --bg-surface: #ffffff; /* White */
+            --bg-subtle: #f1f5f9; /* Slate 100 */
+            
+            --border-color: #e2e8f0; /* Slate 200 */
+            
+            --text-primary: #0f172a; /* Slate 900 */
+            --text-secondary: #334155; /* Slate 700 */
+            --text-muted: #64748b; /* Slate 500 */
+            
+            --link-color: #2563eb; /* Blue 600 */
+            --link-hover: #3b82f6; /* Blue 500 */
+
+            --code-bg: #f1f5f9; /* Slate 100 */
+            --code-text: #0f172a; /* Slate 900 */
+
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 0 25px -5px rgba(59, 130, 246, 0.25);
+            
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+        }
+
+        /* Dark Theme Support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-body: #0f172a; /* Slate 900 */
+                --bg-surface: #1e293b; /* Slate 800 */
+                --bg-subtle: #334155; /* Slate 700 */
+                
+                --border-color: #334155;
+                
+                --text-primary: #f8fafc; /* Slate 50 */
+                --text-secondary: #cbd5e1; /* Slate 300 */
+                --text-muted: #94a3b8; /* Slate 400 */
+                
+                --link-color: #60a5fa; /* Blue 400 */
+                --link-hover: #93c5fd; /* Blue 300 */
+
+                --code-bg: #020617; /* Slate 950 */
+                --code-text: #f8fafc;
+            }
+        }
+
+        /* ==========================================================================
+           2. Base & Reset
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ==========================================================================
+           3. Layout
+           ========================================================================== */
+        .container {
+            max-width: 800px; /* Optimal reading width */
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        /* Enhanced hover for desktop only */
+        @media (hover: hover) and (pointer: fine) {
+            .container:hover {
+                transform: translateY(-4px);
+                border-color: var(--primary-color);
+                box-shadow: var(--shadow-hover);
+            }
+        }
+
+        /* ==========================================================================
+           4. Typography
+           ========================================================================== */
+        h1 {
+            color: var(--text-primary);
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+        
+        h2, h3, h4 {
+            color: var(--text-secondary);
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.25em;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        /* ==========================================================================
+           5. Media
+           ========================================================================== */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            display: block;
+            margin: 1.5rem auto;
+        }
+
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            margin: 1.5rem 0;
+            border-radius: var(--radius-md);
+            background-color: var(--bg-subtle);
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ==========================================================================
+           6. Code Blocks
+           ========================================================================== */
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: inherit;
+        }
+
+        /* ==========================================================================
+           7. Code Tabs
+           ========================================================================== */
+        .code-section {
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .code-tabs {
+            display: flex;
+            background-color: var(--bg-subtle);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .code-tab {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .code-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            padding: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-muted);
+        }
+        
+        .copy-btn:hover svg {
+            fill: var(--text-primary);
+        }
+
+        .code-content {
+            background-color: var(--code-bg);
+        }
+        
+        .code-content pre {
+            margin: 0;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* ==========================================================================
+           8. Accordions / Details
+           ========================================================================== */
+        details {
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background-color: var(--bg-surface);
+            transition: box-shadow 0.2s;
+        }
+        
+        details:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1rem;
+            background-color: var(--bg-subtle);
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary:hover {
+            background-color: #475569; /* Slate 600 */
+        }
+        
+        /* Arrow icon rotation */
+        summary .arrow-svg {
+            transition: transform 0.3s ease;
+            width: 20px;
+            height: 20px;
+            fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
+        }
+        
+        /* Only rotate the arrow of the *active* details element */
+        details[open] > summary .arrow-svg {
+            transform: rotate(90deg);
+            fill: var(--primary-color);
+        }
+
+        .common-drops,
+        .atricle_example_content,
+        details > :not(summary) {
+            padding: 0.5rem;
+            background-color: var(--bg-surface);
+        }
+
+        /* Nested details */
+        .secondary-details {
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+        
+        .secondary-summary {
+            background-color: rgba(51, 65, 85, 0.3); /* Semi-transparent slate-700 */
+            font-size: 0.95rem;
+        }
+        
+        .secondary-summary:hover {
+            background-color: var(--bg-subtle);
+        }
+        
+        .opacity-75 {
+            opacity: 0.75;
+        }
+
+        /* ==========================================================================
+           9. Practice & Disclaimer
+           ========================================================================== */
+        .practice, .new-disclaimer {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: var(--bg-subtle);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+        
+        .problem-buttons a {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+        }
+        
+        .problem-buttons a:hover {
+            background-color: var(--primary-hover);
+            text-decoration: none;
+        }
+
+        /* ==========================================================================
+           10. Utilities
+           ========================================================================== */
+        .problem-buttons img,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article,
+        .has-text-align-center {
+            display: none;
+        }
+        
+        .arrow-svg {
+            display: inline-block; /* Ensure arrows are visible */
+        }
+
+        /* ==========================================================================
+           11. Responsive (Full Page Mobile)
+           ========================================================================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+
+            .container {
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 0.5rem;
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                text-align: left;
+            }
+
+            .code-tabs {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 2px; /* Space for scrollbar */
+            }
+            
+            .code-tab {
+                flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Length of Loop in Linked List</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement:</strong> Given the head of a<strong> linked list</strong>,<strong> </strong>determine the <strong>length</strong> of a <strong>loop</strong> present in the linked list; if not present, return <strong>0.</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<!-- This is Examples Drop-Down -->
+<div id="article_examples">
+<details class="article_example_details">
+<summary class="article_example_summary">
+<span><strong>
+Examples
+</strong>
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="atricle_example_content">
+<pre class="wp-block-preformatted"><!-- Insert New Examples Here -->
+<p><strong>Example 1:</strong></p>
+<p><strong>Input Format</strong>:</p>
+<p>LL: 1  2  3  4  5 </p>
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-13003" height="269" src="assets/52e0eaabc455ca0d81bcf73984201e5c.jpg" width="512"/></figure>
+<p><strong>Output</strong>: 3<br/><strong>Explanation</strong>: A cycle exists in the linked list starting at node 3 -&gt; 4 -&gt; 5 and then back to 3. There are 3 nodes present in this cycle.</p>
+<p><strong>Example 2:</strong></p>
+<p><strong>Input Format:</strong></p>
+<p>LL: 1  2  3  4  9  9</p>
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-13004" height="134" src="assets/5e0f4a61bdbb007dd17113b8245bf7d1.jpg" width="512"/></figure>
+<p><strong>Output: </strong>0</p>
+<p><strong>Explanation</strong>: In this example, the linked list is linear and does not have a loop hence return 0.</p>
+</pre>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Practice Section-->
+<div class="practice">
+<span><strong>Practice: </strong></span>
+<div class="problem-buttons">
+<!-- Add Problem Link inside href -->
+<a href="https://tinyurl.com/5n78kcda" rel="noopener" target="_blank">
+<span>Solve Problem</span>
+<img alt="code-studio" src="assets/86dd2cadbd0e7ef71ad98d3b7f2f2efc.png"/>
+</a>
+</div>
+</div>
+<p class="new-disclaimer"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out
+yourself first. </em></p>
+<!-- /wp:html -->
+<!-- wp:html -->
+<div class="horizontal_navbar_dsa_article">
+<div class="grid_container_two">
+<a class="two-boxes box-a" href="#brute-force-approach">
+Brute Force Approach
+</a>
+<a class="two-boxes box-c" href="#optimal-approach">
+Optimal Approach
+</a>
+<a class="three-boxes box-d" href="#dsa_article_video_explanation">
+<svg fill="none" height="26" viewbox="0 0 20 14" width="26" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 10L13.19 7L8 4V10ZM19.56 2.17C19.69 2.64 19.78 3.27 19.84 4.07C19.91 4.87 19.94 5.56 19.94 6.16L20 7C20 9.19 19.84 10.8 19.56 11.83C19.31 12.73 18.73 13.31 17.83 13.56C17.36 13.69 16.5 13.78 15.18 13.84C13.88 13.91 12.69 13.94 11.59 13.94L10 14C5.81 14 3.2 13.84 2.17 13.56C1.27 13.31 0.69 12.73 0.44 11.83C0.31 11.36 0.22 10.73 0.16 9.93C0.0900001 9.13 0.0599999 8.44 0.0599999 7.84L0 7C0 4.81 0.16 3.2 0.44 2.17C0.69 1.27 1.27 0.69 2.17 0.44C2.64 0.31 3.5 0.22 4.82 0.16C6.12 0.0899998 7.31 0.0599999 8.41 0.0599999L10 0C14.19 0 16.8 0.16 17.83 0.44C18.73 0.69 19.31 1.27 19.56 2.17Z" fill="red"></path>
+</svg>
+</a>
+<div class="box-e tooltip">
+<svg fill="none" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.842 9.25L11.9577 10.17C11.2502 10.89 10.8081 11.5 10.8081 13H8.84297V12.5C8.84297 11.39 9.28511 10.39 9.99255 9.67L11.2109 8.41C11.5745 8.05 11.7906 7.55 11.7906 7C11.7906 6.46957 11.5836 5.96086 11.2151 5.58579C10.8465 5.21071 10.3467 5 9.82552 5C9.30434 5 8.80451 5.21071 8.43598 5.58579C8.06745 5.96086 7.86041 6.46957 7.86041 7H5.89531C5.89531 5.93913 6.30938 4.92172 7.04644 4.17157C7.7835 3.42143 8.78316 3 9.82552 3C10.8679 3 11.8675 3.42143 12.6046 4.17157C13.3417 4.92172 13.7557 5.93913 13.7557 7C13.7543 7.84324 13.4259 8.65183 12.842 9.25ZM10.8081 17H8.84297V15H10.8081M9.82552 0C8.53521 0 7.25754 0.258658 6.06545 0.761205C4.87337 1.26375 3.79021 2.00035 2.87783 2.92893C1.03519 4.8043 0 7.34784 0 10C0 12.6522 1.03519 15.1957 2.87783 17.0711C3.79021 17.9997 4.87337 18.7362 6.06545 19.2388C7.25754 19.7413 8.53521 20 9.82552 20C12.4314 20 14.9306 18.9464 16.7732 17.0711C18.6158 15.1957 19.651 12.6522 19.651 10C19.651 4.47 15.2296 0 9.82552 0Z" fill="black"></path>
+</svg>
+<div class="bottom">
+<p>Expand any one approach by clicking the given options in the bar. Clicking one approach on bar,
+closes all other expands. You can manually expand more than one approach at a time</p>
+<i></i>
+</div>
+</div>
+</div>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Approaches Drop-Down -->
+<div class="dsa_article_dropdown_approachs">
+<!-- Brute Force Approach Starts from here -->
+<div id="brute-force-approach">
+<details>
+<summary class="main-summary">
+<span>
+Brute Force Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition of Brute Force Apporach Here -->
+<p>Finding the length of the loop of a linked list is an extension of<a href="https://docs.google.com/document/d/1EWzYN4C7zm-AkKCKi_RtCqHbbYXU75qBxC-zP2MVqOM/edit?usp=sharing" rel="noopener" target="_blank" title=""> Detection of Loop</a> so review that article and make sure you are thorough with its approaches.</p>
+<p>In recap, a loop in a linked list occurs when there is at least one node that, when used as a starting point, allows us to return to it during traversal.</p>
+<h3><strong>Approach 1: Brute Force Hashing</strong></h3>
+<p>While traversing the linked list, employ a<strong> timer</strong> against each node to keep <strong>track</strong> of the number of nodes you've visited before it. Once a <strong>previously</strong> <strong>visited</strong> <strong>node</strong> is <strong>encountered</strong> <strong>again</strong>, the length of the loop can be determined by <strong>subtracting</strong> the <strong>timer</strong> <strong>values</strong> at the two instances of visiting that particular node.</p>
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-13005" height="512" src="assets/8c69c6d5e8ed4a8a4182f1cdb5e8bdae.jpg" width="768"/></figure>
+<p>Hence it's important to keep <strong>track</strong> of <strong>nodes</strong> and the <strong>timer</strong> <strong>value</strong> associated with them. This can be implemented using a <strong>hashmap</strong> with nodes as the key and the timer as the value.</p>
+<h3><strong>Algorithm:</strong></h3>
+<p><strong>Step 1: Traverse</strong> through the LL using the traversal technique of assigning a <strong>temp</strong> node to the head and <strong>iterating</strong> by moving to the next element till we reach <strong>null</strong>. While traversing, keep track of the <strong>Visited nodes</strong> and the <strong>timer value</strong> associated in the map data structure.</p>
+<figure class="wp-block-image size-large"><img alt="" class="wp-image-13006" src="assets/ca3bd938b1caee31fa376768543a240a.jpg"/></figure>
+<p><strong>Step 2: </strong>Continue<strong> </strong>traversing<strong> </strong>till a node that has <strong>already</strong> been <strong>visited</strong> is found. The <strong>difference</strong> between its <strong>timer</strong> <strong>value</strong> in the hashmap and the <strong>current</strong> <strong>timers</strong> <strong>value</strong> will be the length of the linked list.</p>
+<p><strong>Step 3:</strong> If the <strong>traversal</strong> is <strong>completed</strong>, and we reach the last point of the linked list which is <strong>null</strong>, it means there was <strong>no</strong> <strong>loop</strong>, hence we return <strong>false</strong>.</p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;iostream&gt;
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+// Node class represents a
+// node in a linked list
+class Node {
+public:
+    // Data stored in the node
+    int data;   
+    
+    // Pointer to the next node in the list
+    Node* next;      
+
+    // Constructor with both data and
+    // next node as parameters
+    Node(int data1, Node* next1) {
+        data = data1;
+        next = next1;
+    }
+
+    // Constructor with only data as a
+    // parameter, sets next to nullptr
+    Node(int data1) {
+        data = data1;
+        next = nullptr;
+    }
+};
+
+// Function to return the length 
+// of loop using hashing
+
+int lengthOfLoop(Node* head) {
+    // Hashmap to store visited
+    // nodes and their timer values
+    unordered_map&lt;Node*, int&gt; visitedNodes; 
+    
+    // Initialize pointer to
+    // traverse the linked list
+    Node* temp = head; 
+    
+    // Initialize timer to track
+    // visited nodes
+    int timer = 0; 
+
+    // Traverse the linked list till
+    // temp reaches nullptr
+    while (temp != NULL) {
+        
+        // If revisiting a node return
+        // the difference of timer values
+        if (visitedNodes.find(temp) != visitedNodes.end()) {
+            // Calculate the length of the loop
+            int loopLength = timer - visitedNodes[temp];
+            
+            // Return the length of the loop
+            return loopLength; 
+        }
+        // Store the current node and
+        // its timer value in the hashmap
+        visitedNodes[temp] = timer;
+        
+        // Move to the next node
+        temp = temp-&gt;next;
+        
+         // Increment the timer
+        timer++;
+    }
+
+    // If traversal is completed and
+    // we reach the end of the list (null)
+    // means there is no loop
+    return 0;
+}
+
+
+
+int main() {
+    // Create a sample linked
+    // list with a loop
+    
+    Node* head = new Node(1);
+    Node* second = new Node(2);
+    Node* third = new Node(3);
+    Node* fourth = new Node(4);
+    Node* fifth = new Node(5);
+
+    // Create a loop from
+    // fifth to second
+    head-&gt;next = second;
+    second-&gt;next = third;
+    third-&gt;next = fourth;
+    fourth-&gt;next = fifth;
+    
+    // This creates a loop
+    fifth-&gt;next = second; 
+
+    int loopLength = lengthOfLoop(head);
+    if (loopLength &gt; 0) {
+        cout &lt;&lt; "Length of the loop: " &lt;&lt; loopLength &lt;&lt; endl;
+    } else {
+        cout &lt;&lt; "No loop found in the linked list." &lt;&lt; endl;
+    }
+
+    return 0;
+}
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.HashMap;
+import java.util.Map;
+
+// Node class represents a node
+// in a linked list
+class Node {
+    // Data stored in the node
+    int data;        
+    // Pointer to the next node in the list
+    Node next;      
+
+    // Constructor with both data
+    // and next node as parameters
+    Node(int data1, Node next1) {
+        data = data1;
+        next = next1;
+    }
+
+    // Constructor with only data as
+    // a parameter, sets next to null
+    Node(int data1) {
+        data = data1;
+        next = null;
+    }
+}
+
+public class Main {
+    // Function to return the length
+    // of loop using hashing
+    public static int lengthOfLoop(Node head) {
+        // Hashmap to store visited nodes
+        // and their timer values
+        Map&lt;Node, Integer&gt; visitedNodes = new HashMap&lt;&gt;();
+        
+        // Initialize pointer to 
+        // raverse the linked list
+        Node temp = head;
+        
+        // Initialize timer to
+        // track visited nodes
+        int timer = 0;
+
+        // Traverse the linked list
+        // till temp reaches null
+        while (temp != null) {
+            // If revisiting a node, return
+            // the difference of timer values
+            if (visitedNodes.containsKey(temp)) {
+                // Calculate the length of the loop
+                int loopLength = timer - visitedNodes.get(temp);
+                
+                // Return the length of the loop
+                return loopLength;
+            }
+            // Store the current node and
+            // its timer value in the hashmap
+            visitedNodes.put(temp, timer);
+            
+            // Move to the next node
+            temp = temp.next;
+            
+            // Increment the timer
+            timer++;
+        }
+
+        // If traversal is completed and we
+        // reach the end of the list (null),
+        // means there is no loop
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        // Create a linked list with a loop
+        Node head = new Node(1);
+        Node second = new Node(2);
+        Node third = new Node(3);
+        Node fourth = new Node(4);
+        Node fifth = new Node(5);
+
+        // Create a loop from fifth to second
+        head.next = second;
+        second.next = third;
+        third.next = fourth;
+        fourth.next = fifth;
+        
+        // This creates a loop
+        fifth.next = second; 
+
+        int loopLength = lengthOfLoop(head);
+
+        if (loopLength &gt; 0) {
+            System.out.println("Length of the loop: " + loopLength);
+        } else {
+            System.out.println("No loop found in the linked list.");
+        }
+    }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+class Node:
+    def __init__(self, data1, next1=None):
+        # Data stored in the node
+        self.data = data1
+        # Pointer to the next node
+        # in the list
+        self.next = next1
+        
+# Function to return the lenght
+# of loop when slow and fast are
+# on the same node
+def find_length(slow, fast):
+    
+    # count to keep track of 
+    # nodes encountered in loop
+    cnt = 1
+    
+    # move fast by one step
+    fast = fast.next
+    
+    # traverse fast till it 
+    # reaches back to slow
+    while slow != fast:
+        
+        # at each node increase
+        # count by 1 and move fast
+        # forward by one step
+        
+        cnt += 1
+        fast = fast.next
+    
+    # loop terminates when fast reaches
+    # slow again and the count is returned
+    return cnt
+    
+# Function to find the length
+# of the loop in a linked list
+def length_of_loop(head):
+    slow = head
+    fast = head
+    
+    # Step 1: Traverse the list to detect a loop
+    while fast is not None and fast.next is not None:
+        # Move slow one step
+        slow = slow.next
+        # Move fast two steps
+        fast = fast.next.next
+        
+        # Step 2: If the slow and fast pointers
+        # meet, there is a loop
+        if slow == fast:
+            
+            # return the number of nodes
+            # in the loop
+            return find_length(slow, fast)
+    
+    return 0
+
+
+# Create a linked list with a loop
+head = Node(1)
+second = Node(2)
+third = Node(3)
+fourth = Node(4)
+fifth = Node(5)
+
+# Create a loop from fifth to second
+head.next = second
+second.next = third
+third.next = fourth
+fourth.next = fifth
+
+# This creates a loop
+fifth.next = second
+
+loopLength = length_of_loop(head)
+
+if loopLength &gt; 0:
+    print("Length of the loop:", loopLength)
+else:
+    print("No loop found in the linked list.")
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+function Node(data1, next1) {
+    // Data stored in the node
+    this.data = data1;
+    // Pointer to the next node
+    // in the list
+    this.next = next1 || null;
+}
+
+// Function to return the
+// length of loop using hashing
+function lengthOfLoop(head) {
+    // Hashmap to store visited nodes
+    // and their timer values
+    var visitedNodes = {};
+    
+    // Initialize pointer to
+    // traverse the linked list
+    var temp = head;
+    
+    // Initialize timer to
+    // track visited nodes
+    var timer = 0;
+
+    // Traverse the linked list
+    // until temp reaches null
+    while (temp !== null) {
+        // If revisiting a node, return
+        // the difference of timer values
+        if (visitedNodes.hasOwnProperty(temp)) {
+            // Calculate the length of the loop
+            var loopLength = timer - visitedNodes[temp];
+            
+            // Return the length of the loop
+            return loopLength;
+        }
+        // Store the current node and
+        // its timer value in the hashmap
+        visitedNodes[temp] = timer;
+        
+        // Move to the next node
+        temp = temp.next;
+        
+        // Increment the timer
+        timer++;
+    }
+
+    // If traversal is completed and we
+    // reach the end of the list (null),
+    // it means there is no loop
+    return 0;
+}
+
+// Create a sample linked list with a loop
+var head = new Node(1);
+var second = new Node(2);
+var third = new Node(3);
+var fourth = new Node(4);
+var fifth = new Node(5);
+
+// Create a loop from fifth to second
+head.next = second;
+second.next = third;
+third.next = fourth;
+fourth.next = fifth;
+
+// This creates a loop
+fifth.next = second;
+
+var loopLength = lengthOfLoop(head);
+
+if (loopLength &gt; 0) {
+    console.log("Length of the loop:", loopLength);
+} else {
+    console.log("No loop found in the linked list.");
+}
+
+</code>
+</pre>
+</div>
+<p><strong>Time Complexity: O(N)</strong> The code <strong>traverses</strong> the <strong>entire</strong> <strong>linked</strong> <strong>list</strong> at least once, where 'N' is the number of nodes in the list. Therefore, the time complexity is <strong>linear</strong>, O(N).</p>
+<p><strong>Space Complexity: O(N) </strong>The code uses a <strong>hashmap</strong>/<strong>dictionary</strong> to store encountered nodes, which can take up to O(N) <strong>additional space</strong>, where ‘N' is the number of nodes in the list. Hence, the <strong>space complexity</strong> is O(N) due to the use of the map to track nodes.</p>
+</div></details>
+</div>
+</details>
+</div>
+<!-- Brute Force Approach Ends here -->
+<!-- Optimal Approach Starts from here -->
+<div id="optimal-approach">
+<details>
+<summary class="main-summary">
+<span>
+Optimal Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm of Better Approach Here -->
+<h3><strong>Approach 2: Tortoise and Hare Algorithm</strong></h3>
+<p>The previous method uses O(N) <strong>additional</strong> <strong>memory</strong>. To enhance efficiency, the <strong>Tortoise</strong> and <strong>Hare</strong> <strong>Algorithm</strong> is introduced as an <strong>optimization</strong>.</p>
+<p>The Tortoise and Hare approach has been discussed in this <a href="https://takeuforward.org/data-structure/find-middle-element-in-a-linked-list/" rel="noopener" target="_blank" title="">article</a>. </p>
+<h3><strong>Algorithm</strong></h3>
+<p><strong>Step 1:</strong> Initialise two pointers, <strong>`slow`</strong> and <strong>`fast`</strong>, to the head of the linked list. <strong>`slow`</strong> will advance <strong>one</strong> <strong>step</strong> at a time, while <strong>`fast`</strong> will advance <strong>two</strong> <strong>steps</strong> at a time. These pointers will move <strong>simultaneously</strong>.</p>
+<p><strong>Step 2: </strong>Traverse the linked list with the <strong>`slow`</strong> and <strong>`fast`</strong> pointers. While traversing, repeatedly move <strong>`slow`</strong> <strong>one</strong> <strong>step</strong> and <strong>`fast`</strong> <strong>two</strong> <strong>steps</strong> at a time.</p>
+<p><strong>Step 3: </strong>Continue this traversal until one of the following conditions is met:</p>
+<ol><li><strong>`fast</strong>` or<strong> `fast.next`</strong> reaches the end of the linked list (i.e., becomes <strong>null</strong>). In this case, there is <strong>no loop</strong> in the linked list hence it is <strong>linear</strong>, and the algorithm terminates by returning <strong>0.</strong></li><li><strong>`fast`</strong> and <strong>`slow`</strong> pointers meet at the same node. This indicates the presence of a <strong>loop</strong> in the linked list as we have seen in the detection of loop.</li></ol>
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-13074" height="768" src="assets/0562d6fd0ef38e60ab4015e0ef8176df.jpg" width="650"/></figure>
+<p>This is the point where the slow and fast have met proving that there is a loop in the linked list. From here onwards we start counting for the length of this loop.</p>
+<p><strong>Step 4:</strong> Initialise a <strong>counter</strong> with zero and traverse the linked list using the `<strong>fast`</strong> pointer again, but this time only move <strong>one</strong> <strong>step</strong> at a time while <strong>incrementing</strong> the counter with each node visited. As the fast pointer reaches back at the <strong>slow</strong> pointer, the value of the <strong>counter</strong> will represent the length of the loop.</p>
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-13068" height="768" src="assets/08199e36b18b7cc51b29ef30f119a3fe.jpeg" width="692"/></figure>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;iostream&gt;
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+// Node class represents a
+// node in a linked list
+class Node {
+public:
+    // Data stored in the node
+    int data;   
+    
+    // Pointer to the next node in the list
+    Node* next;      
+
+    // Constructor with both data and
+    // next node as parameters
+    Node(int data1, Node* next1) {
+        data = data1;
+        next = next1;
+    }
+
+    // Constructor with only data as a
+    // parameter, sets next to nullptr
+    Node(int data1) {
+        data = data1;
+        next = nullptr;
+    }
+};
+
+// Function to return the lenght
+// of loop when slow and fast are
+// on the same node
+int findLength(Node* slow, Node* fast){
+    
+    // count to keep track of 
+    // nodes encountered in loop
+    int cnt = 1;
+    
+    // move fast by one step
+    fast = fast-&gt;next;
+    
+    // traverse fast till it 
+    // reaches back to slow
+    while(slow!=fast){
+        
+        // at each node increase
+        // count by 1 and move fast
+        // forward by one step
+        cnt++;
+        fast = fast-&gt;next;
+    }
+    
+    // loop terminates when fast reaches
+    // slow again and the count is returned
+    return cnt;
+}
+// Function to find the length
+// of the loop in a linked list
+int lengthOfLoop(Node* head) {
+    Node* slow = head;
+    Node* fast = head;
+
+    // Step 1: Traverse the list to detect a loop
+    while (fast != nullptr &amp;&amp; fast-&gt;next != nullptr) {
+        // Move slow one step
+        slow = slow-&gt;next;     
+        // Move fast two steps
+        fast = fast-&gt;next-&gt;next;
+
+        // Step 2: If the slow and fast pointers
+        // meet, there is a loop
+        if (slow == fast) {
+            // return the number of nodes
+            // in the loop
+            return findLength(slow, fast);
+        }
+    }
+
+    // Step 3: If the fast pointer
+    // reaches the end, there is no loop
+    return 0; 
+}
+
+
+int main() {
+    // Create a sample linked
+    // list with a loop
+    
+    Node* head = new Node(1);
+    Node* second = new Node(2);
+    Node* third = new Node(3);
+    Node* fourth = new Node(4);
+    Node* fifth = new Node(5);
+
+    // Create a loop from
+    // fifth to second
+    head-&gt;next = second;
+    second-&gt;next = third;
+    third-&gt;next = fourth;
+    fourth-&gt;next = fifth;
+    
+    // This creates a loop
+    fifth-&gt;next = second; 
+
+    int loopLength = lengthOfLoop(head);
+    if (loopLength &gt; 0) {
+        cout &lt;&lt; "Length of the loop: " &lt;&lt; loopLength &lt;&lt; endl;
+    } else {
+        cout &lt;&lt; "No loop found in the linked list." &lt;&lt; endl;
+    }
+
+    return 0;
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+import java.util.HashMap;
+
+// Node class represents a node
+// in a linked list
+class Node {
+    // Data stored in the node
+    int data;        
+    // Pointer to the next node in the list
+    Node next;      
+
+    // Constructor with both data
+    // and next node as parameters
+    Node(int data1, Node next1) {
+        data = data1;
+        next = next1;
+    }
+
+    // Constructor with only data as
+    // a parameter, sets next to null
+    Node(int data1) {
+        data = data1;
+        next = null;
+    }
+}
+
+public class LinkedListLoopLength {
+    
+    // Function to return the lenght
+    // of loop when slow and fast are
+    // on the same node
+    static int findLength(Node slow, Node fast){
+        
+        // count to keep track of 
+        // nodes encountered in loop
+        int cnt = 1;
+        
+        // move fast by one step
+        fast = fast.next;
+        
+        // traverse fast till it 
+        // reaches back to slow
+        while(slow!=fast){
+            
+            // at each node increase
+            // count by 1 and move fast
+            // forward by one step
+            cnt++;
+            fast = fast.next;
+        }
+        
+        // loop terminates when fast reaches
+        // slow again and the count is returned
+        return cnt;
+    }
+
+    // Function to find the length
+    // of the loop in a linked list
+    static int lengthOfLoop(Node head) {
+        Node slow = head;
+        Node fast = head;
+
+        // Step 1: Traverse the list to detect a loop
+        while (fast != null &amp;&amp; fast.next != null) {
+            // Move slow one step
+            slow = slow.next;  
+            
+            // Move fast two steps
+            fast = fast.next.next; 
+
+            // Step 2: If the slow and fast
+            // pointers meet, there is a loop
+            if (slow == fast) {
+                return findLength(slow, fast);
+            }
+        }
+
+        // Step 3: If the fast pointer reaches the end
+        // there is no loop
+        
+        return 0; 
+    }
+
+
+    public static void main(String[] args) {
+        // Create a sample linked list with a loop
+        Node head = new Node(1);
+        Node second = new Node(2);
+        Node third = new Node(3);
+        Node fourth = new Node(4);
+        Node fifth = new Node(5);
+
+        // Create a loop from fifth to second
+        head.next = second;
+        second.next = third;
+        third.next = fourth;
+        fourth.next = fifth;
+        // This creates a loop
+        fifth.next = second; 
+
+        int loopLength = lengthOfLoop(head);
+        if (loopLength &gt; 0) {
+            System.out.println("Length of the loop: " + loopLength);
+        } else {
+            System.out.println("No loop found in the linked list.");
+        }
+    }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+class Node:
+    def __init__(self, data, next=None):
+        self.data = data
+        self.next = next
+
+# Function to detect a loop in a
+# linked list using the Tortoise and Hare Algorithm
+
+def detect_loop(head):
+    # Initialize the slow pointer at the head
+    slow = head  
+    
+     # Initialize the fast pointer at the head
+    fast = head 
+
+    # Step 1: Traverse the list to detect a loop
+    while fast is not None and fast.next is not None:
+        # Move slow one step
+        slow = slow.next  
+        # Move fast two steps
+        fast = fast.next.next  
+
+        # Step 2: If the slow and fast
+        # pointers meet, there is a loop
+        if slow == fast:
+            return True
+
+    # Step 3: If the fast pointer
+    # reaches the end, there is no loop
+    return False
+
+# Function to find the length
+# of the loop in a linked list
+def find_loop_length(head):
+    slow = head
+    fast = head
+
+    # Step 1: Traverse the list to detect a loop
+    while fast is not None and fast.next is not None:
+        # Move slow one step
+        slow = slow.next     
+        # Move fast two steps
+        fast = fast.next.next  
+
+        # Step 2: If the slow and fast
+        # pointers meet, there is a loop
+        if slow == fast:
+            # Initialize the loop length
+            length = 1  
+             # Move fast one step
+            fast = fast.next 
+
+            # Step 4: Initialize a counter
+            # and traverse using the fast pointer
+            while slow != fast:
+                # Move fast one step
+                fast = fast.next  
+                # Increment the counter
+                length += 1  
+
+            # Step 6: Return the 
+            # length of the loop
+            return length
+
+    # Step 3: If the fast pointer
+    # reaches the end, there is no loop
+    return 0  
+
+# Create a linked list with a loop for testing
+head = Node(1)
+node2 = Node(2)
+node3 = Node(3)
+node4 = Node(4)
+node5 = Node(5)
+
+head.next = node2
+node2.next = node3
+node3.next = node4
+node4.next = node5
+node5.next = node3  # Creating a loop
+
+# Check if there is a loop in the linked list
+if detect_loop(head):
+    # If there is a loop, find its length
+    length = find_loop_length(head)
+    print(f"The length of the loop is: {length}")
+else:
+    print("No loop found in the linked list.")
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+function Node(data1, next1) {
+    // Data stored in the node
+    this.data = data1;
+    // Pointer to the next node
+    // in the list
+    this.next = next1 || null;
+}
+
+// Function to return the lenght
+// of loop when slow and fast are
+// on the same node
+function findLength(slow, fast) {
+    // count to keep track of 
+    // nodes encountered in loop
+    let cnt = 1;
+
+    // move fast by one step
+    fast = fast.next;
+    
+    // traverse fast till it 
+    // reaches back to slow
+    while (slow !== fast) {
+        
+        // at each node increase
+        // count by 1 and move fast
+        // forward by one step
+        cnt++;
+        fast = fast.next;
+    }
+    
+    // loop terminates when fast reaches
+    // slow again and the count is returned
+
+    return cnt;
+}
+
+// Function to find the length
+// of the loop in a linked list
+function lengthOfLoop(head) {
+    let slow = head;
+    let fast = head;
+
+    // Step 1: Traverse the list to detect a loop
+    while (fast !== null &amp;&amp; fast.next !== null) {
+        // Move slow one step
+        slow = slow.next;
+
+        // Move fast two steps
+        fast = fast.next.next;
+
+        // Step 2: If the slow and fast pointers
+        // meet, there is a loop
+        if (slow === fast) {
+            // return the number of nodes
+            // in the loop
+            return findLength(slow, fast);
+        }
+    }
+    
+    // Step 3: If the fast pointer
+    // reaches the end, there is no loop
+    return 0;
+}
+
+// Create a sample linked list with a loop
+var head = new Node(1);
+var second = new Node(2);
+var third = new Node(3);
+var fourth = new Node(4);
+var fifth = new Node(5);
+
+// Create a loop from fifth to second
+head.next = second;
+second.next = third;
+third.next = fourth;
+fourth.next = fifth;
+
+// This creates a loop
+fifth.next = second;
+
+var loopLength = lengthOfLoop(head);
+
+if (loopLength &gt; 0) {
+    console.log("Length of the loop:", loopLength);
+} else {
+    console.log("No loop found in the linked list.");
+}
+</code>
+</pre>
+</div>
+<p><strong>Time Complexity: O(N) </strong>The code <strong>traverses</strong> the <strong>entire</strong> <strong>linked</strong> <strong>list</strong> once, where 'n' is the number of nodes in the list. This traversal has a <strong>linear</strong> <strong>time</strong> <strong>complexity</strong>, O(n).</p>
+<p><strong>Space Complexity: O(1)</strong> The code uses only a <strong>constant</strong> <strong>amount</strong> of <strong>additional</strong> <strong>space</strong>, regardless of the linked list's length. This is achieved by using two pointers (<strong>slow</strong> and <strong>fast</strong>) to detect the loop without any significant extra memory usage, resulting in <strong>constant</strong> <strong>space</strong> complexity, O(1).</p>
+</div></details>
+</div>
+</details>
+</div>
+<!-- Optimal Approach Starts from here -->
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Video Explination Drop-Down -->
+<div class="dsa_article_youtube_video" id="dsa_article_video_explanation">
+<details>
+<summary class="main-summary">
+<span>
+Video Explanation
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="yt-video-wrapper">
+<!-- Insert iframe embed Link of Youtube Video-->
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" class="lazy-loaded" data-lazy-type="iframe" data-src="https://www.youtube.com/embed/I4g1qbkTPus?si=KEGtiW6TYtjQsm61" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/xvNwoz-ufXA?feature=oembed" title="Find the length of a Loop in a Linked List" width="810"></iframe><noscript>
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/I4g1qbkTPus?si=KEGtiW6TYtjQsm61" title="Find the length of a Loop in a Linked List" width="810"></iframe></noscript>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script>
+
+const codeSections = document.querySelectorAll('.code-section');
+
+// Get last selected language from localStorage or set default value
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+// Update last selected language for all sections and store in localStorage
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+// Handle copy button click event
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+// Set initial state of the tabs
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<script>
+const codeSections = document.querySelectorAll('.code-section');
+
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<link href="assets/4237ffca7ce6aadb438c457e0a675b12.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+<script src="index.js"></script>
+<script>hljs.highlightAll();</script>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script src="https://takeuforward.org/UXApproachDropDowns/2ApproachJSScript.js"></script>
+<!-- /wp:html -->
+<!-- wp:paragraph -->
+<p>In case you are learning DSA, you should definitely check out our free <a href="https://takeuforward.org/strivers-a2z-dsa-course/strivers-a2z-dsa-course-sheet-2/" rel="noopener" target="_blank" title="">A2Z DSA Course</a> with videos and blogs.</p>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to </em><strong><a href="https://www.linkedin.com/in/gauri-tomar-005048268" rel="noreferrer noopener" target="_blank">Gauri Tomar</a></strong><em> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/" rel="noopener" target="_blank" title="">please check out this article</a></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock && activeBlock.innerText) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

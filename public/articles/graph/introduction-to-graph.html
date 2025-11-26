@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Introduction to Graph</title>
+<link href="assets/34bd07407ad1de576cba1f67651fa31a" rel="stylesheet"/>
+<style>
+        /* ==========================================================================
+           1. CSS Variables (Theme) - Utilitarian Modern
+           ========================================================================== */
+        :root {
+            /* Default to Light Theme */
+            --primary-color: #3b82f6; /* Blue 500 */
+            --primary-hover: #2563eb; /* Blue 600 */
+            
+            --bg-body: #f8fafc; /* Slate 50 */
+            --bg-surface: #ffffff; /* White */
+            --bg-subtle: #f1f5f9; /* Slate 100 */
+            
+            --border-color: #e2e8f0; /* Slate 200 */
+            
+            --text-primary: #0f172a; /* Slate 900 */
+            --text-secondary: #334155; /* Slate 700 */
+            --text-muted: #64748b; /* Slate 500 */
+            
+            --link-color: #2563eb; /* Blue 600 */
+            --link-hover: #3b82f6; /* Blue 500 */
+
+            --code-bg: #f1f5f9; /* Slate 100 */
+            --code-text: #0f172a; /* Slate 900 */
+
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 0 25px -5px rgba(59, 130, 246, 0.25);
+            
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+        }
+
+        /* Dark Theme Support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-body: #0f172a; /* Slate 900 */
+                --bg-surface: #1e293b; /* Slate 800 */
+                --bg-subtle: #334155; /* Slate 700 */
+                
+                --border-color: #334155;
+                
+                --text-primary: #f8fafc; /* Slate 50 */
+                --text-secondary: #cbd5e1; /* Slate 300 */
+                --text-muted: #94a3b8; /* Slate 400 */
+                
+                --link-color: #60a5fa; /* Blue 400 */
+                --link-hover: #93c5fd; /* Blue 300 */
+
+                --code-bg: #020617; /* Slate 950 */
+                --code-text: #f8fafc;
+            }
+        }
+
+        /* ==========================================================================
+           2. Base & Reset
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ==========================================================================
+           3. Layout
+           ========================================================================== */
+        .container {
+            max-width: 800px; /* Optimal reading width */
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        /* Enhanced hover for desktop only */
+        @media (hover: hover) and (pointer: fine) {
+            .container:hover {
+                transform: translateY(-4px);
+                border-color: var(--primary-color);
+                box-shadow: var(--shadow-hover);
+            }
+        }
+
+        /* ==========================================================================
+           4. Typography
+           ========================================================================== */
+        h1 {
+            color: var(--text-primary);
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+        
+        h2, h3, h4 {
+            color: var(--text-secondary);
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.25em;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        /* ==========================================================================
+           5. Media
+           ========================================================================== */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            display: block;
+            margin: 1.5rem auto;
+        }
+
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            margin: 1.5rem 0;
+            border-radius: var(--radius-md);
+            background-color: var(--bg-subtle);
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ==========================================================================
+           6. Code Blocks
+           ========================================================================== */
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: inherit;
+        }
+
+        /* ==========================================================================
+           7. Code Tabs
+           ========================================================================== */
+        .code-section {
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .code-tabs {
+            display: flex;
+            background-color: var(--bg-subtle);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .code-tab {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .code-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            padding: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-muted);
+        }
+        
+        .copy-btn:hover svg {
+            fill: var(--text-primary);
+        }
+
+        .code-content {
+            background-color: var(--code-bg);
+        }
+        
+        .code-content pre {
+            margin: 0;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* ==========================================================================
+           8. Accordions / Details
+           ========================================================================== */
+        details {
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background-color: var(--bg-surface);
+            transition: box-shadow 0.2s;
+        }
+        
+        details:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1rem;
+            background-color: var(--bg-subtle);
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary:hover {
+            background-color: #475569; /* Slate 600 */
+        }
+        
+        /* Arrow icon rotation */
+        summary .arrow-svg {
+            transition: transform 0.3s ease;
+            width: 20px;
+            height: 20px;
+            fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
+        }
+        
+        /* Only rotate the arrow of the *active* details element */
+        details[open] > summary .arrow-svg {
+            transform: rotate(90deg);
+            fill: var(--primary-color);
+        }
+
+        .common-drops,
+        .atricle_example_content,
+        details > :not(summary) {
+            padding: 0.5rem;
+            background-color: var(--bg-surface);
+        }
+
+        /* Nested details */
+        .secondary-details {
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+        
+        .secondary-summary {
+            background-color: rgba(51, 65, 85, 0.3); /* Semi-transparent slate-700 */
+            font-size: 0.95rem;
+        }
+        
+        .secondary-summary:hover {
+            background-color: var(--bg-subtle);
+        }
+        
+        .opacity-75 {
+            opacity: 0.75;
+        }
+
+        /* ==========================================================================
+           9. Practice & Disclaimer
+           ========================================================================== */
+        .practice, .new-disclaimer {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: var(--bg-subtle);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+        
+        .problem-buttons a {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+        }
+        
+        .problem-buttons a:hover {
+            background-color: var(--primary-hover);
+            text-decoration: none;
+        }
+
+        /* ==========================================================================
+           10. Utilities
+           ========================================================================== */
+        .problem-buttons img,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article,
+        .has-text-align-center {
+            display: none;
+        }
+        
+        .arrow-svg {
+            display: inline-block; /* Ensure arrows are visible */
+        }
+
+        /* ==========================================================================
+           11. Responsive (Full Page Mobile)
+           ========================================================================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+
+            .container {
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 0.5rem;
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                text-align: left;
+            }
+
+            .code-tabs {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 2px; /* Space for scrollbar */
+            }
+            
+            .code-tab {
+                flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Introduction to Graph</h1>
+</header>
+<article>
+<!-- wp:heading {"level":3} -->
+<h3><strong>What is a graph data structure?</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>There are two types of data structures</p>
+<!-- /wp:paragraph -->
+<!-- wp:list {"ordered":true} -->
+<ol><li>Linear</li><li>Non - linear</li></ol>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p>We are aware of linear data structures such as arrays, stacks, queues, and linked lists. They are called linear because data elements are arranged in a linear or sequential manner.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The only non-linear data structure that we’ve seen so far is Tree. In fact, a tree is a special type of graph with some restrictions. Graphs are data structures that have a wide-ranging application in real life. These include analysis of electrical circuits, finding the shortest routes between two places, building navigation systems like Google Maps, even social media using graphs to store data about each user, etc. To understand and use the graph data structure, let’s get familiar with the definitions and terms associated with graphs. </p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Definitions and Terminology</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>A graph is a non-linear data structure consisting of nodes that have data and are connected to other nodes through edges.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><img height="216" src="assets/18c00cba96dbbf9d8221ee6b8485ddfe" width="333"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Nodes</strong> are circles represented by numbers. Nodes are also referred to as vertices. They store the data. The numbering of the nodes can be done in any order, no specific order needs to be followed.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>In the following example, the number of nodes or vertices = 5</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><img height="289" src="assets/dee10d0b4c014089c1662c21592b97cd" width="265"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Two nodes are connected by a horizontal line called<strong> Edge</strong>. Edge can be directed or undirected. Basically, pairs of vertices are called edges.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>In the above example, the edge can go from 1 to 4 or from 4 to 1, i.e. a bidirectional edge can be in both directions, hence called an <strong>undirected edge</strong>. Thus, the pairs (1,4) and (4,1) represent the same edge.</p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Types of Graphs</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p><img height="216" src="assets/18c00cba96dbbf9d8221ee6b8485ddfe" width="333"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:list {"ordered":true} -->
+<ol><li><strong>An undirected graph</strong> is a graph where edges are bidirectional, with no direction associated with them, i.e, there will be an undirected edge. In an undirected graph, the pair of vertices representing any edge is unordered. Thus, the pairs (u, v) and (v, u) represent the same edge.</li></ol>
+<!-- /wp:list -->
+<!-- wp:list {"ordered":true,"start":2} -->
+<ol start="2"><li><strong>A directed graph</strong> is a graph where all the edges are directed from one vertex to another, i.e, there will be a directed edge. It contains an ordered pair of vertices. It implies each edge is represented by a directed pair &lt;u, v&gt;. Therefore, &lt;u, v&gt; and &lt;v, u&gt; represent two different edges.</li></ol>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p>There can be multi-directed edges, hence bidirectional edges, as shown in the example below.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong><img height="433" src="assets/ca97c9cbe03fc3c86083640deb0f8dbc" width="399"/></strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Structure of Graph </strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>Does every graph have a cycle? </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The answer is No! Let us consider the following examples to understand this. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><img height="234" src="assets/6a7ba30c28339f0c0c12962312272766" width="363"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Fig. 1</strong> does not form a cycle but still, it is a graph. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Fig. 2</strong> is an example of a binary tree. It can also be called a graph because it follows all the rules. We’ve nodes and edges, and this is the minimal condition to be called a graph. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>So a graph does not necessarily mean to be an enclosed structure, it can be an open structure as well. A graph is said to have a cycle if it starts from a node and ends at the same node. There can be multiple cycles in a graph.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><img height="278" src="assets/c798780ff490fabd1e1af6d1b45f9699" width="406"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>If there is at least one cycle present in the graph then it is called an <strong>Undirected Cyclic Graph.</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>In the following examples of directed graphs, the first directed graph is not cyclic as we can’t start from a node and end at the same node. Hence it is called <strong>Directed Acyclic Graph, </strong>commonly called <strong>DAG.</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><img height="250" src="assets/e4cbbdec8ceb79879ad7398559069af3" width="404"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>If we just add an edge to the directed graph, then at least one cycle is present in the graph, hence it becomes <strong>Directed Cyclic Graph</strong>.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Path in a Graph</strong>  <img height="215" src="assets/1a406a0f8655545c1d082ce18b822ec3" width="196"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The path contains a lot of nodes and each of them is reachable.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Consider the given graph,</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><img height="215" src="assets/1a406a0f8655545c1d082ce18b822ec3" width="196"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted">1 2 3 5 is a path.
+1 2 3 2 1 is not a path, because a node can’t appear twice in a path.
+1 3 5 is not a path, as adjacent nodes must have an edge and there is no edge between 1 and 3.
+</pre>
+<!-- /wp:preformatted -->
+<!-- wp:paragraph -->
+<p><strong>Degree of Graph</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>It is the number of edges that go inside or outside that node.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>For<strong> undirected graphs</strong>, the degree is the number of edges attached to a node.</p>
+<!-- /wp:paragraph -->
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted">Example, 
+D(3) = 3
+D(4) = 2
+</pre>
+<!-- /wp:preformatted -->
+<!-- wp:paragraph -->
+<p><img height="186" src="assets/5145a1682adb19ab926621afce5ab958" width="158"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Property:</strong> It states that the total degree of a graph is equal to twice the number of edges. This is because every edge is associated/ connected to two nodes.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><img height="186" src="assets/071e7c96bf3ffc259150427bf048cce3" width="168"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted">Total Degree of a graph = 2 x E
+Example, (2+2+3+2+3) = 2 x 6 =&gt; 12 = 12 
+</pre>
+<!-- /wp:preformatted -->
+<!-- wp:paragraph -->
+<p><img height="202" src="assets/bd44296324c4f22944b6a5639d025da0" width="336"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>For <strong>directed graphs, </strong>we’ve Indegree and Outdegree. <b>The indegree</b> of a node is the number of incoming edges. <span style="background-color: rgba(48, 48, 48, 0.2);"><b>The </b></span><strong>outdegree</strong> of a node is the number of outgoing edges.</p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Edge Weight</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>A graph may have weights assigned on its edges. It is often referred to as the cost of the edge.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><img height="226" src="assets/5f1b328a15ed0f034902f8c0a96ac9ca" width="406"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>If weights are not assigned then we assume the unit weight, i.e, 1. In applications, weight may be a measure of the cost of a route. For example, if vertices A and B represent towns in a road network, then weight on edge AB may represent the cost of moving from A to B, or vice versa.</p>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/vanshika-singh-ba6b15157" rel="noopener" target="_blank" title="Vanshika Singh Gour">Vanshika Singh Gour</a></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a>. <em>If you want to suggest any improvement/correction in this article please mail us at write4tuf@gmail.com</em></p></blockquote>
+<!-- /wp:quote -->
+<!-- wp:embed {"url":"https://www.youtube.com/watch?v=M3_pLsDdeuU","type":"video","providerNameSlug":"youtube","responsive":true,"className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+https://www.youtube.com/watch?v=M3_pLsDdeuU
+</div></figure>
+<!-- /wp:embed -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock && activeBlock.innerText) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bridges in Graph - Using Tarjan's Algorithm of time in and low time: G-55</title>
+<link href="assets/34bd07407ad1de576cba1f67651fa31a" rel="stylesheet"/>
+<style>
+        /* ==========================================================================
+           1. CSS Variables (Theme) - Utilitarian Modern
+           ========================================================================== */
+        :root {
+            /* Default to Light Theme */
+            --primary-color: #3b82f6; /* Blue 500 */
+            --primary-hover: #2563eb; /* Blue 600 */
+            
+            --bg-body: #f8fafc; /* Slate 50 */
+            --bg-surface: #ffffff; /* White */
+            --bg-subtle: #f1f5f9; /* Slate 100 */
+            
+            --border-color: #e2e8f0; /* Slate 200 */
+            
+            --text-primary: #0f172a; /* Slate 900 */
+            --text-secondary: #334155; /* Slate 700 */
+            --text-muted: #64748b; /* Slate 500 */
+            
+            --link-color: #2563eb; /* Blue 600 */
+            --link-hover: #3b82f6; /* Blue 500 */
+
+            --code-bg: #f1f5f9; /* Slate 100 */
+            --code-text: #0f172a; /* Slate 900 */
+
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 0 25px -5px rgba(59, 130, 246, 0.25);
+            
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+        }
+
+        /* Dark Theme Support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-body: #0f172a; /* Slate 900 */
+                --bg-surface: #1e293b; /* Slate 800 */
+                --bg-subtle: #334155; /* Slate 700 */
+                
+                --border-color: #334155;
+                
+                --text-primary: #f8fafc; /* Slate 50 */
+                --text-secondary: #cbd5e1; /* Slate 300 */
+                --text-muted: #94a3b8; /* Slate 400 */
+                
+                --link-color: #60a5fa; /* Blue 400 */
+                --link-hover: #93c5fd; /* Blue 300 */
+
+                --code-bg: #020617; /* Slate 950 */
+                --code-text: #f8fafc;
+            }
+        }
+
+        /* ==========================================================================
+           2. Base & Reset
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ==========================================================================
+           3. Layout
+           ========================================================================== */
+        .container {
+            max-width: 800px; /* Optimal reading width */
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        /* Enhanced hover for desktop only */
+        @media (hover: hover) and (pointer: fine) {
+            .container:hover {
+                transform: translateY(-4px);
+                border-color: var(--primary-color);
+                box-shadow: var(--shadow-hover);
+            }
+        }
+
+        /* ==========================================================================
+           4. Typography
+           ========================================================================== */
+        h1 {
+            color: var(--text-primary);
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+        
+        h2, h3, h4 {
+            color: var(--text-secondary);
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.25em;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        /* ==========================================================================
+           5. Media
+           ========================================================================== */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            display: block;
+            margin: 1.5rem auto;
+        }
+
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            margin: 1.5rem 0;
+            border-radius: var(--radius-md);
+            background-color: var(--bg-subtle);
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ==========================================================================
+           6. Code Blocks
+           ========================================================================== */
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: inherit;
+        }
+
+        /* ==========================================================================
+           7. Code Tabs
+           ========================================================================== */
+        .code-section {
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .code-tabs {
+            display: flex;
+            background-color: var(--bg-subtle);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .code-tab {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .code-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            padding: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-muted);
+        }
+        
+        .copy-btn:hover svg {
+            fill: var(--text-primary);
+        }
+
+        .code-content {
+            background-color: var(--code-bg);
+        }
+        
+        .code-content pre {
+            margin: 0;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* ==========================================================================
+           8. Accordions / Details
+           ========================================================================== */
+        details {
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background-color: var(--bg-surface);
+            transition: box-shadow 0.2s;
+        }
+        
+        details:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1rem;
+            background-color: var(--bg-subtle);
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary:hover {
+            background-color: #475569; /* Slate 600 */
+        }
+        
+        /* Arrow icon rotation */
+        summary .arrow-svg {
+            transition: transform 0.3s ease;
+            width: 20px;
+            height: 20px;
+            fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
+        }
+        
+        /* Only rotate the arrow of the *active* details element */
+        details[open] > summary .arrow-svg {
+            transform: rotate(90deg);
+            fill: var(--primary-color);
+        }
+
+        .common-drops,
+        .atricle_example_content,
+        details > :not(summary) {
+            padding: 0.5rem;
+            background-color: var(--bg-surface);
+        }
+
+        /* Nested details */
+        .secondary-details {
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+        
+        .secondary-summary {
+            background-color: rgba(51, 65, 85, 0.3); /* Semi-transparent slate-700 */
+            font-size: 0.95rem;
+        }
+        
+        .secondary-summary:hover {
+            background-color: var(--bg-subtle);
+        }
+        
+        .opacity-75 {
+            opacity: 0.75;
+        }
+
+        /* ==========================================================================
+           9. Practice & Disclaimer
+           ========================================================================== */
+        .practice, .new-disclaimer {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: var(--bg-subtle);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+        
+        .problem-buttons a {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+        }
+        
+        .problem-buttons a:hover {
+            background-color: var(--primary-hover);
+            text-decoration: none;
+        }
+
+        /* ==========================================================================
+           10. Utilities
+           ========================================================================== */
+        .problem-buttons img,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article,
+        .has-text-align-center {
+            display: none;
+        }
+        
+        .arrow-svg {
+            display: inline-block; /* Ensure arrows are visible */
+        }
+
+        /* ==========================================================================
+           11. Responsive (Full Page Mobile)
+           ========================================================================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+
+            .container {
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 0.5rem;
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                text-align: left;
+            }
+
+            .code-tabs {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 2px; /* Space for scrollbar */
+            }
+            
+            .code-tab {
+                flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Bridges in Graph - Using Tarjan's Algorithm of time in and low time: G-55</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement:</strong> There are n servers numbered from 0 to n - 1 connected by undirected server-to-server connections forming a network where connections[i] = [ai, bi] represents a connection between servers ai and bi. Any server can reach other servers directly or indirectly through the network.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>A critical connection is a connection that, if removed, will make some servers unable to reach some other servers.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Return all critical connections in the network in any order.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Note: </strong>Here servers mean the nodes of the graph. The problem statement is taken from leetcode.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Pre-requisite: </strong><a href="https://takeuforward.org/data-structure/depth-first-search-dfs/"><strong>DFS algorithm</strong></a></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Example 1</strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<pre><b>Input Format:</b> N = 4, connections = [[0,1],[1,2],[2,0],[1,3]]
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7141" src="assets/dbd0b2a12b77972ba035ec24df4c49e4.png"/></figure>
+<b>Result:</b> [[1, 3]]
+<b>Explanation:</b> The edge [1, 3] is the critical edge because if we remove the edge the graph will be divided into 2 components.
+</pre>
+<!-- /wp:html -->
+<!-- wp:paragraph -->
+<p><strong>Example 2</strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<pre><b>Input Format:</b>
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7141" src="assets/52a4751c845534ac06af0b600092ef06.jpeg"/></figure>
+<b>Result:</b> [[4, 5], [5, 6], [8, 10]]
+<b>Explanation:</b> If we remove any of the three edges, the graph will be divided into 2 or more components.
+</pre>
+<!-- /wp:html -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Solution</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph {"textColor":"accent"} -->
+<p class="has-accent-color has-text-color"><strong><em>Disclaimer</em></strong>: <em>Don't jump directly to the solution, try it out yourself first. </em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><a href="https://leetcode.com/problems/critical-connections-in-a-network/" rel="noopener" target="_blank" title=""><em>Problem Link</em></a><em>.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Solution:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Before moving on to the solution, we need to understand the definition of a bridge in a graph.</p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":4} -->
+<h4><strong>Bridge:</strong></h4>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>Any edge in a component of a graph is called a bridge when the component is divided into 2 or more components if we remove that particular edge.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Example:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":7142,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7142" src="assets/b8a62c66fe02b54babe47f3e39f9a01a.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p>If in this graph, we remove the edge (5,6), the component gets divided into 2 components. So, it is a bridge. But if we remove the edge (2,3) the component remains connected. So, this is not a bridge. In this graph, we have a total of 3 bridges i.e. (4,5), (5,6), and (10, 8).</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>In order to find all the bridges of a graph, we will implement some logic over the DFS algorithm. This is more of an algorithm-based approach. So, let’s discuss the algorithm in detail. Before that, we will discuss two important concepts of the algorithm i.e. <strong><em>time of insertion and lowest time of insertion.</em></strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li><strong>Time of insertion: </strong>Dring the DFS call, the time when a node is visited, is called its time of insertion. For example, if in the above graph, we start DFS from node 1 it will visit node 1 first then node 2, node 3, node 4, and so on. So, the time of insertion for node 1 will be 1, node 2 will be 2, node 3 will be 3 and it will continue like this. <strong><em>To store the time of insertion for each node, we will use a time array</em></strong>.<br/></li><li><strong>Lowest time of insertion: </strong>In this case, the current node refers to all its adjacent nodes <strong><em>except the parent </em></strong>and takes the minimum lowest time of insertion into account. To store this entity for each node, we will use another ‘low’ array.</li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong><em>The logical modification of the DFS algorithm is discussed below</em></strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>After the DFS for any adjacent node gets completed, we will just check if the edge, whose starting point is the current node and ending point is that adjacent node, is a bridge. For that, we will just check if any other path from the current node to the adjacent node exists if we remove that particular edge. If any other alternative path exists, this edge is not a bridge. Otherwise, it can be considered a valid bridge. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Approach</strong>: </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The algorithm steps are as follows:</p>
+<!-- /wp:paragraph -->
+<!-- wp:list {"ordered":true} -->
+<ol><li>First, we need to create the adjacency list for the given graph from the edge information(<strong><em>If not already given</em></strong>). And we will declare a variable timer(either globally or we can carry it while calling DFS), that will keep track of the time of insertion for each node.</li><li>Then we will start DFS from node 0(assuming the graph contains a single component otherwise, we will call DFS for every component) with parent -1.<ol><li>Inside DFS, we will first mark the node visited and then store the time of insertion and the lowest time of insertion properly. The timer may be initialized to 0 or 1.</li><li>Now, it’s time to visit the adjacent nodes. <ol><li><strong><em>If the adjacent node is the parent itself</em></strong>, we will just continue to the next node.</li><li><strong><em>If the adjacent node is not visited</em></strong>, we will call DFS for the adjacent node with the current node as the parent.<br/>After the DFS gets completed, we will compare the lowest time of insertion of the current node and the adjacent node and take the minimum one.<br/>Now, we will check if the lowest time of insertion of the adjacent node is greater than the time of insertion of the current node.<br/>If it is, then we will store the adjacent node and the current node in our answer array as they are representing the bridge.</li><li><strong><em>If the adjacent node is already visited</em></strong>, we will just compare the lowest time of insertion of the current node and the adjacent node and take the minimum one.</li></ol></li></ol></li><li>Finally, our answer array will store all the bridges.</li></ol>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>Note: </strong><em>We are not considering the parent’s insertion time during calculating the lowest insertion time as we want to check if any other path from the node to the parent exists excluding the edge we intend to remove.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Note</strong>: <em>If you wish to see the dry run of the above approach, you can watch the video attached to this article.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+class Solution {
+private:
+    int timer = 1;
+    void dfs(int node, int parent, vector&lt;int&gt; &amp;vis,
+             vector&lt;int&gt; adj[], int tin[], int low[], vector&lt;vector&lt;int&gt;&gt; &amp;bridges) {
+        vis[node] = 1;
+        tin[node] = low[node] = timer;
+        timer++;
+        for (auto it : adj[node]) {
+            if (it == parent) continue;
+            if (vis[it] == 0) {
+                dfs(it, node, vis, adj, tin, low, bridges);
+                low[node] = min(low[it], low[node]);
+                // node --- it
+                if (low[it] &gt; tin[node]) {
+                    bridges.push_back({it, node});
+                }
+            }
+            else {
+                low[node] = min(low[node], low[it]);
+            }
+        }
+    }
+public:
+    vector&lt;vector&lt;int&gt;&gt; criticalConnections(int n,
+    vector&lt;vector&lt;int&gt;&gt;&amp; connections) {
+        vector&lt;int&gt; adj[n];
+        for (auto it : connections) {
+            int u = it[0], v = it[1];
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+        vector&lt;int&gt; vis(n, 0);
+        int tin[n];
+        int low[n];
+        vector&lt;vector&lt;int&gt;&gt; bridges;
+        dfs(0, -1, vis, adj, tin, low, bridges);
+        return bridges;
+    }
+};
+
+int main() {
+
+    int n = 4;
+    vector&lt;vector&lt;int&gt;&gt; connections = {
+        {0, 1}, {1, 2},
+        {2, 0}, {1, 3}
+    };
+
+    Solution obj;
+    vector&lt;vector&lt;int&gt;&gt; bridges = obj.criticalConnections(n, connections);
+    for (auto it : bridges) {
+        cout &lt;&lt; "[" &lt;&lt; it[0] &lt;&lt; ", " &lt;&lt; it[1] &lt;&lt; "] ";
+    }
+    cout &lt;&lt; endl;
+    return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output: [3, 1] (In example 1, [1, 3] and [3, 1] both are accepted.)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: </strong>O(V+2E), where V = no. of vertices, E = no. of edges. It is because the algorithm is just a simple DFS traversal.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: </strong>O(V+2E) + O(3V), where V = no. of vertices, E = no. of edges. O(V+2E) to store the graph in an adjacency list and O(3V) for the three arrays i.e. tin, low, and vis, each of size V.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.io.*;
+import java.util.*;
+
+class Solution {
+    private int timer = 1;
+    private void dfs(int node, int parent, int[] vis,
+                     ArrayList&lt;ArrayList&lt;Integer&gt;&gt; adj, int tin[], int low[],
+                     List&lt;List&lt;Integer&gt;&gt; bridges) {
+        vis[node] = 1;
+        tin[node] = low[node] = timer;
+        timer++;
+        for (Integer it : adj.get(node)) {
+            if (it == parent) continue;
+            if (vis[it] == 0) {
+                dfs(it, node, vis, adj, tin, low, bridges);
+                low[node] = Math.min(low[node], low[it]);
+                // node --- it
+                if (low[it] &gt; tin[node]) {
+                    bridges.add(Arrays.asList(it, node));
+                }
+            } else {
+                low[node] = Math.min(low[node], low[it]);
+            }
+        }
+    }
+    public List&lt;List&lt;Integer&gt;&gt; criticalConnections(int n, List&lt;List&lt;Integer&gt;&gt; connections) {
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; adj =
+            new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+        for (int i = 0; i &lt; n; i++) {
+            adj.add(new ArrayList&lt;Integer&gt;());
+        }
+        for (List&lt;Integer&gt; it : connections) {
+            int u = it.get(0); int v = it.get(1);
+            adj.get(u).add(v);
+            adj.get(v).add(u);
+        }
+        int[] vis = new int[n];
+        int[] tin = new int[n];
+        int[] low = new int[n];
+        List&lt;List&lt;Integer&gt;&gt; bridges = new ArrayList&lt;&gt;();
+        dfs(0, -1, vis, adj, tin, low, bridges);
+        return bridges;
+    }
+}
+
+class Main {
+    public static void main (String[] args) {
+        int n = 4;
+        int[][] edges = {
+            {0, 1}, {1, 2},
+            {2, 0}, {1, 3}
+        };
+        List&lt;List&lt;Integer&gt;&gt; connections = new ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; n; i++) {
+            connections.add(new ArrayList&lt;Integer&gt;());
+        }
+        for (int i = 0; i &lt; n; i++) {
+            connections.get(i).add(edges[i][0]);
+            connections.get(i).add(edges[i][1]);
+        }
+
+        Solution obj = new Solution();
+        List&lt;List&lt;Integer&gt;&gt; bridges = obj.criticalConnections(n, connections);
+
+        int size = bridges.size();
+        for (int i = 0; i &lt; size; i++) {
+            int u = bridges.get(i).get(0);
+            int v = bridges.get(i).get(1);
+            System.out.print("[" + u + ", " + v + "] ");
+        }
+        System.out.println("");
+    }
+} 
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output: [3, 1] (In example 1, [1, 3] and [3, 1] both are accepted.)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: </strong>O(V+2E), where V = no. of vertices, E = no. of edges. It is because the algorithm is just a simple DFS traversal.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: </strong>O(V+2E) + O(3V), where V = no. of vertices, E = no. of edges. O(V+2E) to store the graph in an adjacency list and O(3V) for the three arrays i.e. tin, low, and vis, each of size V.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/kriti39/" rel="noreferrer noopener" target="_blank"><strong>KRITIDIPTA GHOSH</strong></a></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a>. <em>If you want to suggest any improvement/correction in this article please mail us at write4tuf@gmail.com</em></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock && activeBlock.innerText) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

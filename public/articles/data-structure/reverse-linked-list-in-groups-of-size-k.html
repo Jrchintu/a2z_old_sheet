@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Reverse Linked List in groups of Size K</title>
+<link href="assets/34bd07407ad1de576cba1f67651fa31a" rel="stylesheet"/>
+<style>
+        /* ==========================================================================
+           1. CSS Variables (Theme) - Utilitarian Modern
+           ========================================================================== */
+        :root {
+            /* Default to Light Theme */
+            --primary-color: #3b82f6; /* Blue 500 */
+            --primary-hover: #2563eb; /* Blue 600 */
+            
+            --bg-body: #f8fafc; /* Slate 50 */
+            --bg-surface: #ffffff; /* White */
+            --bg-subtle: #f1f5f9; /* Slate 100 */
+            
+            --border-color: #e2e8f0; /* Slate 200 */
+            
+            --text-primary: #0f172a; /* Slate 900 */
+            --text-secondary: #334155; /* Slate 700 */
+            --text-muted: #64748b; /* Slate 500 */
+            
+            --link-color: #2563eb; /* Blue 600 */
+            --link-hover: #3b82f6; /* Blue 500 */
+
+            --code-bg: #f1f5f9; /* Slate 100 */
+            --code-text: #0f172a; /* Slate 900 */
+
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 0 25px -5px rgba(59, 130, 246, 0.25);
+            
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+        }
+
+        /* Dark Theme Support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-body: #0f172a; /* Slate 900 */
+                --bg-surface: #1e293b; /* Slate 800 */
+                --bg-subtle: #334155; /* Slate 700 */
+                
+                --border-color: #334155;
+                
+                --text-primary: #f8fafc; /* Slate 50 */
+                --text-secondary: #cbd5e1; /* Slate 300 */
+                --text-muted: #94a3b8; /* Slate 400 */
+                
+                --link-color: #60a5fa; /* Blue 400 */
+                --link-hover: #93c5fd; /* Blue 300 */
+
+                --code-bg: #020617; /* Slate 950 */
+                --code-text: #f8fafc;
+            }
+        }
+
+        /* ==========================================================================
+           2. Base & Reset
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ==========================================================================
+           3. Layout
+           ========================================================================== */
+        .container {
+            max-width: 800px; /* Optimal reading width */
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        /* Enhanced hover for desktop only */
+        @media (hover: hover) and (pointer: fine) {
+            .container:hover {
+                transform: translateY(-4px);
+                border-color: var(--primary-color);
+                box-shadow: var(--shadow-hover);
+            }
+        }
+
+        /* ==========================================================================
+           4. Typography
+           ========================================================================== */
+        h1 {
+            color: var(--text-primary);
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+        
+        h2, h3, h4 {
+            color: var(--text-secondary);
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.25em;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        /* ==========================================================================
+           5. Media
+           ========================================================================== */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            display: block;
+            margin: 1.5rem auto;
+        }
+
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            margin: 1.5rem 0;
+            border-radius: var(--radius-md);
+            background-color: var(--bg-subtle);
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ==========================================================================
+           6. Code Blocks
+           ========================================================================== */
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: inherit;
+        }
+
+        /* ==========================================================================
+           7. Code Tabs
+           ========================================================================== */
+        .code-section {
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .code-tabs {
+            display: flex;
+            background-color: var(--bg-subtle);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .code-tab {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .code-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            padding: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-muted);
+        }
+        
+        .copy-btn:hover svg {
+            fill: var(--text-primary);
+        }
+
+        .code-content {
+            background-color: var(--code-bg);
+        }
+        
+        .code-content pre {
+            margin: 0;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* ==========================================================================
+           8. Accordions / Details
+           ========================================================================== */
+        details {
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background-color: var(--bg-surface);
+            transition: box-shadow 0.2s;
+        }
+        
+        details:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1rem;
+            background-color: var(--bg-subtle);
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary:hover {
+            background-color: #475569; /* Slate 600 */
+        }
+        
+        /* Arrow icon rotation */
+        summary .arrow-svg {
+            transition: transform 0.3s ease;
+            width: 20px;
+            height: 20px;
+            fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
+        }
+        
+        /* Only rotate the arrow of the *active* details element */
+        details[open] > summary .arrow-svg {
+            transform: rotate(90deg);
+            fill: var(--primary-color);
+        }
+
+        .common-drops,
+        .atricle_example_content,
+        details > :not(summary) {
+            padding: 0.5rem;
+            background-color: var(--bg-surface);
+        }
+
+        /* Nested details */
+        .secondary-details {
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+        
+        .secondary-summary {
+            background-color: rgba(51, 65, 85, 0.3); /* Semi-transparent slate-700 */
+            font-size: 0.95rem;
+        }
+        
+        .secondary-summary:hover {
+            background-color: var(--bg-subtle);
+        }
+        
+        .opacity-75 {
+            opacity: 0.75;
+        }
+
+        /* ==========================================================================
+           9. Practice & Disclaimer
+           ========================================================================== */
+        .practice, .new-disclaimer {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: var(--bg-subtle);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+        
+        .problem-buttons a {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+        }
+        
+        .problem-buttons a:hover {
+            background-color: var(--primary-hover);
+            text-decoration: none;
+        }
+
+        /* ==========================================================================
+           10. Utilities
+           ========================================================================== */
+        .problem-buttons img,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article,
+        .has-text-align-center {
+            display: none;
+        }
+        
+        .arrow-svg {
+            display: inline-block; /* Ensure arrows are visible */
+        }
+
+        /* ==========================================================================
+           11. Responsive (Full Page Mobile)
+           ========================================================================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+
+            .container {
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 0.5rem;
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                text-align: left;
+            }
+
+            .code-tabs {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 2px; /* Space for scrollbar */
+            }
+            
+            .code-tab {
+                flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Reverse Linked List in groups of Size K</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement: </strong>Given the <strong>head</strong> of a singly linked list of <strong>`n` nodes</strong> and an integer <strong>`k`</strong>, where <strong>k</strong> is less than or equal to <strong>`n`</strong>. Your task is to <strong>reverse</strong> the order of <strong>each</strong> <strong>group</strong> of <strong>`k`</strong> <strong>consecutive</strong> <strong>nodes</strong>, if <strong>`n`</strong> is not divisible by <strong>`k`</strong>, then the <strong>last</strong> <strong>group</strong> of <strong>remaining</strong> <strong>nodes</strong> should remain <strong>unchanged</strong>.</p>
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<!-- This is Examples Drop-Down -->
+<div id="article_examples">
+<details class="article_example_details">
+<summary class="article_example_summary">
+<span><strong>
+Examples
+</strong>
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="atricle_example_content">
+<pre class="wp-block-preformatted"><p><strong>Example 1:</strong></p>
+<p><strong>Input Format</strong>:</p>
+<p>LL: 1  2  3  4  5  6  7  8  9  10<br/>K = 3</p>
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-13087" height="90" src="assets/f3f8f82339c897f30bffb9ddbf1d8343.png" width="768"/></figure>
+<p><strong>Output</strong>: 3  2  1  6  5  4  9  8  7  10</p>
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-13088" height="168" src="assets/420aac07083920cd848b30d85bad1e9c.png" width="768"/></figure>
+<p><strong>Explanation</strong>:</p>
+<ul><li>Group 1: Reverse nodes 1 -&gt; 2 -&gt; 3 to become 3 -&gt; 2 -&gt; 1.</li><li>Group 2: Reverse nodes 4 -&gt; 5 -&gt; 6 to become 6 -&gt; 5 -&gt; 4.</li><li>Group 3: Reverse nodes 7 -&gt; 8 -&gt; 9 to become 9 -&gt; 8 -&gt; 7.</li><li>Node 10 remains as is since there are no more groups of size K remaining.</li></ul>
+<p><strong>Example 2:</strong></p>
+<p><strong>Input Format:</strong></p>
+<p>LL: 5  4  3  7  9  2</p>
+<p>K = 4</p>
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-13089" height="143" src="assets/ac70659ec039517d82f58357ef20412f.png" width="768"/></figure>
+<p><strong>Output: </strong>7 3 4 5 9 2</p>
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-13090" height="239" src="assets/9eb6e1fe4cf8da4eb9016ce0606a3dc7.png" width="768"/></figure>
+<p><strong>Explanation</strong>: </p>
+<ul><li>Group 1: Reversed nodes 5 -&gt; 4 -&gt; 3 -&gt; 7 to become 7 -&gt; 3 -&gt; 4 -&gt; 5.</li><li>Group 2: Nodes 9 -&gt; 2 remain unchanged as they are not a complete group of size K.</li></ul>
+</pre>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Practice Section-->
+<div class="practice">
+<span><strong>Practice: </strong></span>
+<div class="problem-buttons">
+<!-- Add Problem Link inside href -->
+<a href="https://www.codingninjas.com/studio/problems/reverse-list-in-k-groups_983644?utm_source=striver&amp;utm_medium=website&amp;utm_campaign=a_zcoursetuf" rel="noopener" target="_blank">
+<span>Solve Problem</span>
+<img alt="code-studio" src="assets/86dd2cadbd0e7ef71ad98d3b7f2f2efc.png"/>
+</a>
+</div>
+</div>
+<p class="new-disclaimer"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out
+yourself first. </em></p>
+<!-- /wp:html -->
+<!-- wp:heading {"level":3} -->
+<h3>Solution:</h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p><a href="https://docs.google.com/document/d/1Eos1iUvU8K8hrpX_-pRjyy7IQAQFeJifO5U2gJk55y8/edit?usp=sharing">Reverse Linked L</a><a href="https://takeuforward.org/data-structure/reverse-a-linked-list/" title="">i</a><a href="https://docs.google.com/document/d/1Eos1iUvU8K8hrpX_-pRjyy7IQAQFeJifO5U2gJk55y8/edit?usp=sharing">st</a> is a prerequisite to this question. Make sure you are thorough with the fundamentals and procedures that go into reversing a linked list.</p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Approach: </strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p>The approach simplifies reversing linked list nodes by <strong>breaking</strong> the list into <strong>segments</strong> of <strong>K nodes</strong> and <strong>reversing</strong> <strong>each</strong> <strong>segment</strong> <strong>individually</strong>. Starting from the head, the algorithm traverses the list to <strong>identify segments of K nodes</strong>. Upon finding a segment, it <strong>reverses</strong> <strong>it</strong>, returning the modified list. If a segment has less than K nodes left (ie. <strong>remaining</strong> <strong>nodes</strong> at the end), they are left <strong>unaltered</strong>. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>To implement this (<strong>complex</strong>) <strong>algorithm</strong> we can break down the process into <strong>three</strong> <strong>parts</strong>:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>`reverseLinkedList`: </strong>This function takes the <strong>head</strong> of a segment as <strong>input</strong> and reverses the linked list formed by that segment. It operates by utilizing the <strong>classic iterative</strong> <strong>3-pointer method</strong> to reverse the direction of pointers within the segment. Read about this algorithm in detail here <a href="https://takeuforward.org/data-structure/reverse-a-linked-list/" rel="noopener" target="_blank" title="">Reverse Linked List</a>.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>`getKthNode`: </strong>The purpose of this function is to <strong>identify</strong> <strong>the</strong> <strong>end</strong> of a segment of <strong>K nodes</strong> in the linked list. Given a starting node, it traverses K nodes in the list and <strong>returns</strong> <strong>the</strong> <strong>Kth node</strong>, allowing the segmentation of the list into <strong>smaller</strong> <strong>parts</strong> for reversal.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>`kReverse`: </strong>The <strong>main</strong> <strong>function</strong> orchestrates the <strong>reversal</strong> <strong>process</strong>. It iterates through the linked list and identifies segments of K nodes using <strong>getKthNode</strong>. For each identified segment, it utilizes <strong>reverseLinkedList</strong> to reverse the nodes within that segment. This <strong>iterative</strong> <strong>approach</strong> efficiently reverses the linked list nodes in <strong>groups of K.</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Algorithm:</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p><strong>Step 1:</strong> Initialise a pointer <strong>`temp` </strong>to the head of the linked list. Using <strong>`temp`</strong>, traverse to the <strong>Kth Node</strong> iteratively.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Step 2:</strong> On reaching the <strong>Kth Node, </strong>preserve the <strong>Kth Node’s next</strong> node as <strong>`nextNode` </strong>and set the <strong>Kth Node’s next</strong> pointer to <strong>`null`</strong>. This effectively <strong>breaks</strong> the linked list in a <strong>smaller</strong> <strong>list</strong> of size <strong>K</strong> that can be <strong>reversed</strong> and <strong>attached</strong> <strong>back</strong>.</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":13092,"width":768,"height":196,"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-13092" height="196" src="assets/e6c0668665b8e5a75ada433a2c9258b7.png" width="768"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p><strong>Step 3: </strong>Treat this <strong>segment</strong> from <strong>`temp`</strong> to <strong>Kth Node</strong> as an individual linked list and <strong>reverse it.</strong> This can be done via the <strong>help</strong> of a helper function <strong>`reverseLinkedList`</strong> which has been discussed in detail in this article <a href="https://takeuforward.org/data-structure/reverse-a-linked-list/" rel="noopener" target="_blank" title=""><strong>Reverse Linked List</strong>.</a></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Step 4: </strong>The reversed linked list segment returns a modified list with <strong>`temp`</strong> now at its <strong>tail </strong> and the <strong>`KthNode`</strong> pointing to its head. Update the <strong>`temp`s `next` </strong>pointer to <strong>`nextNode`</strong>.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>If we are at the <strong>first</strong> <strong>segment</strong> of K nodes, <strong>update </strong>the <strong>head </strong>to <strong>`Kth Node`</strong>.</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":13093,"width":768,"height":356,"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large is-resized"><img alt="" class="wp-image-13093" height="356" src="assets/ed3071ca2da0f959d5b20d680baa2073.png" width="768"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<p><strong>Step 5: Continue</strong> this reversal for <strong>further groups. </strong>If a segment has fewer than <strong>K Nodes</strong>, leave them unmodified and return the <strong>new head</strong>. Use the <strong>prevLast</strong> <strong>pointer</strong> to maintain the <strong>link</strong> between the end of the <strong>previous</strong> <strong>reversed</strong> <strong>segment</strong> and the <strong>current</strong> <strong>segment</strong>.</p>
+<!-- /wp:paragraph -->
+<!-- wp:image {"id":13094,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-13094" src="assets/e5140f51bb27397f1bbee39c2fae9b32.png"/></figure>
+<!-- /wp:image -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">Javascript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;iostream&gt;
+#include &lt;bits/stdc++.h&gt;
+
+using namespace std;
+
+// Node class represents a
+// node in a linked list
+class Node {
+public:
+    // Data stored in the node
+    int data;   
+    
+    // Pointer to the next node in the list
+    Node* next;      
+
+    // Constructor with both data and
+    // next node as parameters
+    Node(int data1, Node* next1) {
+        data = data1;
+        next = next1;
+    }
+
+    // Constructor with only data as a
+    // parameter, sets next to nullptr
+    Node(int data1) {
+        data = data1;
+        next = nullptr;
+    }
+};
+
+// This function has been explained
+// in previous videos/articles
+
+// Function to reverse a linked list
+// using the 3-pointer approach
+Node* reverseLinkedList(Node *head)
+{
+   // Initialize'temp' at
+   // head of linked list
+   Node* temp = head;  
+   
+   // Initialize pointer 'prev' to NULL,
+   // representing the previous node
+   Node* prev = NULL;  
+   
+   // Traverse the list, continue till
+   // 'temp' reaches the end (NULL)
+   while(temp != NULL){  
+       // Store the next node in
+       // 'front' to preserve the reference
+       Node* front = temp-&gt;next;  
+       
+       // Reverse the direction of the
+       // current node's 'next' pointer
+       // to point to 'prev'
+       temp-&gt;next = prev;  
+       
+        // Move 'prev' to the current
+        // node for the next iteration
+       prev = temp;  
+       
+        // Move 'temp' to the 'front' node
+        // advancing the traversal
+       temp = front; 
+   }
+   
+   // Return the new head of
+   // the reversed linked list
+   return prev;  
+}
+
+// Function to get the Kth node from
+// a given position in the linked list
+Node* getKthNode(Node* temp, int k){
+    // Decrement K as we already
+    // start from the 1st node
+    k -= 1; 
+
+    // Decrement K until it reaches
+    // the desired position
+    while(temp != NULL &amp;&amp; k &gt; 0){
+        // Decrement k as temp progresses
+        k--; 
+        
+        // Move to the next node
+        temp = temp -&gt; next; 
+    }
+    
+    // Return the Kth node
+    return temp; 
+}
+
+// Function to reverse nodes in groups of K
+Node* kReverse(Node* head, int k){
+    // Initialize a temporary
+    // node to traverse the list
+    Node* temp = head; 
+
+    // Initialize a pointer to track the
+    // ;ast node of the previous group
+    Node* prevLast = NULL; 
+    
+    // Traverse through the linked list
+    while(temp != NULL){
+        // Get the Kth node of the current group
+        Node* kThNode = getKthNode(temp, k); 
+
+        // If the Kth node is NULL
+        // (not a complete group)
+        if(kThNode == NULL){
+            // If there was a previous group,
+            // link the last node to the current node
+            if(prevLast){
+                prevLast -&gt; next = temp; 
+            }
+            
+            // Exit the loop
+            break; 
+        }
+        
+        // Store the next node
+        // after the Kth node
+        Node* nextNode = kThNode -&gt; next; 
+
+        // Disconnect the Kth node
+        // to prepare for reversal
+        kThNode -&gt; next = NULL; 
+
+        // Reverse the nodes from
+        // temp to the Kth node
+        reverseLinkedList(temp); 
+        
+        // Adjust the head if the reversal
+        // starts from the head
+        if(temp == head){
+            head = kThNode;
+        }else{
+            // Link the last node of the previous
+            // group to the reversed group
+            prevLast -&gt; next = kThNode; 
+        }
+
+        // Update the pointer to the
+        // last node of the previous group
+        prevLast = temp; 
+
+        // Move to the next group
+        temp = nextNode; 
+    }
+    
+    // Return the head of the
+    // modified linked list
+    return head; 
+}
+
+// Function to print the linked list
+void printLinkedList(Node* head) {
+    Node* temp = head;
+    while (temp != nullptr) {
+        cout &lt;&lt; temp-&gt;data &lt;&lt; " ";
+        temp = temp-&gt;next;
+    }
+    cout &lt;&lt; endl;
+}
+
+int main() {
+    // Create a linked list with
+    // values 5, 4, 3, 7, 9 and 2
+    Node* head = new Node(5);
+    head-&gt;next = new Node(4);
+    head-&gt;next-&gt;next = new Node(3);
+    head-&gt;next-&gt;next-&gt;next = new Node(7);
+    head-&gt;next-&gt;next-&gt;next-&gt;next = new Node(9);
+    head-&gt;next-&gt;next-&gt;next-&gt;next-&gt;next = new Node(2);
+
+    // Print the original linked list
+    cout &lt;&lt; "Original Linked List: ";
+    printLinkedList(head);
+
+    // Reverse the linked list
+    head = kReverse(head, 4);
+
+    // Print the reversed linked list
+    cout &lt;&lt; "Reversed Linked List: ";
+    printLinkedList(head);
+
+    return 0;
+}</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong><br/>Original Linked List: 5 4 3 7 9 2 K = 4<br/>Linked List Reversed in groups of 4: 7 3 4 5 9 2 </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(2N)</strong> The time complexity consists of actions of <strong>reversing</strong> <strong>segments</strong> <strong>of K</strong> and <strong>finding</strong> <strong>the</strong> <strong>Kth</strong> <strong>node</strong> which operates in linear time. Thus, <strong>O(N) + O(N) = O(2N)</strong>, which simplifies to O(N).</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(1) </strong>The space complexity is O(1) as the algorithm <strong>operates</strong> <span style="background-color: rgba(48, 48, 48, 0.2);"><b>in </b></span><strong>place</strong> without any additional space requirements.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+
+// Node class represents a
+// node in a linked list
+class Node {
+    // Data stored in the node
+    int data;      
+    // Pointer to the next
+    // node in the list
+    Node next;     
+
+    // Constructor with both data
+    // and next node as parameters
+    Node(int data, Node next) {
+        this.data = data;
+        this.next = next;
+    }
+
+    // Constructor with only data as
+    // a parameter, sets next to null
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+public class Main {
+
+    // Function to reverse a linked list
+    // using the 3-pointer approach
+    static Node reverseLinkedList(Node head) {
+        // Initialize'temp' at
+        // head of linked list
+        Node temp = head;  
+   
+       // Initialize pointer 'prev' to NULL,
+       // representing the previous node
+       Node prev = null;  
+       
+       // Traverse the list, continue till
+       // 'temp' reaches the end (NULL)
+       while(temp != null){  
+           // Store the next node in
+           // 'front' to preserve the reference
+           Node front = temp.next;  
+           
+           // Reverse the direction of the
+           // current node's 'next' pointer
+           // to point to 'prev'
+           temp.next = prev;  
+           
+            // Move 'prev' to the current
+            // node for the next iteration
+           prev = temp;  
+           
+            // Move 'temp' to the 'front' node
+            // advancing the traversal
+           temp = front; 
+       }
+       
+       // Return the new head of
+       // the reversed linked list
+       return prev;  
+
+    }
+
+    // Function to get the Kth node from
+    // a given position in the linked list
+    static Node getKthNode(Node temp, int k) {
+        // Decrement K as we already
+        // start from the 1st node
+        k -= 1;
+        
+        // Decrement K until it reaches
+        // the desired position
+        while (temp != null &amp;&amp; k &gt; 0) {
+            // Decrement k as temp progresses
+            k--;
+            
+            // Move to the next node
+            temp = temp.next;
+        }
+        
+        // Return the Kth node
+        return temp;
+    }
+
+    // Function to reverse nodes in groups of K
+    static Node kReverse(Node head, int k) {
+        // Initialize a temporary
+        // node to traverse the list
+        Node temp = head;
+        
+        // Initialize a pointer to track the
+        // last node of the previous group
+        Node prevLast = null;
+        
+        // Traverse through the linked list
+        while (temp != null) {
+            
+            // Get the Kth node of the current group
+            Node kThNode = getKthNode(temp, k);
+            
+            // If the Kth node is NULL
+            // (not a complete group)
+            if (kThNode == null) {
+               
+                // If there was a previous group,
+                // link the last node to the current node
+                if (prevLast != null) {
+                    prevLast.next = temp;
+                }
+                
+                // Exit the loop
+                break;
+            }
+            
+            // Store the next node
+            // after the Kth node
+            Node nextNode = kThNode.next;
+            
+            // Disconnect the Kth node
+            // to prepare for reversal
+            kThNode.next = null;
+            
+            // Reverse the nodes from
+            // temp to the Kth node
+            reverseLinkedList(temp);
+            
+             // Adjust the head if the reversal
+            // starts from the head
+            if (temp == head) {
+                head = kThNode;
+            } else {
+                // Link the last node of the previous
+                // group to the reversed group
+                prevLast.next = kThNode;
+            }
+            
+            // Update the pointer to the
+            // last node of the previous group
+            prevLast = temp;
+            
+            // Move to the next group
+            temp = nextNode;
+        }
+        
+        // Return the head of the
+        // modified linked list
+        return head;
+    }
+
+    // Function to print the linked list
+    static void printLinkedList(Node head) {
+        Node temp = head;
+        while (temp != null) {
+            System.out.print(temp.data + " ");
+            temp = temp.next;
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        // Create a linked list with
+        // values 5, 4, 3, 7, 9 and 2
+        Node head = new Node(5);
+        head.next = new Node(4);
+        head.next.next = new Node(3);
+        head.next.next.next = new Node(7);
+        head.next.next.next.next = new Node(9);
+        head.next.next.next.next.next = new Node(2);
+
+        // Print the original linked list
+        System.out.print("Original Linked List: ");
+        printLinkedList(head);
+
+        // Reverse the linked list
+        head = kReverse(head, 4);
+
+        // Print the reversed linked list
+        System.out.print("Reversed Linked List: ");
+        printLinkedList(head);
+    }
+}</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong><br/>Original Linked List: 5 4 3 7 9 2 K = 4<br/>Linked List Reversed in groups of 4: 7 3 4 5 9 2 </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(2N)</strong> The time complexity consists of actions of <strong>reversing</strong> <strong>segments</strong> <strong>of K</strong> and <strong>finding</strong> <strong>the</strong> <strong>Kth</strong> <strong>node</strong> which operates in linear time. Thus, <strong>O(N) + O(N) = O(2N)</strong>, which simplifies to O(N).</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(1) </strong>The space complexity is O(1) as the algorithm <strong>operates</strong> <span style="background-color: rgba(48, 48, 48, 0.2);"><b>in</b></span><strong> place</strong> without any additional space requirements.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="python">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-python" lang="python">class Node:
+    def __init__(self, data, next_node=None):
+        self.data = data
+        self.next = next_node
+
+# Function to reverse linked list
+# using 3 pointer approach
+def reverseLinkedList(head):
+    
+    # Initialize 'temp' at the
+    # head of the linked list
+    temp = head
+    
+    # Initialize 'prev' to None,
+    # representing the previous node 
+    prev = None
+    
+    while temp is not None:
+        # Store the next node in 'front'
+        # to preserve the reference
+        front = temp.next
+        # Reverse the direction of the current
+        # node's 'next' pointer to point to 'prev'
+        temp.next = prev
+        # Move 'prev' to the current 
+        # node, for the next iteration
+        prev = temp
+        # Move 'temp' to 'front' node
+        # advancing traversal
+        temp = front
+
+    # Return the new head
+    # of the reversed linked list
+    return prev
+    
+# Function to get the Kth node from
+# a given position in the linked list
+def getKthNode(temp, k):
+    # Decrement K as we already
+    # start from the 1st node
+    k -= 1
+
+    # Decrement K until it reaches
+    # the desired position
+    while temp is not None and k &gt; 0:
+        # Decrement k as temp progresses
+        k -= 1
+
+        # Move to the next node
+        temp = temp.next
+
+    # Return the Kth node
+    return temp
+
+
+# Function to reverse nodes in groups of K
+def kReverse(head, k):
+    # Initialize a temporary
+    # node to traverse the list
+    temp = head
+
+    # Initialize a pointer to track the
+    # last node of the previous group
+    prevLast = None
+
+    # Traverse through the linked list
+    while temp is not None:
+        # Get the Kth node of the current group
+        kThNode = getKthNode(temp, k)
+
+        # If the Kth node is NULL
+        # (not a complete group)
+        if kThNode is None:
+            # If there was a previous group,
+            # link the last node to the current node
+            if prevLast:
+                prevLast.next = temp
+
+            # Exit the loop
+            break
+
+        # Store the next node
+        # after the Kth node
+        nextNode = kThNode.next
+
+        # Disconnect the Kth node
+        # to prepare for reversal
+        kThNode.next = None
+
+        # Reverse the nodes from
+        # temp to the Kth node
+        reverseLinkedList(temp)
+
+        # Adjust the head if the reversal
+        # starts from the head
+        if temp == head:
+            head = kThNode
+        else:
+            # Link the last node of the previous
+            # group to the reversed group
+            prevLast.next = kThNode
+
+        # Update the pointer to the
+        # last node of the previous group
+        prevLast = temp
+
+        # Move to the next group
+        temp = nextNode
+
+    # Return the head of the
+    # modified linked list
+    return head
+
+
+# Function to print the linked list
+def printLinkedList(head):
+    temp = head
+    while temp is not None:
+        print(temp.data, end=" ")
+        temp = temp.next
+    print()
+
+
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+
+# Create a linked list with
+# values 5, 4, 3, 7, 9 and 2
+head = Node(5)
+head.next = Node(4)
+head.next.next = Node(3)
+head.next.next.next = Node(7)
+head.next.next.next.next = Node(9)
+head.next.next.next.next.next = Node(2)
+
+# Print the original linked list
+print("Original Linked List: ", end="")
+printLinkedList(head)
+
+# Reverse the linked list
+head = kReverse(head, 4)
+
+# Print the reversed linked list
+print("Reversed Linked List: ", end="")
+printLinkedList(head)</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong><br/>Original Linked List: 5 4 3 7 9 2 K = 4<br/>Linked List Reversed in groups of 4: 7 3 4 5 9 2 </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(2N)</strong> The time complexity consists of actions of <strong>reversing</strong> <strong>segments</strong> <strong>of K</strong> and <strong>finding</strong> <strong>the</strong> <strong>Kth</strong> <strong>node</strong> which operates in linear time. Thus, <strong>O(N) + O(N) = O(2N)</strong>, which simplifies to O(N).</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(1) </strong>The space complexity is O(1) as the algorithm <strong>operates</strong> <span style="background-color: rgba(48, 48, 48, 0.2);"><b>in p</b></span><strong>lace</strong> without any additional space requirements.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="javascript">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">class Node {
+  constructor(data, next = null) {
+    this.data = data;
+    this.next = next;
+  }
+}
+
+// Function to reverse a linked list
+// using the 3-pointer approach
+function reverseLinkedList(head) {
+    
+    // Initialize pointer 'temp' at
+    // head of the linked list
+    let temp = head;  
+    
+    // Initialize a pointer 'prev' to null
+    // representing the previous node
+    // (initially none)
+    let prev = null;  
+
+    // Traversing the list, continue until
+    // 'temp' reaches the end (null)
+    while (temp !== null) {  
+        // Store the next node in
+        // 'front' to preserve the reference
+        let front = temp.next;  
+        
+        // Reverse direction of current node's
+        // 'next' pointer to point to 'prev'
+        temp.next = prev;  
+        
+        // Move 'prev' to the current node,
+        // preparing it for the next iteration
+        prev = temp;
+        
+        // Move 'temp' to the 'front' node
+        // (the next node), advancing traversal
+        temp = front;  
+    }
+
+    // Return the new head of
+    // the reversed linked list
+    return prev;  
+}
+
+// Function to get the Kth node from
+// a given position in the linked list
+function getKthNode(temp, k) {
+    // Decrement K as we already
+    // start from the 1st node
+    k -= 1;
+
+    // Decrement K until it reaches
+    // the desired position
+    while (temp !== null &amp;&amp; k &gt; 0) {
+        // Decrement k as temp progresses
+        k--;
+
+        // Move to the next node
+        temp = temp.next;
+    }
+
+    // Return the Kth node
+    return temp;
+}
+
+// Function to reverse nodes in groups of K
+function kReverse(head, k) {
+    // Initialize a temporary
+    // node to traverse the list
+    let temp = head;
+
+    // Initialize a pointer to track the
+    // last node of the previous group
+    let prevLast = null;
+
+    // Traverse through the linked list
+    while (temp !== null) {
+        // Get the Kth node of the current group
+        let kThNode = getKthNode(temp, k);
+
+        // If the Kth node is NULL
+        // (not a complete group)
+        if (kThNode === null) {
+            // If there was a previous group,
+            // link the last node to the current node
+            if (prevLast) {
+                prevLast.next = temp;
+            }
+
+            // Exit the loop
+            break;
+        }
+
+        // Store the next node
+        // after the Kth node
+        let nextNode = kThNode.next;
+
+        // Disconnect the Kth node
+        // to prepare for reversal
+        kThNode.next = null;
+
+        // Reverse the nodes from
+        // temp to the Kth node
+        reverseLinkedList(temp);
+
+        // Adjust the head if the reversal
+        // starts from the head
+        if (temp === head) {
+            head = kThNode;
+        } else {
+            // Link the last node of the previous
+            // group to the reversed group
+            prevLast.next = kThNode;
+        }
+
+        // Update the pointer to the
+        // last node of the previous group
+        prevLast = temp;
+
+        // Move to the next group
+        temp = nextNode;
+    }
+
+    // Return the head of the
+    // modified linked list
+    return head;
+}
+
+// Function to reverse the linked list
+function reverseLinkedList(head) {
+    let prev = null;
+    let current = head;
+    let next = null;
+
+    while (current !== null) {
+        next = current.next;
+        current.next = prev;
+        prev = current;
+        current = next;
+    }
+
+    head = prev;
+}
+
+// Function to print the linked list
+function printLinkedList(head) {
+    let temp = head;
+    let result = "";
+    while (temp !== null) {
+        result += temp.data + " ";
+        temp = temp.next;
+    }
+    console.log(result);
+}
+
+// Create a linked list with
+// values 5, 4, 3, 7, 9, and 2
+let head = new Node(5);
+head.next = new Node(4);
+head.next.next = new Node(3);
+head.next.next.next = new Node(7);
+head.next.next.next.next = new Node(9);
+head.next.next.next.next.next = new Node(2);
+
+// Print the original linked list
+console.log("Original Linked List: ");
+printLinkedList(head);
+
+// Reverse the linked list
+head = kReverse(head, 4);
+
+// Print the reversed linked list
+console.log("Reversed Linked List: ");
+printLinkedList(head);</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong><br/>Original Linked List: 5 4 3 7 9 2 K = 4<br/>Linked List Reversed in groups of 4: 7 3 4 5 9 2 </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(2N)</strong> The time complexity consists of actions of <strong>reversing</strong> <strong>segments</strong> <strong>of K</strong> and <strong>finding</strong> <strong>the</strong> <strong>Kth</strong> <strong>node</strong> which operates in linear time. Thus, <strong>O(N) + O(N) = O(2N)</strong>, which simplifies to O(N).</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(1) </strong>The space complexity is O(1) as the algorithm <strong>operates</strong> <span style="background-color: rgba(48, 48, 48, 0.2);"><b>in </b></span><strong>place</strong> without any additional space requirements.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>In case you are learning DSA, you should definitely check out our free <a href="http://blogs.takeuforward.org/strivers-a2z-dsa-course/strivers-a2z-dsa-course-sheet-2/" rel="noopener" target="_blank" title="">A2Z DSA Course</a> with videos and blogs.</p>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to </em><strong><a href="https://www.linkedin.com/in/gauri-tomar-005048268" rel="noreferrer noopener" target="_blank">Gauri Tomar</a></strong><em> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="http://blogs.takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/" rel="noopener" target="_blank" title="">please check out this article</a></p></blockquote>
+<!-- /wp:quote -->
+<!-- wp:embed {"url":"https://youtu.be/lIar1skcQYI?si=SZA90RkRrEEVoT-q","type":"video","providerNameSlug":"youtube","responsive":true,"className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+https://youtu.be/lIar1skcQYI?si=SZA90RkRrEEVoT-q
+</div></figure>
+<!-- /wp:embed -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock && activeBlock.innerText) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

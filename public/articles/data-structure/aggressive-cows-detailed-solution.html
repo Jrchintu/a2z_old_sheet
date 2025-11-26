@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aggressive Cows : Detailed Solution</title>
+<link href="assets/34bd07407ad1de576cba1f67651fa31a" rel="stylesheet"/>
+<style>
+        /* ==========================================================================
+           1. CSS Variables (Theme) - Utilitarian Modern
+           ========================================================================== */
+        :root {
+            /* Default to Light Theme */
+            --primary-color: #3b82f6; /* Blue 500 */
+            --primary-hover: #2563eb; /* Blue 600 */
+            
+            --bg-body: #f8fafc; /* Slate 50 */
+            --bg-surface: #ffffff; /* White */
+            --bg-subtle: #f1f5f9; /* Slate 100 */
+            
+            --border-color: #e2e8f0; /* Slate 200 */
+            
+            --text-primary: #0f172a; /* Slate 900 */
+            --text-secondary: #334155; /* Slate 700 */
+            --text-muted: #64748b; /* Slate 500 */
+            
+            --link-color: #2563eb; /* Blue 600 */
+            --link-hover: #3b82f6; /* Blue 500 */
+
+            --code-bg: #f1f5f9; /* Slate 100 */
+            --code-text: #0f172a; /* Slate 900 */
+
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 0 25px -5px rgba(59, 130, 246, 0.25);
+            
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+        }
+
+        /* Dark Theme Support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-body: #0f172a; /* Slate 900 */
+                --bg-surface: #1e293b; /* Slate 800 */
+                --bg-subtle: #334155; /* Slate 700 */
+                
+                --border-color: #334155;
+                
+                --text-primary: #f8fafc; /* Slate 50 */
+                --text-secondary: #cbd5e1; /* Slate 300 */
+                --text-muted: #94a3b8; /* Slate 400 */
+                
+                --link-color: #60a5fa; /* Blue 400 */
+                --link-hover: #93c5fd; /* Blue 300 */
+
+                --code-bg: #020617; /* Slate 950 */
+                --code-text: #f8fafc;
+            }
+        }
+
+        /* ==========================================================================
+           2. Base & Reset
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ==========================================================================
+           3. Layout
+           ========================================================================== */
+        .container {
+            max-width: 800px; /* Optimal reading width */
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        /* Enhanced hover for desktop only */
+        @media (hover: hover) and (pointer: fine) {
+            .container:hover {
+                transform: translateY(-4px);
+                border-color: var(--primary-color);
+                box-shadow: var(--shadow-hover);
+            }
+        }
+
+        /* ==========================================================================
+           4. Typography
+           ========================================================================== */
+        h1 {
+            color: var(--text-primary);
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+        
+        h2, h3, h4 {
+            color: var(--text-secondary);
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.25em;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        /* ==========================================================================
+           5. Media
+           ========================================================================== */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            display: block;
+            margin: 1.5rem auto;
+        }
+
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            margin: 1.5rem 0;
+            border-radius: var(--radius-md);
+            background-color: var(--bg-subtle);
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ==========================================================================
+           6. Code Blocks
+           ========================================================================== */
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: inherit;
+        }
+
+        /* ==========================================================================
+           7. Code Tabs
+           ========================================================================== */
+        .code-section {
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .code-tabs {
+            display: flex;
+            background-color: var(--bg-subtle);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .code-tab {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .code-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            padding: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-muted);
+        }
+        
+        .copy-btn:hover svg {
+            fill: var(--text-primary);
+        }
+
+        .code-content {
+            background-color: var(--code-bg);
+        }
+        
+        .code-content pre {
+            margin: 0;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* ==========================================================================
+           8. Accordions / Details
+           ========================================================================== */
+        details {
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background-color: var(--bg-surface);
+            transition: box-shadow 0.2s;
+        }
+        
+        details:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1rem;
+            background-color: var(--bg-subtle);
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary:hover {
+            background-color: #475569; /* Slate 600 */
+        }
+        
+        /* Arrow icon rotation */
+        summary .arrow-svg {
+            transition: transform 0.3s ease;
+            width: 20px;
+            height: 20px;
+            fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
+        }
+        
+        /* Only rotate the arrow of the *active* details element */
+        details[open] > summary .arrow-svg {
+            transform: rotate(90deg);
+            fill: var(--primary-color);
+        }
+
+        .common-drops,
+        .atricle_example_content,
+        details > :not(summary) {
+            padding: 0.5rem;
+            background-color: var(--bg-surface);
+        }
+
+        /* Nested details */
+        .secondary-details {
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+        
+        .secondary-summary {
+            background-color: rgba(51, 65, 85, 0.3); /* Semi-transparent slate-700 */
+            font-size: 0.95rem;
+        }
+        
+        .secondary-summary:hover {
+            background-color: var(--bg-subtle);
+        }
+        
+        .opacity-75 {
+            opacity: 0.75;
+        }
+
+        /* ==========================================================================
+           9. Practice & Disclaimer
+           ========================================================================== */
+        .practice, .new-disclaimer {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: var(--bg-subtle);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+        
+        .problem-buttons a {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+        }
+        
+        .problem-buttons a:hover {
+            background-color: var(--primary-hover);
+            text-decoration: none;
+        }
+
+        /* ==========================================================================
+           10. Utilities
+           ========================================================================== */
+        .problem-buttons img,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article,
+        .has-text-align-center {
+            display: none;
+        }
+        
+        .arrow-svg {
+            display: inline-block; /* Ensure arrows are visible */
+        }
+
+        /* ==========================================================================
+           11. Responsive (Full Page Mobile)
+           ========================================================================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+
+            .container {
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 0.5rem;
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                text-align: left;
+            }
+
+            .code-tabs {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 2px; /* Space for scrollbar */
+            }
+            
+            .code-tab {
+                flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Aggressive Cows : Detailed Solution</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement:</strong> You are given an array <strong>'arr'</strong> of size <strong>'n'</strong> which denotes the position of stalls.<br/>You are also given an integer <strong>'k'</strong> which denotes the number of aggressive cows.<br/>You are given the task of assigning stalls to <strong>'k'</strong> cows such that the minimum distance between any two of them is the maximum possible.<br/>Find the maximum possible minimum distance.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<!-- This is Examples Drop-Down -->
+<div id="article_examples">
+<details class="article_example_details">
+<summary class="article_example_summary">
+<span><strong>
+Examples
+</strong>
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="atricle_example_content">
+<pre class="wp-block-preformatted"><!-- Insert New Examples Here -->
+<pre class="wp-block-preformatted"><strong>Example 1:</strong>
+<strong>Input Format:</strong> N = 6, k = 4, arr[] = {0,3,4,7,10,9}
+<strong>Result:</strong> 3
+<strong>Explanation:</strong> The maximum possible minimum distance between any two cows will be 3 when 4 cows are placed at positions {0, 3, 7, 10}. Here the distances between cows are 3, 4, and 3 respectively. We cannot make the minimum distance greater than 3 in any ways.
+
+<strong>Example 2:</strong>
+<strong>Input Format:</strong> N = 5, k = 2, arr[] = {4,2,1,3,6}
+<strong>Result:</strong> 5
+<strong>Explanation:</strong> The maximum possible minimum distance between any two cows will be 5 when 2 cows are placed at positions {1, 6}. 
+
+<p><strong>Why do we need to sort the stalls?</strong></p>
+<p>To arrange the cows in a consecutive manner while ensuring a certain distance between them, the initial step is to sort the stalls based on their positions. In a sorted array, the minimum distance will always be obtained from any two consecutive cows. Arranging the cows in a consecutive manner does not necessarily mean placing them in consecutive stalls.</p>
+<p>Assume the given stalls array is: {1,2,8,4,9} and after sorting it will be {1, 2, 4, 8, 9}. The given number of cows is 3.</p>
+<p><img height="177" src="assets/6d3a4befe7a37c25999e10db67f4419d" width="616"/></p>
+<p>We have to fit three cows in these 5 stalls. Each stall can accommodate only one. Our task is to <strong>maximize </strong>the <strong>minimum </strong>distance between two stalls. Let’s look at some arrangements:</p>
+<p><img height="178" src="assets/eac19d3a7f61feb76b9a894a85b5b6cf" width="614"/></p>
+<p><img height="200" src="assets/bedc0dda53ebd4ee35544916cf7c90a2" width="609"/></p>
+<p><img height="191" src="assets/5b43956b2c08b091fb3d4f6626c23b26" width="606"/></p>
+<p>In the first arrangement, the minimum distance between the cows is 1. Now, in the later cases, we have tried to place the cows in a manner so that the minimum distance can be increased. This is done in the second and third cases. It’s not possible to get a minimum distance of more than 3 in any arrangement, so we output 3. </p>
+<p><strong>Observation:</strong></p>
+<ul><li><strong>Minimum possible distance between 2 cows: </strong>The minimum possible distance between two cows is 1 as the minimum distance between 2 consecutive stalls is 1.</li><li><strong>Maximum possible distance between 2 cows: </strong>The maximum possible distance between two cows is = max(stalls[])-min(stalls[]). This case occurs when we place 2 cows at two ends of the sorted stalls array.</li></ul>
+<p>From the observations, <strong><em>we can conclude that our answer lies in the range </em></strong><strong><em><br/></em></strong><strong><em>[1, max(stalls[])-min(stalls[])].</em></strong></p>
+<p><strong>How to place cows with maintaining a certain distance, ‘dist’, in the sorted stalls:</strong></p>
+<p>To begin, we will position the first cow in the very first stall. Next, we will iterate through the array, starting from the second stall. If the distance between the current stall and the last stall where a cow was placed is greater than or equal to the value 'dist', we will proceed to place the next cow in the current stall. Thus we will try to place the cows and finally, we will check if we have placed all the cows maintaining the distance, ‘dist’.</p>
+<p>To serve this purpose, we will write a function <strong>canWePlace() </strong>that takes the distance, ‘dist’, as a parameter and returns true if we can place all the cows maintaining a minimum distance of ‘dist’. Otherwise, it returns false.</p>
+<p><strong>canWePlace(stalls[], dist, k):</strong></p>
+<ol><li>We will declare two variables, ‘cntCows’ and ‘last’. <strong>‘cntCows’ will store the number of cows placed</strong>, and <strong>‘last’ will store the position of the last placed cow</strong>.</li><li>First, we will place the first cow in the very first stall. So, we will set ‘cntCows’ to 1 and ‘last’ to stall[0].</li><li>Then, using a loop we will start iterating the array from index 1. Inside the loop, we will do the following:<ol><li><strong>If stalls[i] - ‘last’ &gt;= dist: </strong>This means the current stall is at least ‘dist’ distance away from the last stall. So, we can place the next cow here. We will increase the value ‘cntCows’ by 1 and set ‘last’ to the current stall.</li><li><strong>If cntCows &gt;= k: </strong>This means we have already placed k cows with maintaining the minimum distance ‘dist’. So, we will return true from this step.</li></ol></li><li>If we are outside the loop, we cannot place k cows with a minimum distance of ‘dist’. So, we will return false.</li></ol>
+</pre>
+</pre>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Practice Section-->
+<div class="practice">
+<span><strong>Practice: </strong></span>
+<div class="problem-buttons">
+<!-- Add Problem Link inside href -->
+<a href="https://bit.ly/42Vqzu9" rel="noopener" target="_blank">
+<span>Solve Problem</span>
+<img alt="code-studio" src="assets/86dd2cadbd0e7ef71ad98d3b7f2f2efc.png"/>
+</a>
+</div>
+</div>
+<p class="new-disclaimer"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out
+yourself first. </em></p>
+<!-- /wp:html -->
+<!-- wp:html -->
+<div class="horizontal_navbar_dsa_article">
+<div class="grid_container_two">
+<a class="two-boxes box-a" href="#brute-force-approach">
+Brute Force Approach
+</a>
+<a class="two-boxes box-c" href="#optimal-approach">
+Optimal Approach
+</a>
+<a class="three-boxes box-d" href="#dsa_article_video_explanation">
+<svg fill="none" height="26" viewbox="0 0 20 14" width="26" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 10L13.19 7L8 4V10ZM19.56 2.17C19.69 2.64 19.78 3.27 19.84 4.07C19.91 4.87 19.94 5.56 19.94 6.16L20 7C20 9.19 19.84 10.8 19.56 11.83C19.31 12.73 18.73 13.31 17.83 13.56C17.36 13.69 16.5 13.78 15.18 13.84C13.88 13.91 12.69 13.94 11.59 13.94L10 14C5.81 14 3.2 13.84 2.17 13.56C1.27 13.31 0.69 12.73 0.44 11.83C0.31 11.36 0.22 10.73 0.16 9.93C0.0900001 9.13 0.0599999 8.44 0.0599999 7.84L0 7C0 4.81 0.16 3.2 0.44 2.17C0.69 1.27 1.27 0.69 2.17 0.44C2.64 0.31 3.5 0.22 4.82 0.16C6.12 0.0899998 7.31 0.0599999 8.41 0.0599999L10 0C14.19 0 16.8 0.16 17.83 0.44C18.73 0.69 19.31 1.27 19.56 2.17Z" fill="red"></path>
+</svg>
+</a>
+<div class="box-e tooltip">
+<svg fill="none" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.842 9.25L11.9577 10.17C11.2502 10.89 10.8081 11.5 10.8081 13H8.84297V12.5C8.84297 11.39 9.28511 10.39 9.99255 9.67L11.2109 8.41C11.5745 8.05 11.7906 7.55 11.7906 7C11.7906 6.46957 11.5836 5.96086 11.2151 5.58579C10.8465 5.21071 10.3467 5 9.82552 5C9.30434 5 8.80451 5.21071 8.43598 5.58579C8.06745 5.96086 7.86041 6.46957 7.86041 7H5.89531C5.89531 5.93913 6.30938 4.92172 7.04644 4.17157C7.7835 3.42143 8.78316 3 9.82552 3C10.8679 3 11.8675 3.42143 12.6046 4.17157C13.3417 4.92172 13.7557 5.93913 13.7557 7C13.7543 7.84324 13.4259 8.65183 12.842 9.25ZM10.8081 17H8.84297V15H10.8081M9.82552 0C8.53521 0 7.25754 0.258658 6.06545 0.761205C4.87337 1.26375 3.79021 2.00035 2.87783 2.92893C1.03519 4.8043 0 7.34784 0 10C0 12.6522 1.03519 15.1957 2.87783 17.0711C3.79021 17.9997 4.87337 18.7362 6.06545 19.2388C7.25754 19.7413 8.53521 20 9.82552 20C12.4314 20 14.9306 18.9464 16.7732 17.0711C18.6158 15.1957 19.651 12.6522 19.651 10C19.651 4.47 15.2296 0 9.82552 0Z" fill="black"></path>
+</svg>
+<div class="bottom">
+<p>Expand any one approach by clicking the given options in the bar. Clicking one approach on bar,
+closes all other expands. You can manually expand more than one approach at a time</p>
+<i></i>
+</div>
+</div>
+</div>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Approaches Drop-Down -->
+<div class="dsa_article_dropdown_approachs">
+<!-- Brute Force Approach Starts from here -->
+<div id="brute-force-approach">
+<details>
+<summary class="main-summary">
+<span>
+Brute Force Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition of Brute Force Apporach Here -->
+<h3><strong>Naive Approach</strong>: </h3>
+<p>The extremely naive approach is to check all possible distances from 1 to max(stalls[])-min(stalls[]). The maximum distance for which the function <strong>canWePlace() </strong>returns true, will be our answer.</p>
+<h3><strong>Algorithm:</strong></h3>
+<ol><li>First, we will sort the given stalls[] array.</li><li>We will use a loop(say <strong>i</strong>) to check all possible distances.</li><li>Next, inside the loop, we will send each distance, i, to the function <strong>canWePlace() </strong>function to check if it is possible to place the cows.<ol><li>We will return (i-1), where i is the minimum distance for which the function <strong>canWePlace()</strong> returns false. Because (i-1) is the maximum distance for which we can place all the cows and for the distances &gt;= i, it becomes impossible.</li></ol></li><li>Finally, if we are outside the loop, we can conclude the minimum possible distance should be max(stalls[])-min(stalls[]). And we will return this value.</li></ol>
+<p><strong>Dry-run: </strong><em>Please refer to the </em><a href="https://youtu.be/R_Mfw4ew-Vo"><em>video</em></a><em> for the dry-run.</em></p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+
+<!-- Insert C++ code of Brute Force Here -->
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+bool canWePlace(vector&lt;int&gt; &amp;stalls, int dist, int cows) {
+    int n = stalls.size(); //size of array
+    int cntCows = 1; //no. of cows placed
+    int last = stalls[0]; //position of last placed cow.
+    for (int i = 1; i &lt; n; i++) {
+        if (stalls[i] - last &gt;= dist) {
+            cntCows++; //place next cow.
+            last = stalls[i]; //update the last location.
+        }
+        if (cntCows &gt;= cows) return true;
+    }
+    return false;
+}
+int aggressiveCows(vector&lt;int&gt; &amp;stalls, int k) {
+    int n = stalls.size(); //size of array
+    //sort the stalls[]:
+    sort(stalls.begin(), stalls.end());
+
+    int limit = stalls[n - 1] - stalls[0];
+    for (int i = 1; i &lt;= limit; i++) {
+        if (canWePlace(stalls, i, k) == false) {
+            return (i - 1);
+        }
+    }
+    return limit;
+}
+
+int main()
+{
+    vector&lt;int&gt; stalls = {0, 3, 4, 7, 10, 9};
+    int k = 4;
+    int ans = aggressiveCows(stalls, k);
+    cout &lt;&lt; "The maximum possible minimum distance is: " &lt;&lt; ans &lt;&lt; "\n";
+    return 0;
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+
+<!-- Insert Java code of Brute Force Here -->
+import java.util.*;
+
+public class tUf {
+    public static boolean canWePlace(int[] stalls, int dist, int cows) {
+        int n = stalls.length; //size of array
+        int cntCows = 1; //no. of cows placed
+        int last = stalls[0]; //position of last placed cow.
+        for (int i = 1; i &lt; n; i++) {
+            if (stalls[i] - last &gt;= dist) {
+                cntCows++; //place next cow.
+                last = stalls[i]; //update the last location.
+            }
+            if (cntCows &gt;= cows) return true;
+        }
+        return false;
+    }
+    public static int aggressiveCows(int[] stalls, int k) {
+        int n = stalls.length; //size of array
+        //sort the stalls[]:
+        Arrays.sort(stalls);
+
+        int limit = stalls[n - 1] - stalls[0];
+        for (int i = 1; i &lt;= limit; i++) {
+            if (canWePlace(stalls, i, k) == false) {
+                return (i - 1);
+            }
+        }
+        return limit;
+    }
+    public static void main(String[] args) {
+        int[] stalls = {0, 3, 4, 7, 10, 9};
+        int k = 4;
+        int ans = aggressiveCows(stalls, k);
+        System.out.println("The maximum possible minimum distance is: " + ans);
+    }
+}
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+
+<!-- Insert Python code of Brute Force Here -->
+def canWePlace(stalls, dist, cows):
+    n = len(stalls)  # size of array
+    cntCows = 1  # no. of cows placed
+    last = stalls[0]  # position of last placed cow
+    for i in range(1, n):
+        if stalls[i] - last &gt;= dist:
+            cntCows += 1  # place next cow
+            last = stalls[i]  # update the last location
+        if cntCows &gt;= cows:
+            return True
+    return False
+
+def aggressiveCows(stalls, k):
+    n = len(stalls)  # size of array
+    stalls.sort()  # sort the stalls[]
+    limit = stalls[n - 1] - stalls[0]
+    for i in range(1, limit + 1):
+        if not canWePlace(stalls, i, k):
+            return i - 1
+    return limit
+
+stalls = [0, 3, 4, 7, 10, 9]
+k = 4
+ans = aggressiveCows(stalls, k)
+print("The maximum possible minimum distance is:", ans)
+
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+
+<!-- Insert javascript code of Brute Force Here -->
+function canWePlace(stalls, dist, cows) {
+    var n = stalls.length; // size of array
+    var cntCows = 1; // no. of cows placed
+    var last = stalls[0]; // position of last placed cow
+    for (var i = 1; i &lt; n; i++) {
+        if (stalls[i] - last &gt;= dist) {
+            cntCows++; // place next cow
+            last = stalls[i]; // update the last location
+        }
+        if (cntCows &gt;= cows) return true;
+    }
+    return false;
+}
+
+function aggressiveCows(stalls, k) {
+    var n = stalls.length; // size of array
+    // sort the stalls[]
+    stalls.sort((a, b) =&gt; a - b);
+
+    var limit = stalls[n - 1] - stalls[0];
+    for (var i = 1; i &lt;= limit; i++) {
+        if (canWePlace(stalls, i, k) === false) {
+            return i - 1;
+        }
+    }
+    return limit;
+}
+
+var stalls = [0, 3, 4, 7, 10, 9];
+var k = 4;
+var ans = aggressiveCows(stalls, k);
+console.log("The maximum possible minimum distance is:", ans);
+
+
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Brute Force Here -->
+<strong>Output:</strong>The maximum possible minimum distance is: 3.
+
+
+</p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Brute Force Here -->
+<p><strong>Time Complexity: </strong>O(NlogN) + O(N *(max(stalls[])-min(stalls[]))), where N = size of the array, max(stalls[]) = maximum element in stalls[] array, min(stalls[]) = minimum element in stalls[] array.<br/><strong>Reason: </strong>O(NlogN) for sorting the array.<strong> </strong>We are using a loop from 1 to max(stalls[])-min(stalls[]) to check all possible distances. Inside the loop, we are calling canWePlace() function for each distance. Now, inside the canWePlace() function, we are using a loop that runs for N times.</p>
+<p><strong>Space Complexity: </strong>O(1) as we are not using any extra space to solve this problem.
+</p>
+</p></details>
+</div>
+</details>
+</div>
+<!-- Brute Force Approach Ends here -->
+<!-- Optimal Approach Starts from here -->
+<div id="optimal-approach">
+<details>
+<summary class="main-summary">
+<span>
+Optimal Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm of Better Approach Here -->
+<h3><strong>Optimal Approach(Using Binary Search)</strong>: </h3>
+<p>We are going to use the Binary Search algorithm to optimize the approach.</p>
+<p><em>The primary objective of the Binary Search algorithm is to efficiently determine the appropriate half to eliminate, thereby reducing the search space by half. It does this by determining a specific condition that ensures that the target is not present in that half.</em></p>
+<p>Upon closer observation, we can recognize that our answer space, represented as [1, (max(stalls[])-min(stalls[]))], is actually sorted. Additionally, we can identify a pattern that allows us to divide this space into two halves: one consisting of potential answers and the other of non-viable options. So, we will apply binary search on the answer space.</p>
+<p>For example, the given array is {1, 2, 8, 4, 9}. The possible distances are the following:</p>
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-11572" src="assets/eca6f641c75d28579c69d211c33c3095.png"/></figure>
+<h3><strong>Algorithm:</strong></h3>
+<ol><li><strong>First, </strong>we will sort the given stalls[] array.</li><li><strong>Place the 2 pointers i.e. low and high: </strong>Initially, we will place the pointers. The pointer low will point to 1 and the high will point to (stalls[n-1]-stalls[0]). As the ‘stalls[]’ is sorted, ‘stalls[n-1]’ refers to the maximum, and ‘stalls[0]’ is the minimum element.<br/></li><li><strong>Calculate the ‘mid’: </strong>Now, inside the loop, we will calculate the value of ‘mid’ using the following formula:<br/><strong>mid = (low+high) // 2 ( ‘//’ refers to integer division)<br/></strong></li><li><strong>Eliminate the halves based on the boolean value returned by canWePlace(): <br/></strong>We will pass the potential distance, represented by the variable 'mid', to the <strong>‘canWePlace()</strong>' function. This function will return true if it is possible to place all the cows with a minimum distance of ‘mid’.<ol><li><strong>If the returned value is true: </strong>On satisfying this condition, we can conclude that the number ‘mid’ is one of our possible answers. But we want the maximum number. So, we will eliminate the left half and consider the right half(i.e. low = mid+1).</li><li><strong>Otherwise, </strong>the value mid is greater than the distance we want. This means the numbers greater than ‘mid’ should not be considered and the right half of ‘mid’ consists of such numbers. So, we will eliminate the right half and consider the left half(i.e. high = mid-1).</li></ol></li><li>Finally, outside the loop, we will return the value of high as the pointer will be pointing to the answer.</li></ol>
+<p>The steps from 3-4 will be inside a loop and the loop will continue until low crosses high.</p>
+<p><strong>Note:</strong><strong><em> </em></strong><em>It is always the opposite polarity. Initially the pointer ‘high’ was in the ‘not-possible’ half and so it ends up in the ‘possible’ half. Similarly, ‘low’ was initially in the ‘possible’ part and it ends up in the ‘not-possible’ part.</em></p>
+<p><strong>Note: </strong><em>Please make sure to refer to the </em><a href="https://youtu.be/R_Mfw4ew-Vo"><em>video</em></a><em> and try out some test cases of your own to understand, how the pointer ‘high’ will be always pointing to the answer in this case. This is also the reason we have not used any extra variable here to store the answer.</em></p>
+<p><strong>Dry-run: </strong><em>Please refer to the </em><a href="https://youtu.be/R_Mfw4ew-Vo"><em>video</em></a><em> for the dry-run.</em></p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+
+<!-- Insert C++ code of Optimal Approach Here-->
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+bool canWePlace(vector&lt;int&gt; &amp;stalls, int dist, int cows) {
+    int n = stalls.size(); //size of array
+    int cntCows = 1; //no. of cows placed
+    int last = stalls[0]; //position of last placed cow.
+    for (int i = 1; i &lt; n; i++) {
+        if (stalls[i] - last &gt;= dist) {
+            cntCows++; //place next cow.
+            last = stalls[i]; //update the last location.
+        }
+        if (cntCows &gt;= cows) return true;
+    }
+    return false;
+}
+int aggressiveCows(vector&lt;int&gt; &amp;stalls, int k) {
+    int n = stalls.size(); //size of array
+    //sort the stalls[]:
+    sort(stalls.begin(), stalls.end());
+
+    int low = 1, high = stalls[n - 1] - stalls[0];
+    //apply binary search:
+    while (low &lt;= high) {
+        int mid = (low + high) / 2;
+        if (canWePlace(stalls, mid, k) == true) {
+            low = mid + 1;
+        }
+        else high = mid - 1;
+    }
+    return high;
+}
+
+int main()
+{
+    vector&lt;int&gt; stalls = {0, 3, 4, 7, 10, 9};
+    int k = 4;
+    int ans = aggressiveCows(stalls, k);
+    cout &lt;&lt; "The maximum possible minimum distance is: " &lt;&lt; ans &lt;&lt; "\n";
+    return 0;
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+
+<!-- Insert Java code of Optimal Approach Here -->
+import java.util.*;
+
+public class tUf {
+    public static boolean canWePlace(int[] stalls, int dist, int cows) {
+        int n = stalls.length; //size of array
+        int cntCows = 1; //no. of cows placed
+        int last = stalls[0]; //position of last placed cow.
+        for (int i = 1; i &lt; n; i++) {
+            if (stalls[i] - last &gt;= dist) {
+                cntCows++; //place next cow.
+                last = stalls[i]; //update the last location.
+            }
+            if (cntCows &gt;= cows) return true;
+        }
+        return false;
+    }
+    public static int aggressiveCows(int[] stalls, int k) {
+        int n = stalls.length; //size of array
+        //sort the stalls[]:
+        Arrays.sort(stalls);
+
+        int low = 1, high = stalls[n - 1] - stalls[0];
+        //apply binary search:
+        while (low &lt;= high) {
+            int mid = (low + high) / 2;
+            if (canWePlace(stalls, mid, k) == true) {
+                low = mid + 1;
+            } else high = mid - 1;
+        }
+        return high;
+    }
+    public static void main(String[] args) {
+        int[] stalls = {0, 3, 4, 7, 10, 9};
+        int k = 4;
+        int ans = aggressiveCows(stalls, k);
+        System.out.println("The maximum possible minimum distance is: " + ans);
+    }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+
+<!-- Insert Python code of Optimal Approach Here -->
+def canWePlace(stalls, dist, cows):
+    n = len(stalls)  # size of array
+    cntCows = 1  # no. of cows placed
+    last = stalls[0]  # position of last placed cow
+    for i in range(1, n):
+        if stalls[i] - last &gt;= dist:
+            cntCows += 1  # place next cow
+            last = stalls[i]  # update the last location
+        if cntCows &gt;= cows:
+            return True
+    return False
+
+def aggressiveCows(stalls, k):
+    n = len(stalls)  # size of array
+    stalls.sort()  # sort the stalls
+
+    low = 1
+    high = stalls[n - 1] - stalls[0]
+    # apply binary search
+    while low &lt;= high:
+        mid = (low + high) // 2
+        if canWePlace(stalls, mid, k):
+            low = mid + 1
+        else:
+            high = mid - 1
+    return high
+
+stalls = [0, 3, 4, 7, 10, 9]
+k = 4
+ans = aggressiveCows(stalls, k)
+print("The maximum possible minimum distance is:", ans)
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+
+<!-- Insert javascript code of Brute Force Here -->
+function canWePlace(stalls, dist, cows) {
+    const n = stalls.length; // size of array
+    let cntCows = 1; // number of cows placed
+    let last = stalls[0]; // position of last placed cow
+    for (let i = 1; i &lt; n; i++) {
+        if (stalls[i] - last &gt;= dist) {
+            cntCows++; // place next cow
+            last = stalls[i]; // update the last location
+        }
+        if (cntCows &gt;= cows) return true;
+    }
+    return false;
+}
+
+function aggressiveCows(stalls, k) {
+    const n = stalls.length; // size of array
+    stalls.sort((a, b) =&gt; a - b); // sort the stalls array
+
+    let low = 1, high = stalls[n - 1] - stalls[0];
+    // apply binary search
+    while (low &lt;= high) {
+        const mid = Math.floor((low + high) / 2);
+        if (canWePlace(stalls, mid, k)) {
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+    return high;
+}
+
+const stalls = [0, 3, 4, 7, 10, 9];
+const k = 4;
+const ans = aggressiveCows(stalls, k);
+console.log("The maximum possible minimum distance is:", ans);
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Optimal Apporach Here -->
+<strong>Output:</strong>The maximum possible minimum distance is: 3.
+
+</p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Optimal Approach-->
+<p><strong>Time Complexity: </strong>O(NlogN) + O(N * log(max(stalls[])-min(stalls[]))), where N = size of the array, max(stalls[]) = maximum element in stalls[] array, min(stalls[]) = minimum element in stalls[] array.<br/><strong>Reason: </strong>O(NlogN) for sorting the array. We are applying binary search on [1, max(stalls[])-min(stalls[])]. Inside the loop, we are calling canWePlace() function for each distance, ‘mid’. Now, inside the canWePlace() function, we are using a loop that runs for N times.</p>
+<p><strong>Space Complexity: </strong>O(1) as we are not using any extra space to solve this problem.
+</p>
+</p></details>
+</div>
+</details>
+</div>
+<!-- Optimal Approach Starts from here -->
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Video Explination Drop-Down -->
+<div class="dsa_article_youtube_video" id="dsa_article_video_explanation">
+<details>
+<summary class="main-summary">
+<span>
+Video Explanation
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="yt-video-wrapper">
+<!-- Insert iframe embed Link of Youtube Video-->
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" class="lazy-loaded" data-lazy-type="iframe" data-src="https://www.youtube.com/embed/R_Mfw4ew-Vo" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/R_Mfw4ew-Vo?feature=oembed" title="Aggressive Cows" width="810"></iframe><noscript>
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/R_Mfw4ew-Vo" title="Aggressive Cows" width="810"></iframe></noscript>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script>
+
+const codeSections = document.querySelectorAll('.code-section');
+
+// Get last selected language from localStorage or set default value
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+// Update last selected language for all sections and store in localStorage
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+// Handle copy button click event
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+// Set initial state of the tabs
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<script>
+const codeSections = document.querySelectorAll('.code-section');
+
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<link href="assets/4237ffca7ce6aadb438c457e0a675b12.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+<script src="index.js"></script>
+<script>hljs.highlightAll();</script>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script src="https://takeuforward.org/UXApproachDropDowns/2ApproachJSScript.js"></script>
+<!-- /wp:html -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em><em>Special thanks to <strong><a href="http://linkedin.com/in/harshitgrg" rel="noreferrer noopener nofollow" target="_blank"><strong>Harshit Garg</strong></a></strong>,<em><em> <a href="https://www.linkedin.com/in/imsudip/" rel="noreferrer noopener" target="_blank"><strong>Sudip Ghosh</strong></a></em></em></em></em> <em><em>and <em><strong><a href="https://www.linkedin.com/in/kriti39/" rel="noreferrer noopener" target="_blank">KRITIDIPTA GHOSH</a></strong></em></em></em> <em><em>for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/contribute/help-us-grow-takeuforward/">please check out this articl</a><em>e</em></em></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock && activeBlock.innerText) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

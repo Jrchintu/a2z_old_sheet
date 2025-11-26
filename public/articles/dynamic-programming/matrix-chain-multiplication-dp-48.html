@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Matrix Chain Multiplication | (DP-48)</title>
+<link href="assets/34bd07407ad1de576cba1f67651fa31a" rel="stylesheet"/>
+<style>
+        /* ==========================================================================
+           1. CSS Variables (Theme) - Utilitarian Modern
+           ========================================================================== */
+        :root {
+            /* Default to Light Theme */
+            --primary-color: #3b82f6; /* Blue 500 */
+            --primary-hover: #2563eb; /* Blue 600 */
+            
+            --bg-body: #f8fafc; /* Slate 50 */
+            --bg-surface: #ffffff; /* White */
+            --bg-subtle: #f1f5f9; /* Slate 100 */
+            
+            --border-color: #e2e8f0; /* Slate 200 */
+            
+            --text-primary: #0f172a; /* Slate 900 */
+            --text-secondary: #334155; /* Slate 700 */
+            --text-muted: #64748b; /* Slate 500 */
+            
+            --link-color: #2563eb; /* Blue 600 */
+            --link-hover: #3b82f6; /* Blue 500 */
+
+            --code-bg: #f1f5f9; /* Slate 100 */
+            --code-text: #0f172a; /* Slate 900 */
+
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 0 25px -5px rgba(59, 130, 246, 0.25);
+            
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+        }
+
+        /* Dark Theme Support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-body: #0f172a; /* Slate 900 */
+                --bg-surface: #1e293b; /* Slate 800 */
+                --bg-subtle: #334155; /* Slate 700 */
+                
+                --border-color: #334155;
+                
+                --text-primary: #f8fafc; /* Slate 50 */
+                --text-secondary: #cbd5e1; /* Slate 300 */
+                --text-muted: #94a3b8; /* Slate 400 */
+                
+                --link-color: #60a5fa; /* Blue 400 */
+                --link-hover: #93c5fd; /* Blue 300 */
+
+                --code-bg: #020617; /* Slate 950 */
+                --code-text: #f8fafc;
+            }
+        }
+
+        /* ==========================================================================
+           2. Base & Reset
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ==========================================================================
+           3. Layout
+           ========================================================================== */
+        .container {
+            max-width: 800px; /* Optimal reading width */
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        /* Enhanced hover for desktop only */
+        @media (hover: hover) and (pointer: fine) {
+            .container:hover {
+                transform: translateY(-4px);
+                border-color: var(--primary-color);
+                box-shadow: var(--shadow-hover);
+            }
+        }
+
+        /* ==========================================================================
+           4. Typography
+           ========================================================================== */
+        h1 {
+            color: var(--text-primary);
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+        
+        h2, h3, h4 {
+            color: var(--text-secondary);
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.25em;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        /* ==========================================================================
+           5. Media
+           ========================================================================== */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            display: block;
+            margin: 1.5rem auto;
+        }
+
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            margin: 1.5rem 0;
+            border-radius: var(--radius-md);
+            background-color: var(--bg-subtle);
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ==========================================================================
+           6. Code Blocks
+           ========================================================================== */
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: inherit;
+        }
+
+        /* ==========================================================================
+           7. Code Tabs
+           ========================================================================== */
+        .code-section {
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .code-tabs {
+            display: flex;
+            background-color: var(--bg-subtle);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .code-tab {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .code-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            padding: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-muted);
+        }
+        
+        .copy-btn:hover svg {
+            fill: var(--text-primary);
+        }
+
+        .code-content {
+            background-color: var(--code-bg);
+        }
+        
+        .code-content pre {
+            margin: 0;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* ==========================================================================
+           8. Accordions / Details
+           ========================================================================== */
+        details {
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background-color: var(--bg-surface);
+            transition: box-shadow 0.2s;
+        }
+        
+        details:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1rem;
+            background-color: var(--bg-subtle);
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary:hover {
+            background-color: #475569; /* Slate 600 */
+        }
+        
+        /* Arrow icon rotation */
+        summary .arrow-svg {
+            transition: transform 0.3s ease;
+            width: 20px;
+            height: 20px;
+            fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
+        }
+        
+        /* Only rotate the arrow of the *active* details element */
+        details[open] > summary .arrow-svg {
+            transform: rotate(90deg);
+            fill: var(--primary-color);
+        }
+
+        .common-drops,
+        .atricle_example_content,
+        details > :not(summary) {
+            padding: 0.5rem;
+            background-color: var(--bg-surface);
+        }
+
+        /* Nested details */
+        .secondary-details {
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+        
+        .secondary-summary {
+            background-color: rgba(51, 65, 85, 0.3); /* Semi-transparent slate-700 */
+            font-size: 0.95rem;
+        }
+        
+        .secondary-summary:hover {
+            background-color: var(--bg-subtle);
+        }
+        
+        .opacity-75 {
+            opacity: 0.75;
+        }
+
+        /* ==========================================================================
+           9. Practice & Disclaimer
+           ========================================================================== */
+        .practice, .new-disclaimer {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: var(--bg-subtle);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+        
+        .problem-buttons a {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+        }
+        
+        .problem-buttons a:hover {
+            background-color: var(--primary-hover);
+            text-decoration: none;
+        }
+
+        /* ==========================================================================
+           10. Utilities
+           ========================================================================== */
+        .problem-buttons img,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article,
+        .has-text-align-center {
+            display: none;
+        }
+        
+        .arrow-svg {
+            display: inline-block; /* Ensure arrows are visible */
+        }
+
+        /* ==========================================================================
+           11. Responsive (Full Page Mobile)
+           ========================================================================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+
+            .container {
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 0.5rem;
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                text-align: left;
+            }
+
+            .code-tabs {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 2px; /* Space for scrollbar */
+            }
+            
+            .code-tab {
+                flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Matrix Chain Multiplication | (DP-48)</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement: </strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Matrix Chain Multiplication | Partition DP Starts</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>In the coming articles, we will discuss problems related to a new pattern called “<strong>Partition DP”</strong>.Before proceeding further, let us understand how to identify whether a problem can be solved using this pattern.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Pattern Identification:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Whenever we need to find the answer to a large problem such that the problem can be broken into subproblems and the final answer varies due to the <strong>order</strong> in which the subproblems are solved, we can think in terms of partition DP.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>For example:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><img height="344" src="assets/cd9ed625232a1cfb12e60af74a9e526a" width="624"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Matrix Chain Multiplication:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Problem Link: </strong><a href="https://www.codingninjas.com/codestudio/problems/matrix-chain-multiplication_975344?source=youtube&amp;campaign=striver_dp_videos&amp;utm_source=youtube&amp;utm_medium=affiliate&amp;utm_campaign=striver_dp_videos"><strong>Matrix Chain Multiplication</strong></a></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Let us first understand the problem of matrix chain multiplication. In order to understand the problem we need to first understand the rules of matrix multiplication:</p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>Two matrices A1 and A2 of dimensions [p x q] and [r x s] can only be multiplied if and only if q=r.</li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><img height="289" src="assets/a2d8d7ad5842276108ab3a85ab32d302" width="624"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>The total number of multiplications required to multiply A1 and A2 are: p*q*s</li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><img height="289" src="assets/80b7e211ad42c3855155959ec4434ebf" width="624"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Problem statement:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Given a chain of matrices A1,..., An denoted by an array of size n+1, find out the minimum number of operations to multiply these n matrices.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><img height="364" src="assets/9d89691543fe9158eb2b8cefdbb531da" width="669"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Approach:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>As this problem of matrix multiplication solves one big problem ( minimum operations to get A1.A2….An) and the answer varies in the order the subproblems are being solved, we can identify this problem of pattern partition DP.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Rules to solve the problem of partition DP:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:list {"ordered":true} -->
+<ol><li>Start with the entire block/array and mark it with i,j. We need to find the value of f(i,j).</li><li>Try all partitions.</li><li>Run the best possible answer of the two partitions ( answer that comes after dividing the problem into two subproblems and solving them recursively).</li></ol>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p>Now let us go through these rules and apply them one by one to the MCM problem.</p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li><strong>Start with the entire block/array and mark it with i,j</strong></li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p>We are given the following array, which can be represented by i and j as shown:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><img height="315" src="assets/eea326379e75920764199d52c04d782f" width="624"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li><strong>Try all partitions:</strong></li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p>Let us first see all the partitions that can be made with respect to the indexing:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><img height="479" src="assets/173ceb232dda635dda62eb5796c7ae8b" width="624"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>As we can see 3 partitions are possible, to try all three partitions, we can write a for loop starting from i and ending at j-1, (1 to 3). The two partitions will be <strong>f(i,k) and f(k+1,j).</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li><strong>Run the best possible answer of the two partitions:</strong></li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p>Before understanding the approach, let us first understand the base condition:</p>
+<!-- /wp:paragraph -->
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted"><strong>If (i ==j), we return 0.</strong></pre>
+<!-- /wp:preformatted -->
+<!-- wp:paragraph -->
+<p>If i==j, it means we are interested in a single matrix and no operation is required to multiply it so we return 0.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Now let us understand how to find the answer in a generic case, we will take a smaller example with only two matrices in order to illustrate:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><img height="720" src="assets/4e7299a8c49cbe098e62c591bd0f139a" width="553"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>As there are only two matrices, we can say that only one partition is possible at k=1, when we do this partition, we see that the two partitions made are f(1,1) and f(2,2) (by f(i,k) and f(k+1,j) therefore we hit the base condition in both of these subcases which return 0.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Now, we know that the subproblems/partitions give us 0 operations, but we still have some work to do. The partition f(i,k) gives us a resultant matrix of dimensions [i -1 x k] and the partition f(k+1,j) gives us a resultant matrix of dimensions [k,j]. Therefore we need to count the number of operations for our two partitions (k=1) as shown:</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><img height="372" src="assets/3c33db4d5b6fadac53033111c24e6c87" width="624"/></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Now, this is at one partition, in general, we need to calculate this answer of every partition and return the minimum as the answer.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>To summarize:</p>
+<!-- /wp:paragraph -->
+<!-- wp:list -->
+<ul><li>Represent the entire array by two indexes i and j. In this question i =1 and j = n. We need to find f(i,j).</li><li>Maintain a mini variable to get the minimum answer.</li><li>Set a for loop to find the answer( variable k) from i to j-1,</li><li>In every iteration find the answer, with the formula discussed above and compare it with the mini value.</li><li>Return mini as the answer.</li></ul>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int f(vector&lt;int&gt;&amp; arr, int i, int j){
+    
+    // base condition
+    if(i == j)
+        return 0;
+        
+    int mini = INT_MAX;
+    
+    // partioning loop
+    for(int k = i; k&lt;= j-1; k++){
+        
+        int ans = f(arr,i,k) + f(arr, k+1,j) + arr[i-1]*arr[k]*arr[j];
+        
+        mini = min(mini,ans);
+        
+    }
+    
+    return mini;
+}
+
+
+int matrixMultiplication(vector&lt;int&gt;&amp; arr, int N){
+    
+    int i =1;
+    int j = N-1;
+    
+    
+    return f(arr,i,j);
+    
+    
+}
+
+int main() {
+	
+	vector&lt;int&gt; arr = {10, 20, 30, 40, 50};
+	
+	int n = arr.size();
+	
+	cout&lt;&lt;"The minimum number of operations is "&lt;&lt;matrixMultiplication(arr,n);
+	
+	return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The minimum number of operations is 38000</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+
+class TUF{
+static int f(int[] arr, int i, int j){
+    
+    // base condition
+    if(i == j)
+        return 0;
+        
+    int mini = Integer.MAX_VALUE;
+    
+    // partioning loop
+    for(int k = i; k&lt;= j-1; k++){
+        
+        int ans = f(arr,i,k) + f(arr, k+1,j) + arr[i-1]*arr[k]*arr[j];
+        
+        mini = Math.min(mini,ans);
+        
+    }
+    
+    return mini;
+}
+
+
+static int matrixMultiplication(int[] arr, int N){
+    
+    int i =1;
+    int j = N-1;
+    
+    
+    return f(arr,i,j);
+    
+    
+}
+
+public static void main(String args[]) {
+	
+	int arr[] = {10, 20, 30, 40, 50};
+	
+	int n = arr.length;
+	
+	System.out.println("The minimum number of operations are "+
+        matrixMultiplication(arr,n));
+	
+}
+}</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The minimum number of operations is 38000</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Steps to memoize a recursive solution:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>As there are overlapping subproblems in the recursive tree, we can memoize the recursive code to reduce the time complexity.</p>
+<!-- /wp:paragraph -->
+<!-- wp:list {"ordered":true} -->
+<ol><li>Create a dp array of size [n][n]. I and j can range from 0 to n-1 so we take the size n X n.</li><li>We initialize the dp array to -1.</li><li>Whenever we want to find the answer to particular parameters (say f(i,j)), we first check whether the answer is already calculated using the dp array(i.e dp[i][j]!= -1 ). If yes, simply return the value from the dp array.</li><li>If not, then we are finding the answer for the given value for the first time, we will use the recursive relation as usual but before returning from the function, we will set dp[i][j] to the solution we get.</li></ol>
+<!-- /wp:list -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp"> #include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int f(vector&lt;int&gt;&amp; arr, int i, int j, vector&lt;vector&lt;int&gt;&gt;&amp; dp){
+    
+    // base condition
+    if(i == j)
+        return 0;
+        
+    if(dp[i][j]!=-1)
+        return dp[i][j];
+    
+    int mini = INT_MAX;
+    
+    // partioning loop
+    for(int k = i; k&lt;= j-1; k++){
+        
+        int ans = f(arr,i,k,dp) + f(arr, k+1,j,dp) + arr[i-1]*arr[k]*arr[j];
+        
+        mini = min(mini,ans);
+        
+    }
+    
+    return mini;
+}
+
+
+int matrixMultiplication(vector&lt;int&gt;&amp; arr, int N){
+    
+    vector&lt;vector&lt;int&gt;&gt; dp(N,vector&lt;int&gt;(N,-1));
+    
+    int i =1;
+    int j = N-1;
+    
+    
+    return f(arr,i,j,dp);
+    
+    
+}
+
+int main() {
+	
+	vector&lt;int&gt; arr = {10, 20, 30, 40, 50};
+	
+	int n = arr.size();
+	
+	cout&lt;&lt;"The minimum number of operations is "&lt;&lt;matrixMultiplication(arr,n);
+	
+	return 0;
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The minimum number of operations is 38000</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N*N*N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: There are N*N states and we explicitly run a loop inside the function which will run for N times, therefore at max ‘N*N*N’ new problems will be solved.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(N*N) + O(N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: We are using an auxiliary recursion stack space(O(N))and a 2D array ( O(N*N)).</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+
+class TUF{
+static int f(int arr[], int i, int j, int[][] dp){
+    
+    // base condition
+    if(i == j)
+        return 0;
+        
+    if(dp[i][j]!=-1)
+        return dp[i][j];
+    
+    int mini = Integer.MAX_VALUE;
+    
+    // partioning loop
+    for(int k = i; k&lt;= j-1; k++){
+        
+    int ans = f(arr,i,k,dp) + f(arr, k+1,j,dp) + arr[i-1]*arr[k]*arr[j];
+        
+    mini = Math.min(mini,ans);
+        
+    }
+    
+    return mini;
+}
+
+
+static int matrixMultiplication(int[] arr, int N){
+    
+    int dp[][]= new int[N][N];
+    
+    for(int row[]:dp)
+    Arrays.fill(row,-1);
+    
+    int i =1;
+    int j = N-1;
+    
+    
+    return f(arr,i,j,dp);
+    
+    
+}
+
+public static void main(String args[]) {
+	
+	int arr[] = {10, 20, 30, 40, 50};
+	
+	int n = arr.length;
+	
+	System.out.println("The minimum number of operations are "+
+        matrixMultiplication(arr,n));
+	
+}
+}
+</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>The minimum number of operations is 38000</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: O(N*N*N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: There are N*N states and we explicitly run a loop inside the function which will run for N times, therefore at max ‘N*N*N’ new problems will be solved.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: O(N*N) + O(N)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>Reason: We are using an auxiliary recursion stack space(O(N))and a 2D array ( O(N*N)).</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/anshuman-sharma-a1b245194/" rel="noreferrer noopener" target="_blank"><strong>Anshuman Sharma</strong></a></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a>. <em>If you want to suggest any improvement/correction in this article please mail us at write4tuf@gmail.com</em></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock && activeBlock.innerText) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

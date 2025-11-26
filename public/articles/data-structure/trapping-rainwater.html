@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Trapping Rainwater</title>
+<link href="assets/34bd07407ad1de576cba1f67651fa31a" rel="stylesheet"/>
+<style>
+        /* ==========================================================================
+           1. CSS Variables (Theme) - Utilitarian Modern
+           ========================================================================== */
+        :root {
+            /* Default to Light Theme */
+            --primary-color: #3b82f6; /* Blue 500 */
+            --primary-hover: #2563eb; /* Blue 600 */
+            
+            --bg-body: #f8fafc; /* Slate 50 */
+            --bg-surface: #ffffff; /* White */
+            --bg-subtle: #f1f5f9; /* Slate 100 */
+            
+            --border-color: #e2e8f0; /* Slate 200 */
+            
+            --text-primary: #0f172a; /* Slate 900 */
+            --text-secondary: #334155; /* Slate 700 */
+            --text-muted: #64748b; /* Slate 500 */
+            
+            --link-color: #2563eb; /* Blue 600 */
+            --link-hover: #3b82f6; /* Blue 500 */
+
+            --code-bg: #f1f5f9; /* Slate 100 */
+            --code-text: #0f172a; /* Slate 900 */
+
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 0 25px -5px rgba(59, 130, 246, 0.25);
+            
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+        }
+
+        /* Dark Theme Support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-body: #0f172a; /* Slate 900 */
+                --bg-surface: #1e293b; /* Slate 800 */
+                --bg-subtle: #334155; /* Slate 700 */
+                
+                --border-color: #334155;
+                
+                --text-primary: #f8fafc; /* Slate 50 */
+                --text-secondary: #cbd5e1; /* Slate 300 */
+                --text-muted: #94a3b8; /* Slate 400 */
+                
+                --link-color: #60a5fa; /* Blue 400 */
+                --link-hover: #93c5fd; /* Blue 300 */
+
+                --code-bg: #020617; /* Slate 950 */
+                --code-text: #f8fafc;
+            }
+        }
+
+        /* ==========================================================================
+           2. Base & Reset
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ==========================================================================
+           3. Layout
+           ========================================================================== */
+        .container {
+            max-width: 800px; /* Optimal reading width */
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        /* Enhanced hover for desktop only */
+        @media (hover: hover) and (pointer: fine) {
+            .container:hover {
+                transform: translateY(-4px);
+                border-color: var(--primary-color);
+                box-shadow: var(--shadow-hover);
+            }
+        }
+
+        /* ==========================================================================
+           4. Typography
+           ========================================================================== */
+        h1 {
+            color: var(--text-primary);
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+        
+        h2, h3, h4 {
+            color: var(--text-secondary);
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.25em;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        /* ==========================================================================
+           5. Media
+           ========================================================================== */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            display: block;
+            margin: 1.5rem auto;
+        }
+
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            margin: 1.5rem 0;
+            border-radius: var(--radius-md);
+            background-color: var(--bg-subtle);
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ==========================================================================
+           6. Code Blocks
+           ========================================================================== */
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: inherit;
+        }
+
+        /* ==========================================================================
+           7. Code Tabs
+           ========================================================================== */
+        .code-section {
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .code-tabs {
+            display: flex;
+            background-color: var(--bg-subtle);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .code-tab {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .code-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            padding: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-muted);
+        }
+        
+        .copy-btn:hover svg {
+            fill: var(--text-primary);
+        }
+
+        .code-content {
+            background-color: var(--code-bg);
+        }
+        
+        .code-content pre {
+            margin: 0;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* ==========================================================================
+           8. Accordions / Details
+           ========================================================================== */
+        details {
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background-color: var(--bg-surface);
+            transition: box-shadow 0.2s;
+        }
+        
+        details:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1rem;
+            background-color: var(--bg-subtle);
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary:hover {
+            background-color: #475569; /* Slate 600 */
+        }
+        
+        /* Arrow icon rotation */
+        summary .arrow-svg {
+            transition: transform 0.3s ease;
+            width: 20px;
+            height: 20px;
+            fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
+        }
+        
+        /* Only rotate the arrow of the *active* details element */
+        details[open] > summary .arrow-svg {
+            transform: rotate(90deg);
+            fill: var(--primary-color);
+        }
+
+        .common-drops,
+        .atricle_example_content,
+        details > :not(summary) {
+            padding: 0.5rem;
+            background-color: var(--bg-surface);
+        }
+
+        /* Nested details */
+        .secondary-details {
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+        
+        .secondary-summary {
+            background-color: rgba(51, 65, 85, 0.3); /* Semi-transparent slate-700 */
+            font-size: 0.95rem;
+        }
+        
+        .secondary-summary:hover {
+            background-color: var(--bg-subtle);
+        }
+        
+        .opacity-75 {
+            opacity: 0.75;
+        }
+
+        /* ==========================================================================
+           9. Practice & Disclaimer
+           ========================================================================== */
+        .practice, .new-disclaimer {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: var(--bg-subtle);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+        
+        .problem-buttons a {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+        }
+        
+        .problem-buttons a:hover {
+            background-color: var(--primary-hover);
+            text-decoration: none;
+        }
+
+        /* ==========================================================================
+           10. Utilities
+           ========================================================================== */
+        .problem-buttons img,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article,
+        .has-text-align-center {
+            display: none;
+        }
+        
+        .arrow-svg {
+            display: inline-block; /* Ensure arrows are visible */
+        }
+
+        /* ==========================================================================
+           11. Responsive (Full Page Mobile)
+           ========================================================================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+
+            .container {
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 0.5rem;
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                text-align: left;
+            }
+
+            .code-tabs {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 2px; /* Space for scrollbar */
+            }
+            
+            .code-tab {
+                flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Trapping Rainwater</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement:</strong> Given an array of non-negative integers representation elevation of ground. Your task is to find the water that can be trapped after rain.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Examples:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:preformatted -->
+<pre class="wp-block-preformatted"><strong>Example 1:</strong>
+
+<strong>Input:</strong> height= [0,1,0,2,1,0,1,3,2,1,2,1]
+
+<strong>Output:</strong> 6
+
+<strong>Explanation:</strong> As seen from the diagram 1+1+2+1+1=6 unit of water can be trapped
+
+<img height="185" src="https://lh5.googleusercontent.com/hOxXODWtxKylLDwiTcNhYOHl971ZA598XSetgJEdWqOLClWo0v19WTRT4PArmNa_SDU3ZJ-pnbe2Hl5gwXBHw5g8PsKpSY5E2aM_XibdIktRvkJ3ILw2W8X8aLfgHgRgQWcvkUbY" width="602"/>
+
+<strong>Example 2:</strong>
+
+<strong>Input: </strong> [4,2,0,3,2,5]
+
+<strong>Output:</strong>9
+</pre>
+<!-- /wp:preformatted -->
+<!-- wp:heading {"level":3} -->
+<h3><strong>Solution</strong></h3>
+<!-- /wp:heading -->
+<!-- wp:paragraph -->
+<p><strong><em>Disclaimer</em></strong>: <em>Don't jump directly to the solution, try it out yourself first.</em></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Solution 1: Brute force</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Approach</strong>: For each index, we have to find the amount of water that can be stored and we have to sum it up.If we observe carefully the amount the water stored at a particular index is the minimum of maximum elevation to the left and right of the index minus the elevation at that index.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include&lt;bits/stdc++.h&gt;
+
+using namespace std;
+int trap(vector &lt; int &gt; &amp; arr) {
+  int n = arr.size();
+  int waterTrapped = 0;
+  for (int i = 0; i &lt; n; i++) {
+    int j = i;
+    int leftMax = 0, rightMax = 0;
+    while (j &gt;= 0) {
+      leftMax = max(leftMax, arr[j]);
+      j--;
+    }
+    j = i;
+    while (j &lt; n) {
+      rightMax = max(rightMax, arr[j]);
+      j++;
+    }
+    waterTrapped += min(leftMax, rightMax) - arr[i];
+  }
+  return waterTrapped;
+}
+
+int main() {
+  vector &lt; int &gt; arr;
+  arr = {0,1,0,2,1,0,1,3,2,1,2,1};
+  cout &lt;&lt; "The water that can be trapped is " &lt;&lt; trap(arr) &lt;&lt; endl;
+}</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong> The water that can be trapped is 6</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity:</strong> O(N*N) as for each index we are calculating leftMax and rightMax so it is a nested loop.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity:</strong> O(1).</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+class TUF {
+    static int trap(int[] arr) {
+        int n = arr.length;
+        int waterTrapped = 0;
+        for (int i = 0; i &lt; n; i++) {
+            int j = i;
+            int leftMax = 0, rightMax = 0;
+            while (j &gt;= 0) {
+                leftMax = Math.max(leftMax, arr[j]);
+                j--;
+            }
+            j = i;
+            while (j &lt; n) {
+                rightMax = Math.max(rightMax, arr[j]);
+                j++;
+            }
+            waterTrapped += Math.min(leftMax, rightMax) - arr[i];
+        }
+        return waterTrapped;
+    }
+    public static void main(String args[]) {
+        int arr[] = {0,1,0,2,1,0,1,3,2,1,2,1};
+        System.out.println("The duplicate element is " + trap(arr));
+    }
+}</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong> The water that can be trapped is 6</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity:</strong> O(N*N) as for each index we are calculating leftMax and rightMax so it is a nested loop.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity:</strong> O(1).</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="python">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-python" lang="python">from typing import List
+
+
+
+
+def trap(arr: List[int]) -&gt; int:
+    n = len(arr)
+    waterTrapped = 0
+    for i in range(n):
+        j = i
+        leftMax = 0
+        rightMax = 0
+        while j &gt;= 0:
+            leftMax = max(leftMax, arr[j])
+            j -= 1
+        j = i
+        while j &lt; n:
+            rightMax = max(rightMax, arr[j])
+            j += 1
+        waterTrapped += min(leftMax, rightMax) - arr[i]
+    return waterTrapped
+
+
+
+
+if __name__ == "__main__":
+    arr = [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]
+    print(f"The water that can be trapped is {trap(arr)}")</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong> The water that can be trapped is 6</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity:</strong> O(N*N) as for each index we are calculating leftMax and rightMax so it is a nested loop.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity:</strong> O(1).</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Solution 2:Better solution</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Intuition: </strong>We are taking O(N) for computing leftMax and rightMax at each index. The complexity can be boiled down to O(1) if we precompute the leftMax and rightMax at each index.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Approach: </strong>Take 2 array prefix and suffix array and precompute the leftMax and rightMax for each index beforehand. Then use the formula min(prefix[I], suffix[i])-arr[i] to compute water trapped at each index.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include&lt;bits/stdc++.h&gt;
+
+using namespace std;
+int trap(vector &lt; int &gt; &amp; arr) {
+  int n = arr.size();
+  int prefix[n], suffix[n];
+  prefix[0] = arr[0];
+  for (int i = 1; i &lt; n; i++) {
+    prefix[i] = max(prefix[i - 1], arr[i]);
+  }
+  suffix[n - 1] = arr[n - 1];
+  for (int i = n - 2; i &gt;= 0; i--) {
+    suffix[i] = max(suffix[i + 1], arr[i]);
+  }
+  int waterTrapped = 0;
+  for (int i = 0; i &lt; n; i++) {
+    waterTrapped += min(prefix[i], suffix[i]) - arr[i];
+  }
+  return waterTrapped;
+}
+
+int main() {
+  vector &lt; int &gt; arr;
+  arr = {0,1,0,2,1,0,1,3,2,1,2,1};
+  cout &lt;&lt; "The water that can be trapped is " &lt;&lt; trap(arr) &lt;&lt; endl;
+}</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong> The water that can be trapped is 6</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: </strong>O(3*N) as we are traversing through the array only once. And O(2*N) for computing prefix and suffix array. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: </strong>O(N)+O(N) for prefix and suffix arrays.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+class TUF {
+    static int trap(int[] arr) {
+        int n = arr.length;
+        int prefix[] = new int[n];
+        int suffix[] = new int[n];
+        prefix[0] = arr[0];
+        for (int i = 1; i &lt; n; i++) {
+            prefix[i] = Math.max(prefix[i - 1], arr[i]);
+        }
+        suffix[n - 1] = arr[n - 1];
+        for (int i = n - 2; i &gt;= 0; i--) {
+            suffix[i] = Math.max(suffix[i + 1], arr[i]);
+        }
+        int waterTrapped = 0;
+        for (int i = 0; i &lt; n; i++) {
+            waterTrapped += Math.min(prefix[i], suffix[i]) - arr[i];
+        }
+        return waterTrapped;
+    }
+
+    public static void main(String args[]) {
+        int arr[] = {0,1,0,2,1,0,1,3,2,1,2,1};
+        System.out.println("The duplicate element is " + trap(arr));
+    }
+}</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong> The water that can be trapped is 6</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: </strong>O(3*N) as we are traversing through the array only once. And O(2*N) for computing prefix and suffix array. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: </strong>O(N)+O(N) for prefix and suffix arrays.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="python">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-python" lang="python">from typing import List
+
+
+
+
+def trap(arr: List[int]) -&gt; int:
+    n = len(arr)
+    prefix = [0] * n
+    suffix = [0] * n
+    prefix[0] = arr[0]
+    for i in range(1, n):
+        prefix[i] = max(prefix[i - 1], arr[i])
+    suffix[n - 1] = arr[n - 1]
+    for i in range(n - 2, -1, -1):
+        suffix[i] = max(suffix[i + 1], arr[i])
+    waterTrapped = 0
+    for i in range(n):
+        waterTrapped += min(prefix[i], suffix[i]) - arr[i]
+    return waterTrapped
+
+
+
+
+if __name__ == "__main__":
+    arr = [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]
+    print(f"The water that can be trapped is {trap(arr)}")</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong> The water that can be trapped is 6</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity: </strong>O(3*N) as we are traversing through the array only once. And O(2*N) for computing prefix and suffix array. </p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity: </strong>O(N)+O(N) for prefix and suffix arrays.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Solution 3:Optimal Solution(<a href="https://takeuforward.org/data-structure/what-is-two-pointer-approach/" rel="noreferrer noopener" target="_blank">Two pointer approach</a>)</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Approach:</strong> Take 2 pointers l(left pointer) and r(right pointer) pointing to 0th and (n-1)th index respectively. Take two variables leftMax and rightMax and initialize them to 0. If height[l] is less than or equal to height[r] then if leftMax is less than height[l] update leftMax to height[l] else add leftMax-height[l] to your final answer and move the l pointer to the right i.e l++. If height[r] is less than height[l], then now we are dealing with the right block. If height[r] is greater than rightMax, then update rightMax to height[r] else add rightMax-height[r] to the final answer. Now move r to the left. Repeat these steps till l and r crosses each other.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Intuition:</strong> We need a minimum of leftMax and rightMax.So if we take the case when height[l]&lt;=height[r] we increase l++, so we can surely say that there is a block with a height more than height[l] to the right of l. And for the same reason when height[r]&lt;=height[l] we can surely say that there is a block to the left of r which is at least of height[r]. So by traversing these cases and using two pointers approach the time complexity can be decreased without using extra space.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Code:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<div class="code-section secondary-details">
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">#include&lt;bits/stdc++.h&gt;
+
+using namespace std;
+int trap(vector &lt; int &gt; &amp; height) {
+  int n = height.size();
+  int left = 0, right = n - 1;
+  int res = 0;
+  int maxLeft = 0, maxRight = 0;
+  while (left &lt;= right) {
+    if (height[left] &lt;= height[right]) {
+      if (height[left] &gt;= maxLeft) {
+        maxLeft = height[left];
+      } else {
+        res += maxLeft - height[left];
+      }
+      left++;
+    } else {
+      if (height[right] &gt;= maxRight) {
+        maxRight = height[right];
+      } else {
+        res += maxRight - height[right];
+      }
+      right--;
+    }
+  }
+  return res;
+}
+
+int main() {
+  vector &lt; int &gt; arr;
+  arr = {0,1,0,2,1,0,1,3,2,1,2,1};
+  cout &lt;&lt; "The water that can be trapped is " &lt;&lt; trap(arr) &lt;&lt; endl;
+}</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong> The water that can be trapped is 6</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity:</strong> O(N) because we are using 2 pointer approach.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity:</strong> O(1) because we are not using anything extra.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="java">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-java" lang="java">import java.util.*;
+class TUF {
+    static int trap(int[] height) {
+        int n = height.length;
+        int left = 0, right = n - 1;
+        int res = 0;
+        int maxLeft = 0, maxRight = 0;
+        while (left &lt;= right) {
+            if (height[left] &lt;= height[right]) {
+                if (height[left] &gt;= maxLeft) {
+                    maxLeft = height[left];
+                } else {
+                    res += maxLeft - height[left];
+                }
+                left++;
+            } else {
+                if (height[right] &gt;= maxRight) {
+                    maxRight = height[right];
+                } else {
+                    res += maxRight - height[right];
+                }
+                right--;
+            }
+        }
+        return res;
+    }
+
+
+    public static void main(String args[]) {
+        int arr[] = {0,1,0,2,1,0,1,3,2,1,2,1};
+        System.out.println("The duplicate element is " + trap(arr));
+    }
+}</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong> The water that can be trapped is 6</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity:</strong> O(N) because we are using 2 pointer approach.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity:</strong> O(1) because we are not using anything extra.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+<div class="code-block" data-lang="python">
+<!-- /wp:paragraph -->
+<!-- wp:code -->
+<pre class="wp-block-code"><code class="language-python" lang="python">from typing import List
+
+
+
+
+def trap(height: List[int]) -&gt; int:
+    n = len(height)
+    left = 0
+    right = n-1
+    res = 0
+    maxLeft = 0
+    maxRight = 0
+    while left &lt;= right:
+        if height[left] &lt;= height[right]:
+            if height[left] &gt;= maxLeft:
+                maxLeft = height[left]
+            else:
+                res += maxLeft - height[left]
+            left += 1
+        else:
+            if height[right] &gt;= maxRight:
+                maxRight = height[right]
+            else:
+                res += maxRight - height[right]
+            right -= 1
+    return res
+
+
+
+
+if __name__ == "__main__":
+    arr = [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]
+    print(f"The water that can be trapped is {trap(arr)}")</code></pre>
+<!-- /wp:code -->
+<!-- wp:paragraph -->
+<p><strong>Output:</strong> The water that can be trapped is 6</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Time Complexity:</strong> O(N) because we are using 2 pointer approach.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Space Complexity:</strong> O(1) because we are not using anything extra.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+</div>
+</div>
+</div>
+<!-- /wp:paragraph -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><strong><a href="https://www.linkedin.com/in/pranav-padawe-9486241ba/" rel="noreferrer noopener" target="_blank"><strong>Pranav Padawe</strong></a></strong></strong> <em><em><strong>and <em><a href="https://www.linkedin.com/in/imsudip/" rel="noreferrer noopener" target="_blank">Sudip Ghosh</a></em></strong></em></em></em> <em>for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock && activeBlock.innerText) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

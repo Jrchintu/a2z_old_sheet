@@ -1,0 +1,1725 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>4 Sum | Find Quads that add up to a target value</title>
+<link href="assets/34bd07407ad1de576cba1f67651fa31a" rel="stylesheet"/>
+<style>
+        /* ==========================================================================
+           1. CSS Variables (Theme) - Utilitarian Modern
+           ========================================================================== */
+        :root {
+            /* Default to Light Theme */
+            --primary-color: #3b82f6; /* Blue 500 */
+            --primary-hover: #2563eb; /* Blue 600 */
+            
+            --bg-body: #f8fafc; /* Slate 50 */
+            --bg-surface: #ffffff; /* White */
+            --bg-subtle: #f1f5f9; /* Slate 100 */
+            
+            --border-color: #e2e8f0; /* Slate 200 */
+            
+            --text-primary: #0f172a; /* Slate 900 */
+            --text-secondary: #334155; /* Slate 700 */
+            --text-muted: #64748b; /* Slate 500 */
+            
+            --link-color: #2563eb; /* Blue 600 */
+            --link-hover: #3b82f6; /* Blue 500 */
+
+            --code-bg: #f1f5f9; /* Slate 100 */
+            --code-text: #0f172a; /* Slate 900 */
+
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 0 25px -5px rgba(59, 130, 246, 0.25);
+            
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+        }
+
+        /* Dark Theme Support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-body: #0f172a; /* Slate 900 */
+                --bg-surface: #1e293b; /* Slate 800 */
+                --bg-subtle: #334155; /* Slate 700 */
+                
+                --border-color: #334155;
+                
+                --text-primary: #f8fafc; /* Slate 50 */
+                --text-secondary: #cbd5e1; /* Slate 300 */
+                --text-muted: #94a3b8; /* Slate 400 */
+                
+                --link-color: #60a5fa; /* Blue 400 */
+                --link-hover: #93c5fd; /* Blue 300 */
+
+                --code-bg: #020617; /* Slate 950 */
+                --code-text: #f8fafc;
+            }
+        }
+
+        /* ==========================================================================
+           2. Base & Reset
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ==========================================================================
+           3. Layout
+           ========================================================================== */
+        .container {
+            max-width: 800px; /* Optimal reading width */
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        /* Enhanced hover for desktop only */
+        @media (hover: hover) and (pointer: fine) {
+            .container:hover {
+                transform: translateY(-4px);
+                border-color: var(--primary-color);
+                box-shadow: var(--shadow-hover);
+            }
+        }
+
+        /* ==========================================================================
+           4. Typography
+           ========================================================================== */
+        h1 {
+            color: var(--text-primary);
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+        
+        h2, h3, h4 {
+            color: var(--text-secondary);
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.25em;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        /* ==========================================================================
+           5. Media
+           ========================================================================== */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            display: block;
+            margin: 1.5rem auto;
+        }
+
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            margin: 1.5rem 0;
+            border-radius: var(--radius-md);
+            background-color: var(--bg-subtle);
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ==========================================================================
+           6. Code Blocks
+           ========================================================================== */
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: inherit;
+        }
+
+        /* ==========================================================================
+           7. Code Tabs
+           ========================================================================== */
+        .code-section {
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .code-tabs {
+            display: flex;
+            background-color: var(--bg-subtle);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .code-tab {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .code-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            padding: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-muted);
+        }
+        
+        .copy-btn:hover svg {
+            fill: var(--text-primary);
+        }
+
+        .code-content {
+            background-color: var(--code-bg);
+        }
+        
+        .code-content pre {
+            margin: 0;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* ==========================================================================
+           8. Accordions / Details
+           ========================================================================== */
+        details {
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background-color: var(--bg-surface);
+            transition: box-shadow 0.2s;
+        }
+        
+        details:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1rem;
+            background-color: var(--bg-subtle);
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary:hover {
+            background-color: #475569; /* Slate 600 */
+        }
+        
+        /* Arrow icon rotation */
+        summary .arrow-svg {
+            transition: transform 0.3s ease;
+            width: 20px;
+            height: 20px;
+            fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
+        }
+        
+        /* Only rotate the arrow of the *active* details element */
+        details[open] > summary .arrow-svg {
+            transform: rotate(90deg);
+            fill: var(--primary-color);
+        }
+
+        .common-drops,
+        .atricle_example_content,
+        details > :not(summary) {
+            padding: 0.5rem;
+            background-color: var(--bg-surface);
+        }
+
+        /* Nested details */
+        .secondary-details {
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+        
+        .secondary-summary {
+            background-color: rgba(51, 65, 85, 0.3); /* Semi-transparent slate-700 */
+            font-size: 0.95rem;
+        }
+        
+        .secondary-summary:hover {
+            background-color: var(--bg-subtle);
+        }
+        
+        .opacity-75 {
+            opacity: 0.75;
+        }
+
+        /* ==========================================================================
+           9. Practice & Disclaimer
+           ========================================================================== */
+        .practice, .new-disclaimer {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: var(--bg-subtle);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+        
+        .problem-buttons a {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+        }
+        
+        .problem-buttons a:hover {
+            background-color: var(--primary-hover);
+            text-decoration: none;
+        }
+
+        /* ==========================================================================
+           10. Utilities
+           ========================================================================== */
+        .problem-buttons img,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article,
+        .has-text-align-center {
+            display: none;
+        }
+        
+        .arrow-svg {
+            display: inline-block; /* Ensure arrows are visible */
+        }
+
+        /* ==========================================================================
+           11. Responsive (Full Page Mobile)
+           ========================================================================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+
+            .container {
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 0.5rem;
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                text-align: left;
+            }
+
+            .code-tabs {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 2px; /* Space for scrollbar */
+            }
+            
+            .code-tab {
+                flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>4 Sum | Find Quads that add up to a target value</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement:</strong> Given an array of N integers, your task is to find unique quads that add up to give a target value. In short, you need to return an array of all the unique quadruplets [arr[a], arr[b], arr[c], arr[d]] such that their sum is equal to a given target.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Pre-req:</strong><em> </em><a href="https://takeuforward.org/data-structure/3-sum-find-triplets-that-add-up-to-a-zero/" rel="noopener" target="_blank" title="">3-sum problem</a> and <a href="https://takeuforward.org/data-structure/two-sum-check-if-a-pair-with-given-sum-exists-in-array/" rel="noopener" target="_blank" title="">2-sum problem</a></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p><strong>Note:</strong></p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<p>0 &lt;= a, b, c, d &lt; n<br/>a, b, c, and d are distinct.<br/>arr[a] + arr[b] + arr[c] + arr[d] == target</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<!-- This is Examples Drop-Down -->
+<div id="article_examples">
+<details class="article_example_details">
+<summary class="article_example_summary">
+<span><strong>
+Examples
+</strong>
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="atricle_example_content">
+<pre class="wp-block-preformatted"><!-- Insert New Examples Here -->
+<pre class="wp-block-preformatted"><strong>Example 1:</strong>
+<strong>Input Format:</strong> arr[] = [1,0,-1,0,-2,2], target = 0
+<strong>Result:</strong> [[-2,-1,1,2],[-2,0,0,2],[-1,0,0,1]]
+<strong>Explanation:</strong> We have to find unique quadruplets from the array such that the sum of those elements is equal to the target sum given that is 0. The result obtained is such that the sum of the quadruplets yields 0.
+
+<strong>Example 2:</strong>
+<strong>Input Format:</strong> arr[] = [4,3,3,4,4,2,1,2,1,1], target = 9
+<strong>Result:</strong> [[1,1,3,4],[1,2,2,4],[1,2,3,3]]
+<strong>Explanation:</strong> The sum of all the quadruplets is equal to the target i.e. 9.
+</pre>
+</pre>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Practice Section-->
+<div class="practice">
+<span><strong>Practice: </strong></span>
+<div class="problem-buttons">
+<!-- Add Problem Link inside href -->
+<a href="https://bit.ly/3Bsovy2" rel="noopener" target="_blank">
+<span>Solve Problem</span>
+<img alt="code-studio" src="assets/86dd2cadbd0e7ef71ad98d3b7f2f2efc.png"/>
+</a>
+</div>
+</div>
+<p class="new-disclaimer"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out
+yourself first. </em></p>
+<!-- /wp:html -->
+<!-- wp:html -->
+<div class="horizontal_navbar_dsa_article">
+<div class="grid_container_three">
+<a class="three-boxes box-a" href="#brute-force-approach">
+Brute Force Approach:
+</a>
+<a class="three-boxes box-b" href="#better-approach">
+Better Approach:
+</a>
+<a class="three-boxes box-c" href="#optimal-approach">
+Optimal Approach:
+</a>
+<a class="three-boxes box-d" href="#dsa_article_video_explanation">
+<svg fill="none" height="26" viewbox="0 0 20 14" width="26" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 10L13.19 7L8 4V10ZM19.56 2.17C19.69 2.64 19.78 3.27 19.84 4.07C19.91 4.87 19.94 5.56 19.94 6.16L20 7C20 9.19 19.84 10.8 19.56 11.83C19.31 12.73 18.73 13.31 17.83 13.56C17.36 13.69 16.5 13.78 15.18 13.84C13.88 13.91 12.69 13.94 11.59 13.94L10 14C5.81 14 3.2 13.84 2.17 13.56C1.27 13.31 0.69 12.73 0.44 11.83C0.31 11.36 0.22 10.73 0.16 9.93C0.0900001 9.13 0.0599999 8.44 0.0599999 7.84L0 7C0 4.81 0.16 3.2 0.44 2.17C0.69 1.27 1.27 0.69 2.17 0.44C2.64 0.31 3.5 0.22 4.82 0.16C6.12 0.0899998 7.31 0.0599999 8.41 0.0599999L10 0C14.19 0 16.8 0.16 17.83 0.44C18.73 0.69 19.31 1.27 19.56 2.17Z" fill="red"></path>
+</svg>
+</a>
+<div class="box-e tooltip">
+<svg fill="none" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.842 9.25L11.9577 10.17C11.2502 10.89 10.8081 11.5 10.8081 13H8.84297V12.5C8.84297 11.39 9.28511 10.39 9.99255 9.67L11.2109 8.41C11.5745 8.05 11.7906 7.55 11.7906 7C11.7906 6.46957 11.5836 5.96086 11.2151 5.58579C10.8465 5.21071 10.3467 5 9.82552 5C9.30434 5 8.80451 5.21071 8.43598 5.58579C8.06745 5.96086 7.86041 6.46957 7.86041 7H5.89531C5.89531 5.93913 6.30938 4.92172 7.04644 4.17157C7.7835 3.42143 8.78316 3 9.82552 3C10.8679 3 11.8675 3.42143 12.6046 4.17157C13.3417 4.92172 13.7557 5.93913 13.7557 7C13.7543 7.84324 13.4259 8.65183 12.842 9.25ZM10.8081 17H8.84297V15H10.8081M9.82552 0C8.53521 0 7.25754 0.258658 6.06545 0.761205C4.87337 1.26375 3.79021 2.00035 2.87783 2.92893C1.03519 4.8043 0 7.34784 0 10C0 12.6522 1.03519 15.1957 2.87783 17.0711C3.79021 17.9997 4.87337 18.7362 6.06545 19.2388C7.25754 19.7413 8.53521 20 9.82552 20C12.4314 20 14.9306 18.9464 16.7732 17.0711C18.6158 15.1957 19.651 12.6522 19.651 10C19.651 4.47 15.2296 0 9.82552 0Z" fill="black"></path>
+</svg>
+<div class="bottom">
+<p>Expand any one approach by clicking the given options in the bar. Clicking one approach on bar,
+closes all other expands. You can manually expand more than one approach at a time</p>
+<i></i>
+</div>
+</div>
+</div>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Approaches Drop-Down -->
+<div class="dsa_article_dropdown_approachs">
+<!-- Brute Force Approach Starts from here -->
+<div id="brute-force-approach">
+<details>
+<summary class="main-summary">
+<span>
+Brute Force Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition of Brute Force Apporach Here -->
+<h3><strong>Solution:</strong></h3>
+<p>In the question, it is clearly stated that for each case the picked indices i.e. a, b, c, and d must be distinct. This means [arr[1], arr[1], arr[2], arr[3]] is not valid and also remember [arr[1], arr[0], arr[2], arr[3]] and [arr[0], arr[1], arr[2], arr[3]] will be considered same.</p>
+<h3><strong>Naive Approach (Brute-force)</strong>: </h3>
+<h3><strong>Approach:</strong></h3>
+<p>The steps are as follows:</p>
+<ol><li>First, we will declare a set data structure as we want unique quadruplets.</li><li>Then we will use the first loop(say i) that will run from 0 to n-1.</li><li>Inside it, there will be the second loop(say j) that will run from i+1 to n-1.</li><li>Then there will be the third loop(say k) that runs from j+1 to n-1.</li><li>Inside loop k, the fourth loop(say l) will run from k+1 to n-1.</li><li>Now, inside these four nested loops, we will check the sum i.e. arr[i]+arr[j]+arr[k]+arr[l], and if it is equal to the target we will sort this quadruplet and insert it in the set data structure.</li><li>Finally, we will return a list of stored quadruplets.</li></ol>
+<p><strong>Intuition: </strong>This approach is pretty straightforward. Here, we will check all possible quadruplets using 4 loops(<em>as we did in the </em><a href="https://takeuforward.org/data-structure/3-sum-find-triplets-that-add-up-to-a-zero/" rel="noopener" target="_blank" title=""><em>3-sum problem</em></a>) and among them, we will consider the ones whose sum is equal to the given target. And before considering them as our answer we need to sort the quadruplets in ascending order.</p>
+<p><strong>Note: </strong><em>For a better understanding of intuition, please watch the video at the bottom of the page.</em></p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+
+<!-- Insert C++ code of Brute Force Here -->
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+vector&lt;vector&lt;int&gt;&gt; fourSum(vector&lt;int&gt;&amp; nums, int target) {
+    int n = nums.size(); //size of the array
+    set&lt;vector&lt;int&gt;&gt; st;
+
+    //checking all possible quadruplets:
+    for (int i = 0; i &lt; n; i++) {
+        for (int j = i + 1; j &lt; n; j++) {
+            for (int k = j + 1; k &lt; n; k++) {
+                for (int l = k + 1; l &lt; n; l++) {
+                    // taking bigger data type
+                    // to avoid integer overflow:
+                    long long sum = nums[i] + nums[j];
+                    sum += nums[k];
+                    sum += nums[l];
+
+                    if (sum == target) {
+                        vector&lt;int&gt; temp = {nums[i], nums[j], nums[k], nums[l]};
+                        sort(temp.begin(), temp.end());
+                        st.insert(temp);
+                    }
+                }
+            }
+        }
+    }
+    vector&lt;vector&lt;int&gt;&gt; ans(st.begin(), st.end());
+    return ans;
+}
+
+int main()
+{
+    vector&lt;int&gt; nums = {4, 3, 3, 4, 4, 2, 1, 2, 1, 1};
+    int target = 9;
+    vector&lt;vector&lt;int&gt;&gt; ans = fourSum(nums, target);
+    cout &lt;&lt; "The quadruplets are: \n";
+    for (auto it : ans) {
+        cout &lt;&lt; "[";
+        for (auto ele : it) {
+            cout &lt;&lt; ele &lt;&lt; " ";
+        }
+        cout &lt;&lt; "] ";
+    }
+    cout &lt;&lt; "\n";
+    return 0;
+}
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+
+<!-- Insert Java code of Brute Force Here -->
+import java.util.*;
+
+public class tUf {
+
+    public static List&lt;List&lt;Integer&gt;&gt; fourSum(int[] nums, int target) {
+        int n = nums.length; // size of the array
+        Set&lt;List&lt;Integer&gt;&gt; set = new HashSet&lt;&gt;();
+
+        // checking all possible quadruplets:
+        for (int i = 0; i &lt; n; i++) {
+            for (int j = i + 1; j &lt; n; j++) {
+                for (int k = j + 1; k &lt; n; k++) {
+                    for (int l = k + 1; l &lt; n; l++) {
+                        // taking bigger data type
+                        // to avoid integer overflow:
+                        long sum = (long)nums[i] + nums[j];
+                        sum += nums[k];
+                        sum += nums[l];
+
+                        if (sum == target) {
+                            List&lt;Integer&gt; temp = Arrays.asList(nums[i], nums[j], nums[k], nums[l]);
+                            Collections.sort(temp);
+                            set.add(temp);
+                        }
+                    }
+                }
+            }
+        }
+        List&lt;List&lt;Integer&gt;&gt; ans = new ArrayList&lt;&gt;(set);
+        return ans;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {4, 3, 3, 4, 4, 2, 1, 2, 1, 1};
+        int target = 9;
+        List&lt;List&lt;Integer&gt;&gt; ans = fourSum(nums, target);
+        System.out.println("The quadruplets are: ");
+        for (List&lt;Integer&gt; it : ans) {
+            System.out.print("[");
+            for (int ele : it) {
+                System.out.print(ele + " ");
+            }
+            System.out.print("] ");
+        }
+        System.out.println();
+    }
+}
+
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+
+<!-- Insert Python code of Brute Force Here -->
+from typing import List
+from collections import deque
+
+def fourSum(nums: List[int], target: int) -&gt; List[List[int]]:
+    n = len(nums) # size of the array
+    st = set()
+
+    # checking all possible quadruplets:
+    for i in range(n):
+        for j in range(i + 1, n):
+            for k in range(j + 1, n):
+                for l in range(k + 1, n):
+                    # taking bigger data type
+                    # to avoid integer overflow:
+                    sum = nums[i] + nums[j]
+                    sum += nums[k]
+                    sum += nums[l]
+
+                    if sum == target:
+                        temp = [nums[i], nums[j], nums[k], nums[l]]
+                        temp.sort()
+                        st.add(tuple(temp))
+
+    ans = [list(x) for x in st]
+    return ans
+
+if __name__ == '__main__':
+    nums = [4, 3, 3, 4, 4, 2, 1, 2, 1, 1]
+    target = 9
+    ans = fourSum(nums, target)
+    print("The quadruplets are:")
+    for it in ans:
+        print("[", end="")
+        for ele in it:
+            print(ele, end=" ")
+        print("]", end=" ")
+    print() 
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+
+<!-- Insert JavaScript code of Brute Force Here -->
+function fourSum(nums, target) {
+  let n = nums.length;
+  let set = new Set();
+  
+  for (let i = 0; i &lt; n; i++) {
+    for (let j = i + 1; j &lt; n; j++) {
+      for (let k = j + 1; k &lt; n; k++) {
+        for (let l = k + 1; l &lt; n; l++) {
+          let sum = nums[i] + nums[j] + nums[k] + nums[l];
+          
+          if (sum === target) {
+            let temp = [nums[i], nums[j], nums[k], nums[l]];
+            temp.sort((a, b) =&gt; a - b);
+            set.add(temp);
+          }
+        }
+      }
+    }
+  }
+  
+  let ans = Array.from(set);
+  return ans;
+}
+
+let nums = [4, 3, 3, 4, 4, 2, 1, 2, 1, 1];
+let target = 9;
+let ans = fourSum(nums, target);
+
+console.log("The quadruplets are: ");
+for (let it of ans) {
+  process.stdout.write("[");
+  for (let ele of it) {
+    process.stdout.write(ele + " ");
+  }
+  process.stdout.write("] ");
+}
+console.log();
+
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Brute Force Here -->
+<p><strong>Output:</strong> The quadruplets are:
+[1 1 3 4 ] [1 2 2 4 ] [1 2 3 3 ] 
+</p>
+</p></div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Brute Force Here -->
+<p><strong>Time Complexity: </strong>O(N<sup>4</sup>), where N = size of the array.<br/><strong>Reason: </strong>Here, we are mainly using 4 nested loops. But we not considering the time complexity of sorting as we are just sorting 4 elements every time.</p>
+<p><strong>Space Complexity: </strong>O(2 * no. of the quadruplets) as we are using a set data structure and a list to store the quads.
+</p>
+</p></details>
+</div>
+</details>
+</div>
+<!-- Brute Force Approach Ends here -->
+<!-- Better Approach Starts from here -->
+<div id="better-approach">
+<details>
+<summary class="main-summary">
+<span>
+Better Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition For Better Approach Here -->
+<h3><strong>Better Approach (Using 3 loops and set data structure)</strong>: </h3>
+<h3><strong>Approach:</strong></h3>
+<p>The steps are as follows:</p>
+<ol><li>First, we will declare a set data structure as we want unique quadruplets.</li><li>Then we will use the first loop(say i) that will run from 0 to n-1.</li><li>Inside it, there will be the second loop(say j) that will run from i+1 to n-1.</li><li>Before the third loop, we will declare a HashSet to store the specific array elements as we intend to search the fourth element in that HashSet.</li><li>Then there will be the third loop(say k) that runs from j+1 to n-1.</li><li>Inside the third loop, we will calculate the value of the fourth element i.e. target - (nums[i]+nums[j]+nums[k]).</li><li>If the fourth element exists in the HashSet, we will sort these four values i.e. nums[i], nums[j], nums[k], and the fourth element, and insert it in the set data structure declared in step 1.</li><li>After that, we will insert the k-th element i.e. nums[k] in the HashSet as we only want to insert those array elements that are in between indices j and k.</li><li>Finally, we will return a list of stored quadruplets stored in the set data structure.</li></ol>
+<h3><strong>Intuition: </strong></h3>
+<p>In the previous approach, we were using 4 loops but in this, we want to reduce that to 3 loops. We have to somehow manage to calculate nums[l] as we are planning to remove the fourth loop(i.e. l). In order to calculate nums[l], we can derive a formula like the following:</p>
+<pre class="wp-block-preformatted">nums[l] = target - (nums[i]+nums[j]+nums[k])
+</pre>
+<p>So, we will first calculate the triplets nums[i], nums[j], and nums[k] using 3 loops and for the fourth one i.e. nums[l] we will not use another loop and instead we will look up the value target-(nums[i]+nums[j]+nums[k]) in the array. Thus we can remove the fourth loop from the algorithm.</p>
+<p>For implementing the search operation of the fourth element, we will use a similar technique as we used in the case of the<a href="https://takeuforward.org/data-structure/3-sum-find-triplets-that-add-up-to-a-zero/" rel="noopener" target="_blank" title=""><em> 3-sum problem</em></a>. We will store all the elements between the indices j and k in a HashSet and then we will search for the fourth element in the HashSet.</p>
+<p><strong>Why we are not inserting all the array elements in the HashSet and then searching for the fourth element:</strong></p>
+<p>Let’s understand this intuition using an example. Assume the given array is {1, 2, -1, -2, 2, 0, -1} and the target = 0. Now, we will notice a situation like the following:</p>
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-8329" src="assets/678275b20b41d2178f45bef1e048b159.png"/></figure>
+<p>Now, the fourth element should be target-(nums[i]+nums[j]+nums[k]) = 0 - (1-1+0) = 0. Now, if all the array elements are in the HashSet and we search for 0, we will end up taking the 0 at index k again. The quadruplets will be {nums[i], nums[j], nums[k], nums[k]} but this is absolutely incorrect. That is why we need to only consider the elements that are in between the indices j and k.</p>
+<p><strong>Note: </strong><em>For a better understanding of intuition, please watch the video at the bottom of the page.</em></p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+
+<!-- Insert C++ Code of Better Approach Here -->
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+vector&lt;vector&lt;int&gt;&gt; fourSum(vector&lt;int&gt;&amp; nums, int target) {
+    int n = nums.size(); //size of the array
+    set&lt;vector&lt;int&gt;&gt; st;
+
+    //checking all possible quadruplets:
+    for (int i = 0; i &lt; n; i++) {
+        for (int j = i + 1; j &lt; n; j++) {
+            set&lt;long long&gt; hashset;
+            for (int k = j + 1; k &lt; n; k++) {
+                // taking bigger data type
+                // to avoid integer overflow:
+                long long sum = nums[i] + nums[j];
+                sum += nums[k];
+                long long fourth = target - sum;
+                if (hashset.find(fourth) != hashset.end()) {
+                    vector&lt;int&gt; temp = {nums[i], nums[j], nums[k], (int)(fourth)};
+                    sort(temp.begin(), temp.end());
+                    st.insert(temp);
+                }
+                // put the kth element into the hashset:
+                hashset.insert(nums[k]);
+            }
+        }
+    }
+    vector&lt;vector&lt;int&gt;&gt; ans(st.begin(), st.end());
+    return ans;
+}
+
+int main()
+{
+    vector&lt;int&gt; nums = {4, 3, 3, 4, 4, 2, 1, 2, 1, 1};
+    int target = 9;
+    vector&lt;vector&lt;int&gt;&gt; ans = fourSum(nums, target);
+    cout &lt;&lt; "The quadruplets are: \n";
+    for (auto it : ans) {
+        cout &lt;&lt; "[";
+        for (auto ele : it) {
+            cout &lt;&lt; ele &lt;&lt; " ";
+        }
+        cout &lt;&lt; "] ";
+    }
+    cout &lt;&lt; "\n";
+    return 0;
+}
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+
+<!-- Insert Java Code of Better Approach Here -->
+import java.util.*;
+
+public class tUf {
+    public static List&lt;List&lt;Integer&gt;&gt; fourSum(int[] nums, int target) {
+        int n = nums.length; // size of the array
+        Set&lt;List&lt;Integer&gt;&gt; st = new HashSet&lt;&gt;();
+
+        // checking all possible quadruplets:
+        for (int i = 0; i &lt; n; i++) {
+            for (int j = i + 1; j &lt; n; j++) {
+                Set&lt;Long&gt; hashset = new HashSet&lt;&gt;();
+                for (int k = j + 1; k &lt; n; k++) {
+                    // taking bigger data type
+                    // to avoid integer overflow:
+                    long sum = nums[i] + nums[j];
+                    sum += nums[k];
+                    long fourth = target - sum;
+                    if (hashset.contains(fourth)) {
+                        List&lt;Integer&gt; temp = new ArrayList&lt;&gt;();
+                        temp.add(nums[i]);
+                        temp.add(nums[j]);
+                        temp.add(nums[k]);
+                        temp.add((int) fourth);
+                        temp.sort(Integer::compareTo);
+                        st.add(temp);
+                    }
+                    // put the kth element into the hashset:
+                    hashset.add((long) nums[k]);
+                }
+            }
+        }
+        List&lt;List&lt;Integer&gt;&gt; ans = new ArrayList&lt;&gt;(st);
+        return ans;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {4, 3, 3, 4, 4, 2, 1, 2, 1, 1};
+        int target = 9;
+        List&lt;List&lt;Integer&gt;&gt; ans = fourSum(nums, target);
+        System.out.println("The quadruplets are: ");
+        for (List&lt;Integer&gt; it : ans) {
+            System.out.print("[");
+            for (Integer ele : it) {
+                System.out.print(ele + " ");
+            }
+            System.out.print("] ");
+        }
+        System.out.println();
+    }
+} 
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+
+<!-- Insert Python Code of Better Approach Here -->
+from typing import List
+import itertools
+
+def fourSum(nums: List[int], target: int) -&gt; List[List[int]]:
+    n = len(nums)
+    st = set()
+
+    # checking all possible quadruplets:
+    for i in range(n):
+        for j in range(i+1, n):
+            hashset = set()
+            for k in range(j+1, n):
+                # taking bigger data type to avoid integer overflow:
+                sum_ = nums[i] + nums[j] + nums[k]
+                fourth = target - sum_
+                if fourth in hashset:
+                    temp = [nums[i], nums[j], nums[k], fourth]
+                    temp.sort()
+                    st.add(tuple(temp))
+                # put the kth element into the hashset:
+                hashset.add(nums[k])
+
+    ans = [list(t) for t in st]
+    return ans
+
+
+if __name__ == '__main__':
+    nums = [4, 3, 3, 4, 4, 2, 1, 2, 1, 1]
+    target = 9
+    ans = fourSum(nums, target)
+    print("The quadruplets are:")
+    for it in ans:
+        print("[", end="")
+        for ele in it:
+            print(ele, end=" ")
+        print("]", end=" ")
+    print()
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+
+<!-- Insert javascript Code of Better Approach Here -->
+function fourSum(nums, target) {
+  let n = nums.length;
+  let set = new Set();
+
+  for (let i = 0; i &lt; n; i++) {
+    for (let j = i + 1; j &lt; n; j++) {
+      let hashset = new Set();
+      for (let k = j + 1; k &lt; n; k++) {
+        let sum = nums[i] + nums[j];
+        sum += nums[k];
+        let fourth = target - sum;
+        if (hashset.has(fourth)) {
+          let temp = [nums[i], nums[j], nums[k], fourth];
+          temp.sort((a, b) =&gt; a - b);
+          set.add(temp);
+        }
+        hashset.add(nums[k]);
+      }
+    }
+  }
+
+  let ans = Array.from(set);
+  return ans;
+}
+
+let nums = [4, 3, 3, 4, 4, 2, 1, 2, 1, 1];
+let target = 9;
+let ans = fourSum(nums, target);
+
+console.log("The quadruplets are: ");
+for (let it of ans) {
+  process.stdout.write("[");
+  for (let ele of it) {
+    process.stdout.write(ele + " ");
+  }
+  process.stdout.write("] ");
+}
+console.log();
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Better Approach Here -->
+<p><strong>Output:</strong> The quadruplets are:
+[1 1 3 4 ] [1 2 2 4 ] [1 2 3 3 ] 
+</p>
+</p></div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Better Approach Here -->
+<p><strong>Time Complexity: </strong>O(N<sup>3</sup>*log(M)), where N = size of the array, M = no. of elements in the set.<br/><strong>Reason: </strong>Here, we are mainly using 3 nested loops, and inside the loops there are some operations on the set data structure which take log(M) time complexity.</p>
+<p><strong>Space Complexity: </strong>O(2 * no. of the quadruplets)+O(N)<br/><strong>Reason: </strong>we are using a set data structure and a list to store the quads. This results in the first term. And the second space is taken by the set data structure we are using to store the array elements. At most, the set can contain approximately all the array elements and so the space complexity is O(N).
+</p>
+</p></details>
+</div>
+</details>
+</div>
+<!-- Better Approach Ends from here -->
+<!-- Optimal Approach Starts from here -->
+<div id="optimal-approach">
+<details>
+<summary class="main-summary">
+<span>
+Optimal Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm of Better Approach Here -->
+<h3><strong>Optimal Approach</strong>: </h3>
+<p>In this approach, we intend to get rid of two things i.e. the HashSet we were using for the look-up operation and the set data structure used to store the unique quadruplets.</p>
+<p>Again the solution to this will be similar to the optimal approach of the <em> </em><a href="https://takeuforward.org/data-structure/3-sum-find-triplets-that-add-up-to-a-zero/"><em>3-sum problem</em></a>. In that approach, we had fixed a pointer i, and the rest 2 pointers were moving. Similarly, here, as we are dealing with quads instead of triplets we will fix 2 pointers i.e. i and j and the rest of the 2 pointers will be moving.</p>
+<p>Now, we need to first understand what the HashSet and the set were doing to make our algorithm work without them. So, the set data structure was basically storing the unique quadruplets in sorted order and the HashSet was used to search for the fourth element.</p>
+<p><strong>To get the quadruplets in sorted order, </strong>we will sort the entire array in the first step and <strong>to get the unique quads, </strong>we will simply skip the duplicate numbers while moving the pointers.</p>
+<p><strong>How to skip duplicate numbers:</strong><strong><br/></strong>As the entire array is sorted, the duplicate numbers will be in consecutive places. So, while moving a pointer, we will check the current element and the adjacent element. Until they become different, we will move the pointer by 1 place. We will follow this process for all 4 pointers. Thus, we can easily skip the duplicate elements while moving the pointers.</p>
+<p>Now, we can also remove the HashSet as we have two moving pointers i.e. k and l that will find the appropriate value of nums[k] and nums[l]. So, we do not need the HashSet anymore.</p>
+<p>The process will look like the following:</p>
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-8330" src="assets/3027fd24199c3109ef01b8725fd1e0a5.png"/></figure>
+<p>Among the 4 pointers, 2 will be fixed and 2 will be moving. In each iteration, we will check if the sum i.e. nums[i]+nums[j]+nums[k]+nums[l] is equal to the target. </p>
+<ul><li><strong>If the sum is greater</strong>, then we need lesser elements and so we will decrease the value of l. </li><li><strong>If the sum is lesser than the target</strong>, we need a bigger value and so we will increase the value of k. </li><li><strong>If the sum is equal to the target,</strong> we will simply insert the quad i.e. nums[i], nums[j], nums[k], and nums[l] into our answer and move the pointers k and l skipping the duplicate elements.</li></ul>
+<p><strong>Approach:</strong></p>
+<p>The steps are as follows:</p>
+<ol><li>First, we will sort the entire array.</li><li>We will use a loop(say i) that will run from 0 to n-1. This i will represent one of the fixed pointers. In each iteration, this value will be fixed for all different values of the rest of the 3 pointers. Inside the loop, we will first check if the current and the previous element is the same and if it is we will do nothing and continue to the next value of i.</li><li>After checking inside the loop, we will introduce another fixed pointer j(runs from i+1 to n-1) using another loop. Inside this second loop, we will again check for duplicate elements and only perform any further operation if the elements are different.</li><li>Inside the second loop, there will be 2 moving pointers i.e. k(starts from j+1) and l(starts from the last index). The pointer k will move forward and the pointer l will move backward until they cross each other while the value of i and j will be fixed.<ol><li>Now we will check the sum i.e. nums[i]+nums[j]+nums[k]+nums[l].</li><li><strong>If the sum is greater</strong>, then we need lesser elements and so we will decrease the value of l.</li><li><strong>If the sum is lesser than the target</strong>, we need a bigger value and so we will increase the value of k. </li><li><strong>If the sum is equal to the target,</strong> we will simply insert the quad i.e. nums[i], nums[j], nums[k], and nums[l] into our answer and move the pointers k and l skipping the duplicate elements(<em>i.e. by checking the adjacent elements while moving the pointers</em>).</li></ol></li><li>Finally, we will have a list of unique quadruplets.</li></ol>
+<p><strong>Note: </strong><em>For a better understanding of intuition, please watch the video at the bottom of the page.</em></p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+
+<!-- Insert C++ code of Optimal Approach Here-->
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+vector&lt;vector&lt;int&gt;&gt; fourSum(vector&lt;int&gt;&amp; nums, int target) {
+    int n = nums.size(); //size of the array
+    vector&lt;vector&lt;int&gt;&gt; ans;
+
+    // sort the given array:
+    sort(nums.begin(), nums.end());
+
+    //calculating the quadruplets:
+    for (int i = 0; i &lt; n; i++) {
+        // avoid the duplicates while moving i:
+        if (i &gt; 0 &amp;&amp; nums[i] == nums[i - 1]) continue;
+        for (int j = i + 1; j &lt; n; j++) {
+            // avoid the duplicates while moving j:
+            if (j &gt; i + 1 &amp;&amp; nums[j] == nums[j - 1]) continue;
+
+            // 2 pointers:
+            int k = j + 1;
+            int l = n - 1;
+            while (k &lt; l) {
+                long long sum = nums[i];
+                sum += nums[j];
+                sum += nums[k];
+                sum += nums[l];
+                if (sum == target) {
+                    vector&lt;int&gt; temp = {nums[i], nums[j], nums[k], nums[l]};
+                    ans.push_back(temp);
+                    k++; l--;
+
+                    //skip the duplicates:
+                    while (k &lt; l &amp;&amp; nums[k] == nums[k - 1]) k++;
+                    while (k &lt; l &amp;&amp; nums[l] == nums[l + 1]) l--;
+                }
+                else if (sum &lt; target) k++;
+                else l--;
+            }
+        }
+    }
+
+    return ans;
+}
+
+int main()
+{
+    vector&lt;int&gt; nums = {4, 3, 3, 4, 4, 2, 1, 2, 1, 1};
+    int target = 9;
+    vector&lt;vector&lt;int&gt;&gt; ans = fourSum(nums, target);
+    cout &lt;&lt; "The quadruplets are: \n";
+    for (auto it : ans) {
+        cout &lt;&lt; "[";
+        for (auto ele : it) {
+            cout &lt;&lt; ele &lt;&lt; " ";
+        }
+        cout &lt;&lt; "] ";
+    }
+    cout &lt;&lt; "\n";
+    return 0;
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+
+<!-- Insert Java code of Optimal Approach Here -->
+import java.util.*;
+
+public class tUf {
+    public static List&lt;List&lt;Integer&gt;&gt; fourSum(int[] nums, int target) {
+        int n = nums.length; // size of the array
+        List&lt;List&lt;Integer&gt;&gt; ans = new ArrayList&lt;&gt;();
+
+        // sort the given array:
+        Arrays.sort(nums);
+
+        // calculating the quadruplets:
+        for (int i = 0; i &lt; n; i++) {
+            // avoid the duplicates while moving i:
+            if (i &gt; 0 &amp;&amp; nums[i] == nums[i - 1]) continue;
+            for (int j = i + 1; j &lt; n; j++) {
+                // avoid the duplicates while moving j:
+                if (j &gt; i + 1 &amp;&amp; nums[j] == nums[j - 1]) continue;
+
+                // 2 pointers:
+                int k = j + 1;
+                int l = n - 1;
+                while (k &lt; l) {
+                    long sum = nums[i];
+                    sum += nums[j];
+                    sum += nums[k];
+                    sum += nums[l];
+                    if (sum == target) {
+                        List&lt;Integer&gt; temp = new ArrayList&lt;&gt;();
+                        temp.add(nums[i]);
+                        temp.add(nums[j]);
+                        temp.add(nums[k]);
+                        temp.add(nums[l]);
+                        ans.add(temp);
+                        k++;
+                        l--;
+
+                        // skip the duplicates:
+                        while (k &lt; l &amp;&amp; nums[k] == nums[k - 1]) k++;
+                        while (k &lt; l &amp;&amp; nums[l] == nums[l + 1]) l--;
+                    } else if (sum &lt; target) k++;
+                    else l--;
+                }
+            }
+        }
+
+        return ans;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {4, 3, 3, 4, 4, 2, 1, 2, 1, 1};
+        int target = 9;
+        List&lt;List&lt;Integer&gt;&gt; ans = fourSum(nums, target);
+        System.out.println("The quadruplets are: ");
+        for (List&lt;Integer&gt; it : ans) {
+            System.out.print("[");
+            for (int ele : it) {
+                System.out.print(ele + " ");
+            }
+            System.out.print("] ");
+        }
+        System.out.println();
+    }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+
+<!-- Insert Python code of Optimal Approach Here -->
+from typing import List
+
+def fourSum(nums: List[int], target: int) -&gt; List[List[int]]:
+    n = len(nums) # size of the array
+    ans = []
+
+    # sort the given array:
+    nums.sort()
+
+    # calculating the quadruplets:
+    for i in range(n):
+        # avoid the duplicates while moving i:
+        if i &gt; 0 and nums[i] == nums[i - 1]:
+            continue
+        for j in range(i + 1, n):
+            # avoid the duplicates while moving j:
+            if j &gt; i + 1 and nums[j] == nums[j - 1]:
+                continue
+
+            # 2 pointers:
+            k = j + 1
+            l = n - 1
+            while k &lt; l:
+                _sum = nums[i] + nums[j] + nums[k] + nums[l]
+                if _sum == target:
+                    temp = [nums[i], nums[j], nums[k], nums[l]]
+                    ans.append(temp)
+                    k += 1
+                    l -= 1
+
+                    # skip the duplicates:
+                    while k &lt; l and nums[k] == nums[k - 1]:
+                        k += 1
+                    while k &lt; l and nums[l] == nums[l + 1]:
+                        l -= 1
+                elif _sum &lt; target:
+                    k += 1
+                else:
+                    l -= 1
+
+    return ans
+
+
+if __name__ == '__main__':
+    nums = [4, 3, 3, 4, 4, 2, 1, 2, 1, 1]
+    target = 9
+    ans = fourSum(nums, target)
+    print("The quadruplets are:")
+    for it in ans:
+        print("[", end="")
+        for ele in it:
+            print(ele, end=" ")
+        print("]", end=" ")
+    print()
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+
+<!-- Insert Python code of Optimal Approach Here -->
+function majorityElement(v) {
+    let n = v.length; // size of the array
+
+    let cnt1 = 0, cnt2 = 0; // counts
+    let el1 = -Infinity; // element 1
+    let el2 = -Infinity; // element 2
+
+    // applying the Extended Boyer Moore's Voting Algorithm:
+    for (let i = 0; i &lt; n; i++) {
+        if (cnt1 === 0 &amp;&amp; el2 !== v[i]) {
+            cnt1 = 1;
+            el1 = v[i];
+        }
+        else if (cnt2 === 0 &amp;&amp; el1 !== v[i]) {
+            cnt2 = 1;
+            el2 = v[i];
+        }
+        else if (v[i] === el1) cnt1++;
+        else if (v[i] === el2) cnt2++;
+        else {
+            cnt1--, cnt2--;
+        }
+    }
+
+    let ls = []; // list of answers
+
+    // Manually check if the stored elements in
+    // el1 and el2 are the majority elements:
+    cnt1 = 0, cnt2 = 0;
+    for (let i = 0; i &lt; n; i++) {
+        if (v[i] === el1) cnt1++;
+        if (v[i] === el2) cnt2++;
+    }
+
+    let mini = Math.floor(n / 3) + 1;
+    if (cnt1 &gt;= mini) ls.push(el1);
+    if (cnt2 &gt;= mini) ls.push(el2);
+
+    // Uncomment the following line
+    // if it is told to sort the answer array:
+    // ls.sort(); // TC --&gt; O(2*log2) ~ O(1);
+
+    return ls;
+}
+
+let arr = [11, 33, 33, 11, 33, 11];
+let ans = majorityElement(arr);
+console.log("The majority elements are: " + ans.join(" "));
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Optimal Apporach Here -->
+<p><strong>Output:</strong>The quadruplets are:
+[1 1 3 4 ] [1 2 2 4 ] [1 2 3 3 ] 
+</p>
+</p></div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Optimal Approach-->
+<p><strong>Time Complexity: </strong>O(N<sup>3</sup>), where N = size of the array.<br/><strong>Reason: </strong>Each of the pointers i and j, is running for approximately N times. And both the pointers k and l combined can run for approximately N times including the operation of skipping duplicates. So the total time complexity will be O(N<sup>3</sup>). </p>
+<p><strong>Space Complexity: </strong>O(no. of quadruplets), <strong><em>This space is only used to store the answer. We are not using any extra space to solve this problem.</em></strong> So, from that perspective, space complexity can be written as O(1).
+</p>
+</p></details>
+</div>
+</details>
+</div>
+<!-- Optimal Approach Starts from here -->
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Video Explination Drop-Down -->
+<div class="dsa_article_youtube_video" id="dsa_article_video_explanation">
+<details>
+<summary class="main-summary">
+<span>
+Video Explanation
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="yt-video-wrapper">
+<!-- Insert iframe embed Link of Youtube Video-->
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" class="lazy-loaded" data-lazy-type="iframe" data-src="https://www.youtube.com/embed/eD95WRfh81c" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/eD95WRfh81c?feature=oembed" title="4 SUM" width="810"></iframe><noscript>
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/eD95WRfh81c" title="4 SUM" width="810"></iframe></noscript>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script>
+
+const codeSections = document.querySelectorAll('.code-section');
+
+// Get last selected language from localStorage or set default value
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+// Update last selected language for all sections and store in localStorage
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+// Handle copy button click event
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+// Set initial state of the tabs
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<script>
+const codeSections = document.querySelectorAll('.code-section');
+
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<link href="assets/4237ffca7ce6aadb438c457e0a675b12.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+<script src="index.js"></script>
+<script>hljs.highlightAll();</script>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script src="https://takeuforward.org/UXApproachDropDowns/3ApproachJSScript.js"></script>
+<!-- /wp:html -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <a href="https://www.linkedin.com/in/rishirajgirmal/" rel="noreferrer noopener nofollow" target="_blank" title="https://www.linkedin.com/in/rishirajgirmal/">Rishiraj Girmal</a><em>, <em><a href="https://www.linkedin.com/in/imsudip/" rel="noreferrer noopener" target="_blank">Sudip Ghosh</a></em></em> </em> and <strong><a href="https://www.linkedin.com/in/kriti39/" rel="noopener" target="_blank" title="">KRITIDIPTA GHOSH</a></strong> <em>for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock && activeBlock.innerText) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

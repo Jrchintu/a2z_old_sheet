@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Binary Tree Traversal : Inorder Preorder Postorder</title>
+<link href="assets/34bd07407ad1de576cba1f67651fa31a" rel="stylesheet"/>
+<style>
+        /* ==========================================================================
+           1. CSS Variables (Theme) - Utilitarian Modern
+           ========================================================================== */
+        :root {
+            /* Default to Light Theme */
+            --primary-color: #3b82f6; /* Blue 500 */
+            --primary-hover: #2563eb; /* Blue 600 */
+            
+            --bg-body: #f8fafc; /* Slate 50 */
+            --bg-surface: #ffffff; /* White */
+            --bg-subtle: #f1f5f9; /* Slate 100 */
+            
+            --border-color: #e2e8f0; /* Slate 200 */
+            
+            --text-primary: #0f172a; /* Slate 900 */
+            --text-secondary: #334155; /* Slate 700 */
+            --text-muted: #64748b; /* Slate 500 */
+            
+            --link-color: #2563eb; /* Blue 600 */
+            --link-hover: #3b82f6; /* Blue 500 */
+
+            --code-bg: #f1f5f9; /* Slate 100 */
+            --code-text: #0f172a; /* Slate 900 */
+
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 0 25px -5px rgba(59, 130, 246, 0.25);
+            
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+        }
+
+        /* Dark Theme Support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-body: #0f172a; /* Slate 900 */
+                --bg-surface: #1e293b; /* Slate 800 */
+                --bg-subtle: #334155; /* Slate 700 */
+                
+                --border-color: #334155;
+                
+                --text-primary: #f8fafc; /* Slate 50 */
+                --text-secondary: #cbd5e1; /* Slate 300 */
+                --text-muted: #94a3b8; /* Slate 400 */
+                
+                --link-color: #60a5fa; /* Blue 400 */
+                --link-hover: #93c5fd; /* Blue 300 */
+
+                --code-bg: #020617; /* Slate 950 */
+                --code-text: #f8fafc;
+            }
+        }
+
+        /* ==========================================================================
+           2. Base & Reset
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ==========================================================================
+           3. Layout
+           ========================================================================== */
+        .container {
+            max-width: 800px; /* Optimal reading width */
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        /* Enhanced hover for desktop only */
+        @media (hover: hover) and (pointer: fine) {
+            .container:hover {
+                transform: translateY(-4px);
+                border-color: var(--primary-color);
+                box-shadow: var(--shadow-hover);
+            }
+        }
+
+        /* ==========================================================================
+           4. Typography
+           ========================================================================== */
+        h1 {
+            color: var(--text-primary);
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+        
+        h2, h3, h4 {
+            color: var(--text-secondary);
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.25em;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        /* ==========================================================================
+           5. Media
+           ========================================================================== */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            display: block;
+            margin: 1.5rem auto;
+        }
+
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            margin: 1.5rem 0;
+            border-radius: var(--radius-md);
+            background-color: var(--bg-subtle);
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ==========================================================================
+           6. Code Blocks
+           ========================================================================== */
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: inherit;
+        }
+
+        /* ==========================================================================
+           7. Code Tabs
+           ========================================================================== */
+        .code-section {
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .code-tabs {
+            display: flex;
+            background-color: var(--bg-subtle);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .code-tab {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .code-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            padding: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-muted);
+        }
+        
+        .copy-btn:hover svg {
+            fill: var(--text-primary);
+        }
+
+        .code-content {
+            background-color: var(--code-bg);
+        }
+        
+        .code-content pre {
+            margin: 0;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* ==========================================================================
+           8. Accordions / Details
+           ========================================================================== */
+        details {
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background-color: var(--bg-surface);
+            transition: box-shadow 0.2s;
+        }
+        
+        details:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1rem;
+            background-color: var(--bg-subtle);
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary:hover {
+            background-color: #475569; /* Slate 600 */
+        }
+        
+        /* Arrow icon rotation */
+        summary .arrow-svg {
+            transition: transform 0.3s ease;
+            width: 20px;
+            height: 20px;
+            fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
+        }
+        
+        /* Only rotate the arrow of the *active* details element */
+        details[open] > summary .arrow-svg {
+            transform: rotate(90deg);
+            fill: var(--primary-color);
+        }
+
+        .common-drops,
+        .atricle_example_content,
+        details > :not(summary) {
+            padding: 0.5rem;
+            background-color: var(--bg-surface);
+        }
+
+        /* Nested details */
+        .secondary-details {
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+        
+        .secondary-summary {
+            background-color: rgba(51, 65, 85, 0.3); /* Semi-transparent slate-700 */
+            font-size: 0.95rem;
+        }
+        
+        .secondary-summary:hover {
+            background-color: var(--bg-subtle);
+        }
+        
+        .opacity-75 {
+            opacity: 0.75;
+        }
+
+        /* ==========================================================================
+           9. Practice & Disclaimer
+           ========================================================================== */
+        .practice, .new-disclaimer {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: var(--bg-subtle);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+        
+        .problem-buttons a {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+        }
+        
+        .problem-buttons a:hover {
+            background-color: var(--primary-hover);
+            text-decoration: none;
+        }
+
+        /* ==========================================================================
+           10. Utilities
+           ========================================================================== */
+        .problem-buttons img,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article,
+        .has-text-align-center {
+            display: none;
+        }
+        
+        .arrow-svg {
+            display: inline-block; /* Ensure arrows are visible */
+        }
+
+        /* ==========================================================================
+           11. Responsive (Full Page Mobile)
+           ========================================================================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+
+            .container {
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 0.5rem;
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                text-align: left;
+            }
+
+            .code-tabs {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 2px; /* Space for scrollbar */
+            }
+            
+            .code-tab {
+                flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Binary Tree Traversal : Inorder Preorder Postorder</h1>
+</header>
+<article>
+<p>Traversals in hierarchical data structures like Binary Trees can be broadly classified into two categories:
+    Depth-First Search (DFS) and Breadth-First Search (BFS). Each of them utilises a different strategy to visit the
+    nodes within the tree.</p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-12743" height="196" src="assets/d962eda32655ae2f8c3e731c511e964c.57_PM--RjeP9YX" width="602"/></figure>
+<p><strong>Depth-First Search (DFS) </strong> explores a binary tree by going as deeply as possible along each branch
+    before backtracking.</p>
+<ol>
+<li>It starts from the root and explores as deeply as possible along each branch, visiting nodes until it reaches a
+        leaf node. It then backtracks to the most recent unexplored node and continues until all nodes are visited.</li>
+<li>The order in which we visit a node determines if that traversal would be preorder, inorder and postorder.</li>
+<li>DFS uses recursion or a stack to traverse deeper levels of the tree before visiting nodes at the same level.
+    </li>
+</ol>
+<p><strong>Breadth-First Search (BFS) </strong> explores a binary tree level by level, visiting all nodes at a given
+    level before processing to the next level.</p>
+<ol>
+<li>It starts from the root and visits all nodes at level 0, then proceeds to level 1, level 2, and so on. Nodes at
+        a level are visited from left to right.</li>
+<li>BFS uses a queue data structure to maintain nodes at each level, ensuring that nodes at higher levels are
+        visited moving to lower levels.</li>
+</ol>
+<p><strong>Inorder Traversal </strong> is the type of Depth First Traversal where nodes are visited in the order: Left,
+    Root, Right.</p>
+<p>It's named "inorder" because it traverses the nodes in a sequence where the "Visit" step occurs between the left and
+    right child nodes.</p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-12743" height="196" src="assets/7aec94659061f38812fcbb1e80718db3.00_PM-FWEyDNjN" width="602"/></figure>
+<p>Procedure of Inorder Traversal:</p>
+<ol>
+<li>Visit the Left Subtree: Recursively traverse the left subtree until a leaf node or a node with no left child is
+        reached.</li>
+<li>Visit the Current Node: Once at a node, perform the visitation operation (such as printing the node's value or
+        performing an operation with the node's data).</li>
+<li>Traverse the Right Subtree: After visiting the current node, recursively traverse the right subtree, following
+        the same steps as the left subtree.</li>
+</ol>
+<p>Read about Inorder Traversal in detail <a href="https://takeuforward.org/data-structure/inorder-traversal-of-binary-tree" rel="noreferrer noopener" target="_blank"><strong>here</strong></a></p>
+<p><strong>Preorder Traversal </strong> is the type of Depth First Traversal where nodes are visited in the order: Root,
+    Left then Right.</p>
+<p>It's named "preorder" because the "Visit" step occurs before traversing the left and right child nodes.</p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-12743" height="196" src="assets/cddd42c698fd86acfeb423b303e2f25a.51_PM-786-gX9m" width="602"/></figure>
+<p>Procedure of Preorder Traversal:</p>
+<ol>
+<li>Visit the Current Node: Begin by visiting the current node, performing the visitation operation (such as
+        printing the node's value or performing an operation with the node's data).</li>
+<li>Traverse the Left Subtree: Recursively traverse the left subtree, following the same steps starting from step 1.
+    </li>
+<li>Traverse the Right Subtree: After fully traversing the left subtree, recursively traverse the right subtree,
+        following the same steps starting from step 1.</li>
+</ol>
+<p>Read about Preorder Traversal in detail <a href="https://takeuforward.org/data-structure/preorder-traversal-of-binary-tree" rel="noreferrer noopener" target="_blank"><strong>here</strong></a></p>
+<p><strong>Postorder Traversal </strong> is the type of Depth First Traversal where nodes are visited in the order:
+    Left, Right then Root.</p>
+<p>It's named "postorder" because the "Visit" step occurs after traversing the left and right child nodes.</p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-12743" height="196" src="assets/529b6287de6182468d976ba9aa8495b8.17_PM-DgFI8ob3" width="602"/></figure>
+<p>Procedure of Postorder Traversal:</p>
+<ol>
+<li>Traverse the Left Subtree: Recursively traverse the left subtree, following the same steps starting from step 1.
+    </li>
+<li>Traverse the Right Subtree: Similarly, recursively traverse the right subtree, following the same steps starting
+        from step 1.</li>
+<li>Visit the Current Node: After fully traversing both left and right subtrees, visit the current node, performing
+        the visitation operation (such as printing the node's value or performing an operation with the node's data).
+    </li>
+</ol>
+<p>Read about Postorder Traversal in detail <a href="https://takeuforward.org/data-structure/post-order-traversal-of-binary-tree" rel="noreferrer noopener" target="_blank"><strong>here</strong></a></p>
+<h3> <strong>In Summary:</strong></h3>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-12743" height="196" src="assets/13e49028d158b989e97af96ee6578121.01_PM-Dw3JnHQa" width="602"/></figure>
+<h3><strong>Order of Visitation:</strong></h3>
+<p>Inorder: Left, Visit, Right</p>
+<span>Visits nodes in ascending order in a BST, accessing left children before the parent and then the right
+    children.</span>
+<p>Preorder: Visit, Left, Right</p>
+<span>Starts with the root node, visits the current node before its children, then moves to left and right
+    children.</span>
+<p>Postorder: Left, Right, Visit</p>
+<span>Visits the children nodes before the parent node, exploring left and right subtrees before visiting the current
+    node.</span>
+<p><strong>Level Order Traversal </strong> is the type of Breadth First Traversal where nodes are visited level by
+    level, exploring each level completely before moving to the next level.
+
+<p>Level order traversal utilises a queue data structure to maintain the nodes at each level, ensuring that nodes at
+    higher levels are visited before moving to lower levels.</p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-12743" height="196" src="assets/4e82d5e33f30cb7d080cc788fef71015.34_AM-wmqzwxiP" width="602"/></figure>
+<p>Procedure of Level Order Traversal:</p>
+<ol>
+<li>Visit Nodes at Each Level: Starting from the root node, visit all nodes at level 0.
+    </li>
+<li>Move to Next Level: After visiting all nodes at level 0, move to level 1 and visit all nodes at this level from
+        left to right.</li>
+<li>Continue Level-wise: Repeat this process for subsequent levels, visiting nodes at each level from left to right
+        until all levels are visited.
+    </li>
+</ol>
+<p>Read about Level Order Traversal in detail <a href="https://takeuforward.org/data-structure/level-order-traversal-of-a-binary-tree" rel="noreferrer noopener" target="_blank"><strong>here</strong></a>
+</p>
+<blockquote class="wp-block-quote"><p>Special thanks to <strong><a href="https://www.linkedin.com/in/gauri-tomar-005048268">Gauri Tomar</a></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam,<strong><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/"> please check out this article</a></strong></p></blockquote>
+</p></article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock && activeBlock.innerText) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

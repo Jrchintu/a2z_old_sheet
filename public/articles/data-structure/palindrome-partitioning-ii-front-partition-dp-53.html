@@ -1,0 +1,1624 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Palindrome Partitioning - II | Front Partition : DP 53</title>
+<link href="assets/34bd07407ad1de576cba1f67651fa31a" rel="stylesheet"/>
+<style>
+        /* ==========================================================================
+           1. CSS Variables (Theme) - Utilitarian Modern
+           ========================================================================== */
+        :root {
+            /* Default to Light Theme */
+            --primary-color: #3b82f6; /* Blue 500 */
+            --primary-hover: #2563eb; /* Blue 600 */
+            
+            --bg-body: #f8fafc; /* Slate 50 */
+            --bg-surface: #ffffff; /* White */
+            --bg-subtle: #f1f5f9; /* Slate 100 */
+            
+            --border-color: #e2e8f0; /* Slate 200 */
+            
+            --text-primary: #0f172a; /* Slate 900 */
+            --text-secondary: #334155; /* Slate 700 */
+            --text-muted: #64748b; /* Slate 500 */
+            
+            --link-color: #2563eb; /* Blue 600 */
+            --link-hover: #3b82f6; /* Blue 500 */
+
+            --code-bg: #f1f5f9; /* Slate 100 */
+            --code-text: #0f172a; /* Slate 900 */
+
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 0 25px -5px rgba(59, 130, 246, 0.25);
+            
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+        }
+
+        /* Dark Theme Support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-body: #0f172a; /* Slate 900 */
+                --bg-surface: #1e293b; /* Slate 800 */
+                --bg-subtle: #334155; /* Slate 700 */
+                
+                --border-color: #334155;
+                
+                --text-primary: #f8fafc; /* Slate 50 */
+                --text-secondary: #cbd5e1; /* Slate 300 */
+                --text-muted: #94a3b8; /* Slate 400 */
+                
+                --link-color: #60a5fa; /* Blue 400 */
+                --link-hover: #93c5fd; /* Blue 300 */
+
+                --code-bg: #020617; /* Slate 950 */
+                --code-text: #f8fafc;
+            }
+        }
+
+        /* ==========================================================================
+           2. Base & Reset
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ==========================================================================
+           3. Layout
+           ========================================================================== */
+        .container {
+            max-width: 800px; /* Optimal reading width */
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        /* Enhanced hover for desktop only */
+        @media (hover: hover) and (pointer: fine) {
+            .container:hover {
+                transform: translateY(-4px);
+                border-color: var(--primary-color);
+                box-shadow: var(--shadow-hover);
+            }
+        }
+
+        /* ==========================================================================
+           4. Typography
+           ========================================================================== */
+        h1 {
+            color: var(--text-primary);
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+        
+        h2, h3, h4 {
+            color: var(--text-secondary);
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.25em;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        /* ==========================================================================
+           5. Media
+           ========================================================================== */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            display: block;
+            margin: 1.5rem auto;
+        }
+
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            margin: 1.5rem 0;
+            border-radius: var(--radius-md);
+            background-color: var(--bg-subtle);
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ==========================================================================
+           6. Code Blocks
+           ========================================================================== */
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: inherit;
+        }
+
+        /* ==========================================================================
+           7. Code Tabs
+           ========================================================================== */
+        .code-section {
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .code-tabs {
+            display: flex;
+            background-color: var(--bg-subtle);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .code-tab {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .code-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            padding: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-muted);
+        }
+        
+        .copy-btn:hover svg {
+            fill: var(--text-primary);
+        }
+
+        .code-content {
+            background-color: var(--code-bg);
+        }
+        
+        .code-content pre {
+            margin: 0;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* ==========================================================================
+           8. Accordions / Details
+           ========================================================================== */
+        details {
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background-color: var(--bg-surface);
+            transition: box-shadow 0.2s;
+        }
+        
+        details:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1rem;
+            background-color: var(--bg-subtle);
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary:hover {
+            background-color: #475569; /* Slate 600 */
+        }
+        
+        /* Arrow icon rotation */
+        summary .arrow-svg {
+            transition: transform 0.3s ease;
+            width: 20px;
+            height: 20px;
+            fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
+        }
+        
+        /* Only rotate the arrow of the *active* details element */
+        details[open] > summary .arrow-svg {
+            transform: rotate(90deg);
+            fill: var(--primary-color);
+        }
+
+        .common-drops,
+        .atricle_example_content,
+        details > :not(summary) {
+            padding: 0.5rem;
+            background-color: var(--bg-surface);
+        }
+
+        /* Nested details */
+        .secondary-details {
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+        
+        .secondary-summary {
+            background-color: rgba(51, 65, 85, 0.3); /* Semi-transparent slate-700 */
+            font-size: 0.95rem;
+        }
+        
+        .secondary-summary:hover {
+            background-color: var(--bg-subtle);
+        }
+        
+        .opacity-75 {
+            opacity: 0.75;
+        }
+
+        /* ==========================================================================
+           9. Practice & Disclaimer
+           ========================================================================== */
+        .practice, .new-disclaimer {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: var(--bg-subtle);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+        
+        .problem-buttons a {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+        }
+        
+        .problem-buttons a:hover {
+            background-color: var(--primary-hover);
+            text-decoration: none;
+        }
+
+        /* ==========================================================================
+           10. Utilities
+           ========================================================================== */
+        .problem-buttons img,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article,
+        .has-text-align-center {
+            display: none;
+        }
+        
+        .arrow-svg {
+            display: inline-block; /* Ensure arrows are visible */
+        }
+
+        /* ==========================================================================
+           11. Responsive (Full Page Mobile)
+           ========================================================================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+
+            .container {
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 0.5rem;
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                text-align: left;
+            }
+
+            .code-tabs {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 2px; /* Space for scrollbar */
+            }
+            
+            .code-tab {
+                flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Palindrome Partitioning - II | Front Partition : DP 53</h1>
+</header>
+<article>
+<!-- wp:paragraph -->
+<p><strong>Problem Statement:</strong> Given a string s, partition s such that every substring of the partition is a palindrome. Return the minimum cuts needed for a palindrome partitioning of s.</p>
+<!-- /wp:paragraph -->
+<!-- wp:paragraph -->
+<!-- /wp:paragraph -->
+<!-- wp:html -->
+<!-- This is Examples Drop-Down -->
+<div id="article_examples">
+<details class="article_example_details">
+<summary class="article_example_summary">
+<span><strong>
+Examples
+</strong>
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="atricle_example_content">
+<pre class="wp-block-preformatted"><!-- Insert New Examples Here -->
+<pre class="wp-block-preformatted"><strong>Example 1:</strong>
+<strong>Input:</strong> s = “bababcbadcede”
+<strong>Output</strong>: 4
+<strong>Explanation:</strong> If we do 4 partitions in the following way, 
+each substring of the partition will be a palindrome.
+bab | abcba | d | c | ede</pre>
+<pre class="wp-block-preformatted"><strong>Input</strong>: s = "aab"
+<strong>Output</strong>: 1
+<strong>Explanation</strong>: If we do 1 partition in the following way, 
+each substring of the partition will be a palindrome.
+aa | b</pre>
+</pre>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Practice Section-->
+<div class="practice">
+<span><strong>Practice: </strong></span>
+<div class="problem-buttons">
+<!-- Add Problem Link inside href -->
+<a href="https://www.codingninjas.com/studio/problems/palindrome-partitioning-ll_873266?utm_source=striver&amp;utm_medium=website&amp;utm_campaign=a_zcoursetuf" rel="noopener" target="_blank">
+<span>Solve Problem</span>
+<img alt="code-studio" src="assets/86dd2cadbd0e7ef71ad98d3b7f2f2efc.png"/>
+</a>
+</div>
+</div>
+<p class="new-disclaimer"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out
+yourself first. </em></p>
+<!-- /wp:html -->
+<!-- wp:html -->
+<div class="horizontal_navbar_dsa_article">
+<div class="grid_container_three">
+<a class="three-boxes box-a" href="#brute-force-approach">
+Recursive approach
+</a>
+<a class="three-boxes box-b" href="#better-approach">
+Memoization approach
+</a>
+<a class="three-boxes box-c" href="#optimal-approach">
+Tabulation Approach
+</a>
+<a class="three-boxes box-d" href="#dsa_article_video_explanation">
+<svg fill="none" height="26" viewbox="0 0 20 14" width="26" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 10L13.19 7L8 4V10ZM19.56 2.17C19.69 2.64 19.78 3.27 19.84 4.07C19.91 4.87 19.94 5.56 19.94 6.16L20 7C20 9.19 19.84 10.8 19.56 11.83C19.31 12.73 18.73 13.31 17.83 13.56C17.36 13.69 16.5 13.78 15.18 13.84C13.88 13.91 12.69 13.94 11.59 13.94L10 14C5.81 14 3.2 13.84 2.17 13.56C1.27 13.31 0.69 12.73 0.44 11.83C0.31 11.36 0.22 10.73 0.16 9.93C0.0900001 9.13 0.0599999 8.44 0.0599999 7.84L0 7C0 4.81 0.16 3.2 0.44 2.17C0.69 1.27 1.27 0.69 2.17 0.44C2.64 0.31 3.5 0.22 4.82 0.16C6.12 0.0899998 7.31 0.0599999 8.41 0.0599999L10 0C14.19 0 16.8 0.16 17.83 0.44C18.73 0.69 19.31 1.27 19.56 2.17Z" fill="red"></path>
+</svg>
+</a>
+<div class="box-e tooltip">
+<svg fill="none" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.842 9.25L11.9577 10.17C11.2502 10.89 10.8081 11.5 10.8081 13H8.84297V12.5C8.84297 11.39 9.28511 10.39 9.99255 9.67L11.2109 8.41C11.5745 8.05 11.7906 7.55 11.7906 7C11.7906 6.46957 11.5836 5.96086 11.2151 5.58579C10.8465 5.21071 10.3467 5 9.82552 5C9.30434 5 8.80451 5.21071 8.43598 5.58579C8.06745 5.96086 7.86041 6.46957 7.86041 7H5.89531C5.89531 5.93913 6.30938 4.92172 7.04644 4.17157C7.7835 3.42143 8.78316 3 9.82552 3C10.8679 3 11.8675 3.42143 12.6046 4.17157C13.3417 4.92172 13.7557 5.93913 13.7557 7C13.7543 7.84324 13.4259 8.65183 12.842 9.25ZM10.8081 17H8.84297V15H10.8081M9.82552 0C8.53521 0 7.25754 0.258658 6.06545 0.761205C4.87337 1.26375 3.79021 2.00035 2.87783 2.92893C1.03519 4.8043 0 7.34784 0 10C0 12.6522 1.03519 15.1957 2.87783 17.0711C3.79021 17.9997 4.87337 18.7362 6.06545 19.2388C7.25754 19.7413 8.53521 20 9.82552 20C12.4314 20 14.9306 18.9464 16.7732 17.0711C18.6158 15.1957 19.651 12.6522 19.651 10C19.651 4.47 15.2296 0 9.82552 0Z" fill="black"></path>
+</svg>
+<div class="bottom">
+<p>Expand any one approach by clicking the given options in the bar. Clicking one approach on bar,
+closes all other expands. You can manually expand more than one approach at a time</p>
+<i></i>
+</div>
+</div>
+</div>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Approaches Drop-Down -->
+<div class="dsa_article_dropdown_approachs">
+<!-- Brute Force Approach Starts from here -->
+<div id="brute-force-approach">
+<details>
+<summary class="main-summary">
+<span>
+Recursive Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition of Brute Force Apporach Here -->
+<p>In order to solve this problem, we need to partition the given string in such a way that every substring of the partition becomes a palindrome. For example, if the string “aabb” is given, one of the valid partitions will be “aa | b | b”. </p>
+<p>Now, one key point to notice here is that we can make every substring of any string a palindrome, by partitioning it n-1 times(where n = size of the string). For example, if the given string is “abcd” and if we partition it n-1 i.e. (4-1 = 3) times, it will be like the following:<br/>a | b | c | d. Here, every single substring of the partitions is a palindrome.</p>
+<p><em>So, we can conclude that it is very much possible all the time to partition a string in such a way that every substring becomes a palindrome and we can also assure that the answer always exists.</em> </p>
+<p>Here, in this question, it is clearly mentioned that we need to figure out the minimum number of such partitions. Consider the example given below:</p>
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7241" src="assets/19c0200e45e1a89413bffd3e572d83a3.png"/></figure>
+<h3><strong>Intuition:</strong></h3>
+<p>This type of problem is generally solved using the <strong><em>front partition</em></strong>. Following the front partition technique, we will start checking from the first index of the given string and will check if we can make a partition between the first and the second index. Similarly, then we will include the second index in the account and check if we can make a partition between the second and the third index. This process will continue to the last index. </p>
+<p><strong><em>The condition for a partition to be valid is that the left part of the partition must be a palindromic substring. </em></strong></p>
+<p>The following illustration will depict the process of partitioning:</p>
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7242" src="assets/5f0cb3eb53f284e1db5a194a7e8852a4.png"/></figure>
+<p>We have found the right approach so far. Now, let us quickly discuss the rules to solve this problem:</p>
+<ol><li>Express everything(i.e. the given string) in terms of the index.</li><li>Try all partitions.</li><li>Return the best possible answer of all partitions (the answer that comes after dividing the problem into subproblems and solving them recursively).<br/>Derive the base case as well.</li></ol>
+<p><strong>Express everything(i.e. the given string) in terms of the index:</strong></p>
+<p>We are given a string. Now, following the front partition rules we will place i to index 0 i.e. the first index. The function will look like the following:</p>
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7243" src="assets/aed97a51a8d5ac0202cc7f0c486423e4.png"/></figure>
+<h5><strong>Try all partitions:</strong></h5>
+<p>As we have figured out the logic for marking the pointer, i, we will move to the partitioning loop. We can simply write a for loop(say j) starting from i to n-1(n = size of the string), The problem is being broken in the following manner:</p>
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7244" src="assets/440d4e641b249442011ccafaa2115cc0.png"/></figure>
+<p><strong>Base case: </strong>When the index i will be equal to the size of the string(i.e. i == n), we can say there are no more characters left to be partitioned. So, this is the base case and in this case, the function will return 0.</p>
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7245" src="assets/2fb842af8c1220e833044f5f8285751f.png"/></figure>
+<h5><strong>Return the best possible answer of all partitions:</strong></h5>
+<p>A partition is possible when the left substring of that partition is a palindrome. Now, inside the partitioning loop, we will check if the partition can be done at index j(i.e. We will check if the substring starts from index i and ends at index j is a palindrome or not). If it is done, we will add 1 to our answer, and then we will again follow the same method for the left-over substring.</p>
+<p>Here, in the question, it is clearly mentioned that we need the minimum number of partitions. So, calculating all possible answers using the above method, we will take the minimum into our consideration.</p>
+<p>The recurrence logic will be the following:</p>
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7246" src="assets/934b677073e43009b3585fbe20bf3a95.png"/></figure>
+<h5><strong>Note about the final answer:</strong></h5>
+<p>If we carefully observe, we can notice that our function is actually counting an extra partition at the end of the string in each case. For example, the given string is “abcd”. After doing a partition after ‘c’ the function will check if a partition can be done after ‘d’ to check if the last substring i.e. ‘d’ itself is a palindrome. Consider the following illustration:</p>
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7247" src="assets/b2507232cf09f5ce21f7e3b26484d0ae.png"/></figure>
+<p>For that our function will return 4 as the answer, instead of the actual answer is 3. </p>
+<p><strong>So, our actual answer will be (number of partitions returned by the function - 1).</strong></p>
+<p><strong>Note</strong>: <em>If you wish to see the dry run of the above approach, you can watch the video attached to this article.</em></p>
+<p><strong>Approach</strong>: </p>
+<p><strong>The recursive algorithm steps are as follows:</strong></p>
+<ol><li>Convert the problem to a recursive function marked by the pointer i.</li><li>Use a loop to check all possible partitions of the string and calculate the number of partitions.</li><li>Return the minimum number of partitions counted.</li><li><strong>Base case: </strong>When the index i will be equal to the size of the string(i.e. i == n), we can say there are no more characters left to be partitioned. So, this is the base case and in this case, the function will return 0.</li></ol>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+// Function to check if a substring is a palindrome.
+bool isPalindrome(int i, int j, string &amp;s) {
+    while (i &lt; j) {
+        if (s[i] != s[j]) return false;
+        i++;
+        j--;
+    }
+    return true;
+}
+
+// Recursive function to find the minimum number of partitions to make palindromes.
+int minPartitions(int i, int n, string &amp;str) {
+    // Base case: If we've reached the end of the string.
+    if (i == n) return 0;
+
+    int minCost = INT_MAX;
+    // Consider all possible substrings starting from the current index.
+    for (int j = i; j &lt; n; j++) {
+        if (isPalindrome(i, j, str)) {
+            // If the substring is a palindrome, calculate the cost and minimize it.
+            int cost = 1 + minPartitions(j + 1, n, str);
+            minCost = min(minCost, cost);
+        }
+    }
+    return minCost;
+}
+
+// Main function to find the minimum number of partitions for palindrome partitioning.
+int palindromePartitioning(string str) {
+    int n = str.size();
+    // Calling the recursive function and subtracting 1 as it counts partitions, not cuts.
+    return minPartitions(0, n, str) - 1;
+}
+
+int main() {
+    string str = "BABABCBADCEDE";
+    int partitions = palindromePartitioning(str);
+    cout &lt;&lt; "The minimum number of partitions: " &lt;&lt; partitions &lt;&lt; "\n";
+    return 0;
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+
+public class PalindromePartitioning {
+    static boolean isPalindrome(int i, int j, String s) {
+        while (i &lt; j) {
+            if (s.charAt(i) != s.charAt(j)) return false;
+            i++;
+            j--;
+        }
+        return true;
+    }
+
+    static int f(int i, int n, String str) {
+        // Base case:
+        if (i == n) return 0;
+
+        int minCost = Integer.MAX_VALUE;
+        // String[i...j]
+        for (int j = i; j &lt; n; j++) {
+            if (isPalindrome(i, j, str)) {
+                int cost = 1 + f(j + 1, n, str);
+                minCost = Math.min(minCost, cost);
+            }
+        }
+        return minCost;
+    }
+
+    static int palindromePartitioning(String str) {
+        int n = str.length();
+        return f(0, n, str) - 1;
+    }
+
+    public static void main(String[] args) {
+        String str = "BABABCBADCEDE";
+        int partitions = palindromePartitioning(str);
+        System.out.println("The minimum number of partitions: " + partitions);
+    }
+}
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+
+def is_palindrome(i, j, s):
+    # Helper function to check if a substring s[i...j] is a palindrome
+    while i &lt; j:
+        if s[i] != s[j]:
+            return False
+        i += 1
+        j -= 1
+    return True
+
+def f(i, n, s):
+    # Base case: If we reach the end of the string, no further partition is needed
+    if i == n:
+        return 0
+
+    min_cost = float('inf')
+    
+    # Iterate over possible substrings starting from index i
+    for j in range(i, n):
+        if is_palindrome(i, j, s):
+            # If s[i...j] is a palindrome, calculate the cost
+            cost = 1 + f(j + 1, n, s)
+            min_cost = min(min_cost, cost)
+
+    return min_cost
+
+def palindrome_partitioning(s):
+    # Main function to find the minimum number of partitions
+    n = len(s)
+    return f(0, n, s) - 1  # Subtract 1 to exclude the initial unpartitioned string
+
+if __name__ == "__main__":
+    str = "BABABCBADCEDE"
+    partitions = palindrome_partitioning(str)
+    print("The minimum number of partitions:", partitions)
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+// Function to check if a substring from index i to j is a palindrome
+function isPalindrome(i, j, s) {
+    while (i &lt; j) {
+        if (s[i] !== s[j]) return false;
+        i++;
+        j--;
+    }
+    return true;
+}
+
+// Function to find the minimum number of partitions needed to make palindromes
+function palindromePartitioning(str) {
+    // Function f to recursively calculate the minimum number of partitions
+    function f(i, n, str) {
+        // Base case: If i reaches the end of the string, return 0
+        if (i === n) return 0;
+
+        let minCost = Infinity;
+
+        // Check all possible substrings starting from index i
+        for (let j = i; j &lt; n; j++) {
+            if (isPalindrome(i, j, str)) {
+                // Calculate the cost for the current partition
+                const cost = 1 + f(j + 1, n, str);
+                minCost = Math.min(minCost, cost);
+            }
+        }
+
+        return minCost;
+    }
+
+    const n = str.length;
+
+    // Call the recursive function with initial values and subtract 1 from the result
+    return f(0, n, str) - 1;
+}
+
+// Main function
+function main() {
+    const str = "BABABCBADCEDE";
+    const partitions = palindromePartitioning(str);
+    console.log("The minimum number of partitions:", partitions);
+}
+
+// Call the main function
+main();
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Brute Force Here -->
+The minimum number of partitions: 4 (Given string: "BABABCBADCEDE")
+</p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Brute Force Here -->
+<p><strong>Time Complexity: Exponential</strong>
+</p>
+</p></details>
+</div>
+</details>
+</div>
+<!-- Brute Force Approach Ends here -->
+<!-- Better Approach Starts from here -->
+<div id="better-approach">
+<details>
+<summary class="main-summary">
+<span>
+Memoization Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition For Better Approach Here -->
+<p><strong>Steps to memoize the recursive solution:</strong></p>
+<ol><li>Create a 1D dp array of size [n] i can range from 0 to n-1. So we take the size n.</li><li>We initialize the dp array to -1.</li><li>Whenever we want to find the answer to a particular parameter (say f(i)), we first check whether the answer is already calculated using the dp array(i.e dp[i] != -1 ). If yes, simply return the value from the dp array.</li><li>If not, then we are finding the answer for the given value for the first time, we will use the recursive relation as usual but before returning from the function, we will set dp[i] to the solution we get.</li></ol>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+// Function to check if a substring is a palindrome.
+bool isPalindrome(int i, int j, string &amp;s) {
+    while (i &lt; j) {
+        if (s[i] != s[j]) return false;
+        i++;
+        j--;
+    }
+    return true;
+}
+
+// Recursive function to find the minimum number of partitions to make palindromes.
+int minPartitions(int i, int n, string &amp;str, vector&lt;int&gt; &amp;dp) {
+    // Base case: If we've reached the end of the string.
+    if (i == n) return 0;
+
+    if (dp[i] != -1) return dp[i];
+    int minCost = INT_MAX;
+    // Consider all possible substrings starting from the current index.
+    for (int j = i; j &lt; n; j++) {
+        if (isPalindrome(i, j, str)) {
+            // If the substring is a palindrome, calculate the cost and minimize it.
+            int cost = 1 + minPartitions(j + 1, n, str, dp);
+            minCost = min(minCost, cost);
+        }
+    }
+    return dp[i] = minCost;
+}
+
+// Main function to find the minimum number of partitions for palindrome partitioning.
+int palindromePartitioning(string str) {
+    int n = str.size();
+    vector&lt;int&gt; dp(n, -1);
+    // Calling the recursive function and subtracting 1 as it counts partitions, not cuts.
+    return minPartitions(0, n, str, dp) - 1;
+}
+
+int main() {
+    string str = "BABABCBADCEDE";
+    int partitions = palindromePartitioning(str);
+    cout &lt;&lt; "The minimum number of partitions: " &lt;&lt; partitions &lt;&lt; "\n";
+    return 0;
+}
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+
+public class PalindromePartitioning {
+    static boolean isPalindrome(int i, int j, String s) {
+        while (i &lt; j) {
+            if (s.charAt(i) != s.charAt(j)) return false;
+            i++;
+            j--;
+        }
+        return true;
+    }
+
+    static int f(int i, int n, String str, int[] dp) {
+        // Base case:
+        if (i == n) return 0;
+
+        if (dp[i] != -1) return dp[i];
+        int minCost = Integer.MAX_VALUE;
+        // String[i...j]
+        for (int j = i; j &lt; n; j++) {
+            if (isPalindrome(i, j, str)) {
+                int cost = 1 + f(j + 1, n, str, dp);
+                minCost = Math.min(minCost, cost);
+            }
+        }
+        return dp[i] = minCost;
+    }
+
+    static int palindromePartitioning(String str) {
+        int n = str.length();
+        int[] dp = new int[n];
+        Arrays.fill(dp, -1);
+        return f(0, n, str, dp) - 1;
+    }
+
+    public static void main(String[] args) {
+        String str = "BABABCBADCEDE";
+        int partitions = palindromePartitioning(str);
+        System.out.println("The minimum number of partitions: " + partitions);
+    }
+}
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+
+def is_palindrome(i, j, s):
+    # Helper function to check if a substring s[i...j] is a palindrome
+    while i &lt; j:
+        if s[i] != s[j]:
+            return False
+        i += 1
+        j -= 1
+    return True
+
+def f(i, n, s, dp):
+    # Base case: If we reach the end of the string, no further partition is needed
+    if i == n:
+        return 0
+
+    if dp[i] != -1:
+        return dp[i]
+    
+    min_cost = float('inf')
+    
+    # Iterate over possible substrings starting from index i
+    for j in range(i, n):
+        if is_palindrome(i, j, s):
+            # If s[i...j] is a palindrome, calculate the cost
+            cost = 1 + f(j + 1, n, s, dp)
+            min_cost = min(min_cost, cost)
+
+    dp[i] = min_cost
+    return dp[i]
+
+def palindrome_partitioning(s):
+    # Main function to find the minimum number of partitions
+    n = len(s)
+    dp = [-1] * n  # Initialize a memoization array with -1
+    return f(0, n, s, dp) - 1  # Subtract 1 to exclude the initial unpartitioned string
+
+if __name__ == "__main__":
+    str = "BABABCBADCEDE"
+    partitions = palindrome_partitioning(str)
+    print("The minimum number of partitions:", partitions)
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+
+// Function to check if a substring from index i to j is a palindrome
+function isPalindrome(i, j, s) {
+    while (i &lt; j) {
+        if (s[i] !== s[j]) return false;
+        i++;
+        j--;
+    }
+    return true;
+}
+
+// Function to find the minimum number of partitions needed to make palindromes
+function palindromePartitioning(str) {
+    // Function f with memoization
+    function f(i, n, str, dp) {
+        // Base case: If i reaches the end of the string, return 0
+        if (i === n) return 0;
+
+        // Check if the result for this subproblem is already computed
+        if (dp[i] !== -1) return dp[i];
+
+        let minCost = Infinity;
+
+        // Check all possible substrings starting from index i
+        for (let j = i; j &lt; n; j++) {
+            if (isPalindrome(i, j, str)) {
+                // Calculate the cost for the current partition
+                const cost = 1 + f(j + 1, n, str, dp);
+                minCost = Math.min(minCost, cost);
+            }
+        }
+
+        // Store the result in the memoization table
+        dp[i] = minCost;
+        return minCost;
+    }
+
+    const n = str.length;
+    const dp = new Array(n).fill(-1);
+
+    // Call the recursive function with initial values and subtract 1 from the result
+    return f(0, n, str, dp) - 1;
+}
+
+// Main function
+function main() {
+    const str = "BABABCBADCEDE";
+    const partitions = palindromePartitioning(str);
+    console.log("The minimum number of partitions:", partitions);
+}
+
+// Call the main function
+main();
+</code>
+</pre>
+</div>
+<p>
+<!-- Insert Output of Better Approach Here -->
+The minimum number of partitions: 4 (Given string: "BABABCBADCEDE")
+</p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Better Approach Here -->
+<p><strong>Time Complexity: </strong>O(N<sup>2</sup>)<br/><strong>Reason:</strong> There are a total of N states and inside each state, a loop of size N(apparently) is running.</p>
+<p><strong>Space Complexity: </strong>O(N) + Auxiliary stack space O(N)<br/><strong>Reason: </strong>The first O(N) is for the dp array of size N.
+</p>
+</p></details>
+</div>
+</details>
+</div>
+<!-- Better Approach Ends from here -->
+<!-- Optimal Approach Starts from here -->
+<div id="optimal-approach">
+<details>
+<summary class="main-summary">
+<span>
+Tabulation Approach
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+Algorithm / Intuition
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm of Optimal Approach Here -->
+<p><strong>Tabulation:</strong></p>
+<ol><li>First of all, we handle the base case. If (i == n) we return 0. To cover this case we can initialize the entire dp array with 0.<br/><strong><em>Here, as we are checking </em></strong><strong>dp[j+1] </strong><strong><em> every time, the function will give a runtime error if </em></strong><strong>j = n-1</strong><strong><em>. To avoid this, we will take the array size as </em></strong><strong>n+1</strong><strong><em> instead of </em></strong><strong>n</strong><strong><em>.</em></strong></li><li>Next, memoization is a top-down approach, whereas tabulation is bottom-up. Our changing parameter i will change in opposite directions, i.e i will change from n-1→0.</li><li>Next, we copy down the recursive logic(recurrence) inside the loop.</li></ol>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+Code
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code"><code class="language-cpp" lang="cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+// Function to check if a substring is a palindrome.
+bool isPalindrome(int i, int j, string &amp;s) {
+    while (i &lt; j) {
+        if (s[i] != s[j]) return false;
+        i++;
+        j--;
+    }
+    return true;
+}
+
+// Function to find the minimum number of partitions for palindrome partitioning.
+int palindromePartitioning(string str) {
+    int n = str.size();
+    // Create a DP array to store the minimum number of partitions.
+    vector&lt;int&gt; dp(n + 1, 0);
+    dp[n] = 0; // Initialize the last element to 0.
+
+    // Loop through the string in reverse order.
+    for (int i = n - 1; i &gt;= 0; i--) {
+        int minCost = INT_MAX;
+        // Consider all possible substrings starting from the current index.
+        for (int j = i; j &lt; n; j++) {
+            if (isPalindrome(i, j, str)) {
+                // If the substring is a palindrome, calculate the cost and minimize it.
+                int cost = 1 + dp[j + 1];
+                minCost = min(minCost, cost);
+            }
+        }
+        dp[i] = minCost;
+    }
+    // Subtract 1 as it counts partitions, not cuts.
+    return dp[0] - 1;
+}
+
+int main() {
+    string str = "BABABCBADCEDE";
+    int partitions = palindromePartitioning(str);
+    cout &lt;&lt; "The minimum number of partitions: " &lt;&lt; partitions &lt;&lt; "\n";
+    return 0;
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code"><code class="language-java" lang="java">
+
+public class PalindromePartitioning {
+    static boolean isPalindrome(int i, int j, String s) {
+        while (i &lt; j) {
+            if (s.charAt(i) != s.charAt(j)) return false;
+            i++;
+            j--;
+        }
+        return true;
+    }
+
+    static int palindromePartitioning(String str) {
+        int n = str.length();
+        int[] dp = new int[n + 1];
+        dp[n] = 0;
+        for (int i = n - 1; i &gt;= 0; i--) {
+            int minCost = Integer.MAX_VALUE;
+            // String[i...j]
+            for (int j = i; j &lt; n; j++) {
+                if (isPalindrome(i, j, str)) {
+                    int cost = 1 + dp[j + 1];
+                    minCost = Math.min(minCost, cost);
+                }
+            }
+            dp[i] = minCost;
+        }
+        return dp[0] - 1;
+    }
+
+    public static void main(String[] args) {
+        String str = "BABABCBADCEDE";
+        int partitions = palindromePartitioning(str);
+        System.out.println("The minimum number of partitions: " + partitions);
+    }
+}
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code"><code class="language-python" lang="python">
+
+def is_palindrome(i, j, s):
+    # Helper function to check if a substring s[i...j] is a palindrome
+    while i &lt; j:
+        if s[i] != s[j]:
+            return False
+        i += 1
+        j -= 1
+    return True
+
+def palindrome_partitioning(s):
+    # Main function to find the minimum number of partitions
+    n = len(s)
+    dp = [0] * (n + 1)
+    dp[n] = 0  # Initialize the last element of dp to 0
+    for i in range(n - 1, -1, -1):  # Start from the second-to-last element and move backward
+        min_cost = float('inf')
+        # Iterate over possible substrings starting from index i
+        for j in range(i, n):
+            if is_palindrome(i, j, s):
+                # If s[i...j] is a palindrome, calculate the cost
+                cost = 1 + dp[j + 1]
+                min_cost = min(min_cost, cost)
+        dp[i] = min_cost
+
+    return dp[0] - 1  # Subtract 1 to exclude the initial unpartitioned string
+
+if __name__ == "__main__":
+    str = "BABABCBADCEDE"
+    partitions = palindrome_partitioning(str)
+    print("The minimum number of partitions:", partitions)
+
+</code>
+</pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code"><code class="language-javascript" lang="javascript">
+
+// Function to check if a substring from index i to j is a palindrome
+function isPalindrome(i, j, s) {
+    while (i &lt; j) {
+        if (s[i] !== s[j]) return false;
+        i++;
+        j--;
+    }
+    return true;
+}
+
+// Function to find the minimum number of partitions needed to make palindromes
+function palindromePartitioning(str) {
+    const n = str.length;
+
+    // Create an array dp to store the minimum number of partitions
+    const dp = new Array(n + 1).fill(0);
+
+    // Initialize dp[n] as 0 (no partitions needed for an empty string)
+    dp[n] = 0;
+
+    // Loop from the end of the string to the beginning
+    for (let i = n - 1; i &gt;= 0; i--) {
+        let minCost = Infinity;
+
+        // Check all possible substrings starting from index i
+        for (let j = i; j &lt; n; j++) {
+            if (isPalindrome(i, j, str)) {
+                // Calculate the cost for the current partition
+                const cost = 1 + dp[j + 1];
+                minCost = Math.min(minCost, cost);
+            }
+        }
+
+        // Store the minimum cost for the current substring
+        dp[i] = minCost;
+    }
+
+    // The result is stored in dp[0] - 1
+    return dp[0] - 1;
+}
+
+// Main function
+function main() {
+    const str = "BABABCBADCEDE";
+    const partitions = palindromePartitioning(str);
+    console.log("The minimum number of partitions:", partitions);
+}
+
+// Call the main function
+main();
+
+</code>
+</pre>
+<p>
+<!-- Insert Output of Optimal Apporach Here -->
+The minimum number of partitions: 4 (Given string: "BABABCBADCEDE")
+</p>
+</div>
+</div></details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+Complexity Analysis
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity of Optimal Approach-->
+<p><strong>Time Complexity: </strong>O(N<sup>2</sup>)<br/><strong>Reason:</strong> There are a total of N states and inside each state a loop of size N(apparently) is running.</p>
+<p><strong>Space Complexity: </strong>O(N)<br/><strong>Reason: </strong>O(N) is for the dp array we have used.
+</p>
+</p></details>
+</div>
+</details>
+</div>
+<!-- Optimal Approach Starts from here -->
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<!-- This is Video Explination Drop-Down -->
+<div class="dsa_article_youtube_video" id="dsa_article_video_explanation">
+<details>
+<summary class="main-summary">
+<span>
+Video Explanation
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="yt-video-wrapper">
+<!-- Insert iframe embed Link of Youtube Video-->
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" class="lazy-loaded" data-lazy-type="iframe" data-src="https://www.youtube.com/embed/_H8V5hJUGd0?si=qAa1_6fcDnKLkOwi" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/_H8V5hJUGd0?feature=oembed" title="Palindrome Partitioning - II" width="810"></iframe><noscript>
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" frameborder="0" height="456" loading="lazy" src="https://www.youtube.com/embed/_H8V5hJUGd0?si=qAa1_6fcDnKLkOwi" title="Palindrome Partitioning - II" width="810"></iframe></noscript>
+</div>
+</details>
+</div>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script>
+
+const codeSections = document.querySelectorAll('.code-section');
+
+// Get last selected language from localStorage or set default value
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+// Update last selected language for all sections and store in localStorage
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+// Handle copy button click event
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+// Set initial state of the tabs
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<script>
+const codeSections = document.querySelectorAll('.code-section');
+
+let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp'; 
+
+codeSections.forEach((section, sectionIndex) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+const copyBtn = section.querySelector('.copy-btn');
+
+codeTabs.forEach((tab) => {
+tab.addEventListener('click', () => {
+codeTabs.forEach((t) => {
+t.classList.remove('dsa_article_code_active');
+});
+tab.classList.add('dsa_article_code_active');
+
+const lang = tab.dataset.lang;
+const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+codeBlocks.forEach((block) => {
+if (block === activeBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+
+lastSelectedLanguage = lang;
+localStorage.setItem('lastSelectedLanguage', lang);
+codeSections.forEach((otherSection, otherIndex) => {
+if (otherIndex !== sectionIndex) {
+const otherTabs = otherSection.querySelectorAll('.code-tab');
+otherTabs.forEach((otherTab) => {
+if (otherTab.dataset.lang === lang) {
+otherTab.classList.add('dsa_article_code_active');
+} else {
+otherTab.classList.remove('dsa_article_code_active');
+}
+});
+const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+otherCodeBlocks.forEach((block) => {
+if (block === otherActiveBlock) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+}
+});
+});
+});
+
+copyBtn.addEventListener('click', () => {
+const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+navigator.clipboard.writeText(activeBlock.innerText);
+copyBtn.classList.add('dsa_article_code_active');
+setTimeout(() => {
+copyBtn.classList.remove('dsa_article_code_active');
+}, 1000);
+});
+});
+
+codeSections.forEach((section) => {
+const codeTabs = section.querySelectorAll('.code-tab');
+const codeBlocks = section.querySelectorAll('.code-block');
+
+codeTabs.forEach((tab) => {
+if (tab.dataset.lang === lastSelectedLanguage) {
+tab.classList.add('dsa_article_code_active');
+} else {
+tab.classList.remove('dsa_article_code_active');
+}
+});
+
+codeBlocks.forEach((block) => {
+if (block.dataset.lang === lastSelectedLanguage) {
+block.classList.add('dsa_article_code_active');
+} else {
+block.classList.remove('dsa_article_code_active');
+}
+});
+});
+</script>
+<link href="assets/4237ffca7ce6aadb438c457e0a675b12.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+<script src="index.js"></script>
+<script>hljs.highlightAll();</script>
+<!-- /wp:html -->
+<!-- wp:html -->
+<script src="https://takeuforward.org/UXApproachDropDowns/3ApproachJSScript.js"></script>
+<!-- /wp:html -->
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p><em>Special thanks to <strong><a href="https://www.linkedin.com/in/kriti39/" rel="noreferrer noopener" target="_blank"><strong>KRITIDIPTA GHOSH</strong></a></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam, </em><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/">please check out this article</a>. <em>If you want to suggest any improvement/correction in this article please mail us at write4tuf@gmail.com</em></p></blockquote>
+<!-- /wp:quote -->
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock && activeBlock.innerText) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>

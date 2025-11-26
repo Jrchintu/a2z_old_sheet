@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Maximum Sum Path in Binary Tree</title>
+<link href="assets/34bd07407ad1de576cba1f67651fa31a" rel="stylesheet"/>
+<style>
+        /* ==========================================================================
+           1. CSS Variables (Theme) - Utilitarian Modern
+           ========================================================================== */
+        :root {
+            /* Default to Light Theme */
+            --primary-color: #3b82f6; /* Blue 500 */
+            --primary-hover: #2563eb; /* Blue 600 */
+            
+            --bg-body: #f8fafc; /* Slate 50 */
+            --bg-surface: #ffffff; /* White */
+            --bg-subtle: #f1f5f9; /* Slate 100 */
+            
+            --border-color: #e2e8f0; /* Slate 200 */
+            
+            --text-primary: #0f172a; /* Slate 900 */
+            --text-secondary: #334155; /* Slate 700 */
+            --text-muted: #64748b; /* Slate 500 */
+            
+            --link-color: #2563eb; /* Blue 600 */
+            --link-hover: #3b82f6; /* Blue 500 */
+
+            --code-bg: #f1f5f9; /* Slate 100 */
+            --code-text: #0f172a; /* Slate 900 */
+
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 0 25px -5px rgba(59, 130, 246, 0.25);
+            
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+        }
+
+        /* Dark Theme Support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-body: #0f172a; /* Slate 900 */
+                --bg-surface: #1e293b; /* Slate 800 */
+                --bg-subtle: #334155; /* Slate 700 */
+                
+                --border-color: #334155;
+                
+                --text-primary: #f8fafc; /* Slate 50 */
+                --text-secondary: #cbd5e1; /* Slate 300 */
+                --text-muted: #94a3b8; /* Slate 400 */
+                
+                --link-color: #60a5fa; /* Blue 400 */
+                --link-hover: #93c5fd; /* Blue 300 */
+
+                --code-bg: #020617; /* Slate 950 */
+                --code-text: #f8fafc;
+            }
+        }
+
+        /* ==========================================================================
+           2. Base & Reset
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ==========================================================================
+           3. Layout
+           ========================================================================== */
+        .container {
+            max-width: 800px; /* Optimal reading width */
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        /* Enhanced hover for desktop only */
+        @media (hover: hover) and (pointer: fine) {
+            .container:hover {
+                transform: translateY(-4px);
+                border-color: var(--primary-color);
+                box-shadow: var(--shadow-hover);
+            }
+        }
+
+        /* ==========================================================================
+           4. Typography
+           ========================================================================== */
+        h1 {
+            color: var(--text-primary);
+            font-size: 2rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+        
+        h2, h3, h4 {
+            color: var(--text-secondary);
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.25em;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        /* ==========================================================================
+           5. Media
+           ========================================================================== */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            display: block;
+            margin: 1.5rem auto;
+        }
+
+        .yt-video-wrapper {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            margin: 1.5rem 0;
+            border-radius: var(--radius-md);
+            background-color: var(--bg-subtle);
+        }
+
+        .yt-video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ==========================================================================
+           6. Code Blocks
+           ========================================================================== */
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: inherit;
+        }
+
+        /* ==========================================================================
+           7. Code Tabs
+           ========================================================================== */
+        .code-section {
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .code-tabs {
+            display: flex;
+            background-color: var(--bg-subtle);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .code-tab {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .code-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .code-tab.dsa_article_code_active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .copy-btn {
+            margin-left: auto;
+            padding: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-muted);
+        }
+        
+        .copy-btn:hover svg {
+            fill: var(--text-primary);
+        }
+
+        .code-content {
+            background-color: var(--code-bg);
+        }
+        
+        .code-content pre {
+            margin: 0;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        .code-block {
+            display: none;
+        }
+
+        .code-block.dsa_article_code_active {
+            display: block;
+        }
+
+        /* ==========================================================================
+           8. Accordions / Details
+           ========================================================================== */
+        details {
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background-color: var(--bg-surface);
+            transition: box-shadow 0.2s;
+        }
+        
+        details:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1rem;
+            background-color: var(--bg-subtle);
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+            user-select: none;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary:hover {
+            background-color: #475569; /* Slate 600 */
+        }
+        
+        /* Arrow icon rotation */
+        summary .arrow-svg {
+            transition: transform 0.3s ease;
+            width: 20px;
+            height: 20px;
+            fill: var(--text-muted);
+            flex-shrink: 0;
+            transform-origin: center;
+        }
+        
+        /* Only rotate the arrow of the *active* details element */
+        details[open] > summary .arrow-svg {
+            transform: rotate(90deg);
+            fill: var(--primary-color);
+        }
+
+        .common-drops,
+        .atricle_example_content,
+        details > :not(summary) {
+            padding: 0.5rem;
+            background-color: var(--bg-surface);
+        }
+
+        /* Nested details */
+        .secondary-details {
+            margin: 1rem 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+        
+        .secondary-summary {
+            background-color: rgba(51, 65, 85, 0.3); /* Semi-transparent slate-700 */
+            font-size: 0.95rem;
+        }
+        
+        .secondary-summary:hover {
+            background-color: var(--bg-subtle);
+        }
+        
+        .opacity-75 {
+            opacity: 0.75;
+        }
+
+        /* ==========================================================================
+           9. Practice & Disclaimer
+           ========================================================================== */
+        .practice, .new-disclaimer {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: var(--bg-subtle);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+        
+        .problem-buttons a {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+        }
+        
+        .problem-buttons a:hover {
+            background-color: var(--primary-hover);
+            text-decoration: none;
+        }
+
+        /* ==========================================================================
+           10. Utilities
+           ========================================================================== */
+        .problem-buttons img,
+        .box-e.tooltip,
+        .three-boxes.box-d svg,
+        .horizontal_navbar_dsa_article,
+        .has-text-align-center {
+            display: none;
+        }
+        
+        .arrow-svg {
+            display: inline-block; /* Ensure arrows are visible */
+        }
+
+        /* ==========================================================================
+           11. Responsive (Full Page Mobile)
+           ========================================================================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+
+            .container {
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 0.5rem;
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                text-align: left;
+            }
+
+            .code-tabs {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding-bottom: 2px; /* Space for scrollbar */
+            }
+            
+            .code-tab {
+                flex-shrink: 0;
+            }
+
+            .code-content pre {
+                padding: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Maximum Sum Path in Binary Tree</h1>
+</header>
+<article>
+<p><strong>Problem Statement: </strong> Given a Binary Tree, determine the maximum sum achievable along any path within the tree.
+A path in a binary tree is defined as a sequence of nodes where each pair of adjacent nodes is connected by an edge. Nodes can only appear once in the sequence, and the path is not required to start from the root. 
+Identify and compute the maximum sum possible along any path within the given binary tree.
+
+</p>
+<div id="article_examples">
+<details class="article_example_details">
+<summary class="article_example_summary">
+<span><strong>
+                    Examples
+                </strong>
+</span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="atricle_example_content">
+<pre class="wp-block-preformatted">
+                <span><strong>Example 1:</strong></span>
+				<span><strong>Input:</strong>Binary Tree: -10 9 20 -1 -1 15 7</span>
+				<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/acaf7aba2fd78385a523f92f91b3b691" width="439"/></figure>
+				<span><strong>Output:</strong> 42</span>
+				<span><strong>Explanation: </strong>Out of all the paths possible in the Binary Tree, 15 -&gt; 20 -&gt; 7 has the greatest sum ie. 42.</span>
+				<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/6b00d2a1bf8977a9bde3a86273385634" width="439"/></figure>
+				<span><strong>Example 2:</strong></span>
+				<span><strong>Input:</strong>Binary Tree: -2 2 1
+				</span>
+				<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/6de80bd180228b444dfcb583b9ec7651" width="439"/></figure>
+				<span><strong>Output :</strong> 2</span>
+				<span><strong>Explanation: </strong>Out of all the paths possible in the Binary Tree, a path starting and ending at the node with value 2 has the greatest sum ie. 2.</span>
+				<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/a96800344ac0d0e21df264e2fcd32a5a" width="439"/></figure>
+            </pre>
+</div>
+</details>
+</div>
+<!-- This is Practice Section-->
+<div class="practice">
+<span><strong>Practice: </strong></span>
+<div class="problem-buttons">
+<!-- Add Problem Link inside href -->
+<a href="https://www.codingninjas.com/studio/problems/maximum-sum-path-of-a-binary-tree._1214968?utm_source=striver&amp;utm_medium=website&amp;utm_campaign=a_zcoursetuf" rel="noopener" target="_blank">
+<span>Solve Problem</span>
+<img alt="code-studio" src="assets/20f60e7969e701b07a63accd93ffe638"/>
+</a>
+</div>
+<!--<div class="problem-buttons">
+         Add Problem Link inside href 
+        <a href="" target="_blank" rel="noopener">
+            <span>Solve Problem</span>
+            <img src="https://cdn.iconscout.com/icon/free/png-256/free-leetcode-3521542-2944960.png?f=webp"
+                alt="leetcode">
+        </a>
+    </div>-->
+</div>
+<p class="new-disclaimer"><strong><em>Disclaimer</em></strong>: <em>Don’t jump directly to the solution, try it out
+        yourself first. </em></p>
+<div id="brute-force-approach">
+<details>
+<summary class="main-summary">
+<span>
+                Optimal Approach 
+            </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="common-drops">
+<details class="secondary-details" open="">
+<summary class="secondary-summary">
+<span>
+                        Algorithm / Intuition
+                    </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="approach-algorithm">
+<!-- Insert Algorithm / Intuition of Brute Force Apporach Here -->
+<p>To find the diameter of a binary tree, we can think of every node as a potential `Curving Point` of the path along which we find the sum.
+                    The maximum sum of a path through a turning point (like a curve) can be found by adding the maximum sum achievable in the left subtree, the right subtree, and the value of the turning point.</p>
+<p><figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/066c7f66543a3604e453cf8442bc071c" width="439"/></figure></p>
+<p>We can recursively traverse the tree, considering each node as a potential turning point and storing the maximum value (our final answer) in a reference variable.
+                    The recursive function should be defined in such a way that we consider both the possibilities:
+                    <ol><li>When the current node is the turning point and in this scenario we calculate the maximum path sum taking into sum contributions from both the left and right subtrees along with the value of the current node.</li><li>When the current node is not the turning point, we consider only the left or the right subtree. The maximum of the two is returned as the maximum path sum of that subtree.</li></ol></p>
+<p><strong>Base Case:</strong> When the current node is null which indicates the end of a path or a lead node, we return the maximum path sum as 0.</p>
+<p><strong>Recursive Function: </strong><ol><li>Calculate the maximum path sum for the left and right subtrees by making recursive calls to the left and right child of the current node.</li><li>Calculate the maximum path sum when the current node serves as the turning point: Maximum Path Sum when Current Node is Turning Point = Maximum Path Sum of Left Subtree + Maximum Path Sum of Right Subtree + Current Value of Node</li><li>Update the overall maximum path sum (maxi) by considering the sum of the current node and the left and right subtree sums.</li><li>Return the maximum sum considering only one branch (either left or right) along with the value of the current node as the maximum sum up until this node.</li></ol></p>
+<figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/37b406fc0c550eb51c18746d4a77bb5a" width="439"/></figure>
+<p><strong>Algorithm:</strong></p>
+<p><strong>Step 1:</strong> Initialise the variable maxi to the minimum possible integer value. This ensures that the algorithm correctly updates maxi with the first encountered valid path sum (even if its negative) and subsequently updates it whenever a larger path sum is found.</p>
+<p><strong>Step 2:</strong> Call the recursive function `findMaxPathSum` with the root of the binary tree and the reference parameter maxi.</p>
+<p><strong>Step 3:</strong> Base case: If the current node is null, return 0.</p>
+<p><strong>Step 4:</strong> Calculate the maximum path sum for the left and right subtree using recursion.</p>
+<p><strong>Step 5:</strong> Update the overall maximum path sum (maxi) by considering the sum of the left and right subtree paths plus the current node's value.
+                    This represents the sum of the path that includes the current node. This sum is used to update the overall maximum path sum (maxi) when the current node serves as the turning point in the path.</p>
+<p><figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/e20a96417180383b69b9e33dc2de8348" width="439"/></figure></p>
+<p><strong>Step 6:</strong> Return the maximum sum considering only one branch (either left or right) along with the current node.
+                    This represents the maximum sum considering only one branch (either left or right) along with the current node. This value is returned by the recursive function to contribute to the calculation of the maximum path sum in the binary tree.                Case Considering Negative Leaf Nodes:</p>
+<p><figure class="wp-block-image size-full is-resized"><img alt="" class="wp-image-8107" height="286" src="assets/5c2a5e804aecd3e97c035892b0b62e05" width="439"/></figure></p>
+</div>
+</details>
+<details class="code-section secondary-details">
+<summary class="secondary-summary">
+<span>
+                        Code
+                    </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<div class="code-tabs">
+<button class="code-tab dsa_article_code_active" data-lang="cpp">C++</button>
+<button class="code-tab" data-lang="java">Java</button>
+<button class="code-tab" data-lang="python">Python</button>
+<button class="code-tab" data-lang="javascript">JavaScript</button>
+<svg class="copy-btn" fill="none" height="20" viewbox="0 0 17 20" width="17" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 20C1.45 20 0.979002 19.804 0.587002 19.412C0.195002 19.02 -0.000664969 18.5493 1.69779e-06 18V4H2V18H13V20H2ZM6 16C5.45 16 4.979 15.804 4.587 15.412C4.195 15.02 3.99934 14.5493 4 14V2C4 1.45 4.196 0.979002 4.588 0.587002C4.98 0.195002 5.45067 -0.000664969 6 1.69779e-06H15C15.55 1.69779e-06 16.021 0.196002 16.413 0.588002C16.805 0.980002 17.0007 1.45067 17 2V14C17 14.55 16.804 15.021 16.412 15.413C16.02 15.805 15.5493 16.0007 15 16H6ZM6 14H15V2H6V14Z">
+</path>
+</svg>
+</div>
+<div class="code-content">
+<div class="code-block dsa_article_code_active" data-lang="cpp">
+<pre class="wp-block-code">
+                            <code class="language-cpp" lang="cpp">
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+#include &lt;climits&gt;
+
+using namespace std;
+
+// Node structure for the binary tree
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+    // Constructor to initialize
+    // the node with a value
+    Node(int val) : data(val), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    // Recursive function to find the maximum path sum
+    // or a given subtree rooted at 'root'
+    // The variable 'maxi' is a reference parameter
+    // updated to store the maximum path sum encountered
+    int findMaxPathSum(Node* root, int &amp;maxi) {
+        // Base case: If the current node is null, return 0
+        if (root == nullptr) {
+            return 0;
+        }
+
+        // Calculate the maximum path sum
+        // for the left and right subtrees
+        int leftMaxPath = max(0, findMaxPathSum(root-&gt;left, maxi));
+        int rightMaxPath = max(0, findMaxPathSum(root-&gt;right, maxi));
+
+        // Update the overall maximum
+        // path sum including the current node
+        maxi = max(maxi, leftMaxPath + rightMaxPath + root-&gt;data);
+
+        // Return the maximum sum considering
+        // only one branch (either left or right)
+        // along with the current node
+        return max(leftMaxPath, rightMaxPath) + root-&gt;data;
+    }
+
+    // Function to find the maximum
+    // path sum for the entire binary tree
+    int maxPathSum(Node* root) {
+        // Initialize maxi to the
+        // minimum possible integer value
+        int maxi = INT_MIN; 
+         // Call the recursive function to
+         // find the maximum path sum
+        findMaxPathSum(root, maxi);
+        // Return the final maximum path sum
+        return maxi; 
+    }
+};
+
+
+int main() {
+    // Creating a sample binary tree
+    Node* root = new Node(1);
+    root-&gt;left = new Node(2);
+    root-&gt;right = new Node(3);
+    root-&gt;left-&gt;left = new Node(4);
+    root-&gt;left-&gt;right = new Node(5);
+    root-&gt;left-&gt;right-&gt;right = new Node(6);
+    root-&gt;left-&gt;right-&gt;right-&gt;right = new Node(7);
+
+    // Creating an instance of the Solution class
+    Solution solution;
+
+    // Finding and printing the maximum path sum
+    int maxPathSum = solution.maxPathSum(root);
+    cout &lt;&lt; "Maximum Path Sum: " &lt;&lt; maxPathSum &lt;&lt; endl;
+
+
+    return 0;
+}
+                            </code>
+                        </pre>
+</div>
+<div class="code-block" data-lang="java">
+<pre class="wp-block-code">
+                            <code class="language-java" lang="java">
+// Importing necessary packages
+import java.util.*;
+
+// Node structure for the binary tree
+class Node {
+    int data;
+    Node left;
+    Node right;
+
+    // Constructor to initialize
+    // the node with a value
+    Node(int val) {
+        data = val;
+        left = null;
+        right = null;
+    }
+}
+
+public class Solution {
+    // Recursive function to find the maximum path sum
+    // for a given subtree rooted at 'root'
+    // The variable 'maxi' is a reference parameter
+    // updated to store the maximum path sum encountered
+    int findMaxPathSum(Node root, int[] maxi) {
+        // Base case: If the current node is null, return 0
+        if (root == null) {
+            return 0;
+        }
+
+        // Calculate the maximum path sum
+        // for the left and right subtrees
+        int leftMaxPath = Math.max(0, findMaxPathSum(root.left, maxi));
+        int rightMaxPath = Math.max(0, findMaxPathSum(root.right, maxi));
+
+        // Update the overall maximum
+        // path sum including the current node
+        maxi[0] = Math.max(maxi[0], leftMaxPath + rightMaxPath + root.data);
+
+        // Return the maximum sum considering
+        // only one branch (either left or right)
+        // along with the current node
+        return Math.max(leftMaxPath, rightMaxPath) + root.data;
+    }
+
+    // Function to find the maximum
+    // path sum for the entire binary tree
+    int maxPathSum(Node root) {
+        // Initialize maxi to the
+        // minimum possible integer value
+        int[] maxi = {Integer.MIN_VALUE};
+
+        // Call the recursive function to
+        // find the maximum path sum
+        findMaxPathSum(root, maxi);
+
+        // Return the final maximum path sum
+        return maxi[0];
+    }
+
+    public static void main(String[] args) {
+        // Creating a sample binary tree
+        Node root = new Node(1);
+        root.left = new Node(2);
+        root.right = new Node(3);
+        root.left.left = new Node(4);
+        root.left.right = new Node(5);
+        root.left.right.right = new Node(6);
+        root.left.right.right.right = new Node(7);
+
+        // Creating an instance of the Solution class
+        Solution solution = new Solution();
+
+        // Finding and printing the maximum path sum
+        int maxPathSum = solution.maxPathSum(root);
+        System.out.println("Maximum Path Sum: " + maxPathSum);
+    }
+}
+                            </code>
+                        </pre>
+</div>
+<div class="code-block" data-lang="python">
+<pre class="wp-block-code">
+                            <code class="language-python" lang="python">
+class Node:
+    def __init__(self, val):
+        # Constructor to initialize
+        # the node with a value
+        self.data = val
+        self.left = None
+        self.right = None
+
+class Solution:
+    def findMaxPathSum(self, root, maxi):
+        # Recursive function to find the maximum path sum
+        # for a given subtree rooted at 'root'
+        # The variable 'maxi' is a reference parameter
+        # updated to store the maximum path sum encountered
+
+        # Base case: If the current node is None, return 0
+        if root is None:
+            return 0
+
+        # Calculate the maximum path sum
+        # for the left and right subtrees
+        leftMaxPath = max(0, self.findMaxPathSum(root.left, maxi))
+        rightMaxPath = max(0, self.findMaxPathSum(root.right, maxi))
+
+        # Update the overall maximum
+        # path sum including the current node
+        maxi[0] = max(maxi[0], leftMaxPath + rightMaxPath + root.data)
+
+        # Return the maximum sum considering
+        # only one branch (either left or right)
+        # along with the current node
+        return max(leftMaxPath, rightMaxPath) + root.data
+
+    def maxPathSum(self, root):
+        # Function to find the maximum
+        # path sum for the entire binary tree
+
+        # Initialize maxi to the
+        # minimum possible integer value
+        maxi = [float('-inf')] 
+        # Call the recursive function to
+        # find the maximum path sum
+        self.findMaxPathSum(root, maxi)
+        # Return the final maximum path sum
+        return maxi[0]
+
+# Creating a sample binary tree
+root = Node(1)
+root.left = Node(2)
+root.right = Node(3)
+root.left.left = Node(4)
+root.left.right = Node(5)
+root.left.right.right = Node(6)
+root.left.right.right.right = Node(7)
+
+# Creating an instance of the Solution class
+solution = Solution()
+
+# Finding and printing the maximum path sum
+maxPathSum = solution.maxPathSum(root)
+print("Maximum Path Sum:", maxPathSum)
+                           </code>
+                        </pre>
+</div>
+<div class="code-block" data-lang="javascript">
+<pre class="wp-block-code">
+                            <code class="language-javascript" lang="javascript">
+// Node structure for the binary tree
+class Node {
+    constructor(val) {
+        this.data = val;
+        this.left = null;
+        this.right = null;
+    }
+}
+
+class Solution {
+    // Recursive function to find the maximum path sum
+    // for a given subtree rooted at 'root'
+    // The variable 'maxi' is a reference parameter
+    // updated to store the maximum path sum encountered
+    findMaxPathSum(root, maxi) {
+        // Base case: If the current node is null, return 0
+        if (root === null) {
+            return 0;
+        }
+
+        // Calculate the maximum path sum
+        // for the left and right subtrees
+        const leftMaxPath = Math.max(0, this.findMaxPathSum(root.left, maxi));
+        const rightMaxPath = Math.max(0, this.findMaxPathSum(root.right, maxi));
+
+        // Update the overall maximum
+        // path sum including the current node
+        maxi[0] = Math.max(maxi[0], leftMaxPath + rightMaxPath + root.data);
+
+        // Return the maximum sum considering
+        // only one branch (either left or right)
+        // along with the current node
+        return Math.max(leftMaxPath, rightMaxPath) + root.data;
+    }
+
+    // Function to find the maximum
+    // path sum for the entire binary tree
+    maxPathSum(root) {
+        // Initialize maxi to the
+        // minimum possible integer value
+        const maxi = [Number.MIN_SAFE_INTEGER];
+
+        // Call the recursive function to
+        // find the maximum path sum
+        this.findMaxPathSum(root, maxi);
+
+        // Return the final maximum path sum
+        return maxi[0];
+    }
+}
+
+// Creating a sample binary tree
+const root = new Node(1);
+root.left = new Node(2);
+root.right = new Node(3);
+root.left.left = new Node(4);
+root.left.right = new Node(5);
+root.left.right.right = new Node(6);
+root.left.right.right.right = new Node(7);
+
+// Creating an instance of the Solution class
+const solution = new Solution();
+
+// Finding and printing the maximum path sum
+const maxPathSum = solution.maxPathSum(root);
+console.log("Maximum Path Sum: " + maxPathSum);
+                            </code>
+                        </pre>
+</div>
+<p>
+<!-- Insert Output of Brute Force Here -->
+<strong>Output</strong> 
+                      Maximum Path Sum: 24
+                    </p>
+</div>
+</details>
+<details class="secondary-details">
+<summary class="secondary-summary">
+<span>
+                        Complexity Analysis
+                    </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z">
+</path>
+</svg>
+</summary>
+<p>
+<!-- Insert Time and Space Complexity  Here -->
+<p><strong>Time Complexity: O(N)</strong> where N is the number of nodes in the Binary Tree. This complexity arises from visiting each node exactly once during the recursive traversal.</p>
+<p><strong>Space Complexity: O(1)</strong> as no additional space or data structures is created that is proportional to the input size of the tree. O(H) Recursive Stack Auxiliary Space : The recursion stack space is determined by the maximum depth of the recursion, which is the height of the binary tree denoted as H. In the balanced case it is log2N and in the worst case its N. 
+
+                </p>
+</p></details>
+</div>
+</details>
+</div>
+<!-- This is Video Explination Drop-Down -->
+<div class="dsa_article_youtube_video" id="dsa_article_video_explanation">
+<details>
+<summary class="main-summary">
+<span>
+                Video Explanation
+            </span>
+<svg class="arrow-svg opacity-75" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"></path>
+</svg>
+</summary>
+<div class="yt-video-wrapper">
+<!-- Insert iframe embed Link of Youtube Video-->
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" frameborder="0" height="315" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/WszrfSwMz58?si=XGnI7s5BdtyIVNGH" title="YouTube video player" width="560"></iframe>
+</div>
+</details>
+</div>
+<blockquote class="wp-block-quote">
+    Special thanks to <strong><a href="https://www.linkedin.com/in/gauri-tomar-005048268">Gauri Tomar</a></strong> for contributing to this article on takeUforward. If you also wish to share your knowledge with the takeUforward fam,<strong><a href="https://takeuforward.org/interviews/paid-work-from-home-internship-at-takeuforward/"> please check out this article</a></strong>
+</blockquote>
+<script>
+
+    const codeSections = document.querySelectorAll('.code-section');
+
+    // Get last selected language from localStorage or set default value
+    let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+    codeSections.forEach((section, sectionIndex) => {
+        const codeTabs = section.querySelectorAll('.code-tab');
+        const codeBlocks = section.querySelectorAll('.code-block');
+        const copyBtn = section.querySelector('.copy-btn');
+
+        codeTabs.forEach((tab) => {
+            tab.addEventListener('click', () => {
+                codeTabs.forEach((t) => {
+                    t.classList.remove('dsa_article_code_active');
+                });
+                tab.classList.add('dsa_article_code_active');
+
+                const lang = tab.dataset.lang;
+                const activeBlock = section.querySelector(`.code-block[data-lang="${lang}"]`);
+                codeBlocks.forEach((block) => {
+                    if (block === activeBlock) {
+                        block.classList.add('dsa_article_code_active');
+                    } else {
+                        block.classList.remove('dsa_article_code_active');
+                    }
+                });
+
+                // Update last selected language for all sections and store in localStorage
+                lastSelectedLanguage = lang;
+                localStorage.setItem('lastSelectedLanguage', lang);
+                codeSections.forEach((otherSection, otherIndex) => {
+                    if (otherIndex !== sectionIndex) {
+                        const otherTabs = otherSection.querySelectorAll('.code-tab');
+                        otherTabs.forEach((otherTab) => {
+                            if (otherTab.dataset.lang === lang) {
+                                otherTab.classList.add('dsa_article_code_active');
+                            } else {
+                                otherTab.classList.remove('dsa_article_code_active');
+                            }
+                        });
+                        const otherActiveBlock = otherSection.querySelector(`.code-block[data-lang="${lang}"]`);
+                        const otherCodeBlocks = otherSection.querySelectorAll('.code-block');
+                        otherCodeBlocks.forEach((block) => {
+                            if (block === otherActiveBlock) {
+                                block.classList.add('dsa_article_code_active');
+                            } else {
+                                block.classList.remove('dsa_article_code_active');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+        // Handle copy button click event
+        copyBtn.addEventListener('click', () => {
+            const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+            navigator.clipboard.writeText(activeBlock.innerText);
+            copyBtn.classList.add('dsa_article_code_active');
+            setTimeout(() => {
+                copyBtn.classList.remove('dsa_article_code_active');
+            }, 1000);
+        });
+    });
+
+    // Set initial state of the tabs
+    codeSections.forEach((section) => {
+        const codeTabs = section.querySelectorAll('.code-tab');
+        const codeBlocks = section.querySelectorAll('.code-block');
+
+        codeTabs.forEach((tab) => {
+            if (tab.dataset.lang === lastSelectedLanguage) {
+                tab.classList.add('dsa_article_code_active');
+            } else {
+                tab.classList.remove('dsa_article_code_active');
+            }
+        });
+
+        codeBlocks.forEach((block) => {
+            if (block.dataset.lang === lastSelectedLanguage) {
+                block.classList.add('dsa_article_code_active');
+            } else {
+                block.classList.remove('dsa_article_code_active');
+            }
+        });
+    });
+</script>
+<link href="assets/4237ffca7ce6aadb438c457e0a675b12.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+<script src="index.js"></script>
+<script>hljs.highlightAll();</script>
+</article>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // This script fixes the functionality of the code language switcher tabs
+            // that are injected from the JSON content. It uses event delegation for efficiency.
+
+            const codeSections = document.querySelectorAll('.code-section');
+            let lastSelectedLanguage = localStorage.getItem('lastSelectedLanguage') || 'cpp';
+
+            function updateCodeSection(section, language) {
+                const tabs = section.querySelectorAll('.code-tab');
+                const blocks = section.querySelectorAll('.code-block');
+
+                tabs.forEach(tab => {
+                    tab.classList.toggle('dsa_article_code_active', tab.dataset.lang === language);
+                });
+
+                blocks.forEach(block => {
+                    block.classList.toggle('dsa_article_code_active', block.dataset.lang === language);
+                });
+            }
+
+            function updateAllSections(language) {
+                lastSelectedLanguage = language;
+                localStorage.setItem('lastSelectedLanguage', language);
+                codeSections.forEach(section => {
+                    updateCodeSection(section, language);
+                });
+            }
+
+            codeSections.forEach(section => {
+                const tabsContainer = section.querySelector('.code-tabs');
+                if (!tabsContainer) return;
+
+                // Use event delegation on the container to handle clicks
+                tabsContainer.addEventListener('click', (event) => {
+                    const tabTarget = event.target.closest('.code-tab');
+                    const copyTarget = event.target.closest('.copy-btn');
+
+                    // Handle tab clicks
+                    if (tabTarget) {
+                        const lang = tabTarget.dataset.lang;
+                        if (lang) {
+                            updateAllSections(lang);
+                        }
+                    }
+
+                    // Handle copy button clicks
+                    if (copyTarget) {
+                        const activeBlock = section.querySelector('.code-block.dsa_article_code_active code');
+                        if (activeBlock && activeBlock.innerText) {
+                            // Use the Clipboard API for modern browsers
+                            navigator.clipboard.writeText(activeBlock.innerText).then(() => {
+                                copyTarget.classList.add('dsa_article_code_active');
+                                setTimeout(() => {
+                                    copyTarget.classList.remove('dsa_article_code_active');
+                                }, 1500);
+                            }).catch(err => {
+                                console.error('Failed to copy text: ', err);
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Set the initial state for all sections on page load
+            if (codeSections.length > 0) {
+                updateAllSections(lastSelectedLanguage);
+            }
+        });
+    </script>
+</body>
+</html>
