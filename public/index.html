@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A2Z DSA Course Roadmap</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ==========================================================================
+           1. CSS Variables (Theme) - Utilitarian Modern
+           ========================================================================== */
+        :root {
+            /* Default to Light Theme */
+            --primary-color: #3b82f6; /* Blue 500 */
+            --primary-hover: #2563eb; /* Blue 600 */
+            --success-color: #22c55e;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+
+            --bg-body: #f8fafc; /* Slate 50 */
+            --bg-surface: #ffffff; /* White */
+            --bg-subtle: #f1f5f9; /* Slate 100 */
+            --bg-sub-collapsible: #f1f5f9; /* Slate 100 */
+            
+            --border-color: #e2e8f0; /* Slate 200 */
+            --border-hover: #cbd5e1; /* Slate 300 */
+
+            --text-primary: #0f172a; /* Slate 900 */
+            --text-secondary: #334155; /* Slate 700 */
+            --text-muted: #64748b; /* Slate 500 */
+            
+            --link-color: #2563eb; /* Blue 600 */
+
+            --completed-bg: rgba(34, 197, 94, 0.3);
+            --completed-text: #15803d; /* Green 700 */
+
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 0 25px -5px rgba(59, 130, 246, 0.25);
+        }
+
+        /* Dark Theme Support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-body: #0f172a; /* Slate 900 */
+                --bg-surface: #1e293b; /* Slate 800 */
+                --bg-subtle: #334155; /* Slate 700 */
+                --bg-sub-collapsible: rgba(30, 41, 59, 0.5);
+                
+                --border-color: #334155;
+                --border-hover: #475569;
+
+                --text-primary: #f8fafc; /* Slate 50 */
+                --text-secondary: #cbd5e1; /* Slate 300 */
+                --text-muted: #94a3b8; /* Slate 400 */
+                
+                --link-color: #60a5fa; /* Blue 400 */
+
+                --completed-bg: rgba(34, 197, 94, 0.5);
+                --completed-text: #4ade80;
+            }
+        }
+
+        /* ==========================================================================
+           2. Base & Reset
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            margin: 0;
+            padding: 2rem;
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.5;
+            color: var(--text-primary);
+            background-color: var(--bg-body);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ==========================================================================
+           3. Layout
+           ========================================================================== */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        /* Enhanced hover for desktop only */
+        @media (hover: hover) and (pointer: fine) {
+            .container:hover {
+                transform: translateY(-4px);
+                border-color: var(--primary-color);
+                box-shadow: var(--shadow-hover);
+            }
+        }
+
+        h1 {
+            margin-top: 0;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-align: center;
+            letter-spacing: -0.025em;
+        }
+
+        /* ==========================================================================
+           4. Collapsible Sections
+           ========================================================================== */
+        .collapsible,
+        .sub-collapsible {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-top: 1rem;
+            padding: 1.25rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            color: var(--text-primary);
+            background-color: var(--bg-surface);
+            text-align: left;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: inherit;
+            gap: 1rem;
+        }
+
+        .collapsible {
+            font-size: 1.125rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sub-collapsible {
+            font-size: 1rem;
+            margin-top: 0.75rem;
+            background-color: var(--bg-sub-collapsible);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Progress Bar Overlay */
+        .collapsible::before,
+        .sub-collapsible::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            width: var(--progress-width, 0%);
+            height: 100%;
+            background-color: var(--completed-bg);
+            transition: width 0.4s ease-out;
+            opacity: 1;
+        }
+
+        .collapsible:hover,
+        .sub-collapsible:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .collapsible.active,
+        .sub-collapsible.active {
+            border-color: var(--primary-color);
+            background-color: var(--bg-surface);
+        }
+
+        .collapsible-title {
+            flex-grow: 1;
+            margin-right: auto;
+            line-height: 1.4;
+        }
+
+        .progress-counter {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            background-color: var(--bg-body);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            border: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .collapsible::after,
+        .sub-collapsible::after {
+            content: '+';
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            transition: transform 0.3s ease, color 0.2s;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+
+        .collapsible.active::after,
+        .sub-collapsible.active::after {
+            transform: rotate(45deg);
+            color: var(--primary-color);
+        }
+
+        .content,
+        .sub-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out;
+        }
+
+        .content {
+            padding: 0 0.5rem;
+        }
+
+        /* ==========================================================================
+           5. Tables
+           ========================================================================== */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+        }
+
+        table {
+            width: 100%;
+            min-width: 800px;
+            border-collapse: collapse;
+            font-size: 0.9375rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--bg-subtle);
+            font-weight: 600;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .topic-cell {
+            width: 40%;
+            font-weight: 500;
+            color: var(--text-primary);
+            word-break: break-word;
+            min-width: 200px;
+        }
+
+        /* ==========================================================================
+           6. Status & Links
+           ========================================================================== */
+        tr.completed {
+            background-color: var(--completed-bg);
+        }
+        
+        tr.completed .topic-title {
+            color: var(--completed-text);
+            text-decoration: line-through; /* Optional: strike-through for completed */
+        }
+
+        /* Difficulty Indicators (Left Border) */
+        .difficulty-easy td:first-child { box-shadow: inset 4px 0 0 0 var(--success-color); }
+        .difficulty-medium td:first-child { box-shadow: inset 4px 0 0 0 var(--warning-color); }
+        .difficulty-hard td:first-child { box-shadow: inset 4px 0 0 0 var(--danger-color); }
+
+        .link-cell {
+            text-align: center;
+            padding: 0;
+            min-width: 3.5rem; /* Ensure consistent width */
+        }
+        
+        .link-cell a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            min-height: 3.5rem; /* Ensure clickable area covers the row height */
+            color: var(--link-color);
+            padding: 0.25rem;
+            border-radius: 0;
+        }
+        
+        .link-cell a:hover {
+            background-color: var(--bg-subtle);
+        }
+
+        .link-cell svg, .link-cell img {
+            width: 2.8rem;
+            height: 2.8rem;
+            display: block;
+            object-fit: contain;
+        }
+
+        .na-cell {
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .status-cell {
+            text-align: center;
+        }
+
+        .status-checkbox {
+            width: 1.25rem;
+            height: 1.25rem;
+            cursor: pointer;
+            accent-color: var(--success-color);
+        }
+
+        /* ==========================================================================
+           7. Responsive (Full Page Mobile)
+           ========================================================================== */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+
+            .container {
+                max-width: 100%;
+                margin: 0;
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                margin-bottom: 1.5rem;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            /* Keep collapsible items in one row, let title wrap */
+            .collapsible, .sub-collapsible {
+                padding: 1rem;
+                gap: 0.75rem;
+                align-items: center; /* Ensure vertical alignment */
+            }
+            
+            .collapsible-title {
+                font-size: 1rem;
+                width: auto; /* Reset width */
+                margin-bottom: 0; /* Reset margin */
+            }
+            
+            .progress-counter {
+                font-size: 0.7rem;
+                padding: 0.2rem 0.5rem;
+                margin-left: 0;
+            }
+            
+            .collapsible::after, .sub-collapsible::after {
+                margin-left: 0;
+            }
+
+            /* Full width table container */
+            .table-container {
+                margin-left: 0;
+                margin-right: 0;
+                border-left: 1px solid var(--border-color);
+                border-right: 1px solid var(--border-color);
+                border-radius: var(--radius-md);
+                width: 100%;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            th, td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.875rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="roadmap-container" class="container">
+        <h1>Loading Roadmap...</h1>
+    </div>
+    <script>
+        const STORAGE_KEY = 'dsaRoadmapProgress';
+
+        const platformLogos = {
+            'BLOG': `<img src="./assets/logo/post.svg" alt="BLOG">`,
+            'YT': `<img src="./assets/logo/yt.svg" alt="YT">`,
+            'TUF': `<img src="./assets/logo/tuf.svg" alt="TUF">`,
+            'GFG': `<img src="./assets/logo/gfg.svg" alt="GFG">`,
+            'CN': `<img src="./assets/logo/cn.svg" alt="CN">`,
+            'LC': `<img src="./assets/logo/lc.svg" alt="LC">`,
+            'ALT': `<img src="./assets/logo/alt.svg" alt="ALT">
+`
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('a2z.json').then(response => {
+                if (!response.ok) throw new Error('Network response was not ok. Make sure a2z.json is in the same folder.');
+                return response.json();
+            }).then(roadmapData => {
+                const progress = loadCompletionState();
+                generateRoadmap(roadmapData, progress);
+                addEventListeners();
+            }).catch(handleError);
+        });
+
+        // Function to generate alternate link from original post_link
+        function generateAlternateLink(postLink) {
+            if (!postLink) return null;
+
+            try {
+                const url = new URL(postLink);
+                const pathParts = url.pathname.split('/').filter(part => part.length > 0);
+
+                // Convert from https://takeuforward.org/category/article-name/ 
+                // to articles/category/article-name.html
+                if (pathParts.length >= 2) {
+                    const category = pathParts[0];
+                    const articleName = pathParts[1];
+                    return `a2z_old_sheet_articles/articles/${category}/web/${articleName}.html`;
+                }
+            } catch (error) {
+                console.warn('Could not generate alternate link for:', postLink);
+            }
+
+            return null;
+        }
+
+        function generateRoadmap(data, progress) {
+            const container = document.getElementById('roadmap-container');
+            let htmlContent = `<h1>A2Z DSA Course Roadmap</h1>`;
+            data.forEach(step => {
+                let totalStepTopics = 0;
+                let completedStepTopics = 0;
+                let subStepsHtml = '';
+                if (step.sub_steps) {
+                    step.sub_steps.forEach(subStep => {
+                        const totalSubStepTopics = subStep.topics.length;
+                        const completedSubStepTopics = subStep.topics.filter(t => progress[t.id]).length;
+                        const isSubStepComplete = totalSubStepTopics > 0 && completedSubStepTopics === totalSubStepTopics;
+                        const subStepProgressClass = isSubStepComplete ? 'completed' : '';
+                        const subStepPercentage = totalSubStepTopics > 0 ? (completedSubStepTopics / totalSubStepTopics) * 100 : 0;
+                        totalStepTopics += totalSubStepTopics;
+                        completedStepTopics += completedSubStepTopics;
+
+                        subStepsHtml += `
+                                <button type="button" class="sub-collapsible ${subStepProgressClass}" style="--progress-width: ${subStepPercentage}%" data-step="${step.step_no}" data-substep="${subStep.sub_step_no}">
+                                    <span class="collapsible-title">${subStep.sub_step_no}. ${subStep.sub_step_title.replace(/\n/g, ' ')}</span>
+                                    <span class="progress-counter">${completedSubStepTopics}/${totalSubStepTopics}</span>
+                                </button>
+                                <div class="sub-content">
+                                    <div class="table-container">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Topic</th>
+                                                    <th title="LeetCode">Leetcode</th>
+                                                    <th title="GeeksForGeeks">GFG</th>
+                                                    <th title="CodingNinjas">CN</th>
+                                                    <th title="TakeUForward+">TUF</th>
+                                                    <th title="Blog">Blog</th>
+                                                    <th title="Alternate Article">Blog</th>
+                                                    <th title="YouTube">YouTube</th>
+                                                    <th>Done</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>`;
+                        subStep.topics.forEach(topic => {
+                            const isCompleted = progress[topic.id] || false;
+                            const difficultyClass = getDifficultyClass(topic.difficulty);
+                            const completedClass = isCompleted ? 'completed' : '';
+                            const checkedAttr = isCompleted ? 'checked' : '';
+                            const alternateLink = generateAlternateLink(topic.post_link);
+                            let tags = '';
+                            if (topic.ques_topic) {
+                                try {
+                                    const parsedTags = JSON.parse(topic.ques_topic);
+                                    tags = parsedTags.map(t => t.label).join(', ');
+                                } catch (e) {
+                                    console.error('Failed to parse ques_topic:', topic.ques_topic, e);
+                                }
+                            }
+
+                            subStepsHtml += `
+                                                <tr class="${difficultyClass} ${completedClass}" data-topic-id="${topic.id}">
+                                                    <td class="topic-cell" title="${tags}">
+                                                        <div class="topic-title">${topic.question_title}</div>
+                                                    </td>
+                                                    ${createLinkCell(topic.lc_link, 'LC')}
+                                                    ${createLinkCell(topic.gfg_link, 'GFG')}
+                                                    ${createLinkCell(topic.cs_link, 'CN')}
+                                                    ${createLinkCell(topic.plus_link, 'TUF')}
+                                                    ${createLinkCell(topic.post_link, 'BLOG')}
+                                                    ${createLinkCell(alternateLink, 'ALT')}
+                                                    ${createLinkCell(topic.yt_link, 'YT')}
+                                                    <td class="status-cell">
+                                                        <input type="checkbox" class="status-checkbox" data-id="${topic.id}" ${checkedAttr}>
+                                                    </td>
+                                                </tr>`;
+                        });
+                        subStepsHtml += `
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>`;
+                    });
+                }
+                const isStepComplete = totalStepTopics > 0 && completedStepTopics === totalStepTopics;
+                const stepProgressClass = isStepComplete ? 'completed' : '';
+                const stepPercentage = totalStepTopics > 0 ? (completedStepTopics / totalStepTopics) * 100 : 0;
+                htmlContent += `
+                            <button type="button" class="collapsible ${stepProgressClass}" style="--progress-width: ${stepPercentage}%" data-step="${step.step_no}">
+                                <span class="collapsible-title">Step ${step.step_no}: ${step.step_title}</span>
+                                <span class="progress-counter">${completedStepTopics}/${totalStepTopics}</span>
+                            </button>
+                            <div class="content">${subStepsHtml}</div>`;
+            });
+            container.innerHTML = htmlContent;
+        }
+
+        function createLinkCell(url, label) {
+            if (url) {
+                const logo = platformLogos[label] || label;
+                return `<td class="link-cell"><a href="${url}" target="_blank" rel="noopener noreferrer" title="${label}">${logo}</a></td>`;
+            } else {
+                return `<td class="na-cell">-</td>`;
+            }
+        }
+
+        function getDifficultyClass(difficulty) {
+            return ['difficulty-easy', 'difficulty-medium', 'difficulty-hard'][difficulty] || '';
+        }
+
+        function loadCompletionState() {
+            try {
+                const savedProgress = localStorage.getItem(STORAGE_KEY);
+                return savedProgress ? JSON.parse(savedProgress) : {};
+            } catch (e) {
+                console.error("Failed to load progress from localStorage", e);
+                return {};
+            }
+        }
+
+        function saveCompletionState(progress) {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+            } catch (e) {
+                console.error("Failed to save progress to localStorage", e);
+            }
+        }
+
+        function updateCounters(element) {
+            const progress = loadCompletionState();
+            const subStepContent = element.closest('.sub-content');
+            if (subStepContent) {
+                const subStepButton = subStepContent.previousElementSibling;
+                const topicsInSubStep = Array.from(subStepContent.querySelectorAll('.status-checkbox'));
+                const totalSubStep = topicsInSubStep.length;
+                const completedSubStep = topicsInSubStep.filter(cb => progress[cb.dataset.id]).length;
+                subStepButton.querySelector('.progress-counter').textContent = `${completedSubStep}/${totalSubStep}`;
+
+                const subStepPercentage = totalSubStep > 0 ? (completedSubStep / totalSubStep) * 100 : 0;
+                subStepButton.style.setProperty('--progress-width', `${subStepPercentage}%`);
+                subStepButton.classList.toggle('completed', totalSubStep > 0 && completedSubStep === totalSubStep);
+            }
+            const mainContent = element.closest('.content');
+            if (mainContent) {
+                const mainStepButton = mainContent.previousElementSibling;
+                const topicsInStep = Array.from(mainContent.querySelectorAll('.status-checkbox'));
+                const totalStep = topicsInStep.length;
+                const completedStep = topicsInStep.filter(cb => progress[cb.dataset.id]).length;
+                mainStepButton.querySelector('.progress-counter').textContent = `${completedStep}/${totalStep}`;
+
+                const stepPercentage = totalStep > 0 ? (completedStep / totalStep) * 100 : 0;
+                mainStepButton.style.setProperty('--progress-width', `${stepPercentage}%`);
+                mainStepButton.classList.toggle('completed', totalStep > 0 && completedStep === totalStep);
+            }
+        }
+
+        function addEventListeners() {
+            const container = document.getElementById('roadmap-container');
+            container.addEventListener('click', function (event) {
+                const collapsible = event.target.closest('.collapsible, .sub-collapsible');
+                const statusCell = event.target.closest('.status-cell');
+
+                if (collapsible) {
+                    collapsible.classList.toggle('active');
+                    const content = collapsible.nextElementSibling;
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                    } else {
+                        content.style.maxHeight = (content.scrollHeight + 40) + "px";
+                        const parentContent = content.closest('.content');
+                        if (parentContent && parentContent.style.maxHeight) {
+                            parentContent.style.maxHeight = (parentContent.scrollHeight + content.scrollHeight + 40) + "px";
+                        }
+                    }
+                }
+
+                if (statusCell) {
+                    const checkbox = statusCell.querySelector('.status-checkbox');
+                    if (checkbox) {
+                        if (event.target !== checkbox) {
+                            checkbox.checked = !checkbox.checked;
+                        }
+                        const topicId = checkbox.dataset.id;
+                        const isChecked = checkbox.checked;
+                        const progress = loadCompletionState();
+                        progress[topicId] = isChecked;
+                        saveCompletionState(progress);
+                        checkbox.closest('tr').classList.toggle('completed', isChecked);
+                        updateCounters(checkbox);
+                    }
+                }
+            });
+        }
+
+        function handleError(error) {
+            console.error('Error:', error);
+            const container = document.getElementById('roadmap-container');
+            container.innerHTML = `
+                <h1>Error</h1>
+                <p>Could not load the roadmap. Please ensure 'a2z.json' is in the same directory and correctly formatted.</p>
+                <p><em>${error.message}</em></p>`;
+        }
+    </script>
+</body>
+
+</html>
