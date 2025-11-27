@@ -411,16 +411,48 @@
     <script>
         const STORAGE_KEY = 'dsaRoadmapProgress';
 
+        // Pre-built logo HTML strings for faster lookups
         const platformLogos = {
-            'BLOG': `<img src="./assets/logo/post.svg" alt="BLOG">`,
-            'YT': `<img src="./assets/logo/yt.svg" alt="YT">`,
-            'TUF': `<img src="./assets/logo/tuf.svg" alt="TUF">`,
-            'GFG': `<img src="./assets/logo/gfg.svg" alt="GFG">`,
-            'CN': `<img src="./assets/logo/cn.svg" alt="CN">`,
-            'LC': `<img src="./assets/logo/lc.svg" alt="LC">`,
-            'ALT': `<img src="./assets/logo/alt.svg" alt="ALT">
-`
+            BLOG: '<img src="./assets/logo/post.svg" alt="BLOG">',
+            YT: '<img src="./assets/logo/yt.svg" alt="YT">',
+            TUF: '<img src="./assets/logo/tuf.svg" alt="TUF">',
+            GFG: '<img src="./assets/logo/gfg.svg" alt="GFG">',
+            CN: '<img src="./assets/logo/cn.svg" alt="CN">',
+            LC: '<img src="./assets/logo/lc.svg" alt="LC">',
+            ALT: '<img src="./assets/logo/alt.svg" alt="ALT">'
         };
+
+        // Pre-computed difficulty classes array
+        const difficultyClasses = ['difficulty-easy', 'difficulty-medium', 'difficulty-hard'];
+
+        // In-memory progress cache to avoid repeated localStorage reads
+        let progressCache = null;
+        let saveTimeout = null;
+
+        // Optimized localStorage operations with caching
+        function loadCompletionState() {
+            if (progressCache !== null) return progressCache;
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                progressCache = saved ? JSON.parse(saved) : {};
+            } catch (e) {
+                console.error("Failed to load progress from localStorage", e);
+                progressCache = {};
+            }
+            return progressCache;
+        }
+
+        // Debounced save to reduce localStorage writes
+        function saveCompletionState() {
+            if (saveTimeout) clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => {
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(progressCache));
+                } catch (e) {
+                    console.error("Failed to save progress to localStorage", e);
+                }
+            }, 100);
+        }
 
         document.addEventListener('DOMContentLoaded', () => {
             fetch('a2z.json').then(response => {
@@ -433,212 +465,196 @@
             }).catch(handleError);
         });
 
-        // Function to generate alternate link from original post_link
+        // Optimized alternate link generation with early returns
         function generateAlternateLink(postLink) {
             if (!postLink) return null;
-
             try {
                 const url = new URL(postLink);
-                const pathParts = url.pathname.split('/').filter(part => part.length > 0);
-
-                // Convert from https://takeuforward.org/category/article-name/ 
-                // to articles/category/article-name.html
-                if (pathParts.length >= 2) {
-                    const category = pathParts[0];
-                    const articleName = pathParts[1];
-                    return `articles/${category}/${articleName}.html`;
-                }
-            } catch (error) {
-                console.warn('Could not generate alternate link for:', postLink);
+                const path = url.pathname;
+                const firstSlash = path.indexOf('/', 1);
+                if (firstSlash === -1) return null;
+                const secondSlash = path.indexOf('/', firstSlash + 1);
+                const category = path.slice(1, firstSlash);
+                const articleName = secondSlash === -1 ? path.slice(firstSlash + 1) : path.slice(firstSlash + 1, secondSlash);
+                if (!category || !articleName) return null;
+                return `articles/${category}/${articleName}.html`;
+            } catch (e) {
+                return null;
             }
+        }
 
-            return null;
+        // Inline link cell creation for better performance
+        function createLinkCell(url, label) {
+            return url
+                ? `<td class="link-cell"><a href="${url}" target="_blank" rel="noopener noreferrer" title="${label}">${platformLogos[label] || label}</a></td>`
+                : '<td class="na-cell">-</td>';
         }
 
         function generateRoadmap(data, progress) {
             const container = document.getElementById('roadmap-container');
-            let htmlContent = `<h1>A2Z DSA Course Roadmap</h1>`;
-            data.forEach(step => {
+            const parts = ['<h1>A2Z DSA Course Roadmap</h1>'];
+            const dataLen = data.length;
+
+            for (let i = 0; i < dataLen; i++) {
+                const step = data[i];
                 let totalStepTopics = 0;
                 let completedStepTopics = 0;
-                let subStepsHtml = '';
+                const subParts = [];
+
                 if (step.sub_steps) {
-                    step.sub_steps.forEach(subStep => {
-                        const totalSubStepTopics = subStep.topics.length;
-                        const completedSubStepTopics = subStep.topics.filter(t => progress[t.id]).length;
+                    const subSteps = step.sub_steps;
+                    const subLen = subSteps.length;
+
+                    for (let j = 0; j < subLen; j++) {
+                        const subStep = subSteps[j];
+                        const topics = subStep.topics;
+                        const totalSubStepTopics = topics.length;
+                        let completedSubStepTopics = 0;
+
+                        // Count completed in single pass
+                        for (let k = 0; k < totalSubStepTopics; k++) {
+                            if (progress[topics[k].id]) completedSubStepTopics++;
+                        }
+
                         const isSubStepComplete = totalSubStepTopics > 0 && completedSubStepTopics === totalSubStepTopics;
-                        const subStepProgressClass = isSubStepComplete ? 'completed' : '';
                         const subStepPercentage = totalSubStepTopics > 0 ? (completedSubStepTopics / totalSubStepTopics) * 100 : 0;
                         totalStepTopics += totalSubStepTopics;
                         completedStepTopics += completedSubStepTopics;
 
-                        subStepsHtml += `
-                                <button type="button" class="sub-collapsible ${subStepProgressClass}" style="--progress-width: ${subStepPercentage}%" data-step="${step.step_no}" data-substep="${subStep.sub_step_no}">
-                                    <span class="collapsible-title">${subStep.sub_step_no}. ${subStep.sub_step_title.replace(/\n/g, ' ')}</span>
-                                    <span class="progress-counter">${completedSubStepTopics}/${totalSubStepTopics}</span>
-                                </button>
-                                <div class="sub-content">
-                                    <div class="table-container">
-                                        <table>
-                                            <thead>
-                                                <tr>
-                                                    <th>Topic</th>
-                                                    <th title="LeetCode">Leetcode</th>
-                                                    <th title="GeeksForGeeks">GFG</th>
-                                                    <th title="CodingNinjas">CN</th>
-                                                    <th title="TakeUForward+">TUF</th>
-                                                    <th title="Blog">Blog</th>
-                                                    <th title="Alternate Article">Blog</th>
-                                                    <th title="YouTube">YouTube</th>
-                                                    <th>Done</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>`;
-                        subStep.topics.forEach(topic => {
-                            const isCompleted = progress[topic.id] || false;
-                            const difficultyClass = getDifficultyClass(topic.difficulty);
-                            const completedClass = isCompleted ? 'completed' : '';
-                            const checkedAttr = isCompleted ? 'checked' : '';
+                        // Build topic rows
+                        const rowParts = [];
+                        for (let k = 0; k < totalSubStepTopics; k++) {
+                            const topic = topics[k];
+                            const isCompleted = progress[topic.id];
+                            const diffClass = difficultyClasses[topic.difficulty] || '';
                             const alternateLink = generateAlternateLink(topic.post_link);
+                            
                             let tags = '';
                             if (topic.ques_topic) {
                                 try {
-                                    const parsedTags = JSON.parse(topic.ques_topic);
-                                    tags = parsedTags.map(t => t.label).join(', ');
-                                } catch (e) {
-                                    console.error('Failed to parse ques_topic:', topic.ques_topic, e);
-                                }
+                                    const parsed = JSON.parse(topic.ques_topic);
+                                    const tagLabels = [];
+                                    for (let t = 0; t < parsed.length; t++) tagLabels.push(parsed[t].label);
+                                    tags = tagLabels.join(', ');
+                                } catch (e) {}
                             }
 
-                            subStepsHtml += `
-                                                <tr class="${difficultyClass} ${completedClass}" data-topic-id="${topic.id}">
-                                                    <td class="topic-cell" title="${tags}">
-                                                        <div class="topic-title">${topic.question_title}</div>
-                                                    </td>
-                                                    ${createLinkCell(topic.lc_link, 'LC')}
-                                                    ${createLinkCell(topic.gfg_link, 'GFG')}
-                                                    ${createLinkCell(topic.cs_link, 'CN')}
-                                                    ${createLinkCell(topic.plus_link, 'TUF')}
-                                                    ${createLinkCell(topic.post_link, 'BLOG')}
-                                                    ${createLinkCell(alternateLink, 'ALT')}
-                                                    ${createLinkCell(topic.yt_link, 'YT')}
-                                                    <td class="status-cell">
-                                                        <input type="checkbox" class="status-checkbox" data-id="${topic.id}" ${checkedAttr}>
-                                                    </td>
-                                                </tr>`;
-                        });
-                        subStepsHtml += `
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>`;
-                    });
+                            rowParts.push(
+                                `<tr class="${diffClass}${isCompleted ? ' completed' : ''}" data-topic-id="${topic.id}">`,
+                                `<td class="topic-cell" title="${tags}"><div class="topic-title">${topic.question_title}</div></td>`,
+                                createLinkCell(topic.lc_link, 'LC'),
+                                createLinkCell(topic.gfg_link, 'GFG'),
+                                createLinkCell(topic.cs_link, 'CN'),
+                                createLinkCell(topic.plus_link, 'TUF'),
+                                createLinkCell(topic.post_link, 'BLOG'),
+                                createLinkCell(alternateLink, 'ALT'),
+                                createLinkCell(topic.yt_link, 'YT'),
+                                `<td class="status-cell"><input type="checkbox" class="status-checkbox" data-id="${topic.id}"${isCompleted ? ' checked' : ''}></td></tr>`
+                            );
+                        }
+
+                        subParts.push(
+                            `<button type="button" class="sub-collapsible${isSubStepComplete ? ' completed' : ''}" style="--progress-width:${subStepPercentage}%" data-step="${step.step_no}" data-substep="${subStep.sub_step_no}">`,
+                            `<span class="collapsible-title">${subStep.sub_step_no}. ${subStep.sub_step_title.replace(/\n/g, ' ')}</span>`,
+                            `<span class="progress-counter">${completedSubStepTopics}/${totalSubStepTopics}</span></button>`,
+                            '<div class="sub-content"><div class="table-container"><table><thead><tr>',
+                            '<th>Topic</th><th title="LeetCode">Leetcode</th><th title="GeeksForGeeks">GFG</th>',
+                            '<th title="CodingNinjas">CN</th><th title="TakeUForward+">TUF</th><th title="Blog">Blog</th>',
+                            '<th title="Alternate Article">Blog</th><th title="YouTube">YouTube</th><th>Done</th>',
+                            '</tr></thead><tbody>',
+                            rowParts.join(''),
+                            '</tbody></table></div></div>'
+                        );
+                    }
                 }
+
                 const isStepComplete = totalStepTopics > 0 && completedStepTopics === totalStepTopics;
-                const stepProgressClass = isStepComplete ? 'completed' : '';
                 const stepPercentage = totalStepTopics > 0 ? (completedStepTopics / totalStepTopics) * 100 : 0;
-                htmlContent += `
-                            <button type="button" class="collapsible ${stepProgressClass}" style="--progress-width: ${stepPercentage}%" data-step="${step.step_no}">
-                                <span class="collapsible-title">Step ${step.step_no}: ${step.step_title}</span>
-                                <span class="progress-counter">${completedStepTopics}/${totalStepTopics}</span>
-                            </button>
-                            <div class="content">${subStepsHtml}</div>`;
-            });
-            container.innerHTML = htmlContent;
+
+                parts.push(
+                    `<button type="button" class="collapsible${isStepComplete ? ' completed' : ''}" style="--progress-width:${stepPercentage}%" data-step="${step.step_no}">`,
+                    `<span class="collapsible-title">Step ${step.step_no}: ${step.step_title}</span>`,
+                    `<span class="progress-counter">${completedStepTopics}/${totalStepTopics}</span></button>`,
+                    '<div class="content">',
+                    subParts.join(''),
+                    '</div>'
+                );
+            }
+
+            container.innerHTML = parts.join('');
         }
 
-        function createLinkCell(url, label) {
-            if (url) {
-                const logo = platformLogos[label] || label;
-                return `<td class="link-cell"><a href="${url}" target="_blank" rel="noopener noreferrer" title="${label}">${logo}</a></td>`;
-            } else {
-                return `<td class="na-cell">-</td>`;
+        function updateCounters(checkbox, isChecked) {
+            const row = checkbox.parentElement.parentElement;
+            const tbody = row.parentElement;
+            const subContent = tbody.parentElement.parentElement.parentElement;
+            const subStepButton = subContent.previousElementSibling;
+            
+            // Update sub-step counter
+            const checkboxes = tbody.querySelectorAll('.status-checkbox');
+            const totalSubStep = checkboxes.length;
+            let completedSubStep = 0;
+            for (let i = 0; i < totalSubStep; i++) {
+                if (progressCache[checkboxes[i].dataset.id]) completedSubStep++;
             }
-        }
+            
+            subStepButton.querySelector('.progress-counter').textContent = `${completedSubStep}/${totalSubStep}`;
+            const subStepPercentage = totalSubStep > 0 ? (completedSubStep / totalSubStep) * 100 : 0;
+            subStepButton.style.setProperty('--progress-width', `${subStepPercentage}%`);
+            subStepButton.classList.toggle('completed', totalSubStep > 0 && completedSubStep === totalSubStep);
 
-        function getDifficultyClass(difficulty) {
-            return ['difficulty-easy', 'difficulty-medium', 'difficulty-hard'][difficulty] || '';
-        }
-
-        function loadCompletionState() {
-            try {
-                const savedProgress = localStorage.getItem(STORAGE_KEY);
-                return savedProgress ? JSON.parse(savedProgress) : {};
-            } catch (e) {
-                console.error("Failed to load progress from localStorage", e);
-                return {};
+            // Update main step counter
+            const mainContent = subContent.parentElement;
+            const mainStepButton = mainContent.previousElementSibling;
+            const allCheckboxes = mainContent.querySelectorAll('.status-checkbox');
+            const totalStep = allCheckboxes.length;
+            let completedStep = 0;
+            for (let i = 0; i < totalStep; i++) {
+                if (progressCache[allCheckboxes[i].dataset.id]) completedStep++;
             }
-        }
 
-        function saveCompletionState(progress) {
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
-            } catch (e) {
-                console.error("Failed to save progress to localStorage", e);
-            }
-        }
-
-        function updateCounters(element) {
-            const progress = loadCompletionState();
-            const subStepContent = element.closest('.sub-content');
-            if (subStepContent) {
-                const subStepButton = subStepContent.previousElementSibling;
-                const topicsInSubStep = Array.from(subStepContent.querySelectorAll('.status-checkbox'));
-                const totalSubStep = topicsInSubStep.length;
-                const completedSubStep = topicsInSubStep.filter(cb => progress[cb.dataset.id]).length;
-                subStepButton.querySelector('.progress-counter').textContent = `${completedSubStep}/${totalSubStep}`;
-
-                const subStepPercentage = totalSubStep > 0 ? (completedSubStep / totalSubStep) * 100 : 0;
-                subStepButton.style.setProperty('--progress-width', `${subStepPercentage}%`);
-                subStepButton.classList.toggle('completed', totalSubStep > 0 && completedSubStep === totalSubStep);
-            }
-            const mainContent = element.closest('.content');
-            if (mainContent) {
-                const mainStepButton = mainContent.previousElementSibling;
-                const topicsInStep = Array.from(mainContent.querySelectorAll('.status-checkbox'));
-                const totalStep = topicsInStep.length;
-                const completedStep = topicsInStep.filter(cb => progress[cb.dataset.id]).length;
-                mainStepButton.querySelector('.progress-counter').textContent = `${completedStep}/${totalStep}`;
-
-                const stepPercentage = totalStep > 0 ? (completedStep / totalStep) * 100 : 0;
-                mainStepButton.style.setProperty('--progress-width', `${stepPercentage}%`);
-                mainStepButton.classList.toggle('completed', totalStep > 0 && completedStep === totalStep);
-            }
+            mainStepButton.querySelector('.progress-counter').textContent = `${completedStep}/${totalStep}`;
+            const stepPercentage = totalStep > 0 ? (completedStep / totalStep) * 100 : 0;
+            mainStepButton.style.setProperty('--progress-width', `${stepPercentage}%`);
+            mainStepButton.classList.toggle('completed', totalStep > 0 && completedStep === totalStep);
         }
 
         function addEventListeners() {
             const container = document.getElementById('roadmap-container');
-            container.addEventListener('click', function (event) {
-                const collapsible = event.target.closest('.collapsible, .sub-collapsible');
-                const statusCell = event.target.closest('.status-cell');
-
+            
+            container.addEventListener('click', function (e) {
+                const target = e.target;
+                
+                // Handle collapsible toggle
+                const collapsible = target.closest('.collapsible, .sub-collapsible');
                 if (collapsible) {
                     collapsible.classList.toggle('active');
                     const content = collapsible.nextElementSibling;
                     if (content.style.maxHeight) {
                         content.style.maxHeight = null;
                     } else {
-                        content.style.maxHeight = (content.scrollHeight + 40) + "px";
-                        const parentContent = content.closest('.content');
-                        if (parentContent && parentContent.style.maxHeight) {
-                            parentContent.style.maxHeight = (parentContent.scrollHeight + content.scrollHeight + 40) + "px";
+                        const scrollH = content.scrollHeight + 40;
+                        content.style.maxHeight = scrollH + 'px';
+                        const parentContent = content.parentElement;
+                        if (parentContent.classList.contains('content') && parentContent.style.maxHeight) {
+                            parentContent.style.maxHeight = (parentContent.scrollHeight + scrollH) + 'px';
                         }
                     }
+                    return;
                 }
 
+                // Handle checkbox toggle
+                const statusCell = target.closest('.status-cell');
                 if (statusCell) {
-                    const checkbox = statusCell.querySelector('.status-checkbox');
+                    const checkbox = statusCell.firstElementChild;
                     if (checkbox) {
-                        if (event.target !== checkbox) {
-                            checkbox.checked = !checkbox.checked;
-                        }
+                        if (target !== checkbox) checkbox.checked = !checkbox.checked;
                         const topicId = checkbox.dataset.id;
                         const isChecked = checkbox.checked;
-                        const progress = loadCompletionState();
-                        progress[topicId] = isChecked;
-                        saveCompletionState(progress);
-                        checkbox.closest('tr').classList.toggle('completed', isChecked);
-                        updateCounters(checkbox);
+                        progressCache[topicId] = isChecked;
+                        saveCompletionState();
+                        checkbox.parentElement.parentElement.classList.toggle('completed', isChecked);
+                        updateCounters(checkbox, isChecked);
                     }
                 }
             });
@@ -646,11 +662,8 @@
 
         function handleError(error) {
             console.error('Error:', error);
-            const container = document.getElementById('roadmap-container');
-            container.innerHTML = `
-                <h1>Error</h1>
-                <p>Could not load the roadmap. Please ensure 'a2z.json' is in the same directory and correctly formatted.</p>
-                <p><em>${error.message}</em></p>`;
+            document.getElementById('roadmap-container').innerHTML = 
+                `<h1>Error</h1><p>Could not load the roadmap. Please ensure 'a2z.json' is in the same directory and correctly formatted.</p><p><em>${error.message}</em></p>`;
         }
     </script>
 </body>
